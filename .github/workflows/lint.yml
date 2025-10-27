@@ -28,7 +28,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Lint affected packages
-        run: pnpm run lint --filter=[HEAD^1]
+        run: pnpm run lint
 
       - name: Format files
-        run: pnpm run format:check --filter=[HEAD^1]
+        run: pnpm run format:check
