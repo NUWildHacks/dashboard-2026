@@ -1,3 +1,4 @@
+import { CodeXml, FileCode } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image className="dark:invert" src="/vercel.svg" alt="Vercel logomark" width={16} height={16} />
+              <CodeXml />
               Deploy Now
             </a>
           </Button>
@@ -46,6 +47,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
+              <FileCode />
               Documentation
             </a>
           </Button>
