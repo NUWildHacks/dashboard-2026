@@ -3,18 +3,27 @@
 import { Loader2 } from "lucide-react";
 import { useState, useEffect, PropsWithChildren } from "react";
 
-import { login, logout, me } from "@/actions/auth";
 import { User } from "@/types/user";
 
 import { AuthContext, AuthContextType } from "./auth-context";
+import { FirebaseError } from "firebase/app";
+import { getAuth, signInWithPopup } from "firebase/auth";
+import firebaseClient from "@/config/firebase-client";
+import { GithubAuthProvider } from "firebase/auth/web-extension";
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getMe = async () => {
-    const user = await me();
-    setUser(user);
+    try {
+      const result = await fetch("/api/me");
+      const data = await result.json();
+      setUser(data.user);
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
+      console.error(errorMessage);
+    }
   };
 
   useEffect(() => {
@@ -27,13 +36,46 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const handleLogin = async () => {
-    await login();
-    await getMe();
+    try {
+      const auth = getAuth(firebaseClient);
+
+      const githubProvider = new GithubAuthProvider();
+      githubProvider.addScope("user:email");
+
+      const result = await signInWithPopup(auth, githubProvider);
+
+      if (!result) return;
+
+      const idToken = await result.user.getIdToken(true);
+
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (response.ok) {
+        await getMe();
+      }
+    } catch (e) {
+      const errorMessage = e instanceof FirebaseError || e instanceof Error ? e.message : "An unknown error occurred";
+      console.error(errorMessage);
+    }
   };
 
   const handleLogout = async () => {
-    await logout();
-    await getMe();
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        await getMe();
+      }
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
+      console.error(errorMessage);
+    }
   };
 
   const value: AuthContextType = {
