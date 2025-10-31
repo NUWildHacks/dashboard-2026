@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { SESSION_COOKIE_NAME } from "./app/_lib/constants";
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const protectedRoutes = ["/dashboard"];
   const currentPath = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(currentPath);
