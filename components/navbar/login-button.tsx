@@ -23,7 +23,7 @@ export default function LoginButton() {
   };
 
   return (
-    <Button variant="link" size="lg" onClick={handleLogin}>
+    <Button variant="outline" size="lg" onClick={handleLogin}>
       <Github />
       Login with Github
     </Button>

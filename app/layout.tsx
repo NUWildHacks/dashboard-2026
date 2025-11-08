@@ -32,13 +32,15 @@ export default function RootLayout({
             className="absolute inset-0 z-0"
             style={{
               backgroundImage: `
-                radial-gradient(circle at 30% 70%, rgba(255, 243, 190, 0.4), transparent 60%),
-                radial-gradient(circle at 70% 30%, rgba(178, 255, 193, 0.35), transparent 60%)`,
+                radial-gradient(circle at 25% 75%, rgba(255, 243, 190, 0.7), transparent 60%),
+                radial-gradient(circle at 75% 25%, rgba(178, 255, 193, 0.55), transparent 60%)`,
             }}
           />
           <div className="relative z-10">
-            {children}
-            <Footer />
+            <div className="flex flex-col min-h-screen">
+              {children}
+              <Footer />
+            </div>
           </div>
         </div>
       </body>
