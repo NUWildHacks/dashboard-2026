@@ -42,10 +42,7 @@ export async function verifySession() {
 
   if (!payload) return null;
 
-  return {
-    id: payload.uid,
-    email: payload.email,
-  } as User;
+  return payload.uid as User["id"];
 }
 
 export async function updateSession() {

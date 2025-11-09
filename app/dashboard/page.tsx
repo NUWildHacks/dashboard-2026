@@ -1,10 +1,28 @@
 "use server";
 
+import { getFirestore } from "firebase-admin/firestore";
+import { redirect } from "next/navigation";
+
 import Navbar from "@/components/navbar/navbar";
+
+import { verifySession } from "../_lib/session";
 
 import LogoutButton from "./components/logout-button";
 
 export default async function Dashboard() {
+  const userId = await verifySession();
+  if (!userId) {
+    redirect(`/login?redirect=${encodeURIComponent("/registration")}`);
+  }
+
+  const db = getFirestore();
+  const userDocRef = db.collection("users").doc(userId);
+  const userDocSnapshot = await userDocRef.get();
+
+  if (!userDocSnapshot.exists) {
+    redirect("/registration");
+  }
+
   return (
     <>
       <Navbar>

@@ -1,13 +1,18 @@
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseClient = initializeApp({
-  apiKey: "AIzaSyDiLAifKtkeqjX2rpuQGL_6uq2vav6oN3Y",
-  authDomain: "wildhacks-dashboard-2026-dev.firebaseapp.com",
-  projectId: "wildhacks-dashboard-2026-dev",
-  storageBucket: "wildhacks-dashboard-2026-dev.firebasestorage.app",
-  messagingSenderId: "849337008203",
-  appId: "1:849337008203:web:67da23a3b1613799290dce",
-  measurementId: "G-Y89CH7EV9G",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 });
+
+export const auth = getAuth(firebaseClient);
+export const db = getFirestore(firebaseClient);
 
 export default firebaseClient;

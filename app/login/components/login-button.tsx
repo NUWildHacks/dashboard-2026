@@ -1,19 +1,17 @@
 "use client";
 
-import { getAuth, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { createSession } from "@/app/_lib/session";
 import { Button } from "@/components/ui/button";
-import firebaseClient from "@/config/firebase-client";
+import { auth } from "@/config/firebase-client";
 
 export default function LoginButton() {
   const router = useRouter();
 
   const handleLogin = async () => {
-    const auth = getAuth(firebaseClient);
-
     const githubProvider = new GithubAuthProvider();
     githubProvider.addScope("user:email");
 

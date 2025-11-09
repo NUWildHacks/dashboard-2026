@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { User } from "@/types/user";
 
 import countries from "../data/country.json";
 import dietaryRestrictions from "../data/dietary-restrictions.json";
@@ -29,8 +30,12 @@ import schools from "../data/schools.json";
 import tshirtSizes from "../data/tshirt-size.json";
 import useRegistrationForm from "../hooks/use-registration-form";
 
-export default function RegistrationForm() {
-  const { form, onSubmit } = useRegistrationForm();
+type RegistrationFormProps = {
+  userId: User["id"];
+};
+
+export default function RegistrationForm({ userId }: RegistrationFormProps) {
+  const { form, onSubmit } = useRegistrationForm(userId);
 
   return (
     <Card className="bg-[#fefefe] rounded-2xl shadow-md">
@@ -278,6 +283,9 @@ export default function RegistrationForm() {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Github Username
                       </FieldLabel>
+                      <FieldDescription className="w-full text-start">
+                        This is what you use to login to your Github account
+                      </FieldDescription>
                       <Input
                         {...field}
                         id={field.name}

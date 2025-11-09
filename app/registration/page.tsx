@@ -1,14 +1,32 @@
 "use server";
 
+import { getFirestore } from "firebase-admin/firestore";
 import { ArrowLeftFromLine } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 
+import { verifySession } from "../_lib/session";
+
 import RegistrationForm from "./components/registration-form";
 
 export default async function Registration() {
+  //TODO: handle async failures
+  const userId = await verifySession();
+  if (!userId) {
+    redirect(`/login?redirect=${encodeURIComponent("/registration")}`);
+  }
+
+  const db = getFirestore();
+  const userDocRef = db.collection("users").doc(userId);
+  const userDocSnapshot = await userDocRef.get();
+
+  if (userDocSnapshot.exists) {
+    redirect("/dashboard");
+  }
+
   return (
     <>
       <Navbar>
@@ -27,7 +45,7 @@ export default async function Registration() {
               Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
               started. This should only take a few minutes!
             </p>
-            <RegistrationForm />
+            <RegistrationForm userId={userId} />
           </div>
         </div>
       </main>
