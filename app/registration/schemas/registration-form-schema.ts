@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { z } from "zod";
 
 import countries from "../data/country.json";
@@ -10,17 +11,27 @@ import schools from "../data/schools.json";
 import tshirtSizes from "../data/tshirt-size.json";
 
 export const registrationFormSchema = z.object({
-  email: z.string().email("Invalid email address"),
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
-  github_username: z.string().min(1, "GitHub username is required"),
-  date_of_birth: z.date({
-    error: (issue) => (issue.input === undefined ? "Date of birth is required" : "Invalid date"),
-  }),
+  email: z.string().email("Invalid email address"),
+  date_of_birth: z
+    .string()
+    .min(1, "Date of birth is required")
+    .refine(
+      (date) => {
+        const birthDate = new Date(date);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        return age >= 13;
+      },
+      { message: "You must be at least 13 years old" }
+    )
+    .transform((str) => Timestamp.fromDate(new Date(str))),
   phone: z.string().min(1, "Phone number is required"),
   country: z.enum(countries as [string, ...string[]], {
     message: "Please select a country",
   }),
+
   school: z.enum(schools as [string, ...string[]], {
     message: "Please select a school",
   }),
@@ -30,6 +41,8 @@ export const registrationFormSchema = z.object({
   field_of_study: z.enum(fieldsOfStudy as [string, ...string[]], {
     message: "Please select a field of study",
   }),
+
+  github_username: z.string().min(1, "GitHub username is required"),
   tshirt_size: z.enum(tshirtSizes as [string, ...string[]], {
     message: "Please select a t-shirt size",
   }),

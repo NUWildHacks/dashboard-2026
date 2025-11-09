@@ -2,6 +2,7 @@
 
 import { Controller } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -34,7 +35,7 @@ export default function RegistrationForm() {
   return (
     <Card className="bg-[#fefefe] rounded-2xl shadow-md">
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="registration-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <FieldSet>
               <FieldLegend className="w-full text-start">Personal Information</FieldLegend>
@@ -58,10 +59,11 @@ export default function RegistrationForm() {
                           placeholder="Enter your first name"
                           aria-invalid={fieldState.invalid}
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
+
                   <Controller
                     name="last_name"
                     control={form.control}
@@ -79,7 +81,7 @@ export default function RegistrationForm() {
                           placeholder="Enter your last name"
                           aria-invalid={fieldState.invalid}
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
@@ -99,7 +101,7 @@ export default function RegistrationForm() {
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -123,10 +125,11 @@ export default function RegistrationForm() {
                           aria-invalid={fieldState.invalid}
                           autoComplete="off"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
+
                   <Controller
                     name="phone"
                     control={form.control}
@@ -145,7 +148,7 @@ export default function RegistrationForm() {
                           placeholder="Enter your phone number"
                           autoComplete="off"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
@@ -166,7 +169,7 @@ export default function RegistrationForm() {
                         placeholder="Select your home country"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -194,7 +197,7 @@ export default function RegistrationForm() {
                         placeholder="Select your school"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -207,9 +210,14 @@ export default function RegistrationForm() {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Level of Study
                       </FieldLabel>
-                      <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      >
                         <SelectTrigger id={field.name}>
-                          <SelectValue placeholder="Select your level of study" />
+                          <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
                         <SelectContent>
                           {levelsOfStudy.map((levelOfStudy) => (
@@ -219,7 +227,7 @@ export default function RegistrationForm() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -232,7 +240,12 @@ export default function RegistrationForm() {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Field of Study
                       </FieldLabel>
-                      <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      >
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
@@ -244,7 +257,7 @@ export default function RegistrationForm() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -272,7 +285,7 @@ export default function RegistrationForm() {
                         placeholder="Enter your Github username"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -285,7 +298,12 @@ export default function RegistrationForm() {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         T-shirt Size
                       </FieldLabel>
-                      <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      >
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
@@ -297,7 +315,7 @@ export default function RegistrationForm() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -320,7 +338,12 @@ export default function RegistrationForm() {
                         >
                           Gender
                         </FieldLabel>
-                        <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                        <Select
+                          name={field.name}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          aria-invalid={fieldState.invalid}
+                        >
                           <SelectTrigger id={field.name}>
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
@@ -332,10 +355,11 @@ export default function RegistrationForm() {
                             ))}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
+
                   <Controller
                     name="race"
                     control={form.control}
@@ -347,7 +371,12 @@ export default function RegistrationForm() {
                         >
                           Race
                         </FieldLabel>
-                        <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                        <Select
+                          name={field.name}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          aria-invalid={fieldState.invalid}
+                        >
                           <SelectTrigger id={field.name}>
                             <SelectValue placeholder="Select your race" />
                           </SelectTrigger>
@@ -359,7 +388,7 @@ export default function RegistrationForm() {
                             ))}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
                   />
@@ -373,7 +402,12 @@ export default function RegistrationForm() {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Dietary Restrictions
                       </FieldLabel>
-                      <Select {...field} aria-invalid={fieldState.invalid} autoComplete="off">
+                      <Select
+                        name={field.name}
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        aria-invalid={fieldState.invalid}
+                      >
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select all of your dietary restrictions" />
                         </SelectTrigger>
@@ -385,7 +419,7 @@ export default function RegistrationForm() {
                           ))}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -406,7 +440,7 @@ export default function RegistrationForm() {
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
                 />
@@ -448,7 +482,7 @@ export default function RegistrationForm() {
                             MLH Code of Conduct
                           </a>
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>
                     </Field>
                   )}
@@ -483,7 +517,7 @@ export default function RegistrationForm() {
                             MLH Privacy Policy
                           </a>
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>
                     </Field>
                   )}
@@ -505,7 +539,7 @@ export default function RegistrationForm() {
                         <FieldDescription className="w-full text-start">
                           I authorize MLH to send me occasional emails about relevant events and opportunities
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>
                     </Field>
                   )}
@@ -515,6 +549,16 @@ export default function RegistrationForm() {
           </FieldGroup>
         </form>
       </CardContent>
+      <CardFooter>
+        <Field orientation="horizontal" className="flex-row-reverse">
+          <Button type="submit" form="registration-form">
+            Submit
+          </Button>
+          <Button type="button" variant="outline" onClick={() => form.reset()}>
+            Reset
+          </Button>
+        </Field>
+      </CardFooter>
       <CardFooter />
     </Card>
   );
