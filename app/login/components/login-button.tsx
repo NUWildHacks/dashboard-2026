@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createSession } from "@/app/_lib/session";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
+import { DASHBOARD_PATH } from "@/constants/routes";
 
 export default function LoginButton() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function LoginButton() {
     await createSession(idToken);
 
     const searchParams = new URLSearchParams(window.location.search);
-    const redirect = searchParams.get("redirect") || "/dashboard";
+    const redirect = searchParams.get("redirect") || DASHBOARD_PATH;
 
     router.replace(redirect);
   };

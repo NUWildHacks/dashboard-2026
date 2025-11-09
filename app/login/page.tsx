@@ -8,6 +8,7 @@ import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ROOT_PATH } from "@/constants/routes";
 
 import LoginButton from "./components/login-button";
 
@@ -15,7 +16,7 @@ export default async function Login() {
   return (
     <>
       <Navbar>
-        <Link href="/">
+        <Link href={ROOT_PATH}>
           <Button variant="link">
             <ArrowLeftFromLine />
             Go Back

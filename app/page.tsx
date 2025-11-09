@@ -7,6 +7,7 @@ import Link from "next/link";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
+import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
 export default async function Home() {
   return (
@@ -25,13 +26,13 @@ export default async function Home() {
               creativity!
             </p>
             <div className="flex justify-center items-center gap-2 flex-wrap">
-              <Link href="/registration">
+              <Link href={REGISTRATION_PATH}>
                 <Button variant="outline">
                   <LogIn />
                   Register for WildHacks 2026
                 </Button>
               </Link>
-              <Link href="/dashboard">
+              <Link href={DASHBOARD_PATH}>
                 <Button variant="link">Continue to Dashboard</Button>
               </Link>
             </div>

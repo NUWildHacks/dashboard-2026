@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
 import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie";
+import { ROOT_PATH } from "@/constants/routes";
 import type User from "@/types/user";
 
 export async function createSession(idToken: string) {
@@ -74,5 +75,5 @@ export async function deleteSession() {
   }
 
   cookieStore.delete(SESSION_COOKIE_NAME);
-  redirect("/");
+  redirect(ROOT_PATH);
 }

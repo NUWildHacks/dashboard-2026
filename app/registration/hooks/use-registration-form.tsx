@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { db } from "@/config/firebase-client";
+import { USERS_COLLECTION } from "@/constants/db";
+import { DASHBOARD_PATH } from "@/constants/routes";
+import { ATTENDING, PARTICIPANT } from "@/constants/user";
 import User from "@/types/user";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../schemas/registration-form-schema";
@@ -47,15 +50,15 @@ export default function useRegistrationForm(userId: User["id"]) {
       const user: User = {
         id: userId,
         ...data,
-        role: "Participant",
-        status: "Attending",
+        role: PARTICIPANT,
+        status: ATTENDING,
         created_at: Timestamp.fromMillis(now),
         updated_at: Timestamp.fromMillis(now),
       };
 
-      await setDoc(doc(db, "users", userId), user);
+      await setDoc(doc(db, USERS_COLLECTION, userId), user);
 
-      router.replace("/dashboard");
+      router.replace(DASHBOARD_PATH);
     } catch (e) {
       const errorMessage = e instanceof FirestoreError ? e.message : "An unknown error occurred";
       //TODO: trigger toast pop up

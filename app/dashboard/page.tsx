@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
+import { USERS_COLLECTION } from "@/constants/db";
+import { LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
 import { verifySession } from "../_lib/session";
 
@@ -13,15 +15,15 @@ import LogoutButton from "./components/logout-button";
 export default async function Dashboard() {
   const userId = await verifySession();
   if (!userId) {
-    redirect(`/login?redirect=${encodeURIComponent("/registration")}`);
+    redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
   }
 
   const db = getFirestore();
-  const userDocRef = db.collection("users").doc(userId);
+  const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
   const userDocSnapshot = await userDocRef.get();
 
   if (!userDocSnapshot.exists) {
-    redirect("/registration");
+    redirect(REGISTRATION_PATH);
   }
 
   return (

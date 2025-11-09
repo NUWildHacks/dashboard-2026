@@ -8,6 +8,8 @@ import { redirect } from "next/navigation";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
+import { USERS_COLLECTION } from "@/constants/db";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH, ROOT_PATH } from "@/constants/routes";
 
 import { verifySession } from "../_lib/session";
 
@@ -17,21 +19,21 @@ export default async function Registration() {
   //TODO: handle async failures
   const userId = await verifySession();
   if (!userId) {
-    redirect(`/login?redirect=${encodeURIComponent("/registration")}`);
+    redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
   }
 
   const db = getFirestore();
-  const userDocRef = db.collection("users").doc(userId);
+  const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
   const userDocSnapshot = await userDocRef.get();
 
   if (userDocSnapshot.exists) {
-    redirect("/dashboard");
+    redirect(DASHBOARD_PATH);
   }
 
   return (
     <>
       <Navbar>
-        <Link href="/">
+        <Link href={ROOT_PATH}>
           <Button variant="link">
             <ArrowLeftFromLine />
             Go Back
