@@ -1,7 +1,8 @@
 "use server";
 
-import LogoutButton from "@/components/navbar/logout-button";
 import Navbar from "@/components/navbar/navbar";
+
+import LogoutButton from "./components/logout-button";
 
 export default async function Dashboard() {
   return (

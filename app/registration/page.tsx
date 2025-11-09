@@ -15,7 +15,7 @@ export default async function Registration() {
         <Link href="/">
           <Button variant="link">
             <ArrowLeftFromLine />
-            Return Home
+            Go Back
           </Button>
         </Link>
       </Navbar>

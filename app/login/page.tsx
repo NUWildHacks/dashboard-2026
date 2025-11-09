@@ -4,10 +4,11 @@ import { ArrowLeftFromLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import LoginButton from "@/components/navbar/login-button";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+
+import LoginButton from "./components/login-button";
 
 export default async function Login() {
   return (

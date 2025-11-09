@@ -5,9 +5,8 @@ import { Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { createSession } from "@/app/_lib/session";
+import { Button } from "@/components/ui/button";
 import firebaseClient from "@/config/firebase-client";
-
-import { Button } from "../ui/button";
 
 export default function LoginButton() {
   const router = useRouter();
