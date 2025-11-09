@@ -50,6 +50,7 @@ export default function useRegistrationForm(userId: User["id"]) {
       const user: User = {
         id: userId,
         ...data,
+        date_of_birth: Timestamp.fromDate(new Date(data.date_of_birth)),
         role: PARTICIPANT,
         status: ATTENDING,
         created_at: Timestamp.fromMillis(now),

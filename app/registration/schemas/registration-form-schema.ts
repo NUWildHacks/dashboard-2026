@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore";
 import { z } from "zod";
 
 import {
@@ -27,8 +26,7 @@ export const registrationFormSchema = z.object({
         return age >= 13;
       },
       { message: "You must be at least 13 years old" }
-    )
-    .transform((str) => Timestamp.fromDate(new Date(str))),
+    ),
   phone: z.string().min(1, "Phone number is required"),
   country: z.enum(COUNTRIES, {
     message: "Please select a country",
