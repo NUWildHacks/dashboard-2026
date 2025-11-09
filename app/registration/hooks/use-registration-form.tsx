@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { db } from "@/config/firebase-client";
-import { User } from "@/types/user";
+import User from "@/types/user";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../schemas/registration-form-schema";
 

@@ -5,6 +5,7 @@ import { ArrowLeftFromLine } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 
@@ -49,6 +50,7 @@ export default async function Registration() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }

@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
+import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 
 import { verifySession } from "../_lib/session";
@@ -31,6 +32,7 @@ export default async function Dashboard() {
       <main className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12">
         <div className="max-w-[650px]">Dashboard Page</div>
       </main>
+      <Footer />
     </>
   );
 }

@@ -18,16 +18,9 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User } from "@/types/user";
+import { DIETARY_RESTRICTIONS, FIELDS_OF_STUDY, GENDERS, LEVELS_OF_STUDY, RACES, TSHIRT_SIZES } from "@/constants/user";
+import type User from "@/types/user";
 
-import countries from "../data/country.json";
-import dietaryRestrictions from "../data/dietary-restrictions.json";
-import fieldsOfStudy from "../data/field-of-study.json";
-import genders from "../data/gender.json";
-import levelsOfStudy from "../data/level-of-study.json";
-import races from "../data/race.json";
-import schools from "../data/schools.json";
-import tshirtSizes from "../data/tshirt-size.json";
 import useRegistrationForm from "../hooks/use-registration-form";
 
 type RegistrationFormProps = {
@@ -225,7 +218,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
                         <SelectContent>
-                          {levelsOfStudy.map((levelOfStudy) => (
+                          {LEVELS_OF_STUDY.map((levelOfStudy) => (
                             <SelectItem key={levelOfStudy} value={levelOfStudy}>
                               {levelOfStudy}
                             </SelectItem>
@@ -255,7 +248,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
                         <SelectContent>
-                          {fieldsOfStudy.map((fieldOfStudy) => (
+                          {FIELDS_OF_STUDY.map((fieldOfStudy) => (
                             <SelectItem key={fieldOfStudy} value={fieldOfStudy}>
                               {fieldOfStudy}
                             </SelectItem>
@@ -316,7 +309,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
                         <SelectContent>
-                          {tshirtSizes.map((tshirtSize) => (
+                          {TSHIRT_SIZES.map((tshirtSize) => (
                             <SelectItem key={tshirtSize} value={tshirtSize}>
                               {tshirtSize}
                             </SelectItem>
@@ -356,7 +349,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                           <SelectContent>
-                            {genders.map((gender) => (
+                            {GENDERS.map((gender) => (
                               <SelectItem key={gender} value={gender}>
                                 {gender}
                               </SelectItem>
@@ -389,7 +382,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                             <SelectValue placeholder="Select your race" />
                           </SelectTrigger>
                           <SelectContent>
-                            {races.map((race) => (
+                            {RACES.map((race) => (
                               <SelectItem key={race} value={race}>
                                 {race}
                               </SelectItem>
@@ -420,7 +413,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectValue placeholder="Select all of your dietary restrictions" />
                         </SelectTrigger>
                         <SelectContent>
-                          {dietaryRestrictions.map((dietaryRestriction) => (
+                          {DIETARY_RESTRICTIONS.map((dietaryRestriction) => (
                             <SelectItem key={dietaryRestriction} value={dietaryRestriction}>
                               {dietaryRestriction}
                             </SelectItem>

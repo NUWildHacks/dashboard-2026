@@ -4,9 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { User } from "@/types/user";
-
-import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "./constants";
+import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie";
+import type User from "@/types/user";
 
 export async function createSession(idToken: string) {
   const adminAuth = firebaseAdmin.auth();

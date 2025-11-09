@@ -1,19 +1,21 @@
 import { Timestamp } from "firebase/firestore";
 import { z } from "zod";
 
-import countries from "../data/country.json";
-import dietaryRestrictions from "../data/dietary-restrictions.json";
-import fieldsOfStudy from "../data/field-of-study.json";
-import genders from "../data/gender.json";
-import levelsOfStudy from "../data/level-of-study.json";
-import races from "../data/race.json";
-import schools from "../data/schools.json";
-import tshirtSizes from "../data/tshirt-size.json";
+import {
+  COUNTRIES,
+  DIETARY_RESTRICTIONS,
+  FIELDS_OF_STUDY,
+  GENDERS,
+  LEVELS_OF_STUDY,
+  RACES,
+  SCHOOLS,
+  TSHIRT_SIZES,
+} from "@/constants/user";
 
 export const registrationFormSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   date_of_birth: z
     .string()
     .min(1, "Date of birth is required")
@@ -28,32 +30,32 @@ export const registrationFormSchema = z.object({
     )
     .transform((str) => Timestamp.fromDate(new Date(str))),
   phone: z.string().min(1, "Phone number is required"),
-  country: z.enum(countries as [string, ...string[]], {
+  country: z.enum(COUNTRIES, {
     message: "Please select a country",
   }),
 
-  school: z.enum(schools as [string, ...string[]], {
+  school: z.enum(SCHOOLS, {
     message: "Please select a school",
   }),
-  level_of_study: z.enum(levelsOfStudy as [string, ...string[]], {
+  level_of_study: z.enum(LEVELS_OF_STUDY, {
     message: "Please select a level of study",
   }),
-  field_of_study: z.enum(fieldsOfStudy as [string, ...string[]], {
+  field_of_study: z.enum(FIELDS_OF_STUDY, {
     message: "Please select a field of study",
   }),
 
   github_username: z.string().min(1, "GitHub username is required"),
-  tshirt_size: z.enum(tshirtSizes as [string, ...string[]], {
+  tshirt_size: z.enum(TSHIRT_SIZES, {
     message: "Please select a t-shirt size",
   }),
 
-  gender: z.enum(genders as [string, ...string[]], {
+  gender: z.enum(GENDERS, {
     message: "Please select a gender",
   }),
-  race: z.enum(races as [string, ...string[]], {
+  race: z.enum(RACES, {
     message: "Please select a race",
   }),
-  dietary_restrictions: z.enum(dietaryRestrictions as [string, ...string[]], {
+  dietary_restrictions: z.enum(DIETARY_RESTRICTIONS, {
     message: "Please select a dietary restriction",
   }),
   other_dietary_restrictions: z.string().catch(""),

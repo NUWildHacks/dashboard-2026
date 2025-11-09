@@ -1,31 +1,59 @@
 import type { Timestamp } from "firebase/firestore";
 
-export type User = {
+import {
+  COUNTRIES,
+  DIETARY_RESTRICTIONS,
+  FIELDS_OF_STUDY,
+  GENDERS,
+  LEVELS_OF_STUDY,
+  RACES,
+  ROLES,
+  SCHOOLS,
+  STATUSES,
+  TSHIRT_SIZES,
+} from "@/constants/user";
+
+export type Country = (typeof COUNTRIES)[number];
+export type School = (typeof SCHOOLS)[number];
+export type LevelOfStudy = (typeof LEVELS_OF_STUDY)[number];
+export type FieldOfStudy = (typeof FIELDS_OF_STUDY)[number];
+export type TShirtSize = (typeof TSHIRT_SIZES)[number];
+export type Gender = (typeof GENDERS)[number];
+export type Race = (typeof RACES)[number];
+export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
+
+export type Role = (typeof ROLES)[number];
+
+export type Status = (typeof STATUSES)[number];
+
+type User = {
   id: string;
 
   email: string;
   first_name: string;
   last_name: string;
-  github_username: string;
   date_of_birth: Timestamp;
   phone: string;
-  country: string;
-  school: string;
-  level_of_study: string;
-  field_of_study: string;
-  tshirt_size: string;
+  country: Country;
 
-  gender: string;
-  race: string;
-  dietary_restrictions: string;
+  school: School;
+  level_of_study: LevelOfStudy;
+  field_of_study: FieldOfStudy;
+
+  github_username: string;
+  tshirt_size: TShirtSize;
+
+  gender: Gender;
+  race: Race;
+  dietary_restrictions: DietaryRestriction;
   other_dietary_restrictions: string;
 
   mlh_code_of_conduct: boolean;
   mlh_privacy_policy: boolean;
   mlh_marketing: boolean;
 
-  role: "Participant" | "Judge" | "Admin";
-  status: "Attending" | "Dropped";
+  role: Role;
+  status: Status;
 
   project_id?: string;
   checked_in?: boolean;
@@ -35,3 +63,5 @@ export type User = {
   created_at: Timestamp;
   updated_at: Timestamp;
 };
+
+export default User;

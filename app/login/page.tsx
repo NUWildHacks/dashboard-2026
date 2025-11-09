@@ -4,6 +4,7 @@ import { ArrowLeftFromLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,6 +33,7 @@ export default async function Login() {
           </Card>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
