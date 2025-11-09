@@ -1,41 +1,17 @@
-import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { PropsWithChildren } from "react";
 
-import { verifySession } from "@/app/_lib/session";
+type NavbarProps = PropsWithChildren;
 
-import { Button } from "../ui/button";
-
-import LoginButton from "./login-button";
-import LogoutButton from "./logout-button";
-
-export default async function Navbar() {
-  const user = await verifySession();
-
+export default async function Navbar({ children }: NavbarProps) {
   return (
     <nav className="w-full px-6 sm:px-12 py-4 flex justify-between items-center">
       <Link href="/" className="flex justify-center items-center gap-2">
         <Image src="/wildhacks.svg" alt="Navigation Logo" width={62} height={40} />
         <h1 className="text-2xl sm:block hidden text-nowrap sr-only">WildHacks Dashboard</h1>
       </Link>
-      <div className="hidden sm:flex justify-center items-center gap-2">
-        {user ? (
-          <>
-            <Button variant="link">
-              <User />
-              <Link href="/dashboard">Dashboard</Link>
-            </Button>
-            <LogoutButton />
-          </>
-        ) : (
-          <LoginButton />
-        )}
-      </div>
-      <div className="block sm:hidden">
-        <Button size="icon" variant="outline">
-          <Menu />
-        </Button>
-      </div>
+      {children}
     </nav>
   );
 }

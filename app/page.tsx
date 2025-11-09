@@ -1,3 +1,5 @@
+"use server";
+
 import { LogIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,7 +7,7 @@ import Link from "next/link";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
       <Navbar />
@@ -25,7 +27,7 @@ export default function Home() {
               <Link href="/registration">
                 <Button variant="outline">
                   <LogIn />
-                  Register Now
+                  Register for WildHacks 2026
                 </Button>
               </Link>
               <Link href="/dashboard">

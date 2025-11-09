@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE_NAME } from "./app/_lib/constants";
 
 export async function proxy(req: NextRequest) {
-  const protectedRoutes = ["/dashboard"];
+  const protectedRoutes = ["/dashboard", "/registration"];
   const currentPath = req.nextUrl.pathname;
   const isProtectedRoute = protectedRoutes.includes(currentPath);
 
@@ -11,7 +11,10 @@ export async function proxy(req: NextRequest) {
     const sessionCookie = req.cookies.get(SESSION_COOKIE_NAME)?.value;
 
     if (!sessionCookie) {
-      return NextResponse.redirect(new URL("/", req.url));
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("redirect", req.nextUrl.pathname);
+
+      return NextResponse.redirect(loginUrl);
     }
   }
 

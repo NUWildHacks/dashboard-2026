@@ -1,13 +1,24 @@
 "use server";
 
+import { ArrowLeftFromLine } from "lucide-react";
+import Link from "next/link";
+
 import Navbar from "@/components/navbar/navbar";
+import { Button } from "@/components/ui/button";
 
 import RegistrationForm from "./components/registration-form";
 
 export default async function Registration() {
   return (
     <>
-      <Navbar />
+      <Navbar>
+        <Link href="/">
+          <Button variant="link">
+            <ArrowLeftFromLine />
+            Return Home
+          </Button>
+        </Link>
+      </Navbar>
       <main className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12">
         <div className="max-w-[650px]">
           <div className="text-center space-y-5">

@@ -559,7 +559,6 @@ export default function RegistrationForm() {
           </Button>
         </Field>
       </CardFooter>
-      <CardFooter />
     </Card>
   );
 }
