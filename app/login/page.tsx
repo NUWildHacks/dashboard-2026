@@ -27,8 +27,10 @@ export default async function Login() {
         <div className="max-w-[650px]">
           <Card>
             <CardContent className="flex flex-col items-center gap-6">
-              <Image src="/wildhacks-splash.svg" alt="Main Logo" width={300} height={114} className="w-full" />
-              <p className="text-sm">Before we continue, let&apos;s make sure you&apos;re logged in first</p>
+              <Image src="/wildhacks-splash.svg" alt="Main Logo" width={300} height={114} loading="eager" />
+              <p className="text-sm text-center">
+                Before we continue, let&apos;s make sure you&apos;re logged in first
+              </p>
               <LoginButton />
             </CardContent>
           </Card>

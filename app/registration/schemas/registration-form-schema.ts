@@ -27,7 +27,7 @@ export const registrationFormSchema = z.object({
       },
       { message: "You must be at least 13 years old" }
     ),
-  phone: z.string().min(1, "Phone number is required"),
+  phone: z.e164("Invalid phone number"),
   country: z.enum(COUNTRIES, {
     message: "Please select a country",
   }),
@@ -51,7 +51,7 @@ export const registrationFormSchema = z.object({
     message: "Please select a gender",
   }),
   race: z.enum(RACES, {
-    message: "Please select a race",
+    message: "Please select a race/ethnicity",
   }),
   dietary_restrictions: z.enum(DIETARY_RESTRICTIONS, {
     message: "Please select a dietary restriction",

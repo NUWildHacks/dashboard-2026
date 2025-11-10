@@ -1,9 +1,14 @@
 [
-  "American Indian or Alaskan Native",
-  "Asian",
+  "Asian - East Asian",
+  "Asian - South Asian",
+  "Asian - Southeast Asian",
   "Black or African American",
-  "White",
+  "Hispanic, Latino/a/x, or of Spanish Origin",
+  "Indigenous, American Indian, or Alaska Native",
+  "Middle Eastern or North African",
   "Native Hawaiian or Other Pacific Islander",
-  "Two or more races",
+  "White or Caucasian",
+  "Two or more races/ethnicities",
+  "Prefer to self-describe",
   "Prefer not to answer"
 ]

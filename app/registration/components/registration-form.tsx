@@ -277,7 +277,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         Github Username
                       </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        This is what you use to login to your Github account
+                        Please enter what you use to login to your Github account
                       </FieldDescription>
                       <Input
                         {...field}
@@ -370,7 +370,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
-                          Race
+                          Racial/Ethnic Background
                         </FieldLabel>
                         <Select
                           name={field.name}
@@ -379,7 +379,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           aria-invalid={fieldState.invalid}
                         >
                           <SelectTrigger id={field.name}>
-                            <SelectValue placeholder="Select your race" />
+                            <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
                           <SelectContent>
                             {RACES.map((race) => (

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WildHacks Dashboard 2026",
+  title: "WildHacks 2026 Dashboard",
   description: "Dashboard application for WildHacks 2026",
 };
 
