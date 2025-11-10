@@ -33,6 +33,7 @@ import type User from "@/types/user";
 import useRegistrationForm from "../hooks/use-registration-form";
 
 import Combobox from "./combobox";
+import DatePicker from "./date-picker";
 
 type RegistrationFormProps = {
   userId: User["id"];
@@ -130,13 +131,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         >
                           Date of Birth
                         </FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          type="date"
-                          aria-invalid={fieldState.invalid}
-                          autoComplete="date_of_birth"
-                        />
+                        <DatePicker field={field} fieldState={fieldState} placeholder="Select your date of birth" />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
