@@ -18,10 +18,21 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DIETARY_RESTRICTIONS, FIELDS_OF_STUDY, GENDERS, LEVELS_OF_STUDY, RACES, TSHIRT_SIZES } from "@/constants/user";
+import {
+  COUNTRIES,
+  DIETARY_RESTRICTIONS,
+  FIELDS_OF_STUDY,
+  GENDERS,
+  LEVELS_OF_STUDY,
+  RACES,
+  SCHOOLS,
+  TSHIRT_SIZES,
+} from "@/constants/user";
 import type User from "@/types/user";
 
 import useRegistrationForm from "../hooks/use-registration-form";
+
+import Combobox from "./combobox";
 
 type RegistrationFormProps = {
   userId: User["id"];
@@ -56,6 +67,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           id={field.name}
                           placeholder="Enter your first name"
                           aria-invalid={fieldState.invalid}
+                          autoComplete="given-name"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
@@ -78,6 +90,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           id={field.name}
                           placeholder="Enter your last name"
                           aria-invalid={fieldState.invalid}
+                          autoComplete="family-name"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
@@ -98,6 +111,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         id={field.name}
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
+                        autoComplete="email"
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -121,7 +135,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           id={field.name}
                           type="date"
                           aria-invalid={fieldState.invalid}
-                          autoComplete="off"
+                          autoComplete="date_of_birth"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
@@ -144,7 +158,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           id={field.name}
                           aria-invalid={fieldState.invalid}
                           placeholder="Enter your phone number"
-                          autoComplete="off"
+                          autoComplete="tel"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
@@ -160,12 +174,15 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Country
                       </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
+                      <Combobox
+                        field={field}
+                        fieldState={fieldState}
+                        options={COUNTRIES}
                         placeholder="Select your home country"
-                        autoComplete="off"
+                        searchPlaceholder="Search countries..."
+                        emptyText="No country found."
+                        minSearchLength={2}
+                        maxResults={50}
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -188,12 +205,15 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         School
                       </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        aria-invalid={fieldState.invalid}
+                      <Combobox
+                        field={field}
+                        fieldState={fieldState}
+                        options={SCHOOLS}
                         placeholder="Select your school"
-                        autoComplete="off"
+                        searchPlaceholder="Search schools..."
+                        emptyText="No school found."
+                        minSearchLength={3}
+                        maxResults={30}
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -217,7 +237,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
                           {LEVELS_OF_STUDY.map((levelOfStudy) => (
                             <SelectItem key={levelOfStudy} value={levelOfStudy}>
                               {levelOfStudy}
@@ -247,7 +267,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
                           {FIELDS_OF_STUDY.map((fieldOfStudy) => (
                             <SelectItem key={fieldOfStudy} value={fieldOfStudy}>
                               {fieldOfStudy}
@@ -308,7 +328,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
                           {TSHIRT_SIZES.map((tshirtSize) => (
                             <SelectItem key={tshirtSize} value={tshirtSize}>
                               {tshirtSize}
@@ -348,7 +368,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectTrigger id={field.name}>
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="w-[var(--radix-select-trigger-width)]">
                             {GENDERS.map((gender) => (
                               <SelectItem key={gender} value={gender}>
                                 {gender}
@@ -381,7 +401,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                           <SelectTrigger id={field.name}>
                             <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="w-[var(--radix-select-trigger-width)]">
                             {RACES.map((race) => (
                               <SelectItem key={race} value={race}>
                                 {race}
@@ -412,7 +432,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                         <SelectTrigger id={field.name}>
                           <SelectValue placeholder="Select all of your dietary restrictions" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
                           {DIETARY_RESTRICTIONS.map((dietaryRestriction) => (
                             <SelectItem key={dietaryRestriction} value={dietaryRestriction}>
                               {dietaryRestriction}
@@ -461,6 +481,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
                         id={field.name}
+                        name={field.name}
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         aria-invalid={fieldState.invalid}
@@ -496,6 +517,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
                         id={field.name}
+                        name={field.name}
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         aria-invalid={fieldState.invalid}
@@ -531,6 +553,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
                         id={field.name}
+                        name={field.name}
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         aria-invalid={fieldState.invalid}
