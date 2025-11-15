@@ -14,17 +14,13 @@ import LogoutButton from "./components/logout-button";
 
 export default async function Dashboard() {
   const userId = await verifySession();
-  if (!userId) {
-    redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
-  }
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
   const db = getFirestore();
   const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
   const userDocSnapshot = await userDocRef.get();
 
-  if (!userDocSnapshot.exists) {
-    redirect(REGISTRATION_PATH);
-  }
+  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
   return (
     <>

@@ -18,17 +18,13 @@ import RegistrationForm from "./components/registration-form";
 export default async function Registration() {
   //TODO: handle async failures
   const userId = await verifySession();
-  if (!userId) {
-    redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
-  }
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
   const db = getFirestore();
   const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
   const userDocSnapshot = await userDocRef.get();
 
-  if (userDocSnapshot.exists) {
-    redirect(DASHBOARD_PATH);
-  }
+  if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
 
   return (
     <>

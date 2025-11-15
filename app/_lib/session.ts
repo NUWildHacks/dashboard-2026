@@ -1,5 +1,6 @@
 "use server";
 
+import { FirebaseAppError } from "firebase-admin/app";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -16,70 +17,76 @@ export async function createSession(idToken: string) {
     const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn: SESSION_EXPIRES_IN });
     cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
   } catch (e) {
-    console.error("Failed to create session", e);
-
-    throw e;
+    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
+    console.error(errorMessage);
   }
 }
 
 export async function verifySession() {
-  try {
-    const adminAuth = firebaseAdmin.auth();
-    const cookieStore = await cookies();
+  const adminAuth = firebaseAdmin.auth();
+  const cookieStore = await cookies();
 
+  try {
     const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (!sessionCookie) throw new Error("Could not find session cookie");
 
     const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    if (!payload) throw new Error("Could not verify session cookie");
+    if (!payload) {
+      cookieStore.delete(SESSION_COOKIE_NAME);
+      throw new Error("Could not verify session cookie");
+    }
 
     return payload.uid as User["id"];
   } catch (e) {
-    console.error("Failed to verify session", e);
+    const errorMessage = e instanceof FirebaseAppError || e instanceof Error ? e.message : "An unknown error occurred";
+    console.error(errorMessage);
 
-    redirect(LOGIN_PATH);
+    return null;
   }
 }
 
 export async function updateSession() {
-  try {
-    const adminAuth = firebaseAdmin.auth();
-    const cookieStore = await cookies();
+  const adminAuth = firebaseAdmin.auth();
+  const cookieStore = await cookies();
 
+  try {
     const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (!sessionCookie) throw new Error("Could not find session cookie");
 
     const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    if (!payload) throw new Error("Could not verify session cookie");
+    if (!payload) {
+      cookieStore.delete(SESSION_COOKIE_NAME);
+      throw new Error("Could not verify session cookie");
+    }
 
     cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
   } catch (e) {
-    console.error("Failed to update session", e);
+    const errorMessage = e instanceof FirebaseAppError || e instanceof Error ? e.message : "An unknown error occurred";
+    console.error(errorMessage);
 
-    cookieStore.delete(SESSION_COOKIE_NAME);
     redirect(LOGIN_PATH);
   }
 }
 
 export async function deleteSession() {
-  try {
-    const adminAuth = firebaseAdmin.auth();
-    const cookieStore = await cookies();
+  const adminAuth = firebaseAdmin.auth();
+  const cookieStore = await cookies();
 
+  try {
     const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (!sessionCookie) throw new Error("Could not find session cookie");
 
     const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    if (!payload) throw new Error("Could not verify session cookie");
+    if (!payload) {
+      cookieStore.delete(SESSION_COOKIE_NAME);
+      throw new Error("Could not verify session cookie");
+    }
 
     await adminAuth.revokeRefreshTokens(payload.sub);
-
-    cookieStore.delete(SESSION_COOKIE_NAME);
-    redirect(ROOT_PATH);
   } catch (e) {
-    console.error("Failed to delete session", e);
-
-    cookieStore.delete(SESSION_COOKIE_NAME);
-    redirect(LOGIN_PATH);
+    const errorMessage = e instanceof FirebaseAppError || e instanceof Error ? e.message : "An unknown error occurred";
+    console.error(errorMessage);
+  } finally {
+    redirect(ROOT_PATH);
   }
 }

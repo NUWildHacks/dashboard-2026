@@ -3,16 +3,22 @@
 import { ArrowLeftFromLine } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ROOT_PATH } from "@/constants/routes";
+import { DASHBOARD_PATH, ROOT_PATH } from "@/constants/routes";
+
+import { verifySession } from "../_lib/session";
 
 import LoginButton from "./components/login-button";
 
 export default async function Login() {
+  const userId = await verifySession();
+  if (userId) redirect(DASHBOARD_PATH);
+
   return (
     <>
       <Navbar>
