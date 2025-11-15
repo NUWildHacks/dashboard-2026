@@ -5,75 +5,81 @@ import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
 import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie";
-import { ROOT_PATH } from "@/constants/routes";
+import { LOGIN_PATH, ROOT_PATH } from "@/constants/routes";
 import type User from "@/types/user";
 
 export async function createSession(idToken: string) {
-  const adminAuth = firebaseAdmin.auth();
-  const cookieStore = await cookies();
-
   try {
+    const adminAuth = firebaseAdmin.auth();
+    const cookieStore = await cookies();
+
     const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn: SESSION_EXPIRES_IN });
     cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
   } catch (e) {
     console.error("Failed to create session", e);
+
     throw e;
   }
 }
 
-async function getSessionPayload() {
-  const adminAuth = firebaseAdmin.auth();
-  const cookieStore = await cookies();
-
-  const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  if (!sessionCookie) return null;
-
+export async function verifySession() {
   try {
+    const adminAuth = firebaseAdmin.auth();
+    const cookieStore = await cookies();
+
+    const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!sessionCookie) throw new Error("Could not find session cookie");
+
     const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    return payload;
+    if (!payload) throw new Error("Could not verify session cookie");
+
+    return payload.uid as User["id"];
   } catch (e) {
     console.error("Failed to verify session", e);
-    return null;
+
+    redirect(LOGIN_PATH);
   }
-}
-
-export async function verifySession() {
-  const payload = await getSessionPayload();
-
-  if (!payload) return null;
-
-  return payload.uid as User["id"];
 }
 
 export async function updateSession() {
-  const cookieStore = await cookies();
+  try {
+    const adminAuth = firebaseAdmin.auth();
+    const cookieStore = await cookies();
 
-  const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-  if (!sessionCookie) return;
+    const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!sessionCookie) throw new Error("Could not find session cookie");
 
-  const payload = await getSessionPayload();
-  if (!payload) {
+    const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
+    if (!payload) throw new Error("Could not verify session cookie");
+
+    cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
+  } catch (e) {
+    console.error("Failed to update session", e);
+
     cookieStore.delete(SESSION_COOKIE_NAME);
-    return;
+    redirect(LOGIN_PATH);
   }
-
-  cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
 }
 
 export async function deleteSession() {
-  const cookieStore = await cookies();
+  try {
+    const adminAuth = firebaseAdmin.auth();
+    const cookieStore = await cookies();
 
-  const payload = await getSessionPayload();
+    const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!sessionCookie) throw new Error("Could not find session cookie");
 
-  if (payload) {
-    try {
-      const adminAuth = firebaseAdmin.auth();
-      await adminAuth.revokeRefreshTokens(payload.sub);
-    } catch (e) {
-      console.error("Failed to revoke refresh tokens", e);
-    }
+    const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
+    if (!payload) throw new Error("Could not verify session cookie");
+
+    await adminAuth.revokeRefreshTokens(payload.sub);
+
+    cookieStore.delete(SESSION_COOKIE_NAME);
+    redirect(ROOT_PATH);
+  } catch (e) {
+    console.error("Failed to delete session", e);
+
+    cookieStore.delete(SESSION_COOKIE_NAME);
+    redirect(LOGIN_PATH);
   }
-
-  cookieStore.delete(SESSION_COOKIE_NAME);
-  redirect(ROOT_PATH);
 }

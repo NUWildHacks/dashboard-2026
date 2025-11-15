@@ -31,8 +31,8 @@ export default function RootLayout({
             className="absolute inset-0 z-0"
             style={{
               backgroundImage: `
-                radial-gradient(circle at 25% 75%, rgba(255, 243, 190, 0.7), transparent 60%),
-                radial-gradient(circle at 75% 25%, rgba(178, 255, 193, 0.55), transparent 60%)`,
+                radial-gradient(circle at 25% 75%, rgba(255, 243, 190, 0.9), transparent 50%),
+                radial-gradient(circle at 75% 25%, rgba(178, 255, 193, 0.7), transparent 50%)`,
             }}
           />
           <div className="relative z-10">
