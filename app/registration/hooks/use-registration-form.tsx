@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Timestamp, doc, setDoc } from "firebase/firestore";
+import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { db } from "@/config/firebase-client";
-import { USERS_COLLECTION } from "@/constants/db";
+import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
+import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../schemas/registration-form-schema";
@@ -37,6 +38,8 @@ export default function useRegistrationForm(userId: User["id"]) {
       dietary_restrictions: "", // TODO: Array for multi-select
       other_dietary_restrictions: "",
 
+      permission_code: "",
+
       mlh_code_of_conduct: false,
       mlh_privacy_policy: false,
       mlh_marketing: false,
@@ -47,21 +50,34 @@ export default function useRegistrationForm(userId: User["id"]) {
     try {
       const now = Date.now();
 
+      const { permission_code, ...rest } = data;
+
+      const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
+      const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
+
+      if (!permissionCodeDocSnap.exists() || (permissionCodeDocSnap.data() as PermissionCode).email !== rest.email) {
+        form.setError("permission_code", { type: "validate", message: "Invalid permission code" });
+        return;
+      }
+
+      await deleteDoc(permissionCodeDocRef);
+
       const user: User = {
         id: userId,
-        ...data,
-        date_of_birth: Timestamp.fromDate(new Date(data.date_of_birth)),
+        ...rest,
+        date_of_birth: Timestamp.fromDate(new Date(rest.date_of_birth)),
         role: PARTICIPANT,
         status: ATTENDING,
         created_at: Timestamp.fromMillis(now),
         updated_at: Timestamp.fromMillis(now),
       };
 
-      await setDoc(doc(db, USERS_COLLECTION, userId), user);
+      const userDocRef = doc(db, USERS_COLLECTION, userId);
+      await setDoc(userDocRef, user);
 
       router.replace(DASHBOARD_PATH);
     } catch (e) {
-      const errorMessage = e instanceof FirestoreError ? e.message : "An unknown error occurred";
+      const errorMessage = e instanceof FirestoreError || e instanceof Error ? e.message : "An unknown error occurred";
       //TODO: trigger toast pop up
       console.error(errorMessage);
     }

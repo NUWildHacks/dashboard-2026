@@ -56,7 +56,12 @@ export const registrationFormSchema = z.object({
   dietary_restrictions: z.enum(DIETARY_RESTRICTIONS, {
     message: "Please select a dietary restriction",
   }),
-  other_dietary_restrictions: z.string().catch(""),
+  other_dietary_restrictions: z.string(),
+
+  permission_code: z
+    .string()
+    .regex(/^[a-zA-Z0-9]{20}$/, "Invalid permission code")
+    .or(z.literal("")),
 
   mlh_code_of_conduct: z.boolean().refine((val) => val === true, {
     message: "You must agree to the MLH Code of Conduct",
