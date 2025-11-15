@@ -1,14 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants/routes";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
 export default async function EventRegistrationContent() {
   return (
     <>
-      <h2 className="text-4xl sm:text-5xl font-semibold">
-        Northwestern&apos;s premier hackathon is coming back! ⏳
-      </h2>
+      <h2 className="text-4xl sm:text-5xl font-semibold">Northwestern&apos;s premier hackathon is coming back! ⏳</h2>
       <p>
         Whether you&apos;re a first-time coder or a seasoned developer, WildHacks is your chance to build something
         amazing in 24 hours. Join hundreds of students for a weekend of innovation, collaboration, and creativity!
@@ -25,5 +24,5 @@ export default async function EventRegistrationContent() {
         </Link>
       </div>
     </>
-  )
+  );
 }

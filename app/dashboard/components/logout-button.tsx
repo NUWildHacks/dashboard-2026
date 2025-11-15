@@ -2,8 +2,8 @@
 
 import { LogOut } from "lucide-react";
 
-import { deleteSession } from "@/app/_lib/session";
 import { Button } from "@/components/ui/button";
+import { deleteSession } from "@/lib/session";
 
 export default function LogoutButton() {
   return (

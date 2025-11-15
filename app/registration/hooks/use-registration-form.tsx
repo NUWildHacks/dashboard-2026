@@ -2,21 +2,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 
 import { db } from "@/config/firebase-client";
 import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
+import { ONGOING } from "@/constants/event";
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
+import Event from "@/types/event";
 import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../schemas/registration-form-schema";
 
-export default function useRegistrationForm(userId: User["id"]) {
+export type useRegistrationFormReturn = { onSubmit: SubmitHandler<RegistrationFormSchema> } & Pick<
+  UseFormReturn<RegistrationFormSchema>,
+  "control" | "handleSubmit" | "reset"
+>;
+
+export default function useRegistrationForm(userId: User["id"], eventState: Event["state"]) {
   const router = useRouter();
 
-  const form = useForm<RegistrationFormSchema>({
+  const { control, handleSubmit, reset, setError } = useForm<RegistrationFormSchema>({
     resolver: zodResolver(registrationFormSchema),
     defaultValues: {
       first_name: "",
@@ -52,15 +59,17 @@ export default function useRegistrationForm(userId: User["id"]) {
 
       const { permission_code, ...rest } = data;
 
-      const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
-      const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
+      if (eventState === ONGOING) {
+        const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
+        const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
 
-      if (!permissionCodeDocSnap.exists() || (permissionCodeDocSnap.data() as PermissionCode).email !== rest.email) {
-        form.setError("permission_code", { type: "validate", message: "Invalid permission code" });
-        return;
+        if (!permissionCodeDocSnap.exists() || (permissionCodeDocSnap.data() as PermissionCode).email !== rest.email) {
+          setError("permission_code", { type: "validate", message: "Invalid permission code" });
+          return;
+        }
+
+        await deleteDoc(permissionCodeDocRef);
       }
-
-      await deleteDoc(permissionCodeDocRef);
 
       const user: User = {
         id: userId,
@@ -83,5 +92,5 @@ export default function useRegistrationForm(userId: User["id"]) {
     }
   };
 
-  return { form, onSubmit };
+  return { control, handleSubmit, reset, onSubmit };
 }

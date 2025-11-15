@@ -1,22 +1,24 @@
 "use server";
 
+import { getFirestore } from "firebase-admin/firestore";
 import Image from "next/image";
 
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
-import { getFirestore } from "firebase-admin/firestore";
 import { EVENT_DOC, METADATA_COLLECTION } from "@/constants/db";
-import Event from "@/types/event";
 import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/event";
-import EventRegistrationContent from "./components/event-registration-content";
-import EventOngoingContent from "./components/event-ongoing-content";
+import Event from "@/types/event";
+
 import EventCompletedContent from "./components/event-completed-content";
+import EventOngoingContent from "./components/event-ongoing-content";
+import EventRegistrationContent from "./components/event-registration-content";
 
 export default async function Home() {
   const db = getFirestore();
+
   const eventDocRef = db.collection(METADATA_COLLECTION).doc(EVENT_DOC);
   const eventDocSnapshot = await eventDocRef.get();
-  const event = eventDocSnapshot.data() as Event
+  const event = eventDocSnapshot.data() as Event;
 
   return (
     <>

@@ -4,10 +4,10 @@ import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { Github } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { createSession } from "@/app/_lib/session";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
 import { DASHBOARD_PATH } from "@/constants/routes";
+import { createSession } from "@/lib/session";
 
 export default function LoginButton() {
   const router = useRouter();

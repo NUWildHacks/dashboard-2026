@@ -8,10 +8,10 @@ import { redirect } from "next/navigation";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
-import { USERS_COLLECTION } from "@/constants/db";
+import { EVENT_DOC, METADATA_COLLECTION, USERS_COLLECTION } from "@/constants/db";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH, ROOT_PATH } from "@/constants/routes";
-
-import { verifySession } from "../_lib/session";
+import { verifySession } from "@/lib/session";
+import Event from "@/types/event";
 
 import RegistrationForm from "./components/registration-form";
 
@@ -21,10 +21,15 @@ export default async function Registration() {
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
   const db = getFirestore();
+
   const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-  const userDocSnapshot = await userDocRef.get();
+  const eventDocRef = db.collection(METADATA_COLLECTION).doc(EVENT_DOC);
+
+  const [userDocSnapshot, eventDocSnapshot] = await Promise.all([userDocRef.get(), eventDocRef.get()]);
 
   if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
+
+  const event = eventDocSnapshot.data() as Event;
 
   return (
     <>
@@ -44,7 +49,7 @@ export default async function Registration() {
               Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
               started. This should only take a few minutes!
             </p>
-            <RegistrationForm userId={userId} />
+            <RegistrationForm userId={userId} eventState={event.state} />
           </div>
         </div>
       </main>

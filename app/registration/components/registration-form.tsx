@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ONGOING } from "@/constants/event";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -28,6 +29,7 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants/user";
+import Event from "@/types/event";
 import type User from "@/types/user";
 
 import useRegistrationForm from "../hooks/use-registration-form";
@@ -37,15 +39,16 @@ import DatePicker from "./date-picker";
 
 type RegistrationFormProps = {
   userId: User["id"];
+  eventState: Event["state"];
 };
 
-export default function RegistrationForm({ userId }: RegistrationFormProps) {
-  const { form, onSubmit } = useRegistrationForm(userId);
+export default function RegistrationForm({ userId, eventState }: RegistrationFormProps) {
+  const { control, handleSubmit, reset, onSubmit } = useRegistrationForm(userId, eventState);
 
   return (
     <Card className="bg-[#fefefe] rounded-2xl shadow-md">
       <CardContent>
-        <form id="registration-form" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="registration-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <FieldSet>
               <FieldLegend className="w-full text-start">Personal Information</FieldLegend>
@@ -54,7 +57,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
                     name="first_name"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -77,7 +80,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                   <Controller
                     name="last_name"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -101,7 +104,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="email"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -122,7 +125,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
                     name="date_of_birth"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -139,7 +142,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                   <Controller
                     name="phone"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -163,7 +166,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="country"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -194,7 +197,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
               <FieldGroup>
                 <Controller
                   name="school"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -217,7 +220,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="level_of_study"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -247,7 +250,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="field_of_study"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -285,7 +288,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
               <FieldGroup>
                 <Controller
                   name="github_username"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -308,7 +311,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="tshirt_size"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -345,7 +348,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
                     name="gender"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -378,7 +381,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                   <Controller
                     name="race"
-                    control={form.control}
+                    control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
@@ -412,7 +415,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="dietary_restrictions"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
@@ -442,7 +445,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="other_dietary_restrictions"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor={field.name}>Other Dietary Restrictions</FieldLabel>
@@ -465,33 +468,39 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
             <FieldSeparator />
 
-            <FieldSet>
-              <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
-              <FieldGroup>
-                <Controller
-                  name="permission_code"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Permission Code</FieldLabel>
-                      <FieldDescription className="w-full text-start">
-                        If you missed the initial registration deadline, please enter your provided permission code
-                      </FieldDescription>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter your permission code"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="given-name"
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
-              </FieldGroup>
-            </FieldSet>
+            {eventState === ONGOING && (
+              <>
+                <FieldSet>
+                  <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
+                  <FieldGroup>
+                    <Controller
+                      name="permission_code"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor={field.name}>Permission Code</FieldLabel>
+                          <FieldDescription className="w-full text-start">
+                            If you missed the initial registration deadline, please enter your provided permission code
+                          </FieldDescription>
+                          <Input
+                            {...field}
+                            id={field.name}
+                            placeholder="Enter your permission code"
+                            aria-invalid={fieldState.invalid}
+                            autoComplete="given-name"
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} className="w-full text-start" />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </FieldGroup>
+                </FieldSet>
 
-            <FieldSeparator />
+                <FieldSeparator />
+              </>
+            )}
 
             <FieldSet>
               <FieldLegend className="w-full text-start">MLH Agreements</FieldLegend>
@@ -499,7 +508,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
               <FieldGroup>
                 <Controller
                   name="mlh_code_of_conduct"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
@@ -535,7 +544,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="mlh_privacy_policy"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
@@ -571,7 +580,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
 
                 <Controller
                   name="mlh_marketing"
-                  control={form.control}
+                  control={control}
                   render={({ field, fieldState }) => (
                     <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                       <Checkbox
@@ -601,7 +610,7 @@ export default function RegistrationForm({ userId }: RegistrationFormProps) {
           <Button type="submit" form="registration-form">
             Submit
           </Button>
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <Button type="button" variant="outline" onClick={() => reset()}>
             Reset
           </Button>
         </Field>

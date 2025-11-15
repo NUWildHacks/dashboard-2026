@@ -10,8 +10,7 @@ import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DASHBOARD_PATH, ROOT_PATH } from "@/constants/routes";
-
-import { verifySession } from "../_lib/session";
+import { verifySession } from "@/lib/session";
 
 import LoginButton from "./components/login-button";
 

@@ -7,8 +7,7 @@ import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { USERS_COLLECTION } from "@/constants/db";
 import { LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-
-import { verifySession } from "../_lib/session";
+import { verifySession } from "@/lib/session";
 
 import LogoutButton from "./components/logout-button";
 
