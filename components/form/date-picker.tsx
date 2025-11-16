@@ -3,20 +3,18 @@
 import { format } from "date-fns";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
-import { UseControllerReturn } from "react-hook-form";
+import { FieldValues, UseControllerReturn } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { RegistrationFormSchema } from "../schemas/registration-form-schema";
-
-type DatePickProps = {
+type DatePickProps<T extends FieldValues = FieldValues> = {
   placeholder: string;
-} & Pick<UseControllerReturn<RegistrationFormSchema>, "field" | "fieldState">;
+} & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
-export default function DatePicker({ placeholder, field, fieldState }: DatePickProps) {
+export default function DatePicker<T extends FieldValues>({ placeholder, field, fieldState }: DatePickProps<T>) {
   const [open, setOpen] = useState(false);
 
   return (

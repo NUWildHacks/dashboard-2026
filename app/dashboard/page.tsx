@@ -3,14 +3,14 @@
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import { LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { verifySession } from "@/lib/session";
 
-import getUserDocSnapshot from "../_data/user";
+import { verifySession } from "../../lib/session";
+import getUserDocSnapshot from "../../lib/user";
 
-import LogoutButton from "./components/logout-button";
+import LogoutButton from "./_components/logout-button";
 
 export default async function Dashboard() {
   const userId = await verifySession();

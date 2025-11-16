@@ -13,7 +13,7 @@ import Event from "@/types/event";
 import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
 
-import { RegistrationFormSchema, registrationFormSchema } from "../schemas/registration-form-schema";
+import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form-schema";
 
 export type useRegistrationFormReturn = { onSubmit: SubmitHandler<RegistrationFormSchema> } & Pick<
   UseFormReturn<RegistrationFormSchema>,

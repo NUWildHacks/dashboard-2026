@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect } from "react";
 
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROOT_PATH } from "@/constants/routes";

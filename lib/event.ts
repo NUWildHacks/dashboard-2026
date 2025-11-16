@@ -1,3 +1,5 @@
+"use server";
+
 import { getFirestore } from "firebase-admin/firestore";
 
 import { EVENT_DOC, METADATA_COLLECTION } from "@/constants/db";

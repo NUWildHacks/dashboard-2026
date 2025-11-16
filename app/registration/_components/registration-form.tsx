@@ -2,6 +2,7 @@
 
 import { Controller } from "react-hook-form";
 
+import Combobox from "@/components/form/combobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -32,9 +33,7 @@ import {
 import Event from "@/types/event";
 import type User from "@/types/user";
 
-import useRegistrationForm from "../hooks/use-registration-form";
-
-import Combobox from "./combobox";
+import useRegistrationForm from "../_hooks/use-registration-form";
 
 type RegistrationFormProps = {
   userId: User["id"];

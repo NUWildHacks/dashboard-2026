@@ -5,14 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DASHBOARD_PATH, ROOT_PATH } from "@/constants/routes";
-import { verifySession } from "@/lib/session";
 
-import LoginButton from "./components/login-button";
+import { verifySession } from "../../lib/session";
+
+import LoginButton from "./_components/login-button";
 
 export default async function Login() {
   const userId = await verifySession();

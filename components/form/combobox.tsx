@@ -2,25 +2,23 @@
 
 import { ChevronsUpDown } from "lucide-react";
 import { useMemo, useState } from "react";
-import { UseControllerReturn } from "react-hook-form";
+import { FieldValues, UseControllerReturn } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-import { RegistrationFormSchema } from "../schemas/registration-form-schema";
-
-type ComboboxProps = {
+type ComboboxProps<T extends FieldValues = FieldValues> = {
   options: string[];
   placeholder: string;
   emptyText: string;
   searchPlaceholder: string;
   minSearchLength: number;
   maxResults: number;
-} & Pick<UseControllerReturn<RegistrationFormSchema>, "field" | "fieldState">;
+} & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
-export default function Combobox({
+export default function Combobox<T extends FieldValues>({
   options,
   placeholder,
   field,
@@ -29,7 +27,7 @@ export default function Combobox({
   searchPlaceholder,
   minSearchLength,
   maxResults,
-}: ComboboxProps) {
+}: ComboboxProps<T>) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 

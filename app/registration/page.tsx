@@ -5,21 +5,21 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
-import Footer from "@/components/footer/footer";
-import Navbar from "@/components/navbar/navbar";
+import Footer from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
 import { Button } from "@/components/ui/button";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH, ROOT_PATH } from "@/constants/routes";
-import { verifySession } from "@/lib/session";
 import Event from "@/types/event";
 
-import getEventDocSnapshot from "../_data/event";
-import getUserDocSnapshot from "../_data/user";
+import getEventDocSnapshot from "../../lib/event";
+import { verifySession } from "../../lib/session";
+import getUserDocSnapshot from "../../lib/user";
 
-import RegistrationForm from "./components/registration-form";
+import RegistrationForm from "./_components/registration-form";
 
 export default async function Registration() {
   const eventDocSnapshot = await getEventDocSnapshot();
-  const event = eventDocSnapshot.data() as Event;
+  const { state } = eventDocSnapshot.data() as Event;
 
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
@@ -45,7 +45,7 @@ export default async function Registration() {
               Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
               started. This should only take a few minutes!
             </p>
-            <RegistrationForm userId={userId} eventState={event.state} />
+            <RegistrationForm userId={userId} eventState={state} />
           </div>
         </div>
       </main>
