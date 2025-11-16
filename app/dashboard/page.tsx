@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
+import "@/config/firebase-admin";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { USERS_COLLECTION } from "@/constants/db";

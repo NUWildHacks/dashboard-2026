@@ -15,18 +15,10 @@ export const registrationFormSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   email: z.email("Invalid email address"),
-  date_of_birth: z
+  age: z
     .string()
-    .min(1, "Date of birth is required")
-    .refine(
-      (date) => {
-        const birthDate = new Date(date);
-        const today = new Date();
-        const age = today.getFullYear() - birthDate.getFullYear();
-        return age >= 13;
-      },
-      { message: "You must be at least 13 years old" }
-    ),
+    .min(1, "Age is required")
+    .refine((val) => Number(val) >= 13, "You must be at least 13 years old"),
   phone: z.e164("Invalid phone number"),
   country: z.enum(COUNTRIES, {
     message: "Please select a country",

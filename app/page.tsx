@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import Image from "next/image";
 
+import "@/config/firebase-admin";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { EVENT_DOC, METADATA_COLLECTION } from "@/constants/db";

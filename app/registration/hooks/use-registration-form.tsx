@@ -30,7 +30,7 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
       last_name: "",
       email: "",
       phone: "",
-      date_of_birth: "",
+      age: "",
       country: "",
 
       school: "",
@@ -74,7 +74,6 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
       const user: User = {
         id: userId,
         ...rest,
-        date_of_birth: Timestamp.fromDate(new Date(rest.date_of_birth)),
         role: PARTICIPANT,
         status: ATTENDING,
         created_at: Timestamp.fromMillis(now),

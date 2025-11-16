@@ -32,7 +32,7 @@ type User = {
   email: string;
   first_name: string;
   last_name: string;
-  date_of_birth: Timestamp;
+  age: string;
   phone: string;
   country: Country;
 

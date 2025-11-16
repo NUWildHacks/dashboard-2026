@@ -35,7 +35,6 @@ import type User from "@/types/user";
 import useRegistrationForm from "../hooks/use-registration-form";
 
 import Combobox from "./combobox";
-import DatePicker from "./date-picker";
 
 type RegistrationFormProps = {
   userId: User["id"];
@@ -124,7 +123,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
-                    name="date_of_birth"
+                    name="age"
                     control={control}
                     render={({ field, fieldState }) => (
                       <Field data-invalid={fieldState.invalid}>
@@ -132,9 +131,19 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
-                          Date of Birth
+                          Age
                         </FieldLabel>
-                        <DatePicker field={field} fieldState={fieldState} placeholder="Select your date of birth" />
+                        <Input
+                          {...field}
+                          id={field.name}
+                          placeholder="Enter your age"
+                          aria-invalid={fieldState.invalid}
+                          type="number"
+                          min={0}
+                          max={99}
+                          step={1}
+                          autoComplete="off"
+                        />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
                     )}
