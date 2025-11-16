@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DASHBOARD_PATH } from "@/constants/routes";
 
-export default async function EventOngoingContent() {
+export default async function Ongoing() {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">We are underway! 🚀</h2>

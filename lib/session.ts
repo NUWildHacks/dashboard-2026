@@ -19,6 +19,8 @@ export async function createSession(idToken: string) {
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
     console.error(errorMessage);
+
+    throw e;
   }
 }
 
@@ -76,11 +78,10 @@ export async function deleteSession() {
     const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
     if (!sessionCookie) throw new Error("Could not find session cookie");
 
+    cookieStore.delete(SESSION_COOKIE_NAME);
+
     const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    if (!payload) {
-      cookieStore.delete(SESSION_COOKIE_NAME);
-      throw new Error("Could not verify session cookie");
-    }
+    if (!payload) throw new Error("Could not verify session cookie");
 
     await adminAuth.revokeRefreshTokens(payload.sub);
   } catch (e) {

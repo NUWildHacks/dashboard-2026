@@ -10,9 +10,9 @@ import Event from "@/types/event";
 
 import getEventDocSnapshot from "../lib/event";
 
-import EventCompletedContent from "./_components/event-completed-content";
-import EventOngoingContent from "./_components/event-ongoing-content";
-import EventRegistrationContent from "./_components/event-registration-content";
+import Completed from "./_components/completed";
+import Ongoing from "./_components/ongoing";
+import Registration from "./_components/registration";
 
 export default async function Home() {
   const eventDocSnapshot = await getEventDocSnapshot();
@@ -24,9 +24,9 @@ export default async function Home() {
       <main className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12">
         <div className="max-w-[650px] text-center space-y-5">
           <Image src="/wildhacks-splash.svg" alt="Main Logo" width={650} height={246.55} loading="eager" />
-          {state === REGISTRATION && <EventRegistrationContent />}
-          {state === ONGOING && <EventOngoingContent />}
-          {state === COMPLETED && <EventCompletedContent />}
+          {state === REGISTRATION && <Registration />}
+          {state === ONGOING && <Ongoing />}
+          {state === COMPLETED && <Completed />}
         </div>
       </main>
       <Footer />

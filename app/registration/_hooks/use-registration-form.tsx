@@ -3,6 +3,7 @@ import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
 import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
@@ -15,15 +16,21 @@ import User from "@/types/user";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form-schema";
 
-export type useRegistrationFormReturn = { onSubmit: SubmitHandler<RegistrationFormSchema> } & Pick<
-  UseFormReturn<RegistrationFormSchema>,
-  "control" | "handleSubmit" | "reset"
->;
+export type useRegistrationFormReturn = {
+  onSubmit: SubmitHandler<RegistrationFormSchema>;
+  isSubmitting: boolean;
+} & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit" | "reset">;
 
 export default function useRegistrationForm(userId: User["id"], eventState: Event["state"]) {
   const router = useRouter();
 
-  const { control, handleSubmit, reset, setError } = useForm<RegistrationFormSchema>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<RegistrationFormSchema>({
     resolver: zodResolver(registrationFormSchema),
     defaultValues: {
       first_name: "",
@@ -86,10 +93,11 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
       router.replace(DASHBOARD_PATH);
     } catch (e) {
       const errorMessage = e instanceof FirestoreError || e instanceof Error ? e.message : "An unknown error occurred";
-      //TODO: trigger toast pop up
       console.error(errorMessage);
+
+      toast.error("Form submission failed", { description: errorMessage });
     }
   };
 
-  return { control, handleSubmit, reset, onSubmit };
+  return { control, handleSubmit, reset, onSubmit, isSubmitting };
 }

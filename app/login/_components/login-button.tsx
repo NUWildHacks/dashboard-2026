@@ -1,8 +1,10 @@
 "use client";
 
+import { FirebaseError } from "firebase/app";
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
 import { Github } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
@@ -16,16 +18,22 @@ export default function LoginButton() {
     const githubProvider = new GithubAuthProvider();
     githubProvider.addScope("user:email");
 
-    const result = await signInWithPopup(auth, githubProvider);
-    if (!result) return;
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+      if (!result) return;
 
-    const idToken = await result.user.getIdToken(true);
-    await createSession(idToken);
+      const idToken = await result.user.getIdToken(true);
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const redirect = searchParams.get("redirect") || DASHBOARD_PATH;
+      await createSession(idToken);
 
-    router.replace(redirect);
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirect = searchParams.get("redirect") || DASHBOARD_PATH;
+
+      router.replace(redirect);
+    } catch (e) {
+      const errorMessage = e instanceof FirebaseError || e instanceof Error ? e.message : "An unknown error occurred";
+      toast.error("Login failed", { description: errorMessage });
+    }
   };
 
   return (

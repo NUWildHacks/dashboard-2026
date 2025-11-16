@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
-export default async function EventRegistrationContent() {
+export default async function Registration() {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">Northwestern&apos;s premier hackathon is coming back! ⏳</h2>

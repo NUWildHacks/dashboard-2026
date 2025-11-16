@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import Combobox from "@/components/form/combobox";
@@ -41,14 +42,14 @@ type RegistrationFormProps = {
 };
 
 export default function RegistrationForm({ userId, eventState }: RegistrationFormProps) {
-  const { control, handleSubmit, reset, onSubmit } = useRegistrationForm(userId, eventState);
+  const { control, handleSubmit, reset, onSubmit, isSubmitting } = useRegistrationForm(userId, eventState);
 
   return (
     <Card className="bg-[#fefefe] rounded-2xl shadow-md">
       <CardContent>
         <form id="registration-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
-            <FieldSet>
+            <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">Personal Information</FieldLegend>
               <FieldDescription className="w-full text-start">Tell us about yourself</FieldDescription>
               <FieldGroup>
@@ -199,7 +200,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
             <FieldSeparator />
 
-            <FieldSet>
+            <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">Education</FieldLegend>
               <FieldDescription className="w-full text-start">Tell us about your academic background</FieldDescription>
               <FieldGroup>
@@ -290,7 +291,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
             <FieldSeparator />
 
-            <FieldSet>
+            <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">Hacker Profile</FieldLegend>
               <FieldDescription className="w-full text-start">Help us personalize your experience</FieldDescription>
               <FieldGroup>
@@ -349,7 +350,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
               </FieldGroup>
             </FieldSet>
 
-            <FieldSet>
+            <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">Demographics and Dietary</FieldLegend>
               <FieldDescription className="w-full text-start">Help us create an inclusive event</FieldDescription>
               <FieldGroup>
@@ -478,7 +479,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
             {eventState === ONGOING && (
               <>
-                <FieldSet>
+                <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
                   <FieldGroup>
                     <Controller
@@ -510,7 +511,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
               </>
             )}
 
-            <FieldSet>
+            <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">MLH Agreements</FieldLegend>
               <FieldDescription className="w-full text-start">Required agreements for participation</FieldDescription>
               <FieldGroup>
@@ -615,10 +616,10 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="registration-form">
-            Submit
+          <Button type="submit" form="registration-form" disabled={isSubmitting}>
+            {isSubmitting ? <Loader2 /> : "Submit"}
           </Button>
-          <Button type="button" variant="outline" onClick={() => reset()}>
+          <Button type="button" variant="outline" onClick={() => reset()} disabled={isSubmitting}>
             Reset
           </Button>
         </Field>
