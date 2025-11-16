@@ -66,14 +66,24 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
 
       const { permission_code, ...rest } = data;
 
-      console.log(rest.dietary_restrictions);
-
       if (eventState === ONGOING) {
         const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
         const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
 
-        if (!permissionCodeDocSnap.exists() || (permissionCodeDocSnap.data() as PermissionCode).email !== rest.email) {
+        if (!permissionCodeDocSnap.exists()) {
           setError("permission_code", { type: "validate", message: "Invalid permission code" });
+          return;
+        }
+
+        const { email, expires_at } = permissionCodeDocSnap.data() as PermissionCode;
+
+        if (email !== rest.email) {
+          setError("permission_code", { type: "validate", message: "Invalid permission code" });
+          return;
+        }
+
+        if (expires_at.toMillis() <= now) {
+          setError("permission_code", { type: "validate", message: "Expired permission code" });
           return;
         }
 
