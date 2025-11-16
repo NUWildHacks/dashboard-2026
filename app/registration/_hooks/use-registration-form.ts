@@ -49,7 +49,7 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
 
       gender: "",
       race: "",
-      dietary_restrictions: "", // TODO: Array for multi-select
+      dietary_restrictions: [],
       other_dietary_restrictions: "",
 
       permission_code: "",
@@ -65,6 +65,8 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
       const now = Date.now();
 
       const { permission_code, ...rest } = data;
+
+      console.log(rest.dietary_restrictions);
 
       if (eventState === ONGOING) {
         const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);

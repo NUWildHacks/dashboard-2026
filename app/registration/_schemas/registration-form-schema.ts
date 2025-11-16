@@ -45,9 +45,7 @@ export const registrationFormSchema = z.object({
   race: z.enum(RACES, {
     message: "Please select a race/ethnicity",
   }),
-  dietary_restrictions: z.enum(DIETARY_RESTRICTIONS, {
-    message: "Please select a dietary restriction",
-  }),
+  dietary_restrictions: z.array(z.enum(DIETARY_RESTRICTIONS)).min(1, "Please select a dietary restriction"),
   other_dietary_restrictions: z.string(),
 
   permission_code: z

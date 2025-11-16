@@ -45,7 +45,7 @@ type User = {
 
   gender: Gender;
   race: Race;
-  dietary_restrictions: DietaryRestriction;
+  dietary_restrictions: DietaryRestriction[];
   other_dietary_restrictions: string;
 
   mlh_code_of_conduct: boolean;

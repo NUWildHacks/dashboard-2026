@@ -19,6 +19,14 @@ import {
   FieldContent,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectGroup,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ONGOING } from "@/constants/event";
 import {
@@ -235,13 +243,8 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Level of Study
                       </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        aria-invalid={fieldState.invalid}
-                      >
-                        <SelectTrigger id={field.name}>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
                         <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -265,13 +268,8 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Field of Study
                       </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        aria-invalid={fieldState.invalid}
-                      >
-                        <SelectTrigger id={field.name}>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
                         <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -326,13 +324,8 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         T-shirt Size
                       </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        aria-invalid={fieldState.invalid}
-                      >
-                        <SelectTrigger id={field.name}>
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
                         <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -366,13 +359,8 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                         >
                           Gender
                         </FieldLabel>
-                        <Select
-                          name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                          aria-invalid={fieldState.invalid}
-                        >
-                          <SelectTrigger id={field.name}>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                           <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -399,13 +387,8 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                         >
                           Racial/Ethnic Background
                         </FieldLabel>
-                        <Select
-                          name={field.name}
-                          value={field.value}
-                          onValueChange={field.onChange}
-                          aria-invalid={fieldState.invalid}
-                        >
-                          <SelectTrigger id={field.name}>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                             <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
                           <SelectContent className="w-[var(--radix-select-trigger-width)]">
@@ -430,23 +413,20 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Dietary Restrictions
                       </FieldLabel>
-                      <Select
-                        name={field.name}
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        aria-invalid={fieldState.invalid}
-                      >
-                        <SelectTrigger id={field.name}>
-                          <SelectValue placeholder="Select all of your dietary restrictions" />
-                        </SelectTrigger>
-                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
-                          {DIETARY_RESTRICTIONS.map((dietaryRestriction) => (
-                            <SelectItem key={dietaryRestriction} value={dietaryRestriction}>
-                              {dietaryRestriction}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <MultiSelect values={field.value} onValuesChange={field.onChange}>
+                        <MultiSelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
+                          <MultiSelectValue placeholder="Select all of your dietary restrictions" />
+                        </MultiSelectTrigger>
+                        <MultiSelectContent>
+                          <MultiSelectGroup>
+                            {DIETARY_RESTRICTIONS.map((dietary_restriction) => (
+                              <MultiSelectItem key={dietary_restriction} value={dietary_restriction}>
+                                {dietary_restriction}
+                              </MultiSelectItem>
+                            ))}
+                          </MultiSelectGroup>
+                        </MultiSelectContent>
+                      </MultiSelect>
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
                   )}
