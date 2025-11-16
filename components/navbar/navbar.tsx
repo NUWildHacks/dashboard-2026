@@ -1,5 +1,3 @@
-"use server";
-
 import Image from "next/image";
 import Link from "next/link";
 import { PropsWithChildren } from "react";
@@ -8,7 +6,7 @@ import { ROOT_PATH } from "@/constants/routes";
 
 type NavbarProps = PropsWithChildren;
 
-export default async function Navbar({ children }: NavbarProps) {
+export default function Navbar({ children }: NavbarProps) {
   return (
     <nav className="w-full px-6 sm:px-12 py-4 flex justify-between items-center">
       <Link href={ROOT_PATH} className="flex justify-center items-center gap-2">

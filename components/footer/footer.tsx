@@ -1,10 +1,8 @@
-"use server";
-
 import Link from "next/link";
 
 import { WILDHACKS_HOME } from "@/constants/routes";
 
-export default async function Footer() {
+export default function Footer() {
   return (
     <footer className="w-full px-6 sm:px-12 py-4 flex flex-col md:flex-row justify-center md:justify-between items-center gap-x-4 flex-wrap font-medium text-sm text-nowrap text-muted-foreground">
       <p>Made with ♥︎ by the WildHacks team</p>

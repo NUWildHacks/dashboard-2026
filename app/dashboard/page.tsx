@@ -1,14 +1,14 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
-import { USERS_COLLECTION } from "@/constants/db";
 import { LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 import { verifySession } from "@/lib/session";
+
+import getUserDocSnapshot from "../_data/user";
 
 import LogoutButton from "./components/logout-button";
 
@@ -16,10 +16,7 @@ export default async function Dashboard() {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
-  const db = getFirestore();
-  const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-  const userDocSnapshot = await userDocRef.get();
-
+  const userDocSnapshot = await getUserDocSnapshot(userId);
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
   return (

@@ -1,6 +1,5 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
 import { ArrowLeftFromLine } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,28 +8,24 @@ import "@/config/firebase-admin";
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
-import { EVENT_DOC, METADATA_COLLECTION, USERS_COLLECTION } from "@/constants/db";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH, ROOT_PATH } from "@/constants/routes";
 import { verifySession } from "@/lib/session";
 import Event from "@/types/event";
 
+import getEventDocSnapshot from "../_data/event";
+import getUserDocSnapshot from "../_data/user";
+
 import RegistrationForm from "./components/registration-form";
 
 export default async function Registration() {
-  //TODO: handle async failures
+  const eventDocSnapshot = await getEventDocSnapshot();
+  const event = eventDocSnapshot.data() as Event;
+
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
-  const db = getFirestore();
-
-  const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-  const eventDocRef = db.collection(METADATA_COLLECTION).doc(EVENT_DOC);
-
-  const [userDocSnapshot, eventDocSnapshot] = await Promise.all([userDocRef.get(), eventDocRef.get()]);
-
+  const userDocSnapshot = await getUserDocSnapshot(userId);
   if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
-
-  const event = eventDocSnapshot.data() as Event;
 
   return (
     <>
