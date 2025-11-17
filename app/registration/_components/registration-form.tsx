@@ -53,7 +53,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
   const { control, handleSubmit, reset, onSubmit, isSubmitting } = useRegistrationForm(userId, eventState);
 
   return (
-    <Card className="bg-[#fefefe] rounded-2xl shadow-md">
+    <Card className="rounded-2xl shadow-md">
       <CardContent>
         <form id="registration-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
