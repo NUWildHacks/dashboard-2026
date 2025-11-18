@@ -1,30 +1,37 @@
-import { PropsWithChildren } from "react"
+import { redirect } from "next/navigation";
+import { PropsWithChildren } from "react";
 
-import { Separator } from "@/components/ui/separator"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { Separator } from "@/components/ui/separator";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
-import { DashboardSidebar } from "./_components/dashboard-sidebar"
+import { verifySession } from "../../lib/session";
+import getUserDocSnapshot from "../../lib/user";
 
-type DashboardLayoutProps = PropsWithChildren
+import { DashboardSidebar } from "./_components/dashboard-sidebar";
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+type DashboardLayoutProps = PropsWithChildren;
+
+export default async function DashboardLayout({ children }: DashboardLayoutProps) {
+  const userId = await verifySession();
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
+
+  const userDocSnapshot = await getUserDocSnapshot(userId);
+  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
+
   return (
-    <div className="flex-1 w-full border rounded-2xl bg-background/50 backdrop-blur-md overflow-hidden">
-      <SidebarProvider className="min-h-auto ">
-        <DashboardSidebar />
-        <SidebarInset className="bg-transparent">
-          <div className="flex h-16 shrink-0 items-center gap-2 px-4">
+    <SidebarProvider>
+      <DashboardSidebar />
+      <div className="flex-1 ">
+        <div className="h-full rounded-lg">
+          <div className="flex h-12 shrink-0 items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
+            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+            <p>Page Name</p>
           </div>
-          <div className="flex-1 px-4">
-            {children}
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
-  )
+          <main className="flex flex-col gap-4 p-4">{children}</main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
 }

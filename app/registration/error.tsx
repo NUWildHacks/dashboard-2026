@@ -18,21 +18,23 @@ export default function RegistrationError({ error, reset }: RegistrationErrorPro
   }, [error]);
 
   return (
-    <Card className="w-full max-w-[400px]">
-      <CardHeader>
-        <CardTitle>Oops! 🫣</CardTitle>
-        <CardDescription>
-          Something went wrong while processing your request. We&apos;re sorry about that!
-        </CardDescription>
-      </CardHeader>
-      <CardFooter className="flex-row-reverse">
-        <Button onClick={reset} variant="outline">
-          Try again
-        </Button>
-        <Link href={ROOT_PATH}>
-          <Button variant="link">Return home</Button>
-        </Link>
-      </CardFooter>
-    </Card>
+    <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
+      <Card className="w-full max-w-[400px]">
+        <CardHeader>
+          <CardTitle>Oops! 🫣</CardTitle>
+          <CardDescription>
+            Something went wrong while processing your request. We&apos;re sorry about that!
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="flex-row-reverse">
+          <Button onClick={reset} variant="outline">
+            Try again
+          </Button>
+          <Link href={ROOT_PATH}>
+            <Button variant="link">Return home</Button>
+          </Link>
+        </CardFooter>
+      </Card>
+    </main>
   );
 }

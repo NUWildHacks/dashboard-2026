@@ -19,7 +19,7 @@ import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/regi
 export type useRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
   isSubmitting: boolean;
-} & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit" | "reset">;
+} & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
 export default function useRegistrationForm(userId: User["id"], eventState: Event["state"]) {
   const router = useRouter();
@@ -27,7 +27,6 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
   const {
     control,
     handleSubmit,
-    reset,
     setError,
     formState: { isSubmitting },
   } = useForm<RegistrationFormSchema>({
@@ -111,5 +110,5 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
     }
   };
 
-  return { control, handleSubmit, reset, onSubmit, isSubmitting };
+  return { control, handleSubmit, onSubmit, isSubmitting };
 }

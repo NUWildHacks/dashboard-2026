@@ -1,24 +1,15 @@
-"use client"
+"use client";
 
-import {
-  BadgeCheck,
-  ChevronUp,
-  LogOut,
-  User2,
-} from "lucide-react"
+import { BadgeCheck, ChevronUp, LogOut, User2 } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { deleteSession } from "@/lib/session"
+} from "@/components/ui/dropdown-menu";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { deleteSession } from "@/lib/session";
 
 export function FooterUser() {
   return (
@@ -31,10 +22,7 @@ export function FooterUser() {
               <ChevronUp className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="top"
-            className="w-[--radix-popper-anchor-width]"
-          >
+          <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
             <DropdownMenuItem>
               <BadgeCheck />
               <span>Account</span>
@@ -47,5 +35,5 @@ export function FooterUser() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

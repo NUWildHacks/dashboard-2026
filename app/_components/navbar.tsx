@@ -1,9 +1,11 @@
+"use server";
+
 import Image from "next/image";
 import Link from "next/link";
 
 import { ROOT_PATH } from "@/constants/routes";
 
-export default function Navbar() {
+export default async function Navbar() {
   return (
     <nav className="w-full h-[72px] px-6 sm:px-12 flex justify-between items-center">
       <Link href={ROOT_PATH} className="flex justify-center items-center gap-2">

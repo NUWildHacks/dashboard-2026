@@ -18,11 +18,7 @@ export default function RegistrationError({ error, reset }: RegistrationErrorPro
   }, [error]);
 
   return (
-    <main
-      className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12"
-      aria-live="polite"
-      aria-label="Registration page error"
-    >
+    <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
       <Card className="w-full max-w-[400px]">
         <CardHeader>
           <CardTitle>Oops! 🫣</CardTitle>
