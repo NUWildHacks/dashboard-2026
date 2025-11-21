@@ -1,14 +1,5 @@
-import {
-  Home,
-  CircleQuestionMark,
-  TestTubeDiagonal,
-  Calendar,
-  CodeXml,
-  Users,
-  Send,
-  BadgeCheck,
-  LayoutDashboard,
-} from "lucide-react";
+import { Home, CircleQuestionMark, TestTubeDiagonal, Calendar, CodeXml, Users, Send, Settings } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps } from "react";
 
@@ -17,6 +8,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -28,27 +20,27 @@ import FooterLogoutButton from "./footer-logout-button";
 const primaryItems = [
   {
     title: "Home",
-    url: "#",
+    url: "/dashboard",
     icon: Home,
   },
   {
     title: "Schedule",
-    url: "#",
+    url: "/dashboard/schedule",
     icon: Calendar,
   },
   {
     title: "Project",
-    url: "#",
+    url: "/dashboard/project",
     icon: CodeXml,
   },
   {
     title: "Team",
-    url: "#",
+    url: "/dashboard/team",
     icon: Users,
   },
   {
     title: "Judging",
-    url: "#",
+    url: "/dashboard/judging",
     icon: TestTubeDiagonal,
   },
 ];
@@ -56,25 +48,25 @@ const primaryItems = [
 const secondaryItems = [
   {
     title: "Support",
-    url: "#",
+    url: "/dashboard/support",
     icon: CircleQuestionMark,
   },
   {
     title: "Feedback",
-    url: "#",
+    url: "/dashboard/feedback",
     icon: Send,
   },
 ];
 
 export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar variant="inset" {...props}>
       <SidebarHeader>
-        <SidebarMenu className="gap-2">
+        <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="font-semibold text-lg text-nowrap">
-              <LayoutDashboard />
-              WildHacks 2026
+            <SidebarMenuButton size="lg" className="font-semibold text-lg text-nowrap px-2 flex items-center gap-3">
+              <Image src="/wildhacks.svg" alt="Navigation Logo" width={48} height={30} />
+              <span>Dashboard</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -95,6 +87,7 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup>
+          <SidebarGroupLabel>Help</SidebarGroupLabel>
           <SidebarMenu className="gap-2">
             {secondaryItems.map((secondaryItem) => (
               <SidebarMenuItem key={secondaryItem.title}>
@@ -114,8 +107,8 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href={"#"} className="font-regular">
-                <BadgeCheck />
-                Profile
+                <Settings />
+                Settings
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

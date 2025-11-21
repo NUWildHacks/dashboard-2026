@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 
-export default function Loading() {
+export default async function HomeLoading() {
   return (
     <main
       className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12"

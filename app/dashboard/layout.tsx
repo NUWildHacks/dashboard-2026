@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 import { Separator } from "@/components/ui/separator";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
 import { verifySession } from "../../lib/session";
@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   return (
     <SidebarProvider>
       <DashboardSidebar />
-      <div className="flex-1 ">
+      <SidebarInset className="flex-1">
         <div className="h-full rounded-lg">
           <div className="flex h-12 shrink-0 items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
@@ -31,7 +31,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
           </div>
           <main className="flex flex-col gap-4 p-4">{children}</main>
         </div>
-      </div>
+      </SidebarInset>
     </SidebarProvider>
   );
 }

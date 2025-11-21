@@ -6,13 +6,9 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROOT_PATH } from "@/constants/routes";
+import { ErrorPageProps } from "@/types/error-page";
 
-type RegistrationErrorProps = {
-  error: Error & { digest?: string };
-  reset: () => void;
-};
-
-export default function RegistrationError({ error, reset }: RegistrationErrorProps) {
+export default function RegistrationError({ error, reset }: ErrorPageProps) {
   useEffect(() => {
     console.log(error);
   }, [error]);
