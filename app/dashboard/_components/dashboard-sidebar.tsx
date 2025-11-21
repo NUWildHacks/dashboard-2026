@@ -14,33 +14,43 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import {
+  DASHBOARD_FEEDBACK_PATH,
+  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_PATH,
+  DASHBOARD_PROJECT_PATH,
+  DASHBOARD_SCHEDULE_PATH,
+  DASHBOARD_SETTINGS_PATH,
+  DASHBOARD_SUPPORT_PATH,
+  DASHBOARD_TEAM_PATH,
+} from "@/constants/routes";
 
 import FooterLogoutButton from "./footer-logout-button";
 
 const primaryItems = [
   {
     title: "Home",
-    url: "/dashboard",
+    url: DASHBOARD_PATH,
     icon: Home,
   },
   {
     title: "Schedule",
-    url: "/dashboard/schedule",
+    url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
   },
   {
     title: "Project",
-    url: "/dashboard/project",
+    url: DASHBOARD_PROJECT_PATH,
     icon: CodeXml,
   },
   {
     title: "Team",
-    url: "/dashboard/team",
+    url: DASHBOARD_TEAM_PATH,
     icon: Users,
   },
   {
     title: "Judging",
-    url: "/dashboard/judging",
+    url: DASHBOARD_JUDGING_PATH,
     icon: TestTubeDiagonal,
   },
 ];
@@ -48,12 +58,12 @@ const primaryItems = [
 const secondaryItems = [
   {
     title: "Support",
-    url: "/dashboard/support",
+    url: DASHBOARD_SUPPORT_PATH,
     icon: CircleQuestionMark,
   },
   {
     title: "Feedback",
-    url: "/dashboard/feedback",
+    url: DASHBOARD_FEEDBACK_PATH,
     icon: Send,
   },
 ];
@@ -106,7 +116,7 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
         <SidebarMenu className="gap-2">
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href={"#"} className="font-regular">
+              <Link href={DASHBOARD_SETTINGS_PATH} className="font-regular">
                 <Settings />
                 Settings
               </Link>
