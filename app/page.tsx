@@ -12,7 +12,6 @@ import getEventDocSnapshot from "../lib/event";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
-import Registration from "./_components/registration";
 
 export default async function Home() {
   const eventDocSnapshot = await getEventDocSnapshot();
@@ -24,8 +23,7 @@ export default async function Home() {
       <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
         <div className="max-w-[650px] text-center space-y-5">
           <Image src="/wildhacks-splash.svg" alt="Main Logo" width={650} height={246.55} loading="eager" />
-          {state === REGISTRATION && <Registration />}
-          {state === ONGOING && <Ongoing />}
+          {state === ONGOING || (state === REGISTRATION && <Ongoing />)}
           {state === COMPLETED && <Completed />}
         </div>
       </main>
