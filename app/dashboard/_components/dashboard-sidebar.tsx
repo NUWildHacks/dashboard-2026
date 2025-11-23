@@ -1,4 +1,4 @@
-import { Home, CircleQuestionMark, TestTubeDiagonal, Calendar, CodeXml, Users, Send, Settings } from "lucide-react";
+import { CircleQuestionMark, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps } from "react";
@@ -8,65 +8,15 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import {
-  DASHBOARD_FEEDBACK_PATH,
-  DASHBOARD_JUDGING_PATH,
-  DASHBOARD_PATH,
-  DASHBOARD_PROJECT_PATH,
-  DASHBOARD_SCHEDULE_PATH,
-  DASHBOARD_SETTINGS_PATH,
-  DASHBOARD_SUPPORT_PATH,
-  DASHBOARD_TEAM_PATH,
-} from "@/constants/routes";
+import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants/routes";
+import { items } from "@/constants/sidebar";
 
 import FooterLogoutButton from "./footer-logout-button";
-
-const primaryItems = [
-  {
-    title: "Home",
-    url: DASHBOARD_PATH,
-    icon: Home,
-  },
-  {
-    title: "Schedule",
-    url: DASHBOARD_SCHEDULE_PATH,
-    icon: Calendar,
-  },
-  {
-    title: "Project",
-    url: DASHBOARD_PROJECT_PATH,
-    icon: CodeXml,
-  },
-  {
-    title: "Team",
-    url: DASHBOARD_TEAM_PATH,
-    icon: Users,
-  },
-  {
-    title: "Judging",
-    url: DASHBOARD_JUDGING_PATH,
-    icon: TestTubeDiagonal,
-  },
-];
-
-const secondaryItems = [
-  {
-    title: "Support",
-    url: DASHBOARD_SUPPORT_PATH,
-    icon: CircleQuestionMark,
-  },
-  {
-    title: "Feedback",
-    url: DASHBOARD_FEEDBACK_PATH,
-    icon: Send,
-  },
-];
 
 export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
@@ -84,27 +34,12 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup className="flex flex-col gap-4">
           <SidebarMenu className="gap-2">
-            {primaryItems.map((primaryItem) => (
-              <SidebarMenuItem key={primaryItem.title}>
+            {items.map((item) => (
+              <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <Link href={primaryItem.url} className="font-regular">
-                    <primaryItem.icon />
-                    {primaryItem.title}
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Help</SidebarGroupLabel>
-          <SidebarMenu className="gap-2">
-            {secondaryItems.map((secondaryItem) => (
-              <SidebarMenuItem key={secondaryItem.title}>
-                <SidebarMenuButton asChild>
-                  <Link href={secondaryItem.url} className="font-regular">
-                    <secondaryItem.icon />
-                    {secondaryItem.title}
+                  <Link href={item.url} className="font-regular">
+                    <item.icon />
+                    {item.title}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -114,6 +49,14 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu className="gap-2">
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href={DASHBOARD_SUPPORT_PATH} className="font-regular">
+                <CircleQuestionMark />
+                Support
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <Link href={DASHBOARD_SETTINGS_PATH} className="font-regular">

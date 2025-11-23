@@ -5,6 +5,7 @@ import { PropsWithChildren } from "react";
 
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getHeaderText } from "@/lib/sidebar";
 
 import { DashboardSidebar } from "./_components/dashboard-sidebar";
 
@@ -12,20 +13,6 @@ type DashboardLayoutProps = PropsWithChildren;
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const pathname = usePathname();
-
-  const subpath = pathname.split("/").at(-1);
-
-  const headerTextMap: Record<string, string> = {
-    schedule: "Schedule",
-    project: "Project",
-    team: "Team",
-    judging: "Judging",
-    support: "Support",
-    feedback: "Feedback",
-    settings: "Settings",
-  };
-
-  const headerText = headerTextMap[subpath ?? ""] || "Home";
 
   return (
     <SidebarProvider>
@@ -35,7 +22,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex h-12 shrink-0 items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            <p>{headerText}</p>
+            <p>{getHeaderText(pathname)}</p>
           </div>
           <main className="flex flex-col gap-4 p-4">{children}</main>
         </div>
