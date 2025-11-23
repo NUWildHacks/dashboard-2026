@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
+import { Announcement } from "@/types/announcement";
 
 export default function LiveAnnouncements() {
-  const [announcements, _setAnnouncements] = useState<string[]>([]);
+  const [announcements, _setAnnouncements] = useState<Announcement[]>([]);
 
   return (
     <Card className="row-span-3 md:col-span-2 lg:col-span-4">
@@ -31,7 +32,7 @@ export default function LiveAnnouncements() {
         ) : (
           <>
             {announcements.map((announcement) => (
-              <div key={announcement}>{announcement}</div>
+              <div key={announcement.id}>{announcement.title}</div>
             ))}
           </>
         )}
