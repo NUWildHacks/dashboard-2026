@@ -19,8 +19,8 @@ export default function AnnouncementList({ announcements }: AnnouncementsListPro
     useAnnouncementsList(announcements);
 
   return (
-    <div className="flex-1 flex flex-col gap-2">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-x-4 gap-y-2">
+    <div className="flex-1 flex flex-col gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <Tabs value={category} onValueChange={handleCategoryChange}>
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
