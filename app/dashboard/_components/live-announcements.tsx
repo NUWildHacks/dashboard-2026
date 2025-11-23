@@ -13,7 +13,7 @@ export default function LiveAnnouncements() {
   const [announcements, _setAnnouncements] = useState<string[]>([]);
 
   return (
-    <Card className="row-span-3 col-span-1 md:col-span-2 lg:col-span-4">
+    <Card className="row-span-3 md:col-span-2 lg:col-span-4">
       <CardHeader>
         <CardTitle>Live Announcements</CardTitle>
       </CardHeader>

@@ -20,7 +20,7 @@ export default async function Dashboard() {
   if (!userDocSnapshot.exists) redirect(DASHBOARD_PATH);
 
   return (
-    <div className="flex-1 grid gap-4 auto-rows-min md:grid-rows-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+    <div className="flex-1 grid gap-4 auto-rows-min md:grid-rows-7 md:grid-cols-2 lg:grid-cols-4">
       <MilestoneCountdown />
       <QRCode />
       <VenueMap />
