@@ -1,3 +1,5 @@
+import QRCodeComponent from "react-qr-code";
+
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -7,12 +9,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import User from "@/types/user";
 
-export default function QRCode() {
+type QRCodeProps = {
+  userId: User["id"];
+};
+
+export default function QRCode({ userId }: QRCodeProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="hover:bg-accent">
+        <Card className="shadow-none transition-shadow hover:shadow-md hover:cursor-pointer">
           <CardHeader>
             <CardTitle>View QR Code</CardTitle>
             <CardDescription>Present your QR code to access workshops, food, and merch.</CardDescription>
@@ -24,6 +31,9 @@ export default function QRCode() {
           <DialogTitle>View QR Code</DialogTitle>
           <DialogDescription>Present your QR code to access workshops, food, and merch.</DialogDescription>
         </DialogHeader>
+        <div className="flex justify-center items-center">
+          <QRCodeComponent className="size-[192px] sm:size-[256px]" value={userId} />
+        </div>
       </DialogContent>
     </Dialog>
   );

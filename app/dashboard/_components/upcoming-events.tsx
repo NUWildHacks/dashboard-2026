@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarX } from "lucide-react";
+import { ArrowRight, CalendarX } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ export default function UpcomingEvents() {
   const [events, _setEvents] = useState<string[]>([]);
 
   return (
-    <Card className="row-span-3 md:col-span-2">
+    <Card className="shadow-none row-span-3 md:col-span-2">
       <CardHeader>
         <CardTitle>Upcoming Events</CardTitle>
         <CardDescription>Keep an eye out for exciting events!</CardDescription>
@@ -39,7 +39,10 @@ export default function UpcomingEvents() {
       </CardContent>
       <CardFooter className="flex-row-reverse">
         <Link href={DASHBOARD_SCHEDULE_PATH}>
-          <Button>View all events</Button>
+          <Button variant="link">
+            View all events
+            <ArrowRight />
+          </Button>
         </Link>
       </CardFooter>
     </Card>

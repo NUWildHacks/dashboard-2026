@@ -12,7 +12,7 @@ export default function VenueMap() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="hover:bg-accent">
+        <Card className="shadow-none transition-shadow hover:shadow-md hover:cursor-pointer">
           <CardHeader>
             <CardTitle>View Venue Map</CardTitle>
             <CardDescription>Locate workshop rooms, food stands, and merch giveaways.</CardDescription>

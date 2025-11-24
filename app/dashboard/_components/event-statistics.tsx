@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function EventStatistics() {
   return (
-    <Card className="row-span-3 md:col-span-2">
+    <Card className="shadow-none row-span-3 md:col-span-2">
       <CardHeader>
         <CardTitle>Event Statistics</CardTitle>
         <CardDescription>WildHacks by the numbers.</CardDescription>

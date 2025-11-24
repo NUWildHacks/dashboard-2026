@@ -1,36 +1,39 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Announcement, Category } from "@/types/announcement";
+import { announcements } from "@/constants/announcement";
 
-export type UseAnnouncementsListReturn = {
+export type UseAnnouncementFiltersReturn = {
   category: Category | "all";
+  setCategory: (category: Category | "all") => void;
   search: string;
+  setSearch: (search: string) => void;
   filteredAnnouncements: Announcement[];
-  handleCategoryChange: (value: string) => void;
-  handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const useAnnouncementsList = (announcements: Announcement[]): UseAnnouncementsListReturn => {
+export const useAnnouncementFilters = (): UseAnnouncementFiltersReturn => {
   const [category, setCategory] = useState<Category | "all">("all");
   const [search, setSearch] = useState<string>("");
 
-  const filteredAnnouncements = announcements
-    .filter((announcement) => announcement.category === category)
-    .filter((announcement) =>
-      Object.values(announcement).some(
-        (value) => typeof value === "string" && value.toLowerCase().includes(search.toLowerCase())
+  const filteredAnnouncements = useMemo(() => {
+    let tempAnnouncements = [...announcements]
+
+    if (category !== "all") {
+      tempAnnouncements = tempAnnouncements.filter((announcement) => announcement.category === category);
+    }
+
+    if (search !== "") {
+      tempAnnouncements = tempAnnouncements.filter((announcement) => 
+        Object.values(announcement).some(
+          (value) => typeof value === "string" && value.toLowerCase().includes(search.toLowerCase())
+        )
       )
-    );
+    }
 
-  const handleCategoryChange = (value: string) => {
-    setCategory((value as Category) || "all");
-  };
+    return tempAnnouncements
+  }, [category, search, announcements])
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
-
-  return { category, search, filteredAnnouncements, handleSearchChange, handleCategoryChange };
+  return { category, setCategory, search, setSearch, filteredAnnouncements };
 };
