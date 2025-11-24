@@ -5,17 +5,18 @@ import { SearchIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FOOD, SCHEDULE, SOCIAL, URGENT } from "@/constants/announcement";
-import { Announcement, Category } from "@/types/announcement";
+import { Category } from "@/types/announcement";
+import User from "@/types/user";
 
-import { useAnnouncementsList } from "../_hooks/use-announcement-filters";
+import { useAnnouncementFilters } from "../_hooks/use-announcement-filters";
 import AnnouncementsList from "../../_components/_announcements/announcements-list";
 
 type AnnouncementsWithFiltersProps = {
-  announcements: Announcement[];
+  userRole: User["role"];
 };
 
-export default function AnnouncementsWithFilters({ announcements }: AnnouncementsWithFiltersProps) {
-  const { category, setCategory, search, setSearch, filteredAnnouncements } = useAnnouncementsList(announcements);
+export default function AnnouncementsWithFilters({ userRole }: AnnouncementsWithFiltersProps) {
+  const { category, setCategory, search, setSearch, filteredAnnouncements } = useAnnouncementFilters(userRole);
 
   return (
     <div className="flex-1 flex flex-col gap-4">

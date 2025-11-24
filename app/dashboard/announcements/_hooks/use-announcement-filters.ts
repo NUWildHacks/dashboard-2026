@@ -1,38 +1,90 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
+import { useEffect, useMemo, useState } from "react";
 
+import { db } from "@/config/firebase-client";
+import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
 import { Announcement, Category } from "@/types/announcement";
+import User from "@/types/user";
 
-export type UseAnnouncementsListReturn = {
+export type UseAnnouncementFiltersReturn = {
   category: Category | "all";
   setCategory: (category: Category | "all") => void;
   search: string;
   setSearch: (search: string) => void;
   filteredAnnouncements: Announcement[];
+  isLoading: boolean;
 };
 
-export const useAnnouncementsList = (announcements: Announcement[]): UseAnnouncementsListReturn => {
+export const useAnnouncementFilters = (userRole: User["role"]): UseAnnouncementFiltersReturn => {
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [category, setCategory] = useState<Category | "all">("all");
   const [search, setSearch] = useState<string>("");
 
-  const filteredAnnouncements = useMemo(() => {
-    let tempAnnouncements = [...announcements];
+  useEffect(() => {
+    let q = query(
+      collection(db, ANNOUNCEMENTS_COLLECTION),
+      where("audience", "array-contains", userRole),
+      orderBy("created_at", "desc")
+    );
 
     if (category !== "all") {
-      tempAnnouncements = tempAnnouncements.filter((announcement) => announcement.category === category);
-    }
-
-    if (search !== "") {
-      tempAnnouncements = tempAnnouncements.filter((announcement) =>
-        Object.values(announcement).some(
-          (value) => typeof value === "string" && value.toLowerCase().includes(search.toLowerCase())
-        )
+      q = query(
+        collection(db, ANNOUNCEMENTS_COLLECTION),
+        where("audience", "array-contains", userRole),
+        where("category", "==", category),
+        orderBy("created_at", "desc")
       );
     }
 
-    return tempAnnouncements;
-  }, [category, search, announcements]);
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const docs = snapshot.docs.map(
+          (doc) =>
+            ({
+              id: doc.id,
+              ...doc.data(),
+            }) as Announcement
+        );
 
-  return { category, setCategory, search, setSearch, filteredAnnouncements };
+        setAnnouncements(docs);
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching announcements:", error);
+        setIsLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [userRole, category]);
+
+  const filteredAnnouncements = useMemo(() => {
+    if (search === "") {
+      return announcements;
+    }
+
+    return announcements.filter((announcement) => {
+      const searchLower = search.toLowerCase();
+
+      return (
+        announcement.title.toLowerCase().includes(searchLower) ||
+        announcement.body.toLowerCase().includes(searchLower) ||
+        announcement.author.toLowerCase().includes(searchLower) ||
+        announcement.links.some((link) => link.toLowerCase().includes(searchLower))
+      );
+    });
+  }, [search, announcements]);
+
+  return {
+    category,
+    setCategory,
+    search,
+    setSearch,
+    filteredAnnouncements,
+    isLoading,
+  };
 };

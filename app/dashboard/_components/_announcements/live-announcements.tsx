@@ -6,15 +6,19 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
-import { Announcement } from "@/types/announcement";
+import User from "@/types/user";
+
+import { useLiveAnnouncements } from "../../_hooks/use-live-announcements";
 
 import AnnouncementsList from "./announcements-list";
 
 type LiveAnnouncementsProps = {
-  announcements: Announcement[];
+  userRole: User["role"];
 };
 
-export default function LiveAnnouncements({ announcements }: LiveAnnouncementsProps) {
+export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) {
+  const { announcements } = useLiveAnnouncements(userRole);
+
   return (
     <Card className="shadow-none row-span-3 md:col-span-2 lg:col-span-4">
       <CardHeader>

@@ -9,7 +9,7 @@ import { Announcement } from "@/types/announcement";
 
 type AnnouncementItemProps = Pick<Announcement, "id" | "category" | "title" | "author" | "created_at">;
 
-export default function AnnouncementItem({ id, category, title, author, created_at }: AnnouncementItemProps) {
+export default function AnnouncementItem({ category, title, author, created_at }: AnnouncementItemProps) {
   return (
     <Item variant="outline" color="red" className="w-full transition-shadow hover:shadow-md hover:cursor-pointer">
       <ItemContent className="gap-2">

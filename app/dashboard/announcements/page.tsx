@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { getAnnouncementsByRole } from "@/lib/announcement";
 import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
 import User from "@/types/user";
@@ -17,7 +16,5 @@ export default async function Announcements() {
 
   const { role } = userDocSnapshot.data() as User;
 
-  const announcements = await getAnnouncementsByRole(role);
-
-  return <AnnouncementsWithFilters announcements={announcements} />;
+  return <AnnouncementsWithFilters userRole={role} />;
 }

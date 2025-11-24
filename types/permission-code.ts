@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase/firestore";
-
 import User from "./user";
 
 type PermissionCode = {

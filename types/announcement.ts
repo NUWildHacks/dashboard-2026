@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase-admin/firestore";
-
 import { CATEGORIES } from "@/constants/announcement";
 
 import { Role } from "./user";
