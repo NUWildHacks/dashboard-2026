@@ -29,13 +29,19 @@ export default async function Dashboard() {
   const eventStatistics = eventStatisticsDocSnapshot.data() as EventStatisticsType;
 
   return (
-    <div className="flex-1 grid gap-4 auto-rows-min md:grid-rows-7 md:grid-cols-2 lg:grid-cols-4">
-      <MilestoneCountdown />
-      <QRCode userId={userId} />
-      <VenueMap />
-      <LiveAnnouncements userRole={role} />
-      <UpcomingEvents />
-      <EventStatistics {...eventStatistics} />
-    </div>
+    <>
+      <div className="grid gap-4 auto-rows-min md:grid-cols-2 lg:grid-cols-4">
+        <MilestoneCountdown />
+        <QRCode userId={userId} />
+        <VenueMap />
+      </div>
+      <div className="grid gap-4 auto-rows-min grid-rows-3 md:grid-cols-2 lg:grid-cols-4">
+        <LiveAnnouncements userRole={role} />
+      </div>
+      <div className="grid gap-4 auto-rows-min grid-rows-2 md:grid-cols-2 lg:grid-cols-4">
+        <UpcomingEvents />
+        <EventStatistics {...eventStatistics} />
+      </div>
+    </>
   );
 }
