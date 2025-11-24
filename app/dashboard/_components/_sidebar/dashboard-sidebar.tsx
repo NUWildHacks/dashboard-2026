@@ -16,7 +16,7 @@ import {
 import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants/routes";
 import { items } from "@/constants/sidebar";
 
-import FooterLogoutButton from "./footer-logout-button";
+import SidebarLogoutButton from "./sidebar-logout-button";
 
 export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
@@ -66,7 +66,7 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <FooterLogoutButton />
+            <SidebarLogoutButton />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

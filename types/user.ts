@@ -1,5 +1,3 @@
-import type { Timestamp } from "firebase/firestore";
-
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -57,11 +55,11 @@ type User = {
 
   project_id?: string;
   checked_in?: boolean;
-  checked_in_at?: Timestamp;
-  dropped_at?: Timestamp;
+  checked_in_at?: number;
+  dropped_at?: number;
 
-  created_at: Timestamp;
-  updated_at: Timestamp;
+  created_at: number;
+  updated_at: number;
 };
 
 export default User;

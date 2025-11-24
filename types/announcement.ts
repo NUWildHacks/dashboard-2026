@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 
 import { CATEGORIES } from "@/constants/announcement";
 
@@ -20,5 +20,5 @@ export type Announcement = {
 
   audience: Role[];
 
-  created_at: Timestamp;
+  created_at: number;
 };

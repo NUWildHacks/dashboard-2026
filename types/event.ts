@@ -1,14 +1,12 @@
-import { Timestamp } from "firebase/firestore";
-
 import { EVENT_STATES } from "@/constants/event";
 
 type Event = {
   state: (typeof EVENT_STATES)[number];
 
-  registration_deadline: Timestamp;
-  ongoing_event_deadline: Timestamp;
+  registration_deadline: number;
+  ongoing_event_deadline: number;
 
-  updated_at: Timestamp;
+  updated_at: number;
 };
 
 export default Event;

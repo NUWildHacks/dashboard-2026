@@ -1,16 +1,15 @@
-import { Timestamp } from "firebase/firestore";
-
 import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants/time";
 
-export function formatDate(date: Date) {
+export function formatDateFromMilliseconds(milliseconds: number) {
+  const date = new Date(milliseconds);
+
   return `${MONTH_ABBREVIATIONS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-export function getSendTime(timestamp: Timestamp) {
-  const send = timestamp.toDate();
+export function getSendTime(sendMilliseconds: number) {
   const now = new Date();
 
-  const diffMilliseconds = now.getTime() - send.getTime();
+  const diffMilliseconds = now.getTime() - sendMilliseconds;
 
   if (diffMilliseconds < ONE_MINUTE) {
     return "Less than a minute ago";
@@ -21,6 +20,6 @@ export function getSendTime(timestamp: Timestamp) {
     const hours = Math.floor(diffMilliseconds / ONE_HOUR);
     return `${hours} hours ago`;
   } else {
-    return formatDate(send);
+    return formatDateFromMilliseconds(sendMilliseconds);
   }
 }

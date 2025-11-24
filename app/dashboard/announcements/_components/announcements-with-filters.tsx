@@ -5,13 +5,17 @@ import { SearchIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FOOD, SCHEDULE, SOCIAL, URGENT } from "@/constants/announcement";
+import { Announcement, Category } from "@/types/announcement";
 
-import AnnouncementsList from "../../_components/announcements/announcements-list";
-import { useAnnouncementFilters } from "../_hooks/use-announcements-list";
-import { Category } from "@/types/announcement";
+import { useAnnouncementsList } from "../_hooks/use-announcement-filters";
+import AnnouncementsList from "../../_components/_announcements/announcements-list";
 
-export default function Announcements() {
-  const { category, setCategory, search, setSearch, filteredAnnouncements } = useAnnouncementFilters();
+type AnnouncementsWithFiltersProps = {
+  announcements: Announcement[];
+};
+
+export default function AnnouncementsWithFilters({ announcements }: AnnouncementsWithFiltersProps) {
+  const { category, setCategory, search, setSearch, filteredAnnouncements } = useAnnouncementsList(announcements);
 
   return (
     <div className="flex-1 flex flex-col gap-4">
@@ -19,10 +23,10 @@ export default function Announcements() {
         <Tabs value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value={URGENT}>Urgent</TabsTrigger>
-            <TabsTrigger value={SCHEDULE}>Schedule</TabsTrigger>
-            <TabsTrigger value={FOOD}>Food</TabsTrigger>
-            <TabsTrigger value={SOCIAL}>Social</TabsTrigger>
+            <TabsTrigger value={URGENT}>{URGENT}</TabsTrigger>
+            <TabsTrigger value={SCHEDULE}>{SCHEDULE}</TabsTrigger>
+            <TabsTrigger value={FOOD}>{FOOD}</TabsTrigger>
+            <TabsTrigger value={SOCIAL}>{SOCIAL}</TabsTrigger>
           </TabsList>
         </Tabs>
         <InputGroup className="max-w-[350px]">
@@ -38,7 +42,7 @@ export default function Announcements() {
           </InputGroupAddon>
         </InputGroup>
       </div>
-      <AnnouncementsList announcements={filteredAnnouncements}/>
+      <AnnouncementsList announcements={filteredAnnouncements} />
     </div>
   );
 }

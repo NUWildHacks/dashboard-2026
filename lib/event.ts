@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { EVENT_DOC, METADATA_COLLECTION } from "@/constants/db";
 
-export default async function getEventDocSnapshot() {
+export async function getEventDocSnapshot() {
   const db = getFirestore();
 
   const eventDocRef = db.collection(METADATA_COLLECTION).doc(EVENT_DOC);

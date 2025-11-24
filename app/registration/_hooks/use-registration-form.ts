@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Timestamp, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
@@ -81,7 +81,7 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
           return;
         }
 
-        if (expires_at.toMillis() <= now) {
+        if (expires_at <= now) {
           setError("permission_code", { type: "validate", message: "Expired permission code" });
           return;
         }
@@ -94,8 +94,8 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
         ...rest,
         role: PARTICIPANT,
         status: ATTENDING,
-        created_at: Timestamp.fromMillis(now),
-        updated_at: Timestamp.fromMillis(now),
+        created_at: now,
+        updated_at: now,
       };
 
       const userDocRef = doc(db, USERS_COLLECTION, userId);

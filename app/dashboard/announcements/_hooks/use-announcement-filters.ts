@@ -3,9 +3,8 @@
 import { useMemo, useState } from "react";
 
 import { Announcement, Category } from "@/types/announcement";
-import { announcements } from "@/constants/announcement";
 
-export type UseAnnouncementFiltersReturn = {
+export type UseAnnouncementsListReturn = {
   category: Category | "all";
   setCategory: (category: Category | "all") => void;
   search: string;
@@ -13,27 +12,27 @@ export type UseAnnouncementFiltersReturn = {
   filteredAnnouncements: Announcement[];
 };
 
-export const useAnnouncementFilters = (): UseAnnouncementFiltersReturn => {
+export const useAnnouncementsList = (announcements: Announcement[]): UseAnnouncementsListReturn => {
   const [category, setCategory] = useState<Category | "all">("all");
   const [search, setSearch] = useState<string>("");
 
   const filteredAnnouncements = useMemo(() => {
-    let tempAnnouncements = [...announcements]
+    let tempAnnouncements = [...announcements];
 
     if (category !== "all") {
       tempAnnouncements = tempAnnouncements.filter((announcement) => announcement.category === category);
     }
 
     if (search !== "") {
-      tempAnnouncements = tempAnnouncements.filter((announcement) => 
+      tempAnnouncements = tempAnnouncements.filter((announcement) =>
         Object.values(announcement).some(
           (value) => typeof value === "string" && value.toLowerCase().includes(search.toLowerCase())
         )
-      )
+      );
     }
 
-    return tempAnnouncements
-  }, [category, search, announcements])
+    return tempAnnouncements;
+  }, [category, search, announcements]);
 
   return { category, setCategory, search, setSearch, filteredAnnouncements };
 };

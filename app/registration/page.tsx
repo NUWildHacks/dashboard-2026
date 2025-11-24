@@ -4,9 +4,9 @@ import "@/config/firebase-admin";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 import Event from "@/types/event";
 
-import getEventDocSnapshot from "../../lib/event";
+import { getEventDocSnapshot } from "../../lib/event";
 import { verifySession } from "../../lib/session";
-import getUserDocSnapshot from "../../lib/user";
+import { getUserDocSnapshot } from "../../lib/user";
 
 import RegistrationForm from "./_components/registration-form";
 

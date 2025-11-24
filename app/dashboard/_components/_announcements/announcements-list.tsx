@@ -1,11 +1,13 @@
-import { Announcement } from "@/types/announcement"
-import AnnouncementItem from "./announcement-item";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { MegaphoneOff } from "lucide-react";
+
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Announcement } from "@/types/announcement";
+
+import AnnouncementItem from "./announcement-item";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];
-}
+};
 
 export default function AnnouncementsList({ announcements }: AnnouncementsListProps) {
   if (announcements.length === 0) {
@@ -19,7 +21,7 @@ export default function AnnouncementsList({ announcements }: AnnouncementsListPr
           <EmptyDescription>Keep an eye out for any updates!</EmptyDescription>
         </EmptyHeader>
       </Empty>
-    )
+    );
   }
 
   return (
@@ -28,5 +30,5 @@ export default function AnnouncementsList({ announcements }: AnnouncementsListPr
         <AnnouncementItem key={announcement.id} {...announcement} />
       ))}
     </div>
-  ) 
+  );
 }

@@ -8,7 +8,7 @@ import Navbar from "@/app/_components/navbar";
 import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/event";
 import Event from "@/types/event";
 
-import getEventDocSnapshot from "../lib/event";
+import { getEventDocSnapshot } from "../lib/event";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";

@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
 import { verifySession } from "@/lib/session";
-import getUserDocSnapshot from "@/lib/user";
+import { getUserDocSnapshot } from "@/lib/user";
 
 export default async function Settings() {
   const userId = await verifySession();

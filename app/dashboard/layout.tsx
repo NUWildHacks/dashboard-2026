@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getHeaderText } from "@/lib/sidebar";
 
-import { DashboardSidebar } from "./_components/dashboard-sidebar";
+import { DashboardSidebar } from "./_components/_sidebar/dashboard-sidebar";
 
 type DashboardLayoutProps = PropsWithChildren;
 
