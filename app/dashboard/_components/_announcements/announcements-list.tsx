@@ -3,13 +3,15 @@ import { MegaphoneOff } from "lucide-react";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Announcement } from "@/types/announcement";
 
+import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+
 import AnnouncementItem from "./announcement-item";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];
-};
+} & Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement">;
 
-export default function AnnouncementsList({ announcements }: AnnouncementsListProps) {
+export default function AnnouncementsList({ announcements, handleSelectAnnouncement }: AnnouncementsListProps) {
   if (announcements.length === 0) {
     return (
       <Empty>
@@ -27,7 +29,7 @@ export default function AnnouncementsList({ announcements }: AnnouncementsListPr
   return (
     <div className="flex flex-col justify-start items-center gap-4">
       {announcements.map((announcement) => (
-        <AnnouncementItem key={announcement.id} {...announcement} />
+        <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
       ))}
     </div>
   );

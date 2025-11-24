@@ -7,11 +7,25 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { getSendTime } from "@/lib/time";
 import { Announcement } from "@/types/announcement";
 
-type AnnouncementItemProps = Pick<Announcement, "id" | "category" | "title" | "author" | "created_at">;
+import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
 
-export default function AnnouncementItem({ category, title, author, created_at }: AnnouncementItemProps) {
+type AnnouncementItemProps = Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement"> &
+  Pick<Announcement, "id" | "category" | "title" | "author" | "created_at">;
+
+export default function AnnouncementItem({
+  handleSelectAnnouncement,
+  id,
+  category,
+  title,
+  author,
+  created_at,
+}: AnnouncementItemProps) {
   return (
-    <Item variant="outline" color="red" className="w-full transition-shadow hover:shadow-md hover:cursor-pointer">
+    <Item
+      variant="outline"
+      onClick={() => handleSelectAnnouncement(id)}
+      className="w-full transition-shadow hover:shadow-md hover:cursor-pointer"
+    >
       <ItemContent className="gap-2">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <ItemTitle>{title}</ItemTitle>
