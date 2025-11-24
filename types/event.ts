@@ -1,6 +1,6 @@
 import { EVENT_STATES } from "@/constants/event";
 
-type Event = {
+export type EventConfig = {
   state: (typeof EVENT_STATES)[number];
 
   registration_deadline: number;
@@ -9,4 +9,12 @@ type Event = {
   updated_at: number;
 };
 
-export default Event;
+export type EventStatistics = {
+  participants: number;
+  judges: number;
+  admins: number;
+  projects: number;
+  submissions: number;
+
+  updated_at: number;
+};

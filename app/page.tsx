@@ -6,16 +6,16 @@ import "@/config/firebase-admin";
 import Footer from "@/app/_components/footer";
 import Navbar from "@/app/_components/navbar";
 import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/event";
-import Event from "@/types/event";
+import { EventConfig } from "@/types/event";
 
-import { getEventDocSnapshot } from "../lib/event";
+import { getEventConfigDocSnapshot } from "../lib/event";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
 
 export default async function Home() {
-  const eventDocSnapshot = await getEventDocSnapshot();
-  const { state } = eventDocSnapshot.data() as Event;
+  const eventDocSnapshot = await getEventConfigDocSnapshot();
+  const { state } = eventDocSnapshot.data() as EventConfig;
 
   return (
     <>

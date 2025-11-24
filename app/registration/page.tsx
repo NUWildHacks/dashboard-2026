@@ -2,17 +2,17 @@ import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import Event from "@/types/event";
+import { EventConfig } from "@/types/event";
 
-import { getEventDocSnapshot } from "../../lib/event";
+import { getEventConfigDocSnapshot } from "../../lib/event";
 import { verifySession } from "../../lib/session";
 import { getUserDocSnapshot } from "../../lib/user";
 
 import RegistrationForm from "./_components/registration-form";
 
 export default async function Registration() {
-  const eventDocSnapshot = await getEventDocSnapshot();
-  const { state } = eventDocSnapshot.data() as Event;
+  const eventDocSnapshot = await getEventConfigDocSnapshot();
+  const { state } = eventDocSnapshot.data() as EventConfig;
 
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);

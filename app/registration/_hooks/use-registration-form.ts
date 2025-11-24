@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
+import { EVENT_COLLECTION, EVENT_STATISTICS_DOC, PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
 import { ONGOING } from "@/constants/event";
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
-import Event from "@/types/event";
+import { EventConfig } from "@/types/event";
 import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
 
@@ -21,7 +21,7 @@ export type useRegistrationFormReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-export default function useRegistrationForm(userId: User["id"], eventState: Event["state"]) {
+export default function useRegistrationForm(userId: User["id"], eventState: EventConfig["state"]) {
   const router = useRouter();
 
   const {
@@ -100,6 +100,12 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
 
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       await setDoc(userDocRef, user);
+
+      const eventStatisticsDofRef = doc(db, EVENT_COLLECTION, EVENT_STATISTICS_DOC);
+      await updateDoc(eventStatisticsDofRef, {
+        participants: increment(1),
+        updated_at: now,
+      });
 
       router.replace(DASHBOARD_PATH);
     } catch (e) {

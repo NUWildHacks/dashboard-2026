@@ -18,7 +18,7 @@ export function getSendTime(sendMilliseconds: number) {
     return minutes === 1 ? `${minutes} minute ago` : `${minutes} minutes ago`;
   } else if (diffMilliseconds < ONE_DAY) {
     const hours = Math.floor(diffMilliseconds / ONE_HOUR);
-    return `${hours} hours ago`;
+    return hours === 1 ? `${hours} hour ago` : `${hours} hours ago`;
   } else {
     return formatDateFromMilliseconds(sendMilliseconds);
   }

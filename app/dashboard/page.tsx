@@ -2,10 +2,12 @@ import "@/config/firebase-admin";
 import { redirect } from "next/navigation";
 
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
+import { getEventStatisticsDocSnapshot } from "@/lib/event";
 import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
-import User from "@/types/user";
 import "@/config/firebase-client";
+import { EventStatistics as EventStatisticsType } from "@/types/event";
+import User from "@/types/user";
 
 import LiveAnnouncements from "./_components/_announcements/live-announcements";
 import EventStatistics from "./_components/event-statistics";
@@ -23,6 +25,9 @@ export default async function Dashboard() {
 
   const { role } = userDocSnapshot.data() as User;
 
+  const eventStatisticsDocSnapshot = await getEventStatisticsDocSnapshot();
+  const eventStatistics = eventStatisticsDocSnapshot.data() as EventStatisticsType;
+
   return (
     <div className="flex-1 grid gap-4 auto-rows-min md:grid-rows-7 md:grid-cols-2 lg:grid-cols-4">
       <MilestoneCountdown />
@@ -30,7 +35,7 @@ export default async function Dashboard() {
       <VenueMap />
       <LiveAnnouncements userRole={role} />
       <UpcomingEvents />
-      <EventStatistics />
+      <EventStatistics {...eventStatistics} />
     </div>
   );
 }
