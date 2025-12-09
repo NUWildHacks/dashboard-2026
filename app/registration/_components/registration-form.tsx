@@ -41,14 +41,14 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants/user";
-import Event from "@/types/event";
+import { EventConfig } from "@/types/event";
 import type User from "@/types/user";
 
 import useRegistrationForm from "../_hooks/use-registration-form";
 
 type RegistrationFormProps = {
   userId: User["id"];
-  eventState: Event["state"];
+  eventState: EventConfig["state"];
 };
 
 export default function RegistrationForm({ userId, eventState }: RegistrationFormProps) {

@@ -22,7 +22,9 @@ export default function QRCode({ userId }: QRCodeProps) {
         <Card className="shadow-none transition-shadow hover:shadow-md hover:cursor-pointer">
           <CardHeader>
             <CardTitle>View QR Code</CardTitle>
-            <CardDescription>Present your QR code to access workshops, food, and merch.</CardDescription>
+            <CardDescription>
+              Your all-access pass to WildHacks. Scan at registration, workshops, and meal stations.
+            </CardDescription>
           </CardHeader>
         </Card>
       </DialogTrigger>

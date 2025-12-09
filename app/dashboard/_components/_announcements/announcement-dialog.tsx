@@ -25,7 +25,7 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
     return null;
   }
 
-  const { category, title, body, author, audience, links, created_at } = selectedAnnouncement;
+  const { category, title, body, author, links, created_at } = selectedAnnouncement;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -38,7 +38,7 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
             </div>
           </DialogTitle>
           <DialogDescription asChild>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
               <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
                 <Badge variant="outline">{author}</Badge>
                 <span className="flex items-center gap-1">
@@ -48,12 +48,12 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
               </div>
               <p className="text-center sm:text-left">{body}</p>
               {links.length !== 0 && (
-                <div>
-                  <p className="font-semibold">Attached Links</p>
-                  <ul>
+                <div className="space-y-2">
+                  <strong>Attached Links</strong>
+                  <ul className="space-y-1">
                     {links.map((link) => (
                       <li key={link}>
-                        <Link href={link} className="block">
+                        <Link href={link} className="block hover:underline underline-offset-4">
                           {link}
                         </Link>
                       </li>

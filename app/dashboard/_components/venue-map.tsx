@@ -15,7 +15,9 @@ export default function VenueMap() {
         <Card className="shadow-none transition-shadow hover:shadow-md hover:cursor-pointer">
           <CardHeader>
             <CardTitle>View Venue Map</CardTitle>
-            <CardDescription>Locate workshop rooms, food stands, and merch giveaways.</CardDescription>
+            <CardDescription>
+              Navigate the event with ease. Find session rooms, sponsor booths, rest areas, and amenities.
+            </CardDescription>
           </CardHeader>
         </Card>
       </DialogTrigger>

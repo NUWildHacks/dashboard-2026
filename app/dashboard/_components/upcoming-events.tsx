@@ -16,7 +16,9 @@ export default function UpcomingEvents() {
     <Card className="shadow-none row-span-3 md:col-span-2">
       <CardHeader>
         <CardTitle>Upcoming Events</CardTitle>
-        <CardDescription>Keep an eye out for exciting events!</CardDescription>
+        <CardDescription>
+          Don&apos;t miss what&apos;s next! Browse workshops, talks, and activities happening throughout WildHacks.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1">
         {events.length === 0 ? (

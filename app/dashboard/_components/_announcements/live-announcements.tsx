@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
 import User from "@/types/user";
 
@@ -28,6 +28,9 @@ export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) 
       <Card className="shadow-none row-span-3 md:col-span-2 lg:col-span-4">
         <CardHeader>
           <CardTitle>Live Announcements</CardTitle>
+          <CardDescription>
+            Stay in the loop with real-time updates on schedule changes, surprise events, and important notices.
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex-1">
           <AnnouncementsList announcements={announcements} {...useAnnouncementDialogReturn} />

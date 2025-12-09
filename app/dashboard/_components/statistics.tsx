@@ -4,7 +4,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { EventStatistics as EventStatisticsType } from "@/types/event";
+import { EventStatistics } from "@/types/event";
 
 const chartConfig = {
   count: {
@@ -13,12 +13,9 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-type EventStatisticsProps = Pick<
-  EventStatisticsType,
-  "participants" | "judges" | "admins" | "projects" | "submissions"
->;
+type StatisticsProps = Pick<EventStatistics, "participants" | "judges" | "admins" | "projects" | "submissions">;
 
-export default function EventStatistics({ participants, judges, admins, projects, submissions }: EventStatisticsProps) {
+export default function Statistics({ participants, judges, admins, projects, submissions }: StatisticsProps) {
   const chartData = [
     { item: "Participants", count: participants },
     { item: "Judges", count: judges },
@@ -31,7 +28,10 @@ export default function EventStatistics({ participants, judges, admins, projects
     <Card className="shadow-none row-span-3 md:col-span-2">
       <CardHeader>
         <CardTitle>Event Statistics</CardTitle>
-        <CardDescription>WildHacks by the numbers.</CardDescription>
+        <CardDescription>
+          WildHacks by the numbers. Track participant counts, judge availability, submitted projects, and more in
+          real-time.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
