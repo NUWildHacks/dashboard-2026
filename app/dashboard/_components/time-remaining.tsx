@@ -21,22 +21,22 @@ export default function TimeRemaining({ event_started_at, event_duration }: Time
         </CardDescription>
       </CardHeader>
       {event_started_at && (
-        <CardContent className="flex flex-nowrap gap-3">
-          <div className="flex flex-col justify-center items-center bg-secondary py-2 min-w-[90px] rounded-lg">
-            <strong className="text-3xl text-primary">{String(days).padStart(2, "0")}</strong>
-            <p className="text-sm text-muted-foreground">Days</p>
+        <CardContent className="grid grid-cols-4 gap-2">
+          <div className="flex flex-col justify-center items-center bg-secondary py-2 rounded-lg">
+            <strong className="text-2xl sm:text-3xl text-primary">{String(days).padStart(2, "0")}</strong>
+            <p className="text-xs sm:text-sm text-muted-foreground">Days</p>
           </div>
-          <div className="flex flex-col justify-center items-center bg-secondary py-2 min-w-[90px] rounded-lg">
-            <strong className="text-3xl text-primary">{String(hours).padStart(2, "0")}</strong>
-            <p className="text-sm text-muted-foreground">Hours</p>
+          <div className="flex flex-col justify-center items-center bg-secondary py-2 rounded-lg">
+            <strong className="text-2xl sm:text-3xl text-primary">{String(hours).padStart(2, "0")}</strong>
+            <p className="text-xs sm:text-sm text-muted-foreground">Hours</p>
           </div>
-          <div className="flex flex-col justify-center items-center bg-secondary py-2 min-w-[90px] rounded-lg">
-            <strong className="text-3xl text-primary">{String(minutes).padStart(2, "0")}</strong>
-            <p className="text-sm text-muted-foreground">Minutes</p>
+          <div className="flex flex-col justify-center items-center bg-secondary py-2 rounded-lg">
+            <strong className="text-2xl sm:text-3xl text-primary">{String(minutes).padStart(2, "0")}</strong>
+            <p className="text-xs sm:text-sm text-muted-foreground">Minutes</p>
           </div>
-          <div className="flex flex-col justify-center items-center bg-secondary py-2 min-w-[90px] rounded-lg">
-            <strong className="text-3xl text-primary">{String(seconds).padStart(2, "0")}</strong>
-            <p className="text-sm text-muted-foreground">Seconds</p>
+          <div className="flex flex-col justify-center items-center bg-secondary py-2 rounded-lg">
+            <strong className="text-2xl sm:text-3xl text-primary">{String(seconds).padStart(2, "0")}</strong>
+            <p className="text-xs sm:text-sm text-muted-foreground">Seconds</p>
           </div>
         </CardContent>
       )}
