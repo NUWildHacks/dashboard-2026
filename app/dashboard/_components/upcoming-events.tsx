@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
+import { cn } from "@/lib/utils";
 
 export default function UpcomingEvents() {
   const [events, _setEvents] = useState<string[]>([]);
@@ -20,7 +21,7 @@ export default function UpcomingEvents() {
           Don&apos;t miss what&apos;s next! Browse workshops, talks, and activities happening throughout WildHacks.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className={cn("flex-1 flex justify-center", events.length === 0 ? "items-center" : "items-start")}>
         {events.length === 0 ? (
           <Empty>
             <EmptyHeader>

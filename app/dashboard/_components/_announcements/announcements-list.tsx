@@ -26,11 +26,7 @@ export default function AnnouncementsList({ announcements, handleSelectAnnouncem
     );
   }
 
-  return (
-    <div className="flex flex-col justify-start items-center gap-4">
-      {announcements.map((announcement) => (
-        <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
-      ))}
-    </div>
-  );
+  return announcements.map((announcement) => (
+    <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
+  ));
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
+import { cn } from "@/lib/utils";
 import User from "@/types/user";
 
 import { useAnnoucementDialog } from "../../_hooks/use-announcement-dialog";
@@ -32,7 +33,12 @@ export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) 
             Stay in the loop with real-time updates on schedule changes, surprise events, and important notices.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1">
+        <CardContent
+          className={cn(
+            "flex-1 flex flex-col gap-4 justify-center",
+            announcements.length === 0 ? "items-center" : "items-start"
+          )}
+        >
           <AnnouncementsList announcements={announcements} {...useAnnouncementDialogReturn} />
         </CardContent>
         <CardFooter className="flex-row-reverse">

@@ -21,9 +21,7 @@ import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialo
 type AnnouncementDialogProps = Pick<UseAnnouncementDialogReturn, "isOpen" | "setIsOpen" | "selectedAnnouncement">;
 
 export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnouncement }: AnnouncementDialogProps) {
-  if (!selectedAnnouncement) {
-    return null;
-  }
+  if (!selectedAnnouncement) return null;
 
   const { category, title, body, author, links, created_at } = selectedAnnouncement;
 
