@@ -39,7 +39,7 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
             <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
               <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
                 <Badge variant="outline">{author}</Badge>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1 text-xs font-medium">
                   <Clock className="size-3" />
                   {getSendTime(created_at)}
                 </span>

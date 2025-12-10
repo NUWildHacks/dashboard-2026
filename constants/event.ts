@@ -1,5 +1,7 @@
-export const REGISTRATION = "Registration" as const;
-export const ONGOING = "Ongoing" as const;
-export const COMPLETED = "Completed" as const;
+export const FOOD = "Food" as const;
+export const WORKSHOP = "Workshop" as const;
+export const SPEAKER = "Speaker" as const;
+export const MENTORSHOP = "Mentorship" as const;
+export const SOCIAL = "Social" as const;
 
-export const EVENT_STATES = [REGISTRATION, ONGOING, COMPLETED] as const;
+export const EVENT_CATEGORIES = [FOOD, WORKSHOP, SPEAKER, MENTORSHOP, SOCIAL] as const;

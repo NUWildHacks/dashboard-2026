@@ -2,17 +2,17 @@ import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { EventConfig } from "@/types/event";
+import { WildHacksConfig } from "@/types/wildhacks";
 
-import { getEventConfigDocSnapshot } from "../../lib/event";
 import { verifySession } from "../../lib/session";
 import { getUserDocSnapshot } from "../../lib/user";
+import { getConfigDocSnapshot } from "../../lib/wildhacks";
 
 import RegistrationForm from "./_components/registration-form";
 
 export default async function Registration() {
-  const eventDocSnapshot = await getEventConfigDocSnapshot();
-  const { state } = eventDocSnapshot.data() as EventConfig;
+  const configDocSnapshot = await getConfigDocSnapshot();
+  const { state } = configDocSnapshot.data() as WildHacksConfig;
 
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
@@ -29,7 +29,7 @@ export default async function Registration() {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm userId={userId} eventState={state} />
+          <RegistrationForm userId={userId} state={state} />
         </div>
       </div>
     </main>

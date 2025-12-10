@@ -1,17 +1,19 @@
 "use client";
 
-import { ArrowRight, CalendarX } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 
+import { useUpcomingEvents } from "../../_hooks/use-upcoming-events";
+
+import EventsList from "./events-list";
+
 export default function UpcomingEvents() {
-  const [events, _setEvents] = useState<string[]>([]);
+  const { events } = useUpcomingEvents();
 
   return (
     <Card className="shadow-none row-span-3 md:col-span-2">
@@ -21,24 +23,8 @@ export default function UpcomingEvents() {
           Don&apos;t miss what&apos;s next! Browse workshops, talks, and activities happening throughout WildHacks.
         </CardDescription>
       </CardHeader>
-      <CardContent className={cn("flex-1 flex justify-center", events.length === 0 ? "items-center" : "items-start")}>
-        {events.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <CalendarX />
-              </EmptyMedia>
-              <EmptyTitle>No upcoming events</EmptyTitle>
-              <EmptyDescription>Check back in closer to the event start date.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <>
-            {events.map((event) => (
-              <div key={event}>{event}</div>
-            ))}
-          </>
-        )}
+      <CardContent className={cn("flex-1 flex flex-col justify-center gap-4", events.length === 0 ? "items-center" : "items-start")}>
+        <EventsList events={events} />
       </CardContent>
       <CardFooter className="flex-row-reverse">
         <Link href={DASHBOARD_SCHEDULE_PATH}>

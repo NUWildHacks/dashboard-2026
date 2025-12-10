@@ -5,17 +5,16 @@ import Image from "next/image";
 import "@/config/firebase-admin";
 import Footer from "@/app/_components/footer";
 import Navbar from "@/app/_components/navbar";
-import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/event";
-import { EventConfig } from "@/types/event";
-
-import { getEventConfigDocSnapshot } from "../lib/event";
+import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/wildhacks";
+import { getConfigDocSnapshot } from "@/lib/wildhacks";
+import { WildHacksConfig } from "@/types/wildhacks";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
 
 export default async function Home() {
-  const eventDocSnapshot = await getEventConfigDocSnapshot();
-  const { state } = eventDocSnapshot.data() as EventConfig;
+  const configDocSnapshot = await getConfigDocSnapshot();
+  const { state } = configDocSnapshot.data() as WildHacksConfig;
 
   return (
     <>

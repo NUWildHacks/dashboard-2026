@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import { Announcement } from "@/types/announcement";
+import Announcement from "@/types/announcement";
 import User from "@/types/user";
 
 export type UseLiveAnnouncementsReturn = {
@@ -15,7 +15,7 @@ export type UseLiveAnnouncementsReturn = {
 
 export const useLiveAnnouncements = (userRole: User["role"], limitCount = 3): UseLiveAnnouncementsReturn => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     let q = query(

@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FOOD, SCHEDULE, SOCIAL, URGENT } from "@/constants/announcement";
-import { Category } from "@/types/announcement";
+import { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
 import { useAnnouncementFilters } from "../_hooks/use-announcement-filters";
@@ -26,7 +26,7 @@ export default function AnnouncementsWithFilters({ userRole }: AnnouncementsWith
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <Tabs value={category} onValueChange={(value) => setCategory(value as Category | "all")}>
+          <Tabs value={category} onValueChange={(value) => setCategory(value as AnnouncementCategory | "all")}>
             <TabsList>
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value={URGENT}>{URGENT}</TabsTrigger>

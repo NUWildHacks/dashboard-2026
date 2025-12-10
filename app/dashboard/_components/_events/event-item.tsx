@@ -1,29 +1,22 @@
-"use client";
-
 import { Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { getSendTime } from "@/lib/time";
-import Announcement from "@/types/announcement";
+import { getTimeFromMinutes } from "@/lib/time";
+import Event from "@/types/events";
 
-import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+type EventItemProps = Pick<Event, "id" | "category" | "title" | "start" | "end">; 
 
-type AnnouncementItemProps = Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement"> &
-  Pick<Announcement, "id" | "category" | "title" | "author" | "created_at">;
-
-export default function AnnouncementItem({
-  handleSelectAnnouncement,
+export default function EventItem({
   id,
   category,
   title,
-  author,
-  created_at,
-}: AnnouncementItemProps) {
+  start,
+  end
+}: EventItemProps) {
   return (
     <Item
       variant="outline"
-      onClick={() => handleSelectAnnouncement(id)}
       className="w-full transition-shadow hover:shadow-md hover:cursor-pointer"
     >
       <ItemContent className="gap-2">
@@ -32,13 +25,12 @@ export default function AnnouncementItem({
           <Badge variant="secondary">{category}</Badge>
         </div>
         <ItemDescription className="flex flex-wrap items-center gap-4">
-          <Badge variant="outline">{author}</Badge>
           <span className="flex items-center gap-1 text-xs font-medium">
             <Clock className="size-3" />
-            {getSendTime(created_at)}
+            {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
           </span>
         </ItemDescription>
       </ItemContent>
     </Item>
-  );
+  )
 }

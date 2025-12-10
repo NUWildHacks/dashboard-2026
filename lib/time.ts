@@ -1,10 +1,16 @@
 import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants/time";
 
-export function formatDateFromMilliseconds(milliseconds: number) {
+export function getDateFromMilliseconds(milliseconds: number) {
   const date = new Date(milliseconds);
 
   return `${MONTH_ABBREVIATIONS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
+
+export const getTimeFromMinutes = (time: number) => {
+  const hours = Math.floor(time / 60);
+  const minutes = time % 60;
+  return `${hours > 12 ? hours - 12 : hours}:${minutes.toString().padStart(2, "0")}${hours >= 12 ? " PM" : " AM"}`;
+};
 
 export function getSendTime(sendMilliseconds: number) {
   const now = new Date();
@@ -20,6 +26,6 @@ export function getSendTime(sendMilliseconds: number) {
     const hours = Math.floor(diffMilliseconds / ONE_HOUR);
     return hours === 1 ? `${hours} hour ago` : `${hours} hours ago`;
   } else {
-    return formatDateFromMilliseconds(sendMilliseconds);
+    return getDateFromMilliseconds(sendMilliseconds);
   }
 }

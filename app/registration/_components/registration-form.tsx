@@ -29,7 +29,6 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ONGOING } from "@/constants/event";
 import { ROOT_PATH } from "@/constants/routes";
 import {
   COUNTRIES,
@@ -41,18 +40,19 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants/user";
-import { EventConfig } from "@/types/event";
+import { ONGOING } from "@/constants/wildhacks";
 import type User from "@/types/user";
+import { WildHacksConfig } from "@/types/wildhacks";
 
 import useRegistrationForm from "../_hooks/use-registration-form";
 
 type RegistrationFormProps = {
   userId: User["id"];
-  eventState: EventConfig["state"];
+  state: WildHacksConfig["state"];
 };
 
-export default function RegistrationForm({ userId, eventState }: RegistrationFormProps) {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(userId, eventState);
+export default function RegistrationForm({ userId, state }: RegistrationFormProps) {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(userId, state);
 
   return (
     <Card className="rounded-2xl shadow-sm">
@@ -459,7 +459,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
             <FieldSeparator />
 
-            {eventState === ONGOING && (
+            {state === ONGOING && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>

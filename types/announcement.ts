@@ -1,13 +1,13 @@
-import { CATEGORIES } from "@/constants/announcement";
+import { ANNOUNCEMENT_CATEGORIES } from "@/constants/announcement";
 
 import { Role } from "./user";
 
-export type Category = (typeof CATEGORIES)[number];
+export type AnnouncementCategory = (typeof ANNOUNCEMENT_CATEGORIES)[number];
 
-export type Announcement = {
+type Announcement = {
   id: string;
 
-  category: Category;
+  category: AnnouncementCategory;
 
   title: string;
   body: string;
@@ -20,3 +20,5 @@ export type Announcement = {
 
   created_at: number;
 };
+
+export default Announcement

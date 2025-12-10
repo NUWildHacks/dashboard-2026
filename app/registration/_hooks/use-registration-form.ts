@@ -6,13 +6,13 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { EVENT_COLLECTION, EVENT_STATISTICS_DOC, PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants/db";
-import { ONGOING } from "@/constants/event";
+import { WILDHACKS_COLLECTION, PERMISSION_CODES_COLLECTION, USERS_COLLECTION, WILDHACKS_STATISTICS_DOC } from "@/constants/db";
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
-import { EventConfig } from "@/types/event";
+import { ONGOING } from "@/constants/wildhacks";
 import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
+import { WildHacksConfig } from "@/types/wildhacks";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form-schema";
 
@@ -21,7 +21,7 @@ export type useRegistrationFormReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-export default function useRegistrationForm(userId: User["id"], eventState: EventConfig["state"]) {
+export default function useRegistrationForm(userId: User["id"], state: WildHacksConfig["state"]) {
   const router = useRouter();
 
   const {
@@ -65,7 +65,7 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
 
       const { permission_code, ...rest } = data;
 
-      if (eventState === ONGOING) {
+      if (state === ONGOING) {
         const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
         const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
 
@@ -101,8 +101,8 @@ export default function useRegistrationForm(userId: User["id"], eventState: Even
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       await setDoc(userDocRef, user);
 
-      const eventStatisticsDofRef = doc(db, EVENT_COLLECTION, EVENT_STATISTICS_DOC);
-      await updateDoc(eventStatisticsDofRef, {
+      const statisticsDofRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
+      await updateDoc(statisticsDofRef, {
         participants: increment(1),
         updated_at: now,
       });

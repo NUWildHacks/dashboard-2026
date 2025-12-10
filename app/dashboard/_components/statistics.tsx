@@ -4,7 +4,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { EventStatistics } from "@/types/event";
+import { WildHacksStatistics } from "@/types/wildhacks";
 
 const chartConfig = {
   count: {
@@ -13,7 +13,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-type StatisticsProps = Pick<EventStatistics, "participants" | "judges" | "admins" | "projects" | "submissions">;
+type StatisticsProps = WildHacksStatistics 
 
 export default function Statistics({ participants, judges, admins, projects, submissions }: StatisticsProps) {
   const chartData = [

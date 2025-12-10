@@ -5,12 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import { Announcement, Category } from "@/types/announcement";
+import Announcement, { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
 export type UseAnnouncementFiltersReturn = {
-  category: Category | "all";
-  setCategory: (category: Category | "all") => void;
+  category: AnnouncementCategory | "all";
+  setCategory: (category: AnnouncementCategory | "all") => void;
   search: string;
   setSearch: (search: string) => void;
   filteredAnnouncements: Announcement[];
@@ -20,7 +20,7 @@ export type UseAnnouncementFiltersReturn = {
 export const useAnnouncementFilters = (userRole: User["role"]): UseAnnouncementFiltersReturn => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [category, setCategory] = useState<Category | "all">("all");
+  const [category, setCategory] = useState<AnnouncementCategory | "all">("all");
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {

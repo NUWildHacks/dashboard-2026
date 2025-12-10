@@ -1,7 +1,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import { Announcement } from "@/types/announcement";
+import Announcement from "@/types/announcement";
 import User from "@/types/user";
 
 export async function getAnnouncementsByRole(userRole: User["role"], limit?: number) {

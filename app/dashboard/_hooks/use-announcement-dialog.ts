@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-import { Announcement } from "@/types/announcement";
+import Announcement from "@/types/announcement";
 
 export type UseAnnouncementDialogReturn = {
   selectedAnnouncement: Announcement | null;
