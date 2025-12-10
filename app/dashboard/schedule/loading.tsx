@@ -1,9 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { getVisibleRowIntervals } from "@/lib/calendar";
+import { getVisibleCalendarRows } from "@/lib/calendar";
 import { cn } from "@/lib/utils";
 
 const ScheduleLoading = async () => {
-  const visibleRowIntervals = getVisibleRowIntervals([]);
+  const visibleCalendarRows = getVisibleCalendarRows([]);
 
   return (
     <div className="flex-1 flex flex-col gap-4">
@@ -12,12 +12,12 @@ const ScheduleLoading = async () => {
         <Skeleton className="md:flex-1 max-w-[350px] w-full h-9" />
       </div>
       <div className="w-full flex flex-col py-2">
-        {visibleRowIntervals.map(({ start, label }, index) => (
+        {visibleCalendarRows.map(({ start, label }, index) => (
           <div
             key={`${label}-${start}`}
             className={cn(
               "w-full grid grid-cols-[50px_1fr] space-x-2",
-              index !== visibleRowIntervals.length - 1 && "h-[80px]"
+              index !== visibleCalendarRows.length - 1 && "h-[80px]"
             )}
           >
             <div className="relative text-sm h-full">

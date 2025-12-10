@@ -8,16 +8,32 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { ROW_HEIGHT } from "@/constants/calendar";
 import { getTimeFromMinutes } from "@/lib/time";
 import { cn } from "@/lib/utils";
-import { CalendarItemLayout } from "@/types/calendar";
 import Event from "@/types/events";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type CalendarItemProps = CalendarItemLayout & Pick<UseDialogReturn<Event>, "handleSelectItem">;
+type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start" | "end"> &
+  Pick<UseDialogReturn<Event>, "handleSelectItem"> & {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    zIndex: number;
+  };
 
-const CalendarItem = ({ event, left, top, width, height, zIndex, handleSelectItem }: CalendarItemProps) => {
-  const { id, category, title, start, end } = event;
-
+const CalendarItem = ({
+  id,
+  category,
+  title,
+  start,
+  end,
+  handleSelectItem,
+  left,
+  top,
+  width,
+  height,
+  zIndex,
+}: CalendarItemProps) => {
   const isCompact = height < ROW_HEIGHT;
 
   return (

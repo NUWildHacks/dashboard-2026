@@ -1,14 +1,13 @@
-import { CalendarRowInterval } from "@/types/calendar";
+import { CalendarRow } from "@/types/calendar";
 
 export const ROW_HEIGHT = 80 as const;
-export const OFFSET_PERCENTAGE = 3 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;
 export const BASE_Z_INDEX = 10 as const;
 
-export const DEFAULT_FIRST_CALENDAR_ROW_INTERVAL_INDEX = 9 as const;
-export const DEFAULT_LAST_CALENDAR_ROW_INTERVAL_INDEX = 18 as const;
+export const DEFAULT_FIRST_CALENDAR_ROW_INDEX = 9 as const;
+export const DEFAULT_LAST_CALENDAR_ROW_INDEX = 18 as const;
 
-export const CALENDAR_ROW_INTERVALS: CalendarRowInterval[] = [
+export const CALENDAR_ROWS: CalendarRow[] = [
   { start: 0, end: 60, label: "12 AM" },
   { start: 60, end: 120, label: "1 AM" },
   { start: 120, end: 180, label: "2 AM" },

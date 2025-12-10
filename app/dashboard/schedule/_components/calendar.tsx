@@ -5,7 +5,7 @@ import { SearchIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EVENT_CATEGORIES } from "@/constants/event";
-import { createOverlapGroups, getVisibleRowIntervals } from "@/lib/calendar";
+import { createOverlapGroups, getVisibleCalendarRows } from "@/lib/calendar";
 import Event, { EventCategory } from "@/types/events";
 
 import EventDialog from "../../_components/_events/event-dialog";
@@ -25,7 +25,7 @@ const Calendar = () => {
 
   const overlapGroups = createOverlapGroups(events);
 
-  const visibleRowIntervals = getVisibleRowIntervals(events);
+  const visibleCalendarRows = getVisibleCalendarRows(events);
 
   return (
     <>
@@ -55,19 +55,19 @@ const Calendar = () => {
           </InputGroup>
         </div>
         <div className="w-full flex flex-col py-2">
-          {visibleRowIntervals.slice(0, -1).map((calendarRowInterval) => (
+          {visibleCalendarRows.slice(0, -1).map((calendarRow) => (
             <CalendarRow
-              key={calendarRowInterval.label}
+              key={calendarRow.label}
               events={events}
               overlapGroups={overlapGroups}
-              {...calendarRowInterval}
+              {...calendarRow}
               {...useEventDialogReturn}
             />
           ))}
           <div className="w-full grid grid-cols-[50px_1fr] space-x-2">
             <div className="relative text-sm h-full">
               <p className="absolute top-0 m-0 w-full text-right -translate-y-1/2">
-                {visibleRowIntervals.at(-1)!.label}
+                {visibleCalendarRows.at(-1)!.label}
               </p>
             </div>
             <div className="h-full border-t border-dashed" />
