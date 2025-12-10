@@ -1,6 +1,7 @@
 import { CalendarX } from "lucide-react";
 
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
 import Event from "@/types/events";
 
 import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
@@ -13,6 +14,16 @@ type EventsListProps = {
 } & Pick<UseEventDialogReturn, "handleSelectEvent">;
 
 export default function EventsList({ events, isLoading, handleSelectEvent }: EventsListProps) {
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+      </>
+    );
+  }
+
   if (events.length === 0) {
     return (
       <Empty>
@@ -25,10 +36,6 @@ export default function EventsList({ events, isLoading, handleSelectEvent }: Eve
         </EmptyHeader>
       </Empty>
     );
-  }
-
-  if (isLoading) {
-    return <></>;
   }
 
   return events.map((event) => <EventItem key={event.id} handleSelectEvent={handleSelectEvent} {...event} />);

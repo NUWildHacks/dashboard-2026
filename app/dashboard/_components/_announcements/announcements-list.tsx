@@ -1,6 +1,7 @@
 import { MegaphoneOff } from "lucide-react";
 
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
 import Announcement from "@/types/announcement";
 
 import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
@@ -17,6 +18,16 @@ export default function AnnouncementsList({
   isLoading,
   handleSelectAnnouncement,
 }: AnnouncementsListProps) {
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" />
+      </>
+    );
+  }
+
   if (announcements.length === 0) {
     return (
       <Empty>
@@ -29,10 +40,6 @@ export default function AnnouncementsList({
         </EmptyHeader>
       </Empty>
     );
-  }
-
-  if (isLoading) {
-    return <></>;
   }
 
   return announcements.map((announcement) => (
