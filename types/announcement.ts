@@ -14,8 +14,6 @@ type Announcement = {
 
   links: string[];
 
-  author: string;
-
   audience: Role[];
 
   created_at: number;

@@ -11,40 +11,42 @@ export type UseTimeRemainingReturn = {
   seconds: number;
 };
 
-const getRemainingTime = (
-  started_at: WildHacksConfig["started_at"],
-  duration: WildHacksConfig["duration"]
-) => {
-  if (!started_at) return 0;
 
-  const now = new Date().getTime();
-  const elapsed = now - started_at;
-  const remaining = Math.max(duration - elapsed, 0);
-
-  return remaining;
-};
 
 export const useTimeRemaining = (
   started_at: WildHacksConfig["started_at"],
   duration: WildHacksConfig["duration"]
 ): UseTimeRemainingReturn => {
-  const [timeMilliseconds, setTimeMilliseconds] = useState<number>(() =>
-    getRemainingTime(started_at, duration)
-  );
+  const [timeMilliseconds, setTimeMilliseconds] = useState<number>(0);
 
   useEffect(() => {
-    if (!started_at) return;
+    if (!started_at) {
+      return;
+    }
+
+    const getRemainingTime = () => {
+      if (!started_at) return 0;
+      const now = new Date().getTime();
+      return Math.max(duration - (now - started_at), 0);
+    };
 
     const updateCountdown = () => {
-      const remainingTime = getRemainingTime(started_at, duration);
+      const remainingTime = getRemainingTime();
       setTimeMilliseconds(remainingTime);
     };
+
+    const timeoutId = setTimeout(() => {
+      updateCountdown();
+    }, 0);
 
     const interval = setInterval(() => {
       updateCountdown();
     }, ONE_SECOND);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(interval);
+    };
   }, [started_at, duration]);
 
   let remainingMilliseconds = timeMilliseconds;

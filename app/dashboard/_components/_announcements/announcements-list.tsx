@@ -9,9 +9,10 @@ import AnnouncementItem from "./announcement-item";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];
+  isLoading: boolean;
 } & Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement">;
 
-export default function AnnouncementsList({ announcements, handleSelectAnnouncement }: AnnouncementsListProps) {
+export default function AnnouncementsList({ announcements, isLoading, handleSelectAnnouncement }: AnnouncementsListProps) {
   if (announcements.length === 0) {
     return (
       <Empty>
@@ -26,7 +27,15 @@ export default function AnnouncementsList({ announcements, handleSelectAnnouncem
     );
   }
 
-  return announcements.map((announcement) => (
-    <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
-  ));
+  if (isLoading) {
+    return (
+      <></>
+    )
+  }
+
+  return (
+    announcements.map((announcement) => (
+      <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
+    )) 
+  )
 }

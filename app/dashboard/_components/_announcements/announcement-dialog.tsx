@@ -23,7 +23,7 @@ type AnnouncementDialogProps = Pick<UseAnnouncementDialogReturn, "isOpen" | "set
 export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnouncement }: AnnouncementDialogProps) {
   if (!selectedAnnouncement) return null;
 
-  const { category, title, body, author, links, created_at } = selectedAnnouncement;
+  const { category, title, body, links, created_at } = selectedAnnouncement;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -32,13 +32,12 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
           <DialogTitle asChild>
             <div className="flex justify-center sm:justify-start items-center gap-4">
               {title}
-              <Badge variant="secondary">{category}</Badge>
             </div>
           </DialogTitle>
           <DialogDescription asChild>
             <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
               <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
-                <Badge variant="outline">{author}</Badge>
+                <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
                   <Clock className="size-3" />
                   {getSendTime(created_at)}

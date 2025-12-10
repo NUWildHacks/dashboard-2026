@@ -10,14 +10,13 @@ import Announcement from "@/types/announcement";
 import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
 
 type AnnouncementItemProps = Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement"> &
-  Pick<Announcement, "id" | "category" | "title" | "author" | "created_at">;
+  Pick<Announcement, "id" | "category" | "title" | "created_at">;
 
 export default function AnnouncementItem({
   handleSelectAnnouncement,
   id,
   category,
   title,
-  author,
   created_at,
 }: AnnouncementItemProps) {
   return (
@@ -31,8 +30,7 @@ export default function AnnouncementItem({
           <ItemTitle>{title}</ItemTitle>
           <Badge variant="secondary">{category}</Badge>
         </div>
-        <ItemDescription className="flex flex-wrap items-center gap-4">
-          <Badge variant="outline">{author}</Badge>
+        <ItemDescription>
           <span className="flex items-center gap-1 text-xs font-medium">
             <Clock className="size-3" />
             {getSendTime(created_at)}

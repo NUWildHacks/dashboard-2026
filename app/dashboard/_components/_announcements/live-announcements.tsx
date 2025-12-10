@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import User from "@/types/user";
 
 import { useAnnoucementDialog } from "../../_hooks/use-announcement-dialog";
-import { useLiveAnnouncements } from "../../_hooks/use-live-announcements";
+import { useAnnouncements } from "../../_hooks/use-announcements";
 
 import AnnouncementDialog from "./announcement-dialog";
 import AnnouncementsList from "./announcements-list";
@@ -20,7 +20,8 @@ type LiveAnnouncementsProps = {
 };
 
 export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) {
-  const { announcements } = useLiveAnnouncements(userRole);
+  const useAnnouncementsReturn = useAnnouncements(userRole, { limitCount: 3 });
+  const { announcements } = useAnnouncementsReturn 
 
   const useAnnouncementDialogReturn = useAnnoucementDialog(announcements);
 
@@ -39,7 +40,7 @@ export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) 
             announcements.length === 0 ? "items-center" : "items-start"
           )}
         >
-          <AnnouncementsList announcements={announcements} {...useAnnouncementDialogReturn} />
+          <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />
         </CardContent>
         <CardFooter className="flex-row-reverse">
           <Link href={DASHBOARD_ANNOUNCEMENTS_PATH}>

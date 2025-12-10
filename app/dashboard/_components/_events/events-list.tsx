@@ -7,9 +7,10 @@ import EventItem from "./event-item";
 
 type EventsListProps = {
   events: Event[];
+  isLoading: boolean;
 }
 
-export default function EventsList({ events }: EventsListProps) {
+export default function EventsList({ events, isLoading }: EventsListProps) {
   if (events.length === 0) {
     return (
       <Empty>
@@ -21,6 +22,12 @@ export default function EventsList({ events }: EventsListProps) {
           <EmptyDescription>Check back in closer to the event start date.</EmptyDescription>
         </EmptyHeader>
       </Empty>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <></>
     )
   }
 

@@ -7,12 +7,12 @@ import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
 import Event from "@/types/events"
 
-export type UseUpcomingEventsReturn = {
+export type UseEventsReturn = {
   events: Event[];
   isLoading: boolean;
 }
 
-export const useUpcomingEvents = (limitCount = 3): UseUpcomingEventsReturn => {
+export const useEvents = (limitCount = 3): UseEventsReturn => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

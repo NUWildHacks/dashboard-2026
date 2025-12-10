@@ -8,12 +8,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
 
-import { useUpcomingEvents } from "../../_hooks/use-upcoming-events";
+import { useEvents } from "../../_hooks/use-events";
 
 import EventsList from "./events-list";
 
 export default function UpcomingEvents() {
-  const { events } = useUpcomingEvents();
+  const useEventsReturn = useEvents();
+  const { events } = useEventsReturn
 
   return (
     <Card className="shadow-none row-span-3 md:col-span-2">
@@ -24,7 +25,7 @@ export default function UpcomingEvents() {
         </CardDescription>
       </CardHeader>
       <CardContent className={cn("flex-1 flex flex-col justify-center gap-4", events.length === 0 ? "items-center" : "items-start")}>
-        <EventsList events={events} />
+        <EventsList {...useEventsReturn}/>
       </CardContent>
       <CardFooter className="flex-row-reverse">
         <Link href={DASHBOARD_SCHEDULE_PATH}>
