@@ -5,16 +5,16 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { getTimeFromMinutes } from "@/lib/time";
 import Event from "@/types/events";
 
-import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type EventItemProps = Pick<UseEventDialogReturn, "handleSelectEvent"> &
+type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem"> &
   Pick<Event, "id" | "category" | "title" | "start" | "end">;
 
-const EventItem = ({ handleSelectEvent, id, category, title, start, end }: EventItemProps) => {
+const EventItem = ({ handleSelectItem, id, category, title, start, end }: EventItemProps) => {
   return (
     <Item
       variant="outline"
-      onClick={() => handleSelectEvent(id)}
+      onClick={() => handleSelectItem(id)}
       className="w-full transition-shadow hover:shadow-md hover:cursor-pointer"
     >
       <ItemContent className="gap-2">

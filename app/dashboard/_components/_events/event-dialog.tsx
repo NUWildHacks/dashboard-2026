@@ -14,15 +14,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getTimeFromMinutes } from "@/lib/time";
+import Event from "@/types/events";
 
-import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type EventDialogProps = Pick<UseEventDialogReturn, "isOpen" | "setIsOpen" | "selectedEvent">;
+type EventDialogProps = Pick<UseDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
 
-const EventDialog = ({ isOpen, setIsOpen, selectedEvent }: EventDialogProps) => {
-  if (!selectedEvent) return null;
+const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
+  if (!selectedItem) return null;
 
-  const { category, title, body, start, end } = selectedEvent;
+  const { category, title, body, start, end } = selectedItem;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

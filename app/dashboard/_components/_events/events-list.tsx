@@ -4,16 +4,16 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import Event from "@/types/events";
 
-import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
 import EventItem from "./event-item";
 
 type EventsListProps = {
   events: Event[];
   isLoading: boolean;
-} & Pick<UseEventDialogReturn, "handleSelectEvent">;
+} & Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
-const EventsList = ({ events, isLoading, handleSelectEvent }: EventsListProps) => {
+const EventsList = ({ events, isLoading, handleSelectItem }: EventsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -38,7 +38,7 @@ const EventsList = ({ events, isLoading, handleSelectEvent }: EventsListProps) =
     );
   }
 
-  return events.map((event) => <EventItem key={event.id} handleSelectEvent={handleSelectEvent} {...event} />);
+  return events.map((event) => <EventItem key={event.id} handleSelectItem={handleSelectItem} {...event} />);
 };
 
 export default EventsList;

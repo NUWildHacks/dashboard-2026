@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
+import Announcement from "@/types/announcement";
 import User from "@/types/user";
 
-import { useAnnoucementDialog } from "../../_hooks/use-announcement-dialog";
 import { useAnnouncements } from "../../_hooks/use-announcements";
+import { useDialog } from "../../_hooks/use-dialog";
 
 import AnnouncementDialog from "./announcement-dialog";
 import AnnouncementsList from "./announcements-list";
@@ -23,7 +24,7 @@ const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
   const useAnnouncementsReturn = useAnnouncements(userRole, { limitCount: 3 });
   const { announcements } = useAnnouncementsReturn;
 
-  const useAnnouncementDialogReturn = useAnnoucementDialog(announcements);
+  const useAnnouncementDialogReturn = useDialog<Announcement>(announcements);
 
   return (
     <>

@@ -9,12 +9,13 @@ import { ROW_HEIGHT } from "@/constants/calendar";
 import { getTimeFromMinutes } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { CalendarItemLayout } from "@/types/calendar";
+import Event from "@/types/events";
 
-import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type CalendarItemProps = CalendarItemLayout & Pick<UseEventDialogReturn, "handleSelectEvent">;
+type CalendarItemProps = CalendarItemLayout & Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
-const CalendarItem = ({ event, left, top, width, height, zIndex, handleSelectEvent }: CalendarItemProps) => {
+const CalendarItem = ({ event, left, top, width, height, zIndex, handleSelectItem }: CalendarItemProps) => {
   const { id, category, title, start, end } = event;
 
   const isCompact = height < ROW_HEIGHT;
@@ -30,7 +31,7 @@ const CalendarItem = ({ event, left, top, width, height, zIndex, handleSelectEve
         height: `${height - 2}px`,
         zIndex,
       }}
-      onClick={() => handleSelectEvent(id)}
+      onClick={() => handleSelectItem(id)}
     >
       <ItemContent className={cn("w-full", isCompact ? "flex-row items-center gap-2" : "flex-col gap-1")}>
         {isCompact ? (

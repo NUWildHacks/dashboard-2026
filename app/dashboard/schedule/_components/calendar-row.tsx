@@ -7,7 +7,7 @@ import { getEventLayouts } from "@/lib/calendar";
 import { CalendarRowInterval } from "@/types/calendar";
 import Event from "@/types/events";
 
-import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
 import CalendarItem from "./calendar-item";
 
@@ -15,9 +15,9 @@ type CalendarRowProps = {
   events: Event[];
   overlapGroups: Map<Event["id"], Set<Event["id"]>>;
 } & CalendarRowInterval &
-  Pick<UseEventDialogReturn, "handleSelectEvent">;
+  Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
-const CalendarRow = ({ start, end, label, events, overlapGroups, handleSelectEvent }: CalendarRowProps) => {
+const CalendarRow = ({ start, end, label, events, overlapGroups, handleSelectItem }: CalendarRowProps) => {
   const filteredEvents = events.filter((event) => event.start >= start && event.start < end);
 
   const eventLayouts = getEventLayouts(filteredEvents, events, start, end, overlapGroups);
@@ -29,7 +29,7 @@ const CalendarRow = ({ start, end, label, events, overlapGroups, handleSelectEve
       </div>
       <div className="relative h-full border-t border-dashed">
         {eventLayouts.map((eventLayout) => (
-          <CalendarItem key={eventLayout.event.id} {...eventLayout} handleSelectEvent={handleSelectEvent} />
+          <CalendarItem key={eventLayout.event.id} {...eventLayout} handleSelectItem={handleSelectItem} />
         ))}
       </div>
     </div>

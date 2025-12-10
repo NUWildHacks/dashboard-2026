@@ -15,15 +15,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getSendTime } from "@/lib/time";
+import Announcement from "@/types/announcement";
 
-import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type AnnouncementDialogProps = Pick<UseAnnouncementDialogReturn, "isOpen" | "setIsOpen" | "selectedAnnouncement">;
+type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
 
-const AnnouncementDialog = ({ isOpen, setIsOpen, selectedAnnouncement }: AnnouncementDialogProps) => {
-  if (!selectedAnnouncement) return null;
+const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
+  if (!selectedItem) return null;
 
-  const { category, title, body, links, created_at } = selectedAnnouncement;
+  const { category, title, body, links, created_at } = selectedItem;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

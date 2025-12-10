@@ -5,13 +5,13 @@ import { SearchIcon } from "lucide-react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ANNOUNCEMENT_CATEGORIES } from "@/constants/announcement";
-import { AnnouncementCategory } from "@/types/announcement";
+import Announcement, { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
 import AnnouncementDialog from "../../_components/_announcements/announcement-dialog";
 import AnnouncementsList from "../../_components/_announcements/announcements-list";
-import { useAnnoucementDialog } from "../../_hooks/use-announcement-dialog";
 import { useAnnouncements } from "../../_hooks/use-announcements";
+import { useDialog } from "../../_hooks/use-dialog";
 import { CategoryWithAll, useFilters } from "../../_hooks/use-filters";
 
 type AnnouncementsWithFiltersProps = {
@@ -24,7 +24,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
   const useAnnouncementsReturn = useAnnouncements(userRole, { category, search });
   const { announcements } = useAnnouncementsReturn;
 
-  const useAnnouncementDialogReturn = useAnnoucementDialog(announcements);
+  const useAnnouncementDialogReturn = useDialog<Announcement>(announcements);
 
   return (
     <>

@@ -4,16 +4,16 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import Announcement from "@/types/announcement";
 
-import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
 import AnnouncementItem from "./announcement-item";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];
   isLoading: boolean;
-} & Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement">;
+} & Pick<UseDialogReturn<Announcement>, "handleSelectItem">;
 
-const AnnouncementsList = ({ announcements, isLoading, handleSelectAnnouncement }: AnnouncementsListProps) => {
+const AnnouncementsList = ({ announcements, isLoading, handleSelectItem }: AnnouncementsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -39,7 +39,7 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectAnnouncement 
   }
 
   return announcements.map((announcement) => (
-    <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
+    <AnnouncementItem key={announcement.id} handleSelectItem={handleSelectItem} {...announcement} />
   ));
 };
 

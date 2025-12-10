@@ -7,16 +7,16 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { getSendTime } from "@/lib/time";
 import Announcement from "@/types/announcement";
 
-import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+import { UseDialogReturn } from "../../_hooks/use-dialog";
 
-type AnnouncementItemProps = Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement"> &
+type AnnouncementItemProps = Pick<UseDialogReturn<Announcement>, "handleSelectItem"> &
   Pick<Announcement, "id" | "category" | "title" | "created_at">;
 
-const AnnouncementItem = ({ handleSelectAnnouncement, id, category, title, created_at }: AnnouncementItemProps) => {
+const AnnouncementItem = ({ handleSelectItem, id, category, title, created_at }: AnnouncementItemProps) => {
   return (
     <Item
       variant="outline"
-      onClick={() => handleSelectAnnouncement(id)}
+      onClick={() => handleSelectItem(id)}
       className="w-full transition-shadow hover:shadow-md hover:cursor-pointer"
     >
       <ItemContent className="gap-2">

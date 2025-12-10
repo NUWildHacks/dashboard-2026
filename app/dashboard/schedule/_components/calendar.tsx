@@ -6,10 +6,10 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EVENT_CATEGORIES } from "@/constants/event";
 import { createOverlapGroups, getVisibleRowIntervals } from "@/lib/calendar";
-import { EventCategory } from "@/types/events";
+import Event, { EventCategory } from "@/types/events";
 
 import EventDialog from "../../_components/_events/event-dialog";
-import { useEventDialog } from "../../_hooks/use-event-dialog";
+import { useDialog } from "../../_hooks/use-dialog";
 import { useEvents } from "../../_hooks/use-events";
 import { CategoryWithAll, useFilters } from "../../_hooks/use-filters";
 
@@ -21,7 +21,7 @@ const Calendar = () => {
   const useEventsReturn = useEvents({ category, search });
   const { events } = useEventsReturn;
 
-  const useEventDialogReturn = useEventDialog(events);
+  const useEventDialogReturn = useDialog<Event>(events);
 
   const overlapGroups = createOverlapGroups(events);
 

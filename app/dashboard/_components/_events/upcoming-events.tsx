@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
+import Event from "@/types/events";
 
-import { useEventDialog } from "../../_hooks/use-event-dialog";
+import { useDialog } from "../../_hooks/use-dialog";
 import { useEvents } from "../../_hooks/use-events";
 
 import EventDialog from "./event-dialog";
@@ -20,7 +21,7 @@ const UpcomingEvents = () => {
   });
   const { events } = useEventsReturn;
 
-  const useEventDialogReturn = useEventDialog(events);
+  const useEventDialogReturn = useDialog<Event>(events);
 
   return (
     <>
