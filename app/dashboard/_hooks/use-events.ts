@@ -1,13 +1,17 @@
 "use client";
 
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
-import Event from "@/types/events";
+import Event, { EventCategory } from "@/types/events";
+
+import { UseFiltersReturn } from "./use-filters";
 
 export type UseEventsSettings = {
+  category?: UseFiltersReturn<EventCategory>["category"];
+  search?: UseFiltersReturn<EventCategory>["search"];
   limitCount?: number;
 };
 
@@ -20,7 +24,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { limitCount } = settings;
+  const { category, search, limitCount } = settings;
 
   useEffect(() => {
     let q = query(collection(db, EVENTS_COLLECTION), orderBy("start", "asc"));
@@ -52,5 +56,26 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return () => unsubscribe();
   }, [limitCount]);
 
-  return { events, isLoading };
+  const filteredEvents = useMemo(() => {
+    let result = events;
+
+    if (category && category !== "all") {
+      result = result.filter((event) => event.category === category);
+    }
+
+    if (search && search !== "") {
+      const searchLower = search.toLowerCase();
+      result = result.filter((event) => {
+        return (
+          event.title.toLowerCase().includes(searchLower) ||
+          event.body.toLowerCase().includes(searchLower) ||
+          event.category.toLowerCase().includes(searchLower)
+        );
+      });
+    }
+
+    return result;
+  }, [events, category, search]);
+
+  return { events: filteredEvents, isLoading };
 };

@@ -5,20 +5,20 @@ import { useEffect, useMemo, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import Announcement from "@/types/announcement";
+import Announcement, { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
-import { AnnouncementCategoryWithAll } from "../announcements/_hooks/use-announcement-filters";
+import { UseFiltersReturn } from "./use-filters";
+
+export type UseAnnouncementsSettings = {
+  category?: UseFiltersReturn<AnnouncementCategory>["category"];
+  search?: UseFiltersReturn<AnnouncementCategory>["search"];
+  limitCount?: number;
+};
 
 export type UseAnnouncementsReturn = {
   announcements: Announcement[];
   isLoading: boolean;
-};
-
-export type UseAnnouncementsSettings = {
-  category?: AnnouncementCategoryWithAll;
-  search?: string;
-  limitCount?: number;
 };
 
 export const useAnnouncements = (
@@ -36,15 +36,6 @@ export const useAnnouncements = (
       where("audience", "array-contains", userRole),
       orderBy("created_at", "desc")
     );
-
-    if (category && category !== "all") {
-      q = query(
-        collection(db, ANNOUNCEMENTS_COLLECTION),
-        where("audience", "array-contains", userRole),
-        where("category", "==", category),
-        orderBy("created_at", "desc")
-      );
-    }
 
     if (limitCount) {
       q = query(q, limit(limitCount));
@@ -71,23 +62,29 @@ export const useAnnouncements = (
     );
 
     return () => unsubscribe();
-  }, [userRole, category, limitCount]);
+  }, [userRole, limitCount]);
 
   const filteredAnnouncements = useMemo(() => {
-    if (!search || search === "") {
-      return announcements;
+    let result = announcements;
+
+    if (category && category !== "all") {
+      result = result.filter((announcement) => announcement.category === category);
     }
 
-    return announcements.filter((announcement) => {
+    if (search && search !== "") {
       const searchLower = search.toLowerCase();
+      result = result.filter((announcement) => {
+        return (
+          announcement.title.toLowerCase().includes(searchLower) ||
+          announcement.body.toLowerCase().includes(searchLower) ||
+          announcement.category.toLowerCase().includes(searchLower) ||
+          announcement.links.some((link) => link.toLowerCase().includes(searchLower))
+        );
+      });
+    }
 
-      return (
-        announcement.title.toLowerCase().includes(searchLower) ||
-        announcement.body.toLowerCase().includes(searchLower) ||
-        announcement.links.some((link) => link.toLowerCase().includes(searchLower))
-      );
-    });
-  }, [search, announcements]);
+    return result;
+  }, [announcements, category, search]);
 
   return { announcements: filteredAnnouncements, isLoading };
 };

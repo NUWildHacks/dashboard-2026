@@ -4,22 +4,22 @@ import { SearchIcon } from "lucide-react";
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FOOD, SCHEDULE, SOCIAL, URGENT } from "@/constants/announcement";
+import { ANNOUNCEMENT_CATEGORIES } from "@/constants/announcement";
+import { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
-import { AnnouncementCategoryWithAll, useAnnouncementFilters } from "../_hooks/use-announcement-filters";
 import AnnouncementDialog from "../../_components/_announcements/announcement-dialog";
 import AnnouncementsList from "../../_components/_announcements/announcements-list";
 import { useAnnoucementDialog } from "../../_hooks/use-announcement-dialog";
 import { useAnnouncements } from "../../_hooks/use-announcements";
+import { CategoryWithAll, useFilters } from "../../_hooks/use-filters";
 
 type AnnouncementsWithFiltersProps = {
   userRole: User["role"];
 };
 
 const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) => {
-  const useAnnouncementFiltersReturn = useAnnouncementFilters();
-  const { category, setCategory, search, setSearch } = useAnnouncementFiltersReturn;
+  const { category, setCategory, search, setSearch } = useFilters<AnnouncementCategory>();
 
   const useAnnouncementsReturn = useAnnouncements(userRole, { category, search });
   const { announcements } = useAnnouncementsReturn;
@@ -30,13 +30,14 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <Tabs value={category} onValueChange={(value) => setCategory(value as AnnouncementCategoryWithAll)}>
+          <Tabs value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<AnnouncementCategory>)}>
             <TabsList>
               <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value={URGENT}>{URGENT}</TabsTrigger>
-              <TabsTrigger value={SCHEDULE}>{SCHEDULE}</TabsTrigger>
-              <TabsTrigger value={FOOD}>{FOOD}</TabsTrigger>
-              <TabsTrigger value={SOCIAL}>{SOCIAL}</TabsTrigger>
+              {ANNOUNCEMENT_CATEGORIES.map((category) => (
+                <TabsTrigger key={category} value={category}>
+                  {category}
+                </TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
           <InputGroup className="max-w-[350px]">

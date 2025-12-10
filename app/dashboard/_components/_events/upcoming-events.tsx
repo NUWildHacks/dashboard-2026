@@ -15,7 +15,9 @@ import EventDialog from "./event-dialog";
 import EventsList from "./events-list";
 
 const UpcomingEvents = () => {
-  const useEventsReturn = useEvents({ limitCount: 3 });
+  const useEventsReturn = useEvents({
+    limitCount: 3,
+  });
   const { events } = useEventsReturn;
 
   const useEventDialogReturn = useEventDialog(events);
