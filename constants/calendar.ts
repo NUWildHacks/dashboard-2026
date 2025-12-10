@@ -1,5 +1,9 @@
 import { TimeBlock } from "@/types/calendar";
 
+export const ROW_HEIGHT = 80;
+export const OFFSET = 8;
+export const ROW_WIDTH_PERCENTAGE = 100;
+
 export const CALENDAR_HOURS: TimeBlock[] = [
   { start: 0, label: "12 AM" },
   { start: 60, label: "1 AM" },

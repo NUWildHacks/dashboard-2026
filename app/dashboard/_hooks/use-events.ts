@@ -7,14 +7,20 @@ import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
 import Event from "@/types/events";
 
+export type UseEventsSettings = {
+  limitCount?: number;
+};
+
 export type UseEventsReturn = {
   events: Event[];
   isLoading: boolean;
 };
 
-export const useEvents = (limitCount = 3): UseEventsReturn => {
+export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const { limitCount } = settings;
 
   useEffect(() => {
     let q = query(collection(db, EVENTS_COLLECTION), orderBy("start", "asc"));
