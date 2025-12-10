@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function AnnouncementsLoading() {
+const AnnouncementsLoading = async () => {
   return (
     <div className="flex-1 flex flex-col gap-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -17,4 +17,6 @@ export default async function AnnouncementsLoading() {
       </div>
     </div>
   );
-}
+};
+
+export default AnnouncementsLoading;

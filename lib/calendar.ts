@@ -1,5 +1,24 @@
-import { ROW_HEIGHT } from "@/constants/calendar";
+import { BASE_Z_INDEX, OFFSET_PERCENTAGE, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "@/constants/calendar";
+import { CalendarItemLayout } from "@/types/calendar";
 import Event from "@/types/events";
+
+export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
+  const overlapGroups = new Map<Event["id"], Set<Event["id"]>>();
+
+  let currentEvent = undefined;
+  for (let i = 0; i < events.length; i++) {
+    if (!currentEvent || events[i].start >= currentEvent.end) {
+      currentEvent = events[i];
+      overlapGroups.set(currentEvent.id, new Set<Event["id"]>());
+
+      continue;
+    }
+
+    overlapGroups.get(currentEvent.id)?.add(events[i].id);
+  }
+
+  return overlapGroups;
+};
 
 export const calculateItemHeight = (event: Event, slotDuration: number): number => {
   const eventDuration = event.end - event.start;
@@ -40,4 +59,84 @@ export const isStandaloneEvent = (eventId: Event["id"], overlapGroups: Map<Event
 
   const groupSize = (overlapGroups.get(anchorId)?.size || 0) + 1;
   return groupSize === 1;
+};
+
+export const getEventLayouts = (
+  filteredEvents: Event[],
+  events: Event[],
+  start: number,
+  end: number,
+  overlapGroups: Map<Event["id"], Set<Event["id"]>>
+): CalendarItemLayout[] => {
+  const layouts: CalendarItemLayout[] = [];
+  const slotDuration = end - start;
+
+  for (let i = 0; i < filteredEvents.length; i++) {
+    const event = filteredEvents[i]!;
+
+    const top = calculateTopPosition(event, start, slotDuration);
+    const height = calculateItemHeight(event, slotDuration);
+
+    let zIndex = BASE_Z_INDEX;
+    for (let j = 0; j < i; j++) {
+      const previousEvent = filteredEvents[j]!;
+      if (previousEvent.start < event.end && previousEvent.end > event.start) {
+        zIndex++;
+      }
+    }
+
+    if (isStandaloneEvent(event.id, overlapGroups)) {
+      layouts.push({ event, left: 0, top, width: ROW_WIDTH_PERCENTAGE, height, zIndex });
+      continue;
+    }
+
+    const anchorId = findOverlapGroupAnchor(event.id, overlapGroups);
+    if (!anchorId) {
+      layouts.push({ event, left: 0, top, width: ROW_WIDTH_PERCENTAGE, height, zIndex });
+      continue;
+    }
+
+    const groupEvents = getOverlapGroupEvents(anchorId, events, overlapGroups);
+    const eventsInThisSlot = groupEvents.filter((event) => event.start >= start && event.start < end);
+
+    if (eventsInThisSlot.length > 1) {
+      const eventIndex = eventsInThisSlot.findIndex((e) => e.id === event.id);
+      const columnWidth = ROW_WIDTH_PERCENTAGE / eventsInThisSlot.length;
+
+      layouts.push({
+        event,
+        left: eventIndex * columnWidth,
+        top,
+        width: columnWidth,
+        height,
+        zIndex,
+      });
+    } else {
+      const previousOverlapping = groupEvents
+        .filter((e) => e.end > event.start && e.start < event.start)
+        .sort((a, b) => b.start - a.start)[0];
+
+      if (previousOverlapping) {
+        layouts.push({
+          event,
+          left: OFFSET_PERCENTAGE,
+          top,
+          width: ROW_WIDTH_PERCENTAGE - OFFSET_PERCENTAGE,
+          height,
+          zIndex,
+        });
+      } else {
+        layouts.push({
+          event,
+          left: 0,
+          top,
+          width: ROW_WIDTH_PERCENTAGE,
+          height,
+          zIndex,
+        });
+      }
+    }
+  }
+
+  return layouts;
 };

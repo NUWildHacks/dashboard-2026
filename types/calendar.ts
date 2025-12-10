@@ -1,7 +1,8 @@
 import Event from "./events";
 
-export type TimeBlock = {
+export type CalendarRowInterval = {
   start: number;
+  end: number;
   label: string;
 };
 

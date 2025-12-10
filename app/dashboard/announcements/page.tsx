@@ -7,7 +7,7 @@ import User from "@/types/user";
 
 import AnnouncementsWithFilters from "./_components/announcements-with-filters";
 
-export default async function Announcements() {
+const Announcements = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
 
@@ -17,4 +17,6 @@ export default async function Announcements() {
   const { role } = userDocSnapshot.data() as User;
 
   return <AnnouncementsWithFilters userRole={role} />;
-}
+};
+
+export default Announcements;

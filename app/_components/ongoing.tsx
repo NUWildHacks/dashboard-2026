@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants/routes";
 
-export default async function Registration() {
+const Registration = async () => {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">Welcome to Northwestern&apos;s premier hackathon! 🚀</h2>
@@ -25,4 +25,6 @@ export default async function Registration() {
       </div>
     </>
   );
-}
+};
+
+export default Registration;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-export default async function Navbar() {
+const Navbar = async () => {
   return (
     <nav className="w-full h-[72px] px-6 sm:px-12 flex justify-between items-center">
       <div className="flex justify-center items-center gap-2">
@@ -11,4 +11,6 @@ export default async function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

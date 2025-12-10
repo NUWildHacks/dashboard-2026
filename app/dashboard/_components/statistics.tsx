@@ -15,7 +15,7 @@ const chartConfig = {
 
 type StatisticsProps = WildHacksStatistics;
 
-export default function Statistics({ participants, judges, admins, projects, submissions }: StatisticsProps) {
+const Statistics = ({ participants, judges, admins, projects, submissions }: StatisticsProps) => {
   const chartData = [
     { item: "Participants", count: participants },
     { item: "Judges", count: judges },
@@ -59,4 +59,6 @@ export default function Statistics({ participants, judges, admins, projects, sub
       </CardContent>
     </Card>
   );
-}
+};
+
+export default Statistics;

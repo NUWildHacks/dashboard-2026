@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function VenueMap() {
+const VenueMap = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -29,4 +29,6 @@ export default function VenueMap() {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default VenueMap;

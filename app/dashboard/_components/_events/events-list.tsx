@@ -13,7 +13,7 @@ type EventsListProps = {
   isLoading: boolean;
 } & Pick<UseEventDialogReturn, "handleSelectEvent">;
 
-export default function EventsList({ events, isLoading, handleSelectEvent }: EventsListProps) {
+const EventsList = ({ events, isLoading, handleSelectEvent }: EventsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -39,4 +39,6 @@ export default function EventsList({ events, isLoading, handleSelectEvent }: Eve
   }
 
   return events.map((event) => <EventItem key={event.id} handleSelectEvent={handleSelectEvent} {...event} />);
-}
+};
+
+export default EventsList;

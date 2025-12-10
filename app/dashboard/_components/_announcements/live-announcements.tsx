@@ -19,7 +19,7 @@ type LiveAnnouncementsProps = {
   userRole: User["role"];
 };
 
-export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) {
+const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
   const useAnnouncementsReturn = useAnnouncements(userRole, { limitCount: 3 });
   const { announcements } = useAnnouncementsReturn;
 
@@ -54,4 +54,6 @@ export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) 
       <AnnouncementDialog {...useAnnouncementDialogReturn} />
     </>
   );
-}
+};
+
+export default LiveAnnouncements;

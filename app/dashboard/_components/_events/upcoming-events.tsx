@@ -14,7 +14,7 @@ import { useEvents } from "../../_hooks/use-events";
 import EventDialog from "./event-dialog";
 import EventsList from "./events-list";
 
-export default function UpcomingEvents() {
+const UpcomingEvents = () => {
   const useEventsReturn = useEvents({ limitCount: 3 });
   const { events } = useEventsReturn;
 
@@ -49,4 +49,6 @@ export default function UpcomingEvents() {
       <EventDialog {...useEventDialogReturn} />
     </>
   );
-}
+};
+
+export default UpcomingEvents;

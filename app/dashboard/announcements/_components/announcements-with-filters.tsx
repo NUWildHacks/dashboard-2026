@@ -17,7 +17,7 @@ type AnnouncementsWithFiltersProps = {
   userRole: User["role"];
 };
 
-export default function AnnouncementsWithFilters({ userRole }: AnnouncementsWithFiltersProps) {
+const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) => {
   const useAnnouncementFiltersReturn = useAnnouncementFilters();
   const { category, setCategory, search, setSearch } = useAnnouncementFiltersReturn;
 
@@ -57,4 +57,6 @@ export default function AnnouncementsWithFilters({ userRole }: AnnouncementsWith
       <AnnouncementDialog {...useAnnouncementDialogReturn} />
     </>
   );
-}
+};
+
+export default AnnouncementsWithFilters;

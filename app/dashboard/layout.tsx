@@ -7,11 +7,11 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { getHeaderText } from "@/lib/sidebar";
 
-import { DashboardSidebar } from "./_components/_sidebar/dashboard-sidebar";
+import DashboardSidebar from "./_components/_sidebar/dashboard-sidebar";
 
 type DashboardLayoutProps = PropsWithChildren;
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const pathname = usePathname();
 
   return (
@@ -29,4 +29,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </SidebarInset>
     </SidebarProvider>
   );
-}
+};
+
+export default DashboardLayout;

@@ -4,7 +4,7 @@ import { DASHBOARD_SUPPORT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constan
 import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
 
-export default async function Support() {
+const Support = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SUPPORT_PATH)}`);
 
@@ -12,4 +12,6 @@ export default async function Support() {
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
   return <></>;
-}
+};
+
+export default Support;

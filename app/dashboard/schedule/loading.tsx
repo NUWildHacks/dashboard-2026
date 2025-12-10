@@ -1,15 +1,15 @@
-import { CALENDAR_HOURS } from "@/constants/calendar";
+import { CALENDAR_ROW_INTERVALS } from "@/constants/calendar";
 import { cn } from "@/lib/utils";
 
-export default async function ScheduleLoading() {
+const ScheduleLoading = async () => {
   return (
     <div className="w-full flex flex-col py-2">
-      {CALENDAR_HOURS.map(({ start, label }, index) => (
+      {CALENDAR_ROW_INTERVALS.map(({ start, label }, index) => (
         <div
           key={`${label}-${start}`}
           className={cn(
             "w-full grid grid-cols-[50px_1fr] space-x-2",
-            index !== CALENDAR_HOURS.length - 1 && "h-[80px]"
+            index !== CALENDAR_ROW_INTERVALS.length - 1 && "h-[80px]"
           )}
         >
           <div className="relative text-sm h-full">
@@ -20,4 +20,6 @@ export default async function ScheduleLoading() {
       ))}
     </div>
   );
-}
+};
+
+export default ScheduleLoading;

@@ -13,11 +13,7 @@ type AnnouncementsListProps = {
   isLoading: boolean;
 } & Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement">;
 
-export default function AnnouncementsList({
-  announcements,
-  isLoading,
-  handleSelectAnnouncement,
-}: AnnouncementsListProps) {
+const AnnouncementsList = ({ announcements, isLoading, handleSelectAnnouncement }: AnnouncementsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -45,4 +41,6 @@ export default function AnnouncementsList({
   return announcements.map((announcement) => (
     <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
   ));
-}
+};
+
+export default AnnouncementsList;

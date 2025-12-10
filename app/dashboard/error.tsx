@@ -8,7 +8,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import { ROOT_PATH } from "@/constants/routes";
 import { ErrorPageProps } from "@/types/error-page";
 
-export default function DashboardError({ error, reset }: ErrorPageProps) {
+const DashboardError = ({ error, reset }: ErrorPageProps) => {
   useEffect(() => {
     console.log(error);
   }, [error]);
@@ -33,4 +33,6 @@ export default function DashboardError({ error, reset }: ErrorPageProps) {
       </Card>
     </main>
   );
-}
+};
+
+export default DashboardError;

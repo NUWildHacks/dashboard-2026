@@ -12,13 +12,7 @@ import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialo
 type AnnouncementItemProps = Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement"> &
   Pick<Announcement, "id" | "category" | "title" | "created_at">;
 
-export default function AnnouncementItem({
-  handleSelectAnnouncement,
-  id,
-  category,
-  title,
-  created_at,
-}: AnnouncementItemProps) {
+const AnnouncementItem = ({ handleSelectAnnouncement, id, category, title, created_at }: AnnouncementItemProps) => {
   return (
     <Item
       variant="outline"
@@ -39,4 +33,6 @@ export default function AnnouncementItem({
       </ItemContent>
     </Item>
   );
-}
+};
+
+export default AnnouncementItem;

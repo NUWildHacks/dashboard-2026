@@ -18,7 +18,9 @@ import { items } from "@/constants/sidebar";
 
 import SidebarLogoutButton from "./sidebar-logout-button";
 
-export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
+type DashboardSidebarProps = ComponentProps<typeof Sidebar>;
+
+const DashboardSidebar = ({ ...props }: DashboardSidebarProps) => {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -72,4 +74,6 @@ export function DashboardSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
     </Sidebar>
   );
-}
+};
+
+export default DashboardSidebar;

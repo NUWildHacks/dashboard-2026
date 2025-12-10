@@ -18,7 +18,7 @@ type ComboboxProps<T extends FieldValues = FieldValues> = {
   maxResults: number;
 } & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
-export default function Combobox<T extends FieldValues>({
+const Combobox = <T extends FieldValues>({
   options,
   placeholder,
   field,
@@ -27,7 +27,7 @@ export default function Combobox<T extends FieldValues>({
   searchPlaceholder,
   minSearchLength,
   maxResults,
-}: ComboboxProps<T>) {
+}: ComboboxProps<T>) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -87,4 +87,6 @@ export default function Combobox<T extends FieldValues>({
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default Combobox;

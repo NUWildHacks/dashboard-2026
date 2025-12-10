@@ -19,7 +19,7 @@ import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
 
 type EventDialogProps = Pick<UseEventDialogReturn, "isOpen" | "setIsOpen" | "selectedEvent">;
 
-export default function EventDialog({ isOpen, setIsOpen, selectedEvent }: EventDialogProps) {
+const EventDialog = ({ isOpen, setIsOpen, selectedEvent }: EventDialogProps) => {
   if (!selectedEvent) return null;
 
   const { category, title, body, start, end } = selectedEvent;
@@ -52,4 +52,6 @@ export default function EventDialog({ isOpen, setIsOpen, selectedEvent }: EventD
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default EventDialog;

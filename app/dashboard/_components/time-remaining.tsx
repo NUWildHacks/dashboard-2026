@@ -7,7 +7,7 @@ import { useTimeRemaining } from "../_hooks/use-time-remaining";
 
 type TimeRemainingProps = Pick<WildHacksConfig, "started_at" | "duration">;
 
-export default function TimeRemaining({ started_at, duration }: TimeRemainingProps) {
+const TimeRemaining = ({ started_at, duration }: TimeRemainingProps) => {
   const { hours, minutes, seconds } = useTimeRemaining(started_at, duration);
 
   return (
@@ -38,4 +38,6 @@ export default function TimeRemaining({ started_at, duration }: TimeRemainingPro
       )}
     </Card>
   );
-}
+};
+
+export default TimeRemaining;

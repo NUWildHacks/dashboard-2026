@@ -16,7 +16,7 @@ import Statistics from "./_components/statistics";
 import TimeRemaining from "./_components/time-remaining";
 import VenueMap from "./_components/venue-map";
 
-export default async function Dashboard() {
+const Dashboard = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
 
@@ -47,4 +47,6 @@ export default async function Dashboard() {
       </div>
     </>
   );
-}
+};
+
+export default Dashboard;

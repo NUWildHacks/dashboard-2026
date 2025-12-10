@@ -51,7 +51,7 @@ type RegistrationFormProps = {
   state: WildHacksConfig["state"];
 };
 
-export default function RegistrationForm({ userId, state }: RegistrationFormProps) {
+const RegistrationForm = ({ userId, state }: RegistrationFormProps) => {
   const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(userId, state);
 
   return (
@@ -610,4 +610,6 @@ export default function RegistrationForm({ userId, state }: RegistrationFormProp
       </CardFooter>
     </Card>
   );
-}
+};
+
+export default RegistrationForm;

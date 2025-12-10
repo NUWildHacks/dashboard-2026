@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function DashboardLoading() {
+const DashboardLoading = async () => {
   return (
     <div className="flex-1 flex flex-col gap-4">
       <div className="flex flex-col lg:flex-row gap-4">
@@ -17,4 +17,6 @@ export default async function DashboardLoading() {
       </div>
     </div>
   );
-}
+};
+
+export default DashboardLoading;

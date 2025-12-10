@@ -1,3 +1,5 @@
-export default async function Loading() {
+const Loading = async () => {
   return <></>;
-}
+};
+
+export default Loading;

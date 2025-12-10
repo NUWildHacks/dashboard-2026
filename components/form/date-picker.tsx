@@ -14,7 +14,7 @@ type DatePickProps<T extends FieldValues = FieldValues> = {
   placeholder: string;
 } & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
-export default function DatePicker<T extends FieldValues>({ placeholder, field, fieldState }: DatePickProps<T>) {
+const DatePicker = <T extends FieldValues>({ placeholder, field, fieldState }: DatePickProps<T>) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -47,4 +47,6 @@ export default function DatePicker<T extends FieldValues>({ placeholder, field, 
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default DatePicker;

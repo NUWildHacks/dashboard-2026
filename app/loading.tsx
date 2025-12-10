@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 
-export default async function HomeLoading() {
+const HomeLoading = async () => {
   return (
     <main
       className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12"
@@ -12,4 +12,6 @@ export default async function HomeLoading() {
       <span className="sr-only">Please wait while we load your requested page</span>
     </main>
   );
-}
+};
+
+export default HomeLoading;

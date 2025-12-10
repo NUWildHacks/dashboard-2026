@@ -1,3 +1,5 @@
-export default async function ProjectLoading() {
+const ProjectLoading = async () => {
   return <></>;
-}
+};
+
+export default ProjectLoading;

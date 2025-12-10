@@ -12,7 +12,7 @@ import { WildHacksConfig } from "@/types/wildhacks";
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
 
-export default async function Home() {
+const Home = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
   const { state } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -29,4 +29,6 @@ export default async function Home() {
       <Footer />
     </>
   );
-}
+};
+
+export default Home;

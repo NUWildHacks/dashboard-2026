@@ -4,7 +4,7 @@ import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constan
 import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
 
-export default async function Project() {
+const Project = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
 
@@ -12,4 +12,6 @@ export default async function Project() {
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
   return <></>;
-}
+};
+
+export default Project;

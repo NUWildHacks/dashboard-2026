@@ -1,3 +1,5 @@
-export default async function SettingsLoading() {
+const SettingsLoading = async () => {
   return <></>;
-}
+};
+
+export default SettingsLoading;

@@ -10,7 +10,7 @@ import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
 type EventItemProps = Pick<UseEventDialogReturn, "handleSelectEvent"> &
   Pick<Event, "id" | "category" | "title" | "start" | "end">;
 
-export default function EventItem({ handleSelectEvent, id, category, title, start, end }: EventItemProps) {
+const EventItem = ({ handleSelectEvent, id, category, title, start, end }: EventItemProps) => {
   return (
     <Item
       variant="outline"
@@ -31,4 +31,6 @@ export default function EventItem({ handleSelectEvent, id, category, title, star
       </ItemContent>
     </Item>
   );
-}
+};
+
+export default EventItem;

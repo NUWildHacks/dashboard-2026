@@ -1,6 +1,7 @@
 "use client";
 
 import { Clock } from "lucide-react";
+import { memo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
@@ -13,15 +14,7 @@ import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
 
 type CalendarItemProps = CalendarItemLayout & Pick<UseEventDialogReturn, "handleSelectEvent">;
 
-export default function CalendarItem({
-  event,
-  left,
-  top,
-  width,
-  height,
-  zIndex,
-  handleSelectEvent,
-}: CalendarItemProps) {
+const CalendarItem = ({ event, left, top, width, height, zIndex, handleSelectEvent }: CalendarItemProps) => {
   const { id, category, title, start, end } = event;
 
   const isCompact = height < ROW_HEIGHT;
@@ -72,4 +65,6 @@ export default function CalendarItem({
       </ItemContent>
     </Item>
   );
-}
+};
+
+export default memo(CalendarItem);

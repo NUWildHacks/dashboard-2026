@@ -15,7 +15,7 @@ type QRCodeProps = {
   userId: User["id"];
 };
 
-export default function QRCode({ userId }: QRCodeProps) {
+const QRCode = ({ userId }: QRCodeProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -39,4 +39,6 @@ export default function QRCode({ userId }: QRCodeProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default QRCode;
