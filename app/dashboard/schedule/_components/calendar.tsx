@@ -2,11 +2,11 @@
 
 import { SearchIcon } from "lucide-react";
 
+import { EVENT_CATEGORIES } from "@/app/dashboard/_constants/event.constant";
+import Event, { EventCategory } from "@/app/dashboard/_types/event.type";
+import { createOverlapGroups, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib/calendar.lib";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EVENT_CATEGORIES } from "@/constants/event";
-import { createOverlapGroups, getVisibleCalendarRows } from "@/lib/calendar";
-import Event, { EventCategory } from "@/types/events";
 
 import EventDialog from "../../_components/_events/event-dialog";
 import { useDialog } from "../../_hooks/use-dialog";

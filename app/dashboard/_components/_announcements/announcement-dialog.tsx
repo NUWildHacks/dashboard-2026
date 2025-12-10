@@ -3,6 +3,7 @@
 import { Clock } from "lucide-react";
 import Link from "next/link";
 
+import Announcement from "@/app/dashboard/_types/announcement.type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getSendTime } from "@/lib/time";
-import Announcement from "@/types/announcement";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

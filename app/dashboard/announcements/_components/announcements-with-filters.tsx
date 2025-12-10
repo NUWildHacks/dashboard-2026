@@ -2,10 +2,10 @@
 
 import { SearchIcon } from "lucide-react";
 
+import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/_constants/announcement.constant";
+import Announcement, { AnnouncementCategory } from "@/app/dashboard/_types/announcement.type";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ANNOUNCEMENT_CATEGORIES } from "@/constants/announcement";
-import Announcement, { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
 import AnnouncementDialog from "../../_components/_announcements/announcement-dialog";

@@ -3,11 +3,11 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+import Event from "@/app/dashboard/_types/event.type";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
-import Event from "@/types/events";
 
 import { useDialog } from "../../_hooks/use-dialog";
 import { useEvents } from "../../_hooks/use-events";

@@ -3,9 +3,9 @@
 import { collection, query, where, orderBy, limit, onSnapshot } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
+import Announcement, { AnnouncementCategory } from "@/app/dashboard/_types/announcement.type";
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import Announcement, { AnnouncementCategory } from "@/types/announcement";
 import User from "@/types/user";
 
 import { UseFiltersReturn } from "./use-filters";

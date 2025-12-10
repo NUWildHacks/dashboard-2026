@@ -3,9 +3,9 @@
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
+import Event, { EventCategory } from "@/app/dashboard/_types/event.type";
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
-import Event, { EventCategory } from "@/types/events";
 
 import { UseFiltersReturn } from "./use-filters";
 

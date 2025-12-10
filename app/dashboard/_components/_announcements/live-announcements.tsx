@@ -3,11 +3,11 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
+import Announcement from "@/app/dashboard/_types/announcement.type";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
 import { cn } from "@/lib/utils";
-import Announcement from "@/types/announcement";
 import User from "@/types/user";
 
 import { useAnnouncements } from "../../_hooks/use-announcements";

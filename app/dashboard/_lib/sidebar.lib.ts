@@ -1,4 +1,4 @@
-import { headerTextMap } from "@/constants/sidebar";
+import { headerTextMap } from "@/app/dashboard/_constants/sidebar.constant";
 
 export function getHeaderText(pathname: string) {
   const subpath = pathname.split("/").at(-1);

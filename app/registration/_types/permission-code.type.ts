@@ -1,4 +1,4 @@
-import User from "./user";
+import User from "@/types/user";
 
 type PermissionCode = {
   email: User["email"];

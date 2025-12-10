@@ -3,12 +3,12 @@
 import { Clock } from "lucide-react";
 import { memo } from "react";
 
+import Event from "@/app/dashboard/_types/event.type";
+import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants/calendar.constant";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { ROW_HEIGHT } from "@/constants/calendar";
 import { getTimeFromMinutes } from "@/lib/time";
 import { cn } from "@/lib/utils";
-import Event from "@/types/events";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

@@ -2,6 +2,7 @@
 
 import { Clock } from "lucide-react";
 
+import Event from "@/app/dashboard/_types/event.type";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,7 +15,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getTimeFromMinutes } from "@/lib/time";
-import Event from "@/types/events";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

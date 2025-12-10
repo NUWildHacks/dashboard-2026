@@ -1,5 +1,5 @@
+import { getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib/calendar.lib";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getVisibleCalendarRows } from "@/lib/calendar";
 import { cn } from "@/lib/utils";
 
 const ScheduleLoading = async () => {

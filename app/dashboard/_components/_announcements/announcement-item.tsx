@@ -2,10 +2,10 @@
 
 import { Clock } from "lucide-react";
 
+import Announcement from "@/app/dashboard/_types/announcement.type";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { getSendTime } from "@/lib/time";
-import Announcement from "@/types/announcement";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

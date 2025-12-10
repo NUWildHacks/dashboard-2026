@@ -2,10 +2,10 @@
 
 import { memo } from "react";
 
-import { ROW_HEIGHT } from "@/constants/calendar";
-import { getCalendarItems } from "@/lib/calendar";
-import type { CalendarRow } from "@/types/calendar";
-import Event from "@/types/events";
+import Event from "@/app/dashboard/_types/event.type";
+import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants/calendar.constant";
+import { getCalendarItems } from "@/app/dashboard/schedule/_lib/calendar.lib";
+import type { CalendarRow } from "@/app/dashboard/schedule/_types/calendar.type";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

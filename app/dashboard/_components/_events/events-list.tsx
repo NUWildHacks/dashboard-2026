@@ -1,8 +1,8 @@
 import { CalendarX } from "lucide-react";
 
+import Event from "@/app/dashboard/_types/event.type";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import Event from "@/types/events";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

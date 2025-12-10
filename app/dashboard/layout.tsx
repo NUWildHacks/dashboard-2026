@@ -3,9 +3,9 @@
 import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 
+import { getHeaderText } from "@/app/dashboard/_lib/sidebar.lib";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { getHeaderText } from "@/lib/sidebar";
 
 import DashboardSidebar from "./_components/_sidebar/dashboard-sidebar";
 

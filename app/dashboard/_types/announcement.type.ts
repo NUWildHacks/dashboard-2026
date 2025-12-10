@@ -1,6 +1,6 @@
-import { ANNOUNCEMENT_CATEGORIES } from "@/constants/announcement";
+import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/_constants/announcement.constant";
 
-import { Role } from "./user";
+import { Role } from "../../../types/user";
 
 export type AnnouncementCategory = (typeof ANNOUNCEMENT_CATEGORIES)[number];
 

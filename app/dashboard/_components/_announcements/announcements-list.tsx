@@ -1,8 +1,8 @@
 import { MegaphoneOff } from "lucide-react";
 
+import Announcement from "@/app/dashboard/_types/announcement.type";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import Announcement from "@/types/announcement";
 
 import { UseDialogReturn } from "../../_hooks/use-dialog";
 

@@ -15,11 +15,11 @@ import {
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
 import { ONGOING } from "@/constants/wildhacks";
-import PermissionCode from "@/types/permission-code";
 import User from "@/types/user";
 import { WildHacksConfig } from "@/types/wildhacks";
 
-import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form-schema";
+import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schema";
+import PermissionCode from "../_types/permission-code.type";
 
 export type useRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;

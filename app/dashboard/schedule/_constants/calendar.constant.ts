@@ -1,4 +1,4 @@
-import { CalendarRow } from "@/types/calendar";
+import { CalendarRow } from "@/app/dashboard/schedule/_types/calendar.type";
 
 export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;
