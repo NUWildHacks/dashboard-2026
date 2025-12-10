@@ -15,6 +15,8 @@ export default function Calendar() {
   const useEventsReturn = useEvents({ limitCount: undefined });
   const { events } = useEventsReturn;
 
+  const useEventDialogReturn = useEventDialog(events);
+
   const overlapGroups = useMemo(() => {
     const overlapGroups = new Map<Event["id"], Set<Event["id"]>>();
 
@@ -33,8 +35,6 @@ export default function Calendar() {
     return overlapGroups;
   }, [events]);
 
-  const useEventDialogReturn = useEventDialog(events);
-
   return (
     <>
       <div className="w-full flex flex-col py-2">
@@ -49,6 +49,7 @@ export default function Calendar() {
               label={label}
               events={events}
               overlapGroups={overlapGroups}
+              {...useEventDialogReturn}
             />
           );
         })}

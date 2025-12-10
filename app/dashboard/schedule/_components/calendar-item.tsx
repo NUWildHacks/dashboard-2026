@@ -9,23 +9,35 @@ import { getTimeFromMinutes } from "@/lib/time";
 import { cn } from "@/lib/utils";
 import { CalendarItemLayout } from "@/types/calendar";
 
-type CalendarItemProps = CalendarItemLayout;
+import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
 
-export default function CalendarItem({ event, left, top, width, height }: CalendarItemProps) {
-  const { category, title, start, end } = event;
+type CalendarItemProps = CalendarItemLayout & Pick<UseEventDialogReturn, "handleSelectEvent">;
+
+export default function CalendarItem({
+  event,
+  left,
+  top,
+  width,
+  height,
+  zIndex,
+  handleSelectEvent,
+}: CalendarItemProps) {
+  const { id, category, title, start, end } = event;
 
   const isCompact = height < ROW_HEIGHT;
 
   return (
     <Item
       variant="outline"
-      className="absolute items-start px-3 py-2 bg-background transition-shadow hover:shadow-md hover:cursor-pointer z-10 overflow-hidden"
+      className="absolute items-start px-3 py-2 bg-background transition-shadow hover:shadow-md hover:cursor-pointer overflow-hidden"
       style={{
         left: `${left}%`,
         top: `${top}%`,
-        width: `${width}%`,
+        width: `calc(${width}% - 2px)`,
         height: `${height - 2}px`,
+        zIndex,
       }}
+      onClick={() => handleSelectEvent(id)}
     >
       <ItemContent className={cn("w-full", isCompact ? "flex-row items-center gap-2" : "flex-col gap-1")}>
         {isCompact ? (
