@@ -5,6 +5,9 @@ export const OFFSET_PERCENTAGE = 3 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;
 export const BASE_Z_INDEX = 10 as const;
 
+export const DEFAULT_FIRST_CALENDAR_ROW_INTERVAL_INDEX = 9 as const;
+export const DEFAULT_LAST_CALENDAR_ROW_INTERVAL_INDEX = 18 as const;
+
 export const CALENDAR_ROW_INTERVALS: CalendarRowInterval[] = [
   { start: 0, end: 60, label: "12 AM" },
   { start: 60, end: 120, label: "1 AM" },

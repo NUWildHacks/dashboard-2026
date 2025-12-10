@@ -1,7 +1,6 @@
 "use client";
 
-import { CALENDAR_ROW_INTERVALS } from "@/constants/calendar";
-import { createOverlapGroups } from "@/lib/calendar";
+import { createOverlapGroups, getVisibleRowIntervals } from "@/lib/calendar";
 
 import EventDialog from "../../_components/_events/event-dialog";
 import { useEventDialog } from "../../_hooks/use-event-dialog";
@@ -17,10 +16,12 @@ const Calendar = () => {
 
   const overlapGroups = createOverlapGroups(events);
 
+  const visibleRowIntervals = getVisibleRowIntervals(events);
+
   return (
     <>
       <div className="w-full flex flex-col py-2">
-        {CALENDAR_ROW_INTERVALS.slice(0, -1).map((calendarRowInterval) => (
+        {visibleRowIntervals.slice(0, -1).map((calendarRowInterval) => (
           <CalendarRow
             key={calendarRowInterval.label}
             events={events}
@@ -31,9 +32,7 @@ const Calendar = () => {
         ))}
         <div className="w-full grid grid-cols-[50px_1fr] space-x-2">
           <div className="relative text-sm h-full">
-            <p className="absolute top-0 m-0 w-full text-right -translate-y-1/2">
-              {CALENDAR_ROW_INTERVALS.at(-1)!.label}
-            </p>
+            <p className="absolute top-0 m-0 w-full text-right -translate-y-1/2">{visibleRowIntervals.at(-1)!.label}</p>
           </div>
           <div className="h-full border-t border-dashed" />
         </div>

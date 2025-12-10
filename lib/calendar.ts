@@ -1,5 +1,13 @@
-import { BASE_Z_INDEX, OFFSET_PERCENTAGE, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "@/constants/calendar";
-import { CalendarItemLayout } from "@/types/calendar";
+import {
+  BASE_Z_INDEX,
+  CALENDAR_ROW_INTERVALS,
+  DEFAULT_FIRST_CALENDAR_ROW_INTERVAL_INDEX,
+  DEFAULT_LAST_CALENDAR_ROW_INTERVAL_INDEX,
+  OFFSET_PERCENTAGE,
+  ROW_HEIGHT,
+  ROW_WIDTH_PERCENTAGE,
+} from "@/constants/calendar";
+import { CalendarItemLayout, CalendarRowInterval } from "@/types/calendar";
 import Event from "@/types/events";
 
 export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
@@ -18,6 +26,31 @@ export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event
   }
 
   return overlapGroups;
+};
+
+export const getVisibleRowIntervals = (events: Event[]): CalendarRowInterval[] => {
+  if (events.length === 0)
+    return CALENDAR_ROW_INTERVALS.slice(
+      DEFAULT_FIRST_CALENDAR_ROW_INTERVAL_INDEX,
+      DEFAULT_LAST_CALENDAR_ROW_INTERVAL_INDEX + 1
+    );
+
+  const firstEvent = events.at(0)!;
+  const lastEvent = events.at(-1)!;
+
+  const firstVisibleRowIntervalIndex = Math.min(
+    CALENDAR_ROW_INTERVALS.findIndex(
+      (interval) => interval.start <= firstEvent.start && interval.end > firstEvent.start
+    ),
+    DEFAULT_FIRST_CALENDAR_ROW_INTERVAL_INDEX
+  );
+  const lastVisibleRowIntervalIndex =
+    Math.max(
+      CALENDAR_ROW_INTERVALS.findIndex((interval) => interval.start <= lastEvent.end && interval.end > lastEvent.end),
+      DEFAULT_LAST_CALENDAR_ROW_INTERVAL_INDEX
+    ) + 1;
+
+  return CALENDAR_ROW_INTERVALS.slice(firstVisibleRowIntervalIndex, lastVisibleRowIntervalIndex);
 };
 
 export const calculateItemHeight = (event: Event, slotDuration: number): number => {

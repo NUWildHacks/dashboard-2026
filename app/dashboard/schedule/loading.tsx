@@ -1,15 +1,17 @@
-import { CALENDAR_ROW_INTERVALS } from "@/constants/calendar";
+import { getVisibleRowIntervals } from "@/lib/calendar";
 import { cn } from "@/lib/utils";
 
 const ScheduleLoading = async () => {
+  const visibleRowIntervals = getVisibleRowIntervals([]);
+
   return (
     <div className="w-full flex flex-col py-2">
-      {CALENDAR_ROW_INTERVALS.map(({ start, label }, index) => (
+      {visibleRowIntervals.map(({ start, label }, index) => (
         <div
           key={`${label}-${start}`}
           className={cn(
             "w-full grid grid-cols-[50px_1fr] space-x-2",
-            index !== CALENDAR_ROW_INTERVALS.length - 1 && "h-[80px]"
+            index !== visibleRowIntervals.length - 1 && "h-[80px]"
           )}
         >
           <div className="relative text-sm h-full">
