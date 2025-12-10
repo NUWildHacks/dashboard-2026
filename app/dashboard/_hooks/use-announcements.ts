@@ -19,9 +19,12 @@ export type UseAnnouncementsSettings = {
   category?: AnnouncementCategoryWithAll;
   search?: string;
   limitCount?: number;
-}
+};
 
-export const useAnnouncements = (userRole: User["role"], settings: UseAnnouncementsSettings): UseAnnouncementsReturn => {
+export const useAnnouncements = (
+  userRole: User["role"],
+  settings: UseAnnouncementsSettings
+): UseAnnouncementsReturn => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

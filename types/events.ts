@@ -1,4 +1,4 @@
-import { EVENT_CATEGORIES } from "@/constants/event"
+import { EVENT_CATEGORIES } from "@/constants/event";
 
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
@@ -8,9 +8,10 @@ type Event = {
   category: EventCategory;
 
   title: string;
+  body: string;
 
   start: number;
   end: number;
-}
+};
 
-export default Event
+export default Event;

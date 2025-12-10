@@ -1,7 +1,6 @@
 "use client";
 
 import { Clock } from "lucide-react";
-import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,16 +13,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getSendTime } from "@/lib/time";
+import { getTimeFromMinutes } from "@/lib/time";
 
-import { UseAnnouncementDialogReturn } from "../../_hooks/use-announcement-dialog";
+import { UseEventDialogReturn } from "../../_hooks/use-event-dialog";
 
-type AnnouncementDialogProps = Pick<UseAnnouncementDialogReturn, "isOpen" | "setIsOpen" | "selectedAnnouncement">;
+type EventDialogProps = Pick<UseEventDialogReturn, "isOpen" | "setIsOpen" | "selectedEvent">;
 
-export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnouncement }: AnnouncementDialogProps) {
-  if (!selectedAnnouncement) return null;
+export default function EventDialog({ isOpen, setIsOpen, selectedEvent }: EventDialogProps) {
+  if (!selectedEvent) return null;
 
-  const { category, title, body, links, created_at } = selectedAnnouncement;
+  const { category, title, body, start, end } = selectedEvent;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -38,24 +37,10 @@ export default function AnnouncementDialog({ isOpen, setIsOpen, selectedAnnounce
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
                   <Clock className="size-3" />
-                  {getSendTime(created_at)}
+                  {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
                 </span>
               </div>
               <p className="text-center sm:text-left">{body}</p>
-              {links.length !== 0 && (
-                <div className="space-y-2">
-                  <strong>Attached Links</strong>
-                  <ul className="space-y-1">
-                    {links.map((link) => (
-                      <li key={link}>
-                        <Link href={link} className="block hover:underline underline-offset-4">
-                          {link}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </div>
           </DialogDescription>
         </DialogHeader>

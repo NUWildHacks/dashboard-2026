@@ -19,4 +19,4 @@ type Announcement = {
   created_at: number;
 };
 
-export default Announcement
+export default Announcement;

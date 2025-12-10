@@ -21,7 +21,7 @@ type LiveAnnouncementsProps = {
 
 export default function LiveAnnouncements({ userRole }: LiveAnnouncementsProps) {
   const useAnnouncementsReturn = useAnnouncements(userRole, { limitCount: 3 });
-  const { announcements } = useAnnouncementsReturn 
+  const { announcements } = useAnnouncementsReturn;
 
   const useAnnouncementDialogReturn = useAnnoucementDialog(announcements);
 

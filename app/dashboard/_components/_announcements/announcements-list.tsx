@@ -12,7 +12,11 @@ type AnnouncementsListProps = {
   isLoading: boolean;
 } & Pick<UseAnnouncementDialogReturn, "handleSelectAnnouncement">;
 
-export default function AnnouncementsList({ announcements, isLoading, handleSelectAnnouncement }: AnnouncementsListProps) {
+export default function AnnouncementsList({
+  announcements,
+  isLoading,
+  handleSelectAnnouncement,
+}: AnnouncementsListProps) {
   if (announcements.length === 0) {
     return (
       <Empty>
@@ -28,14 +32,10 @@ export default function AnnouncementsList({ announcements, isLoading, handleSele
   }
 
   if (isLoading) {
-    return (
-      <></>
-    )
+    return <></>;
   }
 
-  return (
-    announcements.map((announcement) => (
-      <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
-    )) 
-  )
+  return announcements.map((announcement) => (
+    <AnnouncementItem key={announcement.id} handleSelectAnnouncement={handleSelectAnnouncement} {...announcement} />
+  ));
 }

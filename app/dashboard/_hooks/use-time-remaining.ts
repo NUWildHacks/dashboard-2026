@@ -11,8 +11,6 @@ export type UseTimeRemainingReturn = {
   seconds: number;
 };
 
-
-
 export const useTimeRemaining = (
   started_at: WildHacksConfig["started_at"],
   duration: WildHacksConfig["duration"]

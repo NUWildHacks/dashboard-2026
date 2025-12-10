@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { AnnouncementCategory } from "@/types/announcement";
 
-export type AnnouncementCategoryWithAll = AnnouncementCategory | "all"
+export type AnnouncementCategoryWithAll = AnnouncementCategory | "all";
 
 export type UseAnnouncementFiltersReturn = {
   category: AnnouncementCategoryWithAll;

@@ -1,7 +1,5 @@
-"use client"
+"use client";
 
-type EventCardProps = {}
-
-export default function EventCardprops({}: EventCardProps) {
-  return <></>
+export default function EventCardprops() {
+  return <></>;
 }

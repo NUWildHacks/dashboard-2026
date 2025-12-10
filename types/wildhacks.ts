@@ -4,7 +4,6 @@ export type WildHacksConfig = {
   state: (typeof STATES)[number];
 
   started_at: number | null;
-
   duration: number;
 
   updated_at: number;

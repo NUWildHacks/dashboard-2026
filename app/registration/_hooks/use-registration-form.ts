@@ -6,7 +6,12 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { WILDHACKS_COLLECTION, PERMISSION_CODES_COLLECTION, USERS_COLLECTION, WILDHACKS_STATISTICS_DOC } from "@/constants/db";
+import {
+  WILDHACKS_COLLECTION,
+  PERMISSION_CODES_COLLECTION,
+  USERS_COLLECTION,
+  WILDHACKS_STATISTICS_DOC,
+} from "@/constants/db";
 import { DASHBOARD_PATH } from "@/constants/routes";
 import { ATTENDING, PARTICIPANT } from "@/constants/user";
 import { ONGOING } from "@/constants/wildhacks";

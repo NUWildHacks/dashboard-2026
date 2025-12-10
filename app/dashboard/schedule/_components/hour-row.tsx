@@ -1,7 +1,5 @@
-"use client"
+"use client";
 
-type HourRowProps = {}
-
-export default function HourRow({}: HourRowProps) {
-  return <></>
+export default function HourRow() {
+  return <></>;
 }

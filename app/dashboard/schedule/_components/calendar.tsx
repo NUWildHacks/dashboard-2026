@@ -1,7 +1,5 @@
-"use client"
+"use client";
 
-type CalendarProps = {}
-
-export default function Calendar({}: CalendarProps) {
-  return <></>
+export default function Calendar() {
+  return <></>;
 }

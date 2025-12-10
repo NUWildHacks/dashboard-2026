@@ -13,7 +13,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-type StatisticsProps = WildHacksStatistics 
+type StatisticsProps = WildHacksStatistics;
 
 export default function Statistics({ participants, judges, admins, projects, submissions }: StatisticsProps) {
   const chartData = [

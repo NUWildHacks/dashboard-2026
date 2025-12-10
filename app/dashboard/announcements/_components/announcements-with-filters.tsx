@@ -19,9 +19,9 @@ type AnnouncementsWithFiltersProps = {
 
 export default function AnnouncementsWithFilters({ userRole }: AnnouncementsWithFiltersProps) {
   const useAnnouncementFiltersReturn = useAnnouncementFilters();
-  const { category, setCategory, search, setSearch } = useAnnouncementFiltersReturn; 
+  const { category, setCategory, search, setSearch } = useAnnouncementFiltersReturn;
 
-  const useAnnouncementsReturn = useAnnouncements(userRole, { category, search })
+  const useAnnouncementsReturn = useAnnouncements(userRole, { category, search });
   const { announcements } = useAnnouncementsReturn;
 
   const useAnnouncementDialogReturn = useAnnoucementDialog(announcements);

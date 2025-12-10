@@ -1,27 +1,24 @@
-"use client"
+"use client";
 
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
-import Event from "@/types/events"
+import Event from "@/types/events";
 
 export type UseEventsReturn = {
   events: Event[];
   isLoading: boolean;
-}
+};
 
 export const useEvents = (limitCount = 3): UseEventsReturn => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    let q = query(
-      collection(db, EVENTS_COLLECTION),
-      orderBy("start", "asc")
-    );
-    
+    let q = query(collection(db, EVENTS_COLLECTION), orderBy("start", "asc"));
+
     if (limitCount) {
       q = query(q, limit(limitCount));
     }
@@ -30,24 +27,24 @@ export const useEvents = (limitCount = 3): UseEventsReturn => {
       q,
       (snapshot) => {
         const docs = snapshot.docs.map(
-          (doc) => 
+          (doc) =>
             ({
               id: doc.id,
               ...doc.data(),
             }) as Event
         );
 
-        setEvents(docs)
+        setEvents(docs);
         setIsLoading(false);
       },
       (error) => {
         console.error("Error fetching events:", error);
         setIsLoading(false);
       }
-    )
+    );
 
     return () => unsubscribe();
-  }, [limitCount])
+  }, [limitCount]);
 
-  return { events, isLoading }
-}
+  return { events, isLoading };
+};
