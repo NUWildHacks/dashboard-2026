@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 
-import Announcement from "@/app/dashboard/_types/announcement.type";
+import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
 import User from "@/types/user";
 

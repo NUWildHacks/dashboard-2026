@@ -3,11 +3,11 @@
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-import Event, { EventCategory } from "@/app/dashboard/_types/event.type";
+import { EVENT_FIELDS } from "@/app/dashboard/schedule/_constants/event.constant";
+import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants/db";
-
-import { UseFiltersReturn } from "./use-filters";
+import { UseFiltersReturn } from "@/hooks/use-filters";
 
 export type UseEventsSettings = {
   category?: UseFiltersReturn<EventCategory>["category"];
@@ -27,7 +27,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
   const { category, search, limitCount } = settings;
 
   useEffect(() => {
-    let q = query(collection(db, EVENTS_COLLECTION), orderBy("start", "asc"));
+    let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start, "asc"));
 
     if (limitCount) {
       q = query(q, limit(limitCount));

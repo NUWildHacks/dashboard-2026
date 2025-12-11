@@ -1,8 +1,6 @@
 import { JSX } from "react";
 
-import { UseDialogReturn } from "@/app/dashboard/_hooks/use-dialog";
-import Event from "@/app/dashboard/_types/event.type";
-import CalendarItem from "@/app/dashboard/schedule/_components/calendar-item";
+import { CalendarItem } from "@/app/dashboard/schedule/_components";
 import {
   BASE_Z_INDEX,
   CALENDAR_ROWS,
@@ -11,7 +9,8 @@ import {
   ROW_HEIGHT,
   ROW_WIDTH_PERCENTAGE,
 } from "@/app/dashboard/schedule/_constants/calendar.constant";
-import { CalendarRow } from "@/app/dashboard/schedule/_types/calendar.type";
+import type { CalendarRow, Event } from "@/app/dashboard/schedule/_types";
+import { UseDialogReturn } from "@/hooks/use-dialog";
 
 export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
   const overlapGroups = new Map<Event["id"], Set<Event["id"]>>();

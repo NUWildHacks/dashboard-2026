@@ -1,11 +1,11 @@
-import { CalendarRow } from "@/app/dashboard/schedule/_types/calendar.type";
+import type { CalendarRow } from "@/app/dashboard/schedule/_types";
 
 export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;
 export const BASE_Z_INDEX = 10 as const;
 
 export const DEFAULT_FIRST_CALENDAR_ROW_INDEX = 9 as const;
-export const DEFAULT_LAST_CALENDAR_ROW_INDEX = 18 as const;
+export const DEFAULT_LAST_CALENDAR_ROW_INDEX = 17 as const;
 
 export const CALENDAR_ROWS: CalendarRow[] = [
   { start: 0, end: 60, label: "12 AM" },

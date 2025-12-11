@@ -3,18 +3,15 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import Announcement from "@/app/dashboard/_types/announcement.type";
+import { AnnouncementDialog, AnnouncementsList } from "@/app/dashboard/announcements/_components";
+import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
+import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
+import { useDialog } from "@/hooks/use-dialog";
 import { cn } from "@/lib/utils";
 import User from "@/types/user";
-
-import { useAnnouncements } from "../../_hooks/use-announcements";
-import { useDialog } from "../../_hooks/use-dialog";
-
-import AnnouncementDialog from "./announcement-dialog";
-import AnnouncementsList from "./announcements-list";
 
 type LiveAnnouncementsProps = {
   userRole: User["role"];

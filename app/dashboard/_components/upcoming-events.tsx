@@ -3,17 +3,14 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import Event from "@/app/dashboard/_types/event.type";
+import { EventDialog, EventsList } from "@/app/dashboard/schedule/_components";
+import { useEvents } from "@/app/dashboard/schedule/_hooks";
+import type { Event } from "@/app/dashboard/schedule/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes";
+import { useDialog } from "@/hooks/use-dialog";
 import { cn } from "@/lib/utils";
-
-import { useDialog } from "../../_hooks/use-dialog";
-import { useEvents } from "../../_hooks/use-events";
-
-import EventDialog from "./event-dialog";
-import EventsList from "./events-list";
 
 const UpcomingEvents = () => {
   const useEventsReturn = useEvents({

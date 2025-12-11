@@ -1,14 +1,14 @@
 "use client";
 
-import { collection, query, where, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { collection, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-import Announcement, { AnnouncementCategory } from "@/app/dashboard/_types/announcement.type";
+import { ANNOUNCEMENT_FIELDS } from "@/app/dashboard/announcements/_constants/announcement.constant";
+import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
+import { UseFiltersReturn } from "@/hooks/use-filters";
 import User from "@/types/user";
-
-import { UseFiltersReturn } from "./use-filters";
 
 export type UseAnnouncementsSettings = {
   category?: UseFiltersReturn<AnnouncementCategory>["category"];
@@ -33,8 +33,8 @@ export const useAnnouncements = (
   useEffect(() => {
     let q = query(
       collection(db, ANNOUNCEMENTS_COLLECTION),
-      where("audience", "array-contains", userRole),
-      orderBy("created_at", "desc")
+      where(ANNOUNCEMENT_FIELDS.audience, "array-contains", userRole),
+      orderBy(ANNOUNCEMENT_FIELDS.created_at, "desc")
     );
 
     if (limitCount) {

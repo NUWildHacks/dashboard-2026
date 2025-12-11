@@ -2,17 +2,16 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/_constants/announcement.constant";
-import Announcement, { AnnouncementCategory } from "@/app/dashboard/_types/announcement.type";
+import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants/announcement.constant";
+import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
+import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDialog } from "@/hooks/use-dialog";
+import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
 import User from "@/types/user";
 
-import AnnouncementDialog from "../../_components/_announcements/announcement-dialog";
-import AnnouncementsList from "../../_components/_announcements/announcements-list";
-import { useAnnouncements } from "../../_hooks/use-announcements";
-import { useDialog } from "../../_hooks/use-dialog";
-import { CategoryWithAll, useFilters } from "../../_hooks/use-filters";
+import { AnnouncementDialog, AnnouncementsList } from "./";
 
 type AnnouncementsWithFiltersProps = {
   userRole: User["role"];

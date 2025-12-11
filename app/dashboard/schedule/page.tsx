@@ -4,7 +4,7 @@ import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/consta
 import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
 
-import Calendar from "./_components/calendar";
+import { Calendar } from "./_components";
 
 const Schedule = async () => {
   const userId = await verifySession();

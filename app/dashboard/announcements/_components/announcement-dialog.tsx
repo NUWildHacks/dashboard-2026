@@ -1,8 +1,9 @@
 "use client";
 
 import { Clock } from "lucide-react";
+import Link from "next/link";
 
-import Event from "@/app/dashboard/_types/event.type";
+import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,16 +15,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getTimeFromMinutes } from "@/lib/time";
+import { UseDialogReturn } from "@/hooks/use-dialog";
+import { getSendTime } from "@/lib/time";
 
-import { UseDialogReturn } from "../../_hooks/use-dialog";
+type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
 
-type EventDialogProps = Pick<UseDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
-
-const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
+const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
   if (!selectedItem) return null;
 
-  const { category, title, body, start, end } = selectedItem;
+  const { category, title, body, links, created_at } = selectedItem;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -38,10 +38,24 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
                   <Clock className="size-3" />
-                  {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
+                  {getSendTime(created_at)}
                 </span>
               </div>
               <p className="text-center sm:text-left">{body}</p>
+              {links.length !== 0 && (
+                <div className="space-y-2">
+                  <strong>Attached Links</strong>
+                  <ul className="space-y-1">
+                    {links.map((link) => (
+                      <li key={link}>
+                        <Link href={link} className="block hover:underline underline-offset-4">
+                          {link}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </DialogDescription>
         </DialogHeader>
@@ -55,4 +69,4 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
   );
 };
 
-export default EventDialog;
+export default AnnouncementDialog;

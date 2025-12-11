@@ -9,11 +9,11 @@ import { getConfigDocSnapshot, getStatisticsDocSnapshot } from "@/lib/wildhacks"
 import User from "@/types/user";
 import { WildHacksConfig, WildHacksStatistics } from "@/types/wildhacks";
 
-import LiveAnnouncements from "./_components/_announcements/live-announcements";
-import UpcomingEvents from "./_components/_events/upcoming-events";
+import LiveAnnouncements from "./_components/live-announcements";
 import QRCode from "./_components/qr-code";
 import Statistics from "./_components/statistics";
 import TimeRemaining from "./_components/time-remaining";
+import UpcomingEvents from "./_components/upcoming-events";
 import VenueMap from "./_components/venue-map";
 
 const Dashboard = async () => {

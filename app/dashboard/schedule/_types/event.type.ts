@@ -1,4 +1,4 @@
-import { EVENT_CATEGORIES } from "@/app/dashboard/_constants/event.constant";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constant";
 
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 

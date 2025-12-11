@@ -5,7 +5,7 @@ import { verifySession } from "@/lib/session";
 import { getUserDocSnapshot } from "@/lib/user";
 import User from "@/types/user";
 
-import AnnouncementsWithFilters from "./_components/announcements-with-filters";
+import { AnnouncementsWithFilters } from "./_components";
 
 const Announcements = async () => {
   const userId = await verifySession();

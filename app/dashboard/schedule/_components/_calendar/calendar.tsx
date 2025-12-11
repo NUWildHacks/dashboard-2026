@@ -2,16 +2,16 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { EVENT_CATEGORIES } from "@/app/dashboard/_constants/event.constant";
-import Event, { EventCategory } from "@/app/dashboard/_types/event.type";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constant";
+import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import { createOverlapGroups, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib/calendar.lib";
+import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useDialog } from "@/hooks/use-dialog";
+import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
 
-import EventDialog from "../../_components/_events/event-dialog";
-import { useDialog } from "../../_hooks/use-dialog";
-import { useEvents } from "../../_hooks/use-events";
-import { CategoryWithAll, useFilters } from "../../_hooks/use-filters";
+import { EventDialog } from "../";
 
 import CalendarRow from "./calendar-row";
 
