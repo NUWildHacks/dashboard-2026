@@ -21,12 +21,12 @@ import { WildHacksConfig } from "@/types/wildhacks";
 import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schema";
 import PermissionCode from "../_types/permission-code.type";
 
-export type useRegistrationFormReturn = {
+export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-export default function useRegistrationForm(userId: User["id"], state: WildHacksConfig["state"]) {
+const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
   const router = useRouter();
 
   const {
@@ -94,17 +94,8 @@ export default function useRegistrationForm(userId: User["id"], state: WildHacks
         await deleteDoc(permissionCodeDocRef);
       }
 
-      const user: User = {
-        id: userId,
-        ...rest,
-        role: PARTICIPANT,
-        status: ATTENDING,
-        created_at: now,
-        updated_at: now,
-      };
-
       const userDocRef = doc(db, USERS_COLLECTION, userId);
-      await setDoc(userDocRef, user);
+      await setDoc(userDocRef, { ...rest, role: PARTICIPANT, status: ATTENDING, created_at: now, updated_at: now });
 
       const statisticsDofRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
       await updateDoc(statisticsDofRef, {
@@ -122,4 +113,6 @@ export default function useRegistrationForm(userId: User["id"], state: WildHacks
   };
 
   return { control, handleSubmit, onSubmit, isSubmitting };
-}
+};
+
+export default useRegistrationForm;

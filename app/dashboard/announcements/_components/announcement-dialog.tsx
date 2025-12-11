@@ -61,7 +61,7 @@ const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDia
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline">Go back</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

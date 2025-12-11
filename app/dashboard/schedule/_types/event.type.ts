@@ -12,6 +12,8 @@ type Event = {
 
   start: number;
   end: number;
+
+  created_at: number;
 };
 
 export default Event;

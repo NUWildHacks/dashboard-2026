@@ -1,4 +1,4 @@
-import { Calendar, CodeXml, Home, Megaphone } from "lucide-react";
+import { Calendar, FolderGit2, Home, Megaphone } from "lucide-react";
 
 import {
   DASHBOARD_ANNOUNCEMENTS_PATH,
@@ -26,7 +26,7 @@ export const items = [
   {
     title: "Project",
     url: DASHBOARD_PROJECT_PATH,
-    icon: CodeXml,
+    icon: FolderGit2,
   },
 ];
 

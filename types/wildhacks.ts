@@ -3,6 +3,8 @@ import { STATES } from "@/constants/wildhacks";
 export type WildHacksConfig = {
   state: (typeof STATES)[number];
 
+  max_team_size: number;
+
   started_at: number | null;
   duration: number;
 

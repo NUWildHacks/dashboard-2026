@@ -46,7 +46,7 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button variant="outline">Go back</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
