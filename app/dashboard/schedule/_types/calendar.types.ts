@@ -1,4 +1,4 @@
-export type CalendarRow = {
+export type CalendarRowConfig = {
   start: number;
   end: number;
   label: string;

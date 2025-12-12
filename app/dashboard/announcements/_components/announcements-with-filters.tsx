@@ -2,14 +2,14 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants/announcement.constant";
+import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants/announcement.constants";
 import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
 import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDialog } from "@/hooks/use-dialog";
 import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
-import User from "@/types/user";
+import User from "@/types/user.types";
 
 import { AnnouncementDialog, AnnouncementsList } from "./";
 

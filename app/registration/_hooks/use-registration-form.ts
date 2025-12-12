@@ -11,15 +11,15 @@ import {
   PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,
   WILDHACKS_STATISTICS_DOC,
-} from "@/constants/db";
-import { DASHBOARD_PATH } from "@/constants/routes";
-import { ATTENDING, PARTICIPANT } from "@/constants/user";
-import { ONGOING } from "@/constants/wildhacks";
-import User from "@/types/user";
-import { WildHacksConfig } from "@/types/wildhacks";
+} from "@/constants/db.constants";
+import { DASHBOARD_PATH } from "@/constants/routes.constants";
+import { PARTICIPANT } from "@/constants/user.constants";
+import { ONGOING } from "@/constants/wildhacks.constants";
+import User from "@/types/user.types";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
-import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schema";
-import PermissionCode from "../_types/permission-code.type";
+import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schemas";
+import PermissionCode from "../_types/permission-code.types";
 
 export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
@@ -95,7 +95,7 @@ const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]
       }
 
       const userDocRef = doc(db, USERS_COLLECTION, userId);
-      await setDoc(userDocRef, { ...rest, role: PARTICIPANT, status: ATTENDING, created_at: now, updated_at: now });
+      await setDoc(userDocRef, { ...rest, role: PARTICIPANT, created_at: now, updated_at: now });
 
       const statisticsDofRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
       await updateDoc(statisticsDofRef, {

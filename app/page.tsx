@@ -5,9 +5,9 @@ import Image from "next/image";
 import "@/config/firebase-admin";
 import Footer from "@/app/_components/footer";
 import Navbar from "@/app/_components/navbar";
-import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/wildhacks";
-import { getConfigDocSnapshot } from "@/lib/wildhacks";
-import { WildHacksConfig } from "@/types/wildhacks";
+import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/wildhacks.constants";
+import { getConfigDocSnapshot } from "@/lib/wildhacks.lib";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";

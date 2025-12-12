@@ -1,10 +1,9 @@
-import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constant";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constants";
+import BaseModel from "@/types/base-model.types";
 
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
-type Event = {
-  id: string;
-
+type Event = BaseModel & {
   category: EventCategory;
 
   title: string;
@@ -12,8 +11,6 @@ type Event = {
 
   start: number;
   end: number;
-
-  created_at: number;
 };
 
 export default Event;

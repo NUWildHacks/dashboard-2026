@@ -1,13 +1,13 @@
 import "@/config/firebase-admin";
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { verifySession } from "@/lib/session";
-import { getUserDocSnapshot } from "@/lib/user";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
+import { verifySession } from "@/lib/session.lib";
+import { getUserDocSnapshot } from "@/lib/user.lib";
 import "@/config/firebase-client";
-import { getConfigDocSnapshot, getStatisticsDocSnapshot } from "@/lib/wildhacks";
-import User from "@/types/user";
-import { WildHacksConfig, WildHacksStatistics } from "@/types/wildhacks";
+import { getConfigDocSnapshot, getStatisticsDocSnapshot } from "@/lib/wildhacks.lib";
+import User from "@/types/user.types";
+import { WildHacksConfig, WildHacksStatistics } from "@/types/wildhacks.types";
 
 import LiveAnnouncements from "./_components/live-announcements";
 import QRCode from "./_components/qr-code";

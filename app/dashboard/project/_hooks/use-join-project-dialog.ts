@@ -2,28 +2,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
 import { arrayUnion, collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants/db";
-import User from "@/types/user";
-import { WildHacksConfig } from "@/types/wildhacks";
+import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants/db.constants";
+import User from "@/types/user.types";
 
-import { PROJECT_FIELDS } from "../_constants/project.constant";
+import { PROJECT_FIELDS } from "../_constants/project.constants";
 import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas/join-project-form.schema";
-import { Project } from "../_types/project.type";
 
-export type UseJoinProjectReturn = {
+export type UseJoinProjectDialogReturn = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   onSubmit: SubmitHandler<JoinProjectFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<JoinProjectFormSchema>, "control" | "handleSubmit">;
 
-const useJoinProjectForm = (
-  userId: User["id"],
-  max_team_size: WildHacksConfig["max_team_size"]
-): UseJoinProjectReturn => {
+const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn => {
   const router = useRouter();
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
     control,
@@ -65,11 +65,6 @@ const useJoinProjectForm = (
         return;
       }
 
-      if ((projectDocQuerySnapshot.docs[0].data() as Omit<Project, "id">).members.length === max_team_size) {
-        setError("join_code", { type: "validate", message: "The maximum team size has been reached for this project" });
-        return;
-      }
-
       const updateUserDocPromise = updateDoc(userDocRef, {
         project_id: projectDocQuerySnapshot.docs[0].id,
         updated_at: now,
@@ -82,6 +77,8 @@ const useJoinProjectForm = (
 
       await Promise.all([updateUserDocPromise, updateProjectDocPromise]);
 
+      setIsOpen(false);
+
       router.refresh();
     } catch (e) {
       const errorMessage = e instanceof FirebaseError || e instanceof Error ? e.message : "An unknown error occurred";
@@ -91,7 +88,7 @@ const useJoinProjectForm = (
     }
   };
 
-  return { control, handleSubmit, onSubmit, isSubmitting };
+  return { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen };
 };
 
-export default useJoinProjectForm;
+export default useJoinProjectDialog;

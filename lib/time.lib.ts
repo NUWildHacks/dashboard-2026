@@ -1,4 +1,4 @@
-import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants/time";
+import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants/time.constants";
 
 export function getDateFromMilliseconds(milliseconds: number) {
   const date = new Date(milliseconds);

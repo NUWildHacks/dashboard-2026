@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, WILDHACKS_STATISTICS_DOC } from "@/constants/db";
+import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, WILDHACKS_STATISTICS_DOC } from "@/constants/db.constants";
 
 export async function getConfigDocSnapshot() {
   const db = getFirestore();

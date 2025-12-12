@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps } from "react";
 
-import { items } from "@/app/dashboard/_constants/sidebar.constant";
+import { items } from "@/app/dashboard/_constants/sidebar.constants";
 import {
   Sidebar,
   SidebarContent,
@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants/routes";
+import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants/routes.constants";
 
 import SidebarLogoutButton from "./sidebar-logout-button";
 

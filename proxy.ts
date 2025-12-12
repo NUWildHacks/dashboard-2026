@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { SESSION_COOKIE_NAME } from "@/constants/cookie";
+import { SESSION_COOKIE_NAME } from "@/constants/cookie.constants";
 
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "./constants/routes";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "./constants/routes.constants";
 
 export async function proxy(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;

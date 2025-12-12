@@ -16,7 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getSendTime } from "@/lib/time";
+import { getSendTime } from "@/lib/time.lib";
 
 type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
 

@@ -7,9 +7,10 @@ import {
   RACES,
   ROLES,
   SCHOOLS,
-  STATUSES,
   TSHIRT_SIZES,
-} from "@/constants/user";
+} from "@/constants/user.constants";
+
+import BaseModel from "./base-model.types";
 
 export type Country = (typeof COUNTRIES)[number];
 export type School = (typeof SCHOOLS)[number];
@@ -22,11 +23,7 @@ export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
 
 export type Role = (typeof ROLES)[number];
 
-export type Status = (typeof STATUSES)[number];
-
-type User = {
-  id: string;
-
+type User = BaseModel & {
   email: string;
   first_name: string;
   last_name: string;
@@ -51,15 +48,8 @@ type User = {
   mlh_marketing: boolean;
 
   role: Role;
-  status: Status;
 
   project_id?: string;
-  checked_in?: boolean;
-  checked_in_at?: number;
-  dropped_at?: number;
-
-  created_at: number;
-  updated_at: number;
 };
 
 export default User;

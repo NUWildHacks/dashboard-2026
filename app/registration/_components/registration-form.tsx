@@ -29,7 +29,7 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ROOT_PATH } from "@/constants/routes";
+import { ROOT_PATH } from "@/constants/routes.constants";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -39,10 +39,10 @@ import {
   RACES,
   SCHOOLS,
   TSHIRT_SIZES,
-} from "@/constants/user";
-import { ONGOING } from "@/constants/wildhacks";
-import type User from "@/types/user";
-import { WildHacksConfig } from "@/types/wildhacks";
+} from "@/constants/user.constants";
+import { ONGOING } from "@/constants/wildhacks.constants";
+import type User from "@/types/user.types";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import useRegistrationForm from "../_hooks/use-registration-form";
 

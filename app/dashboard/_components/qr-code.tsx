@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import User from "@/types/user";
+import User from "@/types/user.types";
 
 type QRCodeProps = {
   userId: User["id"];

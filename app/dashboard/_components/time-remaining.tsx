@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { WildHacksConfig } from "@/types/wildhacks";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import { useTimeRemaining } from "../_hooks/use-time-remaining";
 

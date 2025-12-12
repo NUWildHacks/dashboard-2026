@@ -15,4 +15,5 @@ export const EVENT_FIELDS = {
   start: "start",
   end: "end",
   created_at: "created_at",
+  updated_at: "updated_at",
 } as const satisfies Record<keyof Omit<Event, "id">, string>;

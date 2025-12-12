@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { verifySession } from "@/lib/session";
-import { getUserDocSnapshot } from "@/lib/user";
+import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
+import { verifySession } from "@/lib/session.lib";
+import { getUserDocSnapshot } from "@/lib/user.lib";
 
 import { Calendar } from "./_components";
 

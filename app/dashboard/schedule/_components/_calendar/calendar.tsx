@@ -2,7 +2,7 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constant";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constants";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import { createOverlapGroups, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib/calendar.lib";
 import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";

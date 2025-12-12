@@ -1,16 +1,14 @@
 "use client";
 
-import { memo } from "react";
-
-import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants/calendar.constant";
+import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants/calendar.constants";
 import { getCalendarItems } from "@/app/dashboard/schedule/_lib/calendar.lib";
-import type { CalendarRow, Event } from "@/app/dashboard/schedule/_types";
+import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
 import { UseDialogReturn } from "@/hooks/use-dialog";
 
 type CalendarRowProps = {
   events: Event[];
   overlapGroups: Map<Event["id"], Set<Event["id"]>>;
-} & CalendarRow &
+} & CalendarRowConfig &
   Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
 const CalendarRow = ({ events, overlapGroups, start, end, label, handleSelectItem }: CalendarRowProps) => {
@@ -26,4 +24,4 @@ const CalendarRow = ({ events, overlapGroups, start, end, label, handleSelectIte
   );
 };
 
-export default memo(CalendarRow);
+export default CalendarRow;

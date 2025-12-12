@@ -1,7 +1,7 @@
 import { LogOut } from "lucide-react";
 
 import { SidebarMenuButton } from "@/components/ui/sidebar";
-import { deleteSession } from "@/lib/session";
+import { deleteSession } from "@/lib/session.lib";
 
 const SidebarLogoutButton = () => {
   return (

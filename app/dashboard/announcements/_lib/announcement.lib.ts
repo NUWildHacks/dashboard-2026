@@ -1,10 +1,10 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import type { Announcement } from "@/app/dashboard/announcements/_types";
-import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db";
-import User from "@/types/user";
+import { ANNOUNCEMENTS_COLLECTION } from "@/constants/db.constants";
+import User from "@/types/user.types";
 
-import { ANNOUNCEMENT_FIELDS } from "../_constants/announcement.constant";
+import { ANNOUNCEMENT_FIELDS } from "../_constants/announcement.constants";
 
 export async function getAnnouncementsByRole(userRole: User["role"], limit?: number) {
   const db = getFirestore();

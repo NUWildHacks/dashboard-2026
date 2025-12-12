@@ -9,7 +9,7 @@ import {
   RACES,
   SCHOOLS,
   TSHIRT_SIZES,
-} from "@/constants/user";
+} from "@/constants/user.constants";
 
 export const registrationFormSchema = z.object({
   first_name: z.string().min(1, "First name is required"),

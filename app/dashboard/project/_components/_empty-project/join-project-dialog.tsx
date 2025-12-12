@@ -16,32 +16,30 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import User from "@/types/user";
-import { WildHacksConfig } from "@/types/wildhacks";
+import User from "@/types/user.types";
 
-import useJoinProjectForm from "../../_hooks/use-join-project-form";
+import useJoinProjectDialog from "../../_hooks/use-join-project-dialog";
 
 type JoinProjectDialogProps = {
   userId: User["id"];
-  maxTeamSize: WildHacksConfig["max_team_size"];
 };
 
-const JoinProjectDialog = ({ userId, maxTeamSize }: JoinProjectDialogProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useJoinProjectForm(userId, maxTeamSize);
+const JoinProjectDialog = ({ userId }: JoinProjectDialogProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useJoinProjectDialog(userId);
 
   return (
-    <Dialog>
-      <form id="join-project-form" onSubmit={handleSubmit(onSubmit)}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Join existing project</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Join existing project</DialogTitle>
-            <DialogDescription>Please enter your provided code to join a project</DialogDescription>
-          </DialogHeader>
-          <FieldSet disabled={isSubmitting}>
-            <FieldGroup>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Join existing project</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Join existing project</DialogTitle>
+          <DialogDescription>Please enter your provided code to join a project</DialogDescription>
+        </DialogHeader>
+        <form id="join-project-form" onSubmit={handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <FieldSet disabled={isSubmitting}>
               <Controller
                 name="join_code"
                 control={control}
@@ -61,20 +59,20 @@ const JoinProjectDialog = ({ userId, maxTeamSize }: JoinProjectDialogProps) => {
                   </Field>
                 )}
               />
-            </FieldGroup>
-          </FieldSet>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="outline" disabled={isSubmitting}>
-                Go back
-              </Button>
-            </DialogClose>
-            <Button type="submit" form="join-project-form" disabled={isSubmitting}>
-              {isSubmitting ? <Loader2 /> : "Join project"}
+            </FieldSet>
+          </FieldGroup>
+        </form>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="outline" disabled={isSubmitting}>
+              Go back
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </form>
+          </DialogClose>
+          <Button type="submit" form="join-project-form" disabled={isSubmitting}>
+            {isSubmitting ? <Loader2 /> : "Join project"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };

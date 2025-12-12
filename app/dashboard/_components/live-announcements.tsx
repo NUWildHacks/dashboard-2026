@@ -8,10 +8,10 @@ import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
 import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes";
+import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants/routes.constants";
 import { useDialog } from "@/hooks/use-dialog";
-import { cn } from "@/lib/utils";
-import User from "@/types/user";
+import { cn } from "@/lib/utils.lib";
+import User from "@/types/user.types";
 
 type LiveAnnouncementsProps = {
   userRole: User["role"];

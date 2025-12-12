@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie";
-import { LOGIN_PATH, ROOT_PATH } from "@/constants/routes";
-import type User from "@/types/user";
+import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie.constants";
+import { LOGIN_PATH, ROOT_PATH } from "@/constants/routes.constants";
+import type User from "@/types/user.types";
 
 export async function createSession(idToken: string) {
   try {

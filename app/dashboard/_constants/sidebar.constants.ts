@@ -5,7 +5,7 @@ import {
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
-} from "../../../constants/routes";
+} from "../../../constants/routes.constants";
 
 export const items = [
   {

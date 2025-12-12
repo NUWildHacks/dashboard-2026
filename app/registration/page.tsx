@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes";
-import { WildHacksConfig } from "@/types/wildhacks";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
-import { verifySession } from "../../lib/session";
-import { getUserDocSnapshot } from "../../lib/user";
-import { getConfigDocSnapshot } from "../../lib/wildhacks";
+import { verifySession } from "../../lib/session.lib";
+import { getUserDocSnapshot } from "../../lib/user.lib";
+import { getConfigDocSnapshot } from "../../lib/wildhacks.lib";
 
 import RegistrationForm from "./_components/registration-form";
 

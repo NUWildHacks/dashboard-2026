@@ -2,8 +2,8 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PROJECTS_COLLECTION } from "@/constants/db";
-import User from "@/types/user";
+import { PROJECTS_COLLECTION } from "@/constants/db.constants";
+import User from "@/types/user.types";
 
 export async function getProjectDocSnapshot(projectId: User["project_id"]) {
   if (!projectId) return;

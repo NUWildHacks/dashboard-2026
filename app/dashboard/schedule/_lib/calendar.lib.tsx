@@ -8,8 +8,8 @@ import {
   DEFAULT_LAST_CALENDAR_ROW_INDEX,
   ROW_HEIGHT,
   ROW_WIDTH_PERCENTAGE,
-} from "@/app/dashboard/schedule/_constants/calendar.constant";
-import type { CalendarRow, Event } from "@/app/dashboard/schedule/_types";
+} from "@/app/dashboard/schedule/_constants/calendar.constants";
+import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
 import { UseDialogReturn } from "@/hooks/use-dialog";
 
 export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
@@ -30,7 +30,7 @@ export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event
   return overlapGroups;
 };
 
-export const getVisibleCalendarRows = (events: Event[]): CalendarRow[] => {
+export const getVisibleCalendarRows = (events: Event[]): CalendarRowConfig[] => {
   if (events.length === 0)
     return CALENDAR_ROWS.slice(DEFAULT_FIRST_CALENDAR_ROW_INDEX, DEFAULT_LAST_CALENDAR_ROW_INDEX + 1);
 

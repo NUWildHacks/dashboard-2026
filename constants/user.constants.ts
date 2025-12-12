@@ -6,6 +6,7 @@ import levelsOfStudy from "@/data/levels-of-study.json";
 import races from "@/data/races.json";
 import schools from "@/data/schools.json";
 import tshirtSizes from "@/data/tshirt-sizes.json";
+import User from "@/types/user.types";
 
 export const COUNTRIES = countries;
 export const SCHOOLS = schools;
@@ -21,6 +22,27 @@ export const JUDGE = "Judge" as const;
 export const ADMIN = "Admin" as const;
 export const ROLES = [PARTICIPANT, JUDGE, ADMIN] as const;
 
-export const ATTENDING = "Attending" as const;
-export const DROPPED = "Dropped" as const;
-export const STATUSES = [ATTENDING, DROPPED] as const;
+export const USER_FIELDS = {
+  email: "email",
+  first_name: "first_name",
+  last_name: "last_name",
+  age: "age",
+  phone: "phone",
+  country: "country",
+  school: "school",
+  level_of_study: "level_of_study",
+  field_of_study: "field_of_study",
+  github_username: "github_username",
+  tshirt_size: "tshirt_size",
+  gender: "gender",
+  race: "race",
+  dietary_restrictions: "dietary_restrictions",
+  other_dietary_restrictions: "other_dietary_restrictions",
+  mlh_code_of_conduct: "mlh_code_of_conduct",
+  mlh_privacy_policy: "mlh_privacy_policy",
+  mlh_marketing: "mlh_marketing",
+  role: "role",
+  project_id: "project_id",
+  created_at: "created_at",
+  updated_at: "updated_at",
+} as const satisfies Record<keyof Omit<User, "id">, string>;
