@@ -11,7 +11,7 @@ import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants/db.constants"
 import User from "@/types/user.types";
 
 import { PROJECT_FIELDS } from "../_constants/project.constants";
-import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas/join-project-form.schema";
+import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
 
 export type UseJoinProjectDialogReturn = {
   isOpen: boolean;
@@ -33,7 +33,7 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
   } = useForm<JoinProjectFormSchema>({
     resolver: zodResolver(joinProjectFormSchema),
     defaultValues: {
-      join_code: "",
+      invitation_code: "",
     },
   });
 
@@ -41,7 +41,7 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
     try {
       const now = Date.now();
 
-      const { join_code } = data;
+      const { invitation_code } = data;
 
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       const userDocSnapshot = await getDoc(userDocRef);
@@ -49,19 +49,19 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
       const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
 
       if (project_id) {
-        setError("join_code", { type: "validate", message: "You already have a project" });
+        setError("invitation_code", { type: "validate", message: "You already have a project" });
         return;
       }
 
       const projectDocQuery = query(
         collection(db, PROJECTS_COLLECTION),
-        where(PROJECT_FIELDS.join_code, "==", join_code),
+        where(PROJECT_FIELDS.invitation_code, "==", invitation_code),
         limit(1)
       );
       const projectDocQuerySnapshot = await getDocs(projectDocQuery);
 
       if (projectDocQuerySnapshot.empty) {
-        setError("join_code", { type: "validate", message: "Invalid join code" });
+        setError("invitation_code", { type: "validate", message: "Invalid invitation code" });
         return;
       }
 

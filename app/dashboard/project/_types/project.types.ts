@@ -4,9 +4,10 @@ export type Project = BaseModel & {
   name: string;
   description: string;
 
-  join_code: string;
+  invitation_code: string;
 
   github_url: string;
+  demo_url: string;
 
   submitted_at?: number;
 };

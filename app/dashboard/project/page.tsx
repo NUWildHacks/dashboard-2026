@@ -6,7 +6,9 @@ import { getUserDocSnapshot } from "@/lib/user.lib";
 import User from "@/types/user.types";
 
 import EmptyProject from "./_components/_empty-project/empty-project";
+import EditProjectForm from "./_components/edit-project-form";
 import { getProjectDocSnapshot } from "./_lib/project.lib";
+import { Project } from "./_types/project.types";
 
 const ProjectPage = async () => {
   const userId = await verifySession();
@@ -22,7 +24,11 @@ const ProjectPage = async () => {
     return <EmptyProject userId={userId} />;
   }
 
-  return <>Project Page</>;
+  return (
+    <div className="flex gap-4">
+      <EditProjectForm project={{ id: project_id!, ...(projectDocSnapshot.data() as Omit<Project, "id">) }} />
+    </div>
+  );
 };
 
 export default ProjectPage;

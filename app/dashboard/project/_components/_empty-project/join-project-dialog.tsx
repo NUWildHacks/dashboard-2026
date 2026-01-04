@@ -35,13 +35,13 @@ const JoinProjectDialog = ({ userId }: JoinProjectDialogProps) => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Join existing project</DialogTitle>
-          <DialogDescription>Please enter your provided code to join a project</DialogDescription>
+          <DialogDescription>Please enter a valid invitation code</DialogDescription>
         </DialogHeader>
         <form id="join-project-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
               <Controller
-                name="join_code"
+                name="invitation_code"
                 control={control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
@@ -51,7 +51,7 @@ const JoinProjectDialog = ({ userId }: JoinProjectDialogProps) => {
                     <Input
                       {...field}
                       id={field.name}
-                      placeholder="Enter your join code"
+                      placeholder="Enter your provided invitation code"
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
                     />

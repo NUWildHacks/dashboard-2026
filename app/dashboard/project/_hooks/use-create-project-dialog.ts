@@ -16,15 +16,16 @@ import {
 import User from "@/types/user.types";
 
 import { createProjectFormSchema, CreateProjectFormSchema } from "../_schemas/create-project-form.schemas";
+import { Project } from "../_types/project.types";
 
-export type CreateNewProjectDialogReturn = {
+export type UseCreateNewProjectDialogReturn = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   onSubmit: SubmitHandler<CreateProjectFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<CreateProjectFormSchema>, "control" | "handleSubmit">;
 
-const useCreateProjectDialog = (userId: User["id"]): CreateNewProjectDialogReturn => {
+const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -61,17 +62,18 @@ const useCreateProjectDialog = (userId: User["id"]): CreateNewProjectDialogRetur
         return;
       }
 
-      // Generate a Firestore auto-ID for the join code without creating a document
-      const join_code = doc(collection(db, PROJECTS_COLLECTION)).id;
+      // Generate a Firestore auto-ID for the invitation code without creating a document
+      const invitation_code = doc(collection(db, PROJECTS_COLLECTION)).id;
 
       const projectDocRef = await addDoc(collection(db, PROJECTS_COLLECTION), {
         name,
         description,
-        join_code,
+        invitation_code,
         github_url,
+        demo_url: "",
         created_at: now,
         updated_at: now,
-      });
+      } as Omit<Project, "id">);
 
       const updateUserDocPromise = updateDoc(userDocRef, {
         project_id: projectDocRef.id,

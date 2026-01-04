@@ -3,8 +3,9 @@ import { Project } from "../_types/project.types";
 export const PROJECT_FIELDS = {
   name: "name",
   description: "description",
-  join_code: "join_code",
+  invitation_code: "invitation_code",
   github_url: "github_url",
+  demo_url: "demo_url",
   created_at: "created_at",
   updated_at: "updated_at",
   submitted_at: "submitted_at",
