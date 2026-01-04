@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
 import { doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm, UseFormReset, UseFormReturn } from "react-hook-form";
+import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";

@@ -1,3 +1,4 @@
+import { Project } from "@/app/dashboard/project/_types/project.types";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -49,7 +50,7 @@ type User = BaseModel & {
 
   role: Role;
 
-  project_id?: string;
+  project_id?: Project["id"];
 };
 
 export default User;
