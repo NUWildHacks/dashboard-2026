@@ -7,6 +7,7 @@ import User from "@/types/user.types";
 
 import EmptyProject from "./_components/_empty-project/empty-project";
 import EditProjectForm from "./_components/edit-project-form";
+import TeamMembers from "./_components/team-members";
 import { getProjectDocSnapshot } from "./_lib/project.lib";
 import { Project } from "./_types/project.types";
 
@@ -24,9 +25,13 @@ const ProjectPage = async () => {
     return <EmptyProject userId={userId} />;
   }
 
+  const projectData = projectDocSnapshot.data() as Omit<Project, "id">;
+  const { invitation_code } = projectData;
+
   return (
-    <div className="flex gap-4">
-      <EditProjectForm project={{ id: project_id!, ...(projectDocSnapshot.data() as Omit<Project, "id">) }} />
+    <div className="flex flex-col lg:flex-row gap-4">
+      <EditProjectForm project={{ id: project_id!, ...projectData }} />
+      <TeamMembers projectId={project_id!} invitationCode={invitation_code} />
     </div>
   );
 };

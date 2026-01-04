@@ -22,7 +22,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
   const { control, handleSubmit, onSubmit, isSubmitting, handleReset } = useEditProjectForm(project);
 
   return (
-    <Card className="flex-2">
+    <Card className="flex-1 lg:flex-2">
       <CardContent>
         <form id="edit-project-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
@@ -33,7 +33,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                      Project Name
+                      Name
                     </FieldLabel>
                     <Input
                       {...field}
@@ -54,7 +54,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                      Project Description
+                      Description
                     </FieldLabel>
                     <Textarea
                       {...field}
