@@ -43,6 +43,7 @@ export const USER_FIELDS = {
   mlh_marketing: "mlh_marketing",
   role: "role",
   project_id: "project_id",
+  joined_project_at: "joined_project_at",
   created_at: "created_at",
   updated_at: "updated_at",
 } as const satisfies Record<keyof Omit<User, "id">, string>;

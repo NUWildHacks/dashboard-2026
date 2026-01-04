@@ -16,6 +16,7 @@ import { Project } from "../_types/project.types";
 export type UseEditProjectFormReturn = {
   onSubmit: SubmitHandler<EditProjectFormSchema>;
   isSubmitting: boolean;
+  isDirty: boolean;
   handleReset: () => void;
 } & Pick<UseFormReturn<EditProjectFormSchema>, "control" | "handleSubmit">;
 
@@ -28,7 +29,7 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
     control,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = useForm<EditProjectFormSchema>({
     resolver: zodResolver(editProjectFormSchema),
     defaultValues: {
@@ -70,7 +71,7 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
     reset(project);
   };
 
-  return { onSubmit, isSubmitting, control, handleSubmit, handleReset };
+  return { onSubmit, isSubmitting, isDirty, control, handleSubmit, handleReset };
 };
 
 export default useEditProjectForm;

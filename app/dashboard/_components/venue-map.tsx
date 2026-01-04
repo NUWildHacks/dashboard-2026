@@ -12,7 +12,7 @@ const VenueMap = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="shadow-none transition-shadow hover:shadow-md hover:cursor-pointer">
+        <Card className="shadow-xs transition-colors hover:bg-accent hover:cursor-pointer">
           <CardHeader>
             <CardTitle>View Venue Map</CardTitle>
             <CardDescription>

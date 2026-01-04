@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,10 +19,16 @@ type EditProjectFormProps = {
 const EditProjectForm = ({ project }: EditProjectFormProps) => {
   const { name, description, github_url, demo_url } = project;
 
-  const { control, handleSubmit, onSubmit, isSubmitting, handleReset } = useEditProjectForm(project);
+  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } = useEditProjectForm(project);
 
   return (
-    <Card className="flex-1 lg:flex-2">
+    <Card className="shadow-xs flex-1">
+      <CardHeader>
+        <CardTitle>Edit Project Details</CardTitle>
+        <CardDescription>
+          Make sure your project details are accurate for people who want to view your project
+        </CardDescription>
+      </CardHeader>
       <CardContent>
         <form id="edit-project-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
@@ -62,6 +68,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
                       placeholder={description}
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
+                      className="max-h-40"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
@@ -111,10 +118,10 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="edit-project-form" disabled={isSubmitting}>
+          <Button type="submit" form="edit-project-form" disabled={isSubmitting || !isDirty}>
             {isSubmitting ? <Loader2 /> : "Save Changes"}
           </Button>
-          <Button type="button" variant="outline" disabled={isSubmitting} onClick={handleReset}>
+          <Button type="button" variant="outline" disabled={isSubmitting || !isDirty} onClick={handleReset}>
             Reset
           </Button>
         </Field>

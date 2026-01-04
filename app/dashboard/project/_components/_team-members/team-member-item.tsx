@@ -1,0 +1,40 @@
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import User from "@/types/user.types";
+
+import { TeamMember } from "../../_hooks/use-team-members";
+import { Project } from "../../_types/project.types";
+
+import LeaveProjectDialog from "./leave-project-dialog";
+
+type TeamMemberItemProps = {
+  userId: User["id"];
+  projectId: Project["id"];
+} & TeamMember;
+
+const TeamMemberItem = ({
+  userId,
+  projectId,
+  id: teamMemberId,
+  first_name,
+  last_name,
+  github_username,
+}: TeamMemberItemProps) => {
+  return (
+    <div className="flex gap-4 justify-between items-center">
+      <div className="flex gap-4 justify-start items-center">
+        <Avatar className="size-10 outline">
+          <AvatarFallback>{first_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <div className="truncate">
+          <p className="text-sm font-semibold">
+            {first_name} {last_name}
+          </p>
+          <p className="text-xs text-muted-foreground">{github_username}</p>
+        </div>
+      </div>
+      {userId === teamMemberId && <LeaveProjectDialog userId={userId} projectId={projectId} />}
+    </div>
+  );
+};
+
+export default TeamMemberItem;

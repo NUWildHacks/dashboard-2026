@@ -25,7 +25,7 @@ const Statistics = ({ participants, judges, admins, projects, submissions }: Sta
   ];
 
   return (
-    <Card className="shadow-none row-span-3 md:col-span-2">
+    <Card className="shadow-xs row-span-3 md:col-span-2">
       <CardHeader>
         <CardTitle>Event Statistics</CardTitle>
         <CardDescription>

@@ -51,6 +51,7 @@ type User = BaseModel & {
   role: Role;
 
   project_id?: Project["id"];
+  joined_project_at?: number;
 };
 
 export default User;

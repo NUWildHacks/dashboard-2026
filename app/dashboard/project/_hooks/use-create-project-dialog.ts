@@ -68,6 +68,7 @@ const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogRe
       const projectDocRef = await addDoc(collection(db, PROJECTS_COLLECTION), {
         name,
         description,
+        owner_id: userId,
         invitation_code,
         github_url,
         demo_url: "",
@@ -77,8 +78,9 @@ const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogRe
 
       const updateUserDocPromise = updateDoc(userDocRef, {
         project_id: projectDocRef.id,
+        joined_project_at: now,
         updated_at: now,
-      });
+      } as Pick<User, "project_id" | "joined_project_at" | "updated_at">);
 
       const updateStatisticsDocPromise = updateDoc(statisticsDocRef, {
         projects: increment(1),

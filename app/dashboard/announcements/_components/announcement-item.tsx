@@ -16,7 +16,7 @@ const AnnouncementItem = ({ handleSelectItem, id, category, title, created_at }:
     <Item
       variant="outline"
       onClick={() => handleSelectItem(id)}
-      className="w-full transition-shadow hover:shadow-md hover:cursor-pointer"
+      className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
     >
       <ItemContent className="gap-2">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">

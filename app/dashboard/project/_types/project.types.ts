@@ -6,7 +6,6 @@ export type Project = BaseModel & {
   description: string;
 
   owner_id: User["id"];
-
   invitation_code: string;
 
   github_url: string;

@@ -11,7 +11,7 @@ const TimeRemaining = ({ started_at, duration }: TimeRemainingProps) => {
   const { hours, minutes, seconds } = useTimeRemaining(started_at, duration);
 
   return (
-    <Card className="shadow-none md:col-span-2">
+    <Card className="shadow-xs md:col-span-2">
       <CardHeader>
         <CardTitle>Time Remaining</CardTitle>
         <CardDescription>

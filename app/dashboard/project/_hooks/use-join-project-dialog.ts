@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
-import { arrayUnion, collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
@@ -65,17 +65,11 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
         return;
       }
 
-      const updateUserDocPromise = updateDoc(userDocRef, {
+      await updateDoc(userDocRef, {
         project_id: projectDocQuerySnapshot.docs[0].id,
+        joined_project_at: now,
         updated_at: now,
-      });
-
-      const updateProjectDocPromise = updateDoc(projectDocQuerySnapshot.docs[0].ref, {
-        members: arrayUnion(userId),
-        updated_at: now,
-      });
-
-      await Promise.all([updateUserDocPromise, updateProjectDocPromise]);
+      } as Pick<User, "project_id" | "joined_project_at" | "updated_at">);
 
       setIsOpen(false);
 

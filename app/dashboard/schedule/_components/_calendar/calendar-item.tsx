@@ -38,7 +38,7 @@ const CalendarItem = ({
   return (
     <Item
       variant="outline"
-      className="absolute items-start px-3 py-2 bg-background transition-shadow hover:shadow-md hover:cursor-pointer overflow-hidden"
+      className="absolute items-start px-3 py-2 shadow-xs bg-background transition-colors hover:bg-accent hover:cursor-pointer overflow-hidden"
       style={{
         left: `${left}%`,
         top: `${top}%`,

@@ -78,6 +78,7 @@ const CreateProjectDialog = ({ userId }: CreateProjectDialogProps) => {
                       placeholder="Enter your project description"
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
+                      className="max-h-40"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
