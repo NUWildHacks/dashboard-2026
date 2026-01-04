@@ -9,7 +9,7 @@ import { verifySession } from "../../lib/session.lib";
 
 import LoginButton from "./_components/login-button";
 
-const Login = async () => {
+const LoginPage = async () => {
   const userId = await verifySession();
   if (userId) redirect(DASHBOARD_PATH);
 
@@ -30,4 +30,4 @@ const Login = async () => {
   );
 };
 
-export default Login;
+export default LoginPage;

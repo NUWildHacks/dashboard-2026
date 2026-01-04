@@ -16,14 +16,14 @@ import TimeRemaining from "./_components/time-remaining";
 import UpcomingEvents from "./_components/upcoming-events";
 import VenueMap from "./_components/venue-map";
 
-const Dashboard = async () => {
+const DashboardPage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
 
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  const { role } = userDocSnapshot.data() as User;
+  const { role } = userDocSnapshot.data() as Omit<User, "id">;
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
@@ -49,4 +49,4 @@ const Dashboard = async () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

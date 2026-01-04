@@ -57,7 +57,7 @@ const useCreateProjectDialog = (userId: User["id"]): CreateNewProjectDialogRetur
       const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
 
       if (project_id) {
-        setError("root", { type: "validate", message: "You are already have a project" });
+        setError("root", { type: "validate", message: "You already have a project" });
         return;
       }
 

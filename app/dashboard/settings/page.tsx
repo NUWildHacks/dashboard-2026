@@ -4,7 +4,7 @@ import { DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/consta
 import { verifySession } from "@/lib/session.lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
 
-const Settings = async () => {
+const SettingsPage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
 
@@ -14,4 +14,4 @@ const Settings = async () => {
   return <></>;
 };
 
-export default Settings;
+export default SettingsPage;

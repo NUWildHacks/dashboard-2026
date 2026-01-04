@@ -21,7 +21,7 @@ const ScheduleLoading = async () => {
             )}
           >
             <div className="relative text-sm h-full">
-              <p className="absolute top-0 m-0 w-full text-right -translate-y-1/2">{label}</p>
+              <Skeleton className="absolute top-0 m-0 w-full h-[20px] -translate-y-1/2" />
             </div>
             <div className="h-full border-t border-dashed" />
           </div>

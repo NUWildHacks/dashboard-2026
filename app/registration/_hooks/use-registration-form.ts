@@ -97,8 +97,8 @@ const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       await setDoc(userDocRef, { ...rest, role: PARTICIPANT, created_at: now, updated_at: now });
 
-      const statisticsDofRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
-      await updateDoc(statisticsDofRef, {
+      const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
+      await updateDoc(statisticsDocRef, {
         participants: increment(1),
         updated_at: now,
       });

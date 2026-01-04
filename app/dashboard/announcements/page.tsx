@@ -7,16 +7,16 @@ import User from "@/types/user.types";
 
 import { AnnouncementsWithFilters } from "./_components";
 
-const Announcements = async () => {
+const AnnouncementsPage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
 
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  const { role } = userDocSnapshot.data() as User;
+  const { role } = userDocSnapshot.data() as Omit<User, "id">;
 
   return <AnnouncementsWithFilters userRole={role} />;
 };
 
-export default Announcements;
+export default AnnouncementsPage;

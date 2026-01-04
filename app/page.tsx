@@ -12,7 +12,7 @@ import { WildHacksConfig } from "@/types/wildhacks.types";
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
 
-const Home = async () => {
+const RootPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
   const { state } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -22,7 +22,7 @@ const Home = async () => {
       <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
         <div className="max-w-[650px] text-center space-y-5">
           <Image src="/wildhacks-splash.svg" alt="Main Logo" width={650} height={246.55} loading="eager" />
-          {state === ONGOING || (state === REGISTRATION && <Ongoing />)}
+          {(state === ONGOING || state === REGISTRATION) && <Ongoing />}
           {state === COMPLETED && <Completed />}
         </div>
       </main>
@@ -31,4 +31,4 @@ const Home = async () => {
   );
 };
 
-export default Home;
+export default RootPage;

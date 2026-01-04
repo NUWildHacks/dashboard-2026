@@ -8,7 +8,7 @@ import User from "@/types/user.types";
 import EmptyProject from "./_components/_empty-project/empty-project";
 import { getProjectDocSnapshot } from "./_lib/project.lib";
 
-const Project = async () => {
+const ProjectPage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
 
@@ -18,11 +18,11 @@ const Project = async () => {
 
   const projectDocSnapshot = await getProjectDocSnapshot(project_id);
 
-  if (!projectDocSnapshot) {
+  if (!projectDocSnapshot || !projectDocSnapshot.exists) {
     return <EmptyProject userId={userId} />;
   }
 
   return <>Project Page</>;
 };
 
-export default Project;
+export default ProjectPage;

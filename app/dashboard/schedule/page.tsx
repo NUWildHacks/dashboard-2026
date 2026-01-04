@@ -6,7 +6,7 @@ import { getUserDocSnapshot } from "@/lib/user.lib";
 
 import { Calendar } from "./_components";
 
-const Schedule = async () => {
+const SchedulePage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
 
@@ -16,4 +16,4 @@ const Schedule = async () => {
   return <Calendar />;
 };
 
-export default Schedule;
+export default SchedulePage;

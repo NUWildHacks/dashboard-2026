@@ -11,6 +11,10 @@ export async function getConfigDocSnapshot() {
 
   const configDocSnapshot = await configDocRef.get();
 
+  if (!configDocSnapshot.exists) {
+    throw new Error("WildHacks configuration document not found");
+  }
+
   return configDocSnapshot;
 }
 
@@ -20,6 +24,10 @@ export async function getStatisticsDocSnapshot() {
   const statisticsDocRef = db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_STATISTICS_DOC);
 
   const statisticsDocSnapshot = await statisticsDocRef.get();
+
+  if (!statisticsDocSnapshot.exists) {
+    throw new Error("WildHacks statistics document not found");
+  }
 
   return statisticsDocSnapshot;
 }

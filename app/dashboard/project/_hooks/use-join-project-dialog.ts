@@ -49,7 +49,7 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
       const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
 
       if (project_id) {
-        setError("join_code", { type: "validate", message: "You are already have a project" });
+        setError("join_code", { type: "validate", message: "You already have a project" });
         return;
       }
 

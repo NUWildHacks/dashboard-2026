@@ -10,7 +10,7 @@ import { getConfigDocSnapshot } from "../../lib/wildhacks.lib";
 
 import RegistrationForm from "./_components/registration-form";
 
-const Registration = async () => {
+const RegistrationPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
   const { state } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -36,4 +36,4 @@ const Registration = async () => {
   );
 };
 
-export default Registration;
+export default RegistrationPage;
