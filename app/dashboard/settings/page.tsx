@@ -4,6 +4,8 @@ import { DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/consta
 import { verifySession } from "@/lib/session.lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
 
+import ThemeSelect from "./_components/theme-select";
+
 const SettingsPage = async () => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
@@ -11,7 +13,11 @@ const SettingsPage = async () => {
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  return <></>;
+  return (
+    <div className="flex-1 flex flex-col lg:flex-row lg:items-start gap-4">
+      <ThemeSelect />
+    </div>
+  );
 };
 
 export default SettingsPage;
