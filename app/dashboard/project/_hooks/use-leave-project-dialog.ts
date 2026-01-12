@@ -74,7 +74,6 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
         const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
 
         const deleteProjectDocPromise = deleteDoc(projectDocRef);
-
         const updateStatisticsDocPromise = updateDoc(statisticsDocRef, {
           projects: increment(-1),
           updated_at: now,
@@ -85,11 +84,10 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
         const newOwnerId = remainingTeamMemberDocs.docs[0].id;
 
         await updateDoc(projectDocRef, {
-          owner_id: newOwnerId as User["id"],
+          owner_id: newOwnerId,
           updated_at: now,
         } as Pick<Project, "owner_id" | "updated_at">);
       }
-      // If the leaving user is not the owner, no ownership transfer is needed
 
       router.refresh();
     } catch (e) {
