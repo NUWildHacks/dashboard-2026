@@ -15,7 +15,7 @@ const ThemeSelect = () => {
   const currentTheme = theme === "system" ? "System" : theme === "light" ? "Light" : "Dark";
 
   return (
-    <Item variant="outline" className="w-full">
+    <Item variant="outline" className="w-full shadow-sm bg-card">
       <ItemContent>
         <ItemHeader className="font-medium">Appearance</ItemHeader>
         <ItemDescription>Select the theme you want to use for the dashboard.</ItemDescription>

@@ -26,7 +26,7 @@ const EventWithdraw = ({ userId }: EventWithdrawProps) => {
   const { isWithdrawing, withdraw } = useEventWithdraw(userId);
 
   return (
-    <Item variant="outline" className="w-full">
+    <Item variant="outline" className="w-full shadow-sm bg-card">
       <ItemContent>
         <ItemHeader className="font-medium">Withdraw</ItemHeader>
         <ItemDescription>If you can no longer participate, you can withdraw from the event.</ItemDescription>
