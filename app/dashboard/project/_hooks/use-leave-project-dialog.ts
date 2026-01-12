@@ -4,6 +4,7 @@ import {
   deleteDoc,
   deleteField,
   doc,
+  getDoc,
   getDocs,
   increment,
   orderBy,
@@ -43,6 +44,17 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
     try {
       const now = Date.now();
 
+      const projectDocRef = doc(db, PROJECTS_COLLECTION, projectId);
+      const projectDocSnapshot = await getDoc(projectDocRef);
+
+      if (!projectDocSnapshot.exists()) {
+        toast.error("Failed to leave project", { description: "Project not found" });
+        return;
+      }
+
+      const project = projectDocSnapshot.data() as Omit<Project, "id">;
+      const isOwner = project.owner_id === userId;
+
       const userDocRef = doc(db, USERS_COLLECTION, userId);
 
       await updateDoc(userDocRef, {
@@ -59,7 +71,6 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
       const remainingTeamMemberDocs = await getDocs(q);
 
       if (remainingTeamMemberDocs.size === 0) {
-        const projectDocRef = doc(db, PROJECTS_COLLECTION, projectId);
         const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
 
         const deleteProjectDocPromise = deleteDoc(projectDocRef);
@@ -70,17 +81,15 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
         });
 
         await Promise.all([deleteProjectDocPromise, updateStatisticsDocPromise]);
-      } else {
-        const newOwnerDocSnapshot = remainingTeamMemberDocs.docs[0];
-        const newOwnerId = newOwnerDocSnapshot.id;
-
-        const projectDocRef = doc(db, PROJECTS_COLLECTION, projectId);
+      } else if (isOwner) {
+        const newOwnerId = remainingTeamMemberDocs.docs[0].id;
 
         await updateDoc(projectDocRef, {
-          owner_id: newOwnerId,
+          owner_id: newOwnerId as User["id"],
           updated_at: now,
         } as Pick<Project, "owner_id" | "updated_at">);
       }
+      // If the leaving user is not the owner, no ownership transfer is needed
 
       router.refresh();
     } catch (e) {

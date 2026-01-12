@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import User from "@/types/user.types";
 
-import { TeamMember } from "../../_hooks/use-team-members";
 import { Project } from "../../_types/project.types";
+import { TeamMember } from "../../_types/team-member.types";
 
 import LeaveProjectDialog from "./leave-project-dialog";
 
@@ -18,6 +18,7 @@ const TeamMemberItem = ({
   first_name,
   last_name,
   github_username,
+  email,
 }: TeamMemberItemProps) => {
   return (
     <div className="flex gap-4 justify-between items-center">
@@ -29,7 +30,9 @@ const TeamMemberItem = ({
           <p className="text-sm font-semibold">
             {first_name} {last_name}
           </p>
-          <p className="text-xs text-muted-foreground">{github_username}</p>
+          <p className="text-xs text-muted-foreground">
+            {github_username} • {email}
+          </p>
         </div>
       </div>
       {userId === teamMemberId && <LeaveProjectDialog userId={userId} projectId={projectId} />}

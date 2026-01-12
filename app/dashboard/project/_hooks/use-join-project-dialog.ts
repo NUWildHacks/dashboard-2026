@@ -46,6 +46,11 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       const userDocSnapshot = await getDoc(userDocRef);
 
+      if (!userDocSnapshot.exists()) {
+        setError("invitation_code", { type: "validate", message: "User document not found" });
+        return;
+      }
+
       const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
 
       if (project_id) {

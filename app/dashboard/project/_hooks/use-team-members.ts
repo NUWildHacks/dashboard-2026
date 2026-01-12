@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { db } from "@/config/firebase-client";
 import { USERS_COLLECTION } from "@/constants/db.constants";
 import { USER_FIELDS } from "@/constants/user.constants";
-import User from "@/types/user.types";
 
 import { Project } from "../_types/project.types";
-
-export type TeamMember = Pick<User, "id" | "first_name" | "last_name" | "github_username">;
+import { TeamMember } from "../_types/team-member.types";
 
 export type UseTeamMembersListReturn = {
   teamMembers: TeamMember[];

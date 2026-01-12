@@ -45,7 +45,6 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
       const now = Date.now();
 
       const { name, description, github_url, demo_url } = data;
-      console.log(data);
 
       const projectDocRef = doc(db, PROJECTS_COLLECTION, id);
 
@@ -54,7 +53,6 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
         description,
         github_url,
         demo_url,
-        created_at: now,
         updated_at: now,
       });
 
@@ -68,7 +66,12 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
   };
 
   const handleReset = () => {
-    reset(project);
+    reset({
+      name,
+      description,
+      github_url,
+      demo_url: demo_url || "",
+    });
   };
 
   return { onSubmit, isSubmitting, isDirty, control, handleSubmit, handleReset };

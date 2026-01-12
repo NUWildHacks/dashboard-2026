@@ -53,6 +53,11 @@ const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogRe
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       const userDocSnapshot = await getDoc(userDocRef);
 
+      if (!userDocSnapshot.exists()) {
+        setError("root", { type: "validate", message: "User document not found" });
+        return;
+      }
+
       const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
 
       const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
