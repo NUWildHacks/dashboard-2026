@@ -3,14 +3,13 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
+import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
+import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-import useEditProjectForm from "../_hooks/use-edit-project-form";
-import { Project } from "../_types/project.types";
 
 type EditProjectFormProps = {
   project: Project;

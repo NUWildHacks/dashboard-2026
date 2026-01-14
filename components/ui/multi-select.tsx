@@ -24,7 +24,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils.lib";
+import { cn } from "@/lib";
 
 type MultiSelectContextType = {
   open: boolean;

@@ -5,8 +5,8 @@ import { Clock } from "lucide-react";
 import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getSendTime } from "@/lib/time.lib";
+import type { UseDialogReturn } from "@/hooks";
+import { getSendTime } from "@/lib";
 
 type AnnouncementItemProps = Pick<UseDialogReturn<Announcement>, "handleSelectItem"> &
   Pick<Announcement, "id" | "category" | "title" | "created_at">;

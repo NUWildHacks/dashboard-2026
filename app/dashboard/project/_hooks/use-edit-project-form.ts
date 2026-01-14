@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION } from "@/constants/db.constants";
+import { PROJECTS_COLLECTION } from "@/constants";
 
-import { editProjectFormSchema, EditProjectFormSchema } from "../_schemas/edit-project-form.schemas";
-import { Project } from "../_types/project.types";
+import { editProjectFormSchema, EditProjectFormSchema } from "../_schemas";
 
 export type UseEditProjectFormReturn = {
   onSubmit: SubmitHandler<EditProjectFormSchema>;
@@ -20,7 +20,7 @@ export type UseEditProjectFormReturn = {
   handleReset: () => void;
 } & Pick<UseFormReturn<EditProjectFormSchema>, "control" | "handleSubmit">;
 
-const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
+export const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
   const { id, name, description, github_url, demo_url } = project;
 
   const router = useRouter();
@@ -76,5 +76,3 @@ const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
 
   return { onSubmit, isSubmitting, isDirty, control, handleSubmit, handleReset };
 };
-
-export default useEditProjectForm;

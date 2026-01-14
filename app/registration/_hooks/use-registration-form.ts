@@ -11,22 +11,21 @@ import {
   PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,
   WILDHACKS_STATISTICS_DOC,
-} from "@/constants/db.constants";
-import { DASHBOARD_PATH } from "@/constants/routes.constants";
-import { PARTICIPANT } from "@/constants/user.constants";
-import { ONGOING } from "@/constants/wildhacks.constants";
-import User from "@/types/user.types";
-import { WildHacksConfig } from "@/types/wildhacks.types";
+  DASHBOARD_PATH,
+  ONGOING,
+  PARTICIPANT,
+} from "@/constants";
+import type { User, WildHacksConfig } from "@/types";
 
 import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schemas";
-import PermissionCode from "../_types/permission-code.types";
+import type { PermissionCode } from "../_types";
 
 export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
+export const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
   const router = useRouter();
 
   const {
@@ -114,5 +113,3 @@ const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]
 
   return { control, handleSubmit, onSubmit, isSubmitting };
 };
-
-export default useRegistrationForm;

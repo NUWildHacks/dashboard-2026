@@ -1,6 +1,8 @@
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
 
+import { useLeaveProjectDialog } from "@/app/dashboard/project/_hooks";
+import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,10 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import User from "@/types/user.types";
-
-import useLeaveProjectDialog from "../../_hooks/use-leave-project-dialog";
-import { Project } from "../../_types/project.types";
+import type { User } from "@/types";
 
 type LeaveProjectDialogProps = {
   userId: User["id"];

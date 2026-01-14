@@ -1,13 +1,10 @@
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
-import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { verifySession } from "@/lib/session.lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import { getConfigDocSnapshot } from "@/lib/wildhacks.lib";
-import { WildHacksConfig } from "@/types/wildhacks.types";
-
-import { Calendar } from "./_components";
+import { Calendar } from "@/app/dashboard/schedule/_components";
+import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
+import type { WildHacksConfig } from "@/types";
 
 const SchedulePage = async () => {
   const userId = await verifySession();

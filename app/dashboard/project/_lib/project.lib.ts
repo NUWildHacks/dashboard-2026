@@ -2,8 +2,8 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PROJECTS_COLLECTION } from "@/constants/db.constants";
-import User from "@/types/user.types";
+import { PROJECTS_COLLECTION } from "@/constants";
+import type { User } from "@/types";
 
 /**
  * Get a project document snapshot from Firestore.

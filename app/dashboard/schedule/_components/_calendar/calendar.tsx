@@ -3,26 +3,22 @@
 import { SearchIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constants";
+import { CalendarRow, EventDialog } from "@/app/dashboard/schedule/_components";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import {
   createOverlapGroups,
   filterEventsByDay,
   getDayStart,
   getVisibleCalendarRows,
-} from "@/app/dashboard/schedule/_lib/calendar.lib";
+} from "@/app/dashboard/schedule/_lib";
 import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ONE_DAY } from "@/constants/time.constants";
-import { useDialog } from "@/hooks/use-dialog";
-import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
-import { getDateFromMilliseconds } from "@/lib/time.lib";
-import { WildHacksConfig } from "@/types/wildhacks.types";
-
-import { EventDialog } from "../";
-
-import CalendarRow from "./calendar-row";
+import { ONE_DAY } from "@/constants";
+import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
+import { getDateFromMilliseconds } from "@/lib";
+import type { WildHacksConfig } from "@/types";
 
 type CalendarProps = {
   config: WildHacksConfig;

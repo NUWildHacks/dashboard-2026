@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import { USERS_COLLECTION } from "@/constants/db.constants";
-import User from "@/types/user.types";
+import type { User } from "@/types";
 
 /**
  * Get a user document snapshot from Firestore.

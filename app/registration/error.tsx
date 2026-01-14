@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ROOT_PATH } from "@/constants/routes.constants";
-import { ErrorPageProps } from "@/types/error-page.types";
+import { ROOT_PATH } from "@/constants";
+import type { ErrorPageProps } from "@/types";
 
 const RegistrationError = ({ error, reset }: ErrorPageProps) => {
   useEffect(() => {

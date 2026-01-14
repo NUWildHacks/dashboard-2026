@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, WILDHACKS_STATISTICS_DOC } from "@/constants/db.constants";
+import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, WILDHACKS_STATISTICS_DOC } from "@/constants";
 
 /**
  * Get the WildHacks configuration document snapshot from Firestore.

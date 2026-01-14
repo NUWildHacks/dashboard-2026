@@ -1,4 +1,4 @@
-import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants/time.constants";
+import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants";
 
 /**
  * Format a date from milliseconds to a readable string.

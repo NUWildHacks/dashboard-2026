@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
+import { useJoinProjectDialog } from "@/app/dashboard/project/_hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,9 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import User from "@/types/user.types";
-
-import useJoinProjectDialog from "../../_hooks/use-join-project-dialog";
+import type { User } from "@/types";
 
 type JoinProjectDialogProps = {
   userId: User["id"];

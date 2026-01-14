@@ -1,10 +1,9 @@
-import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants/announcement.constants";
-import BaseModel from "@/types/base-model.types";
-import { Role } from "@/types/user.types";
+import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants";
+import type { BaseModel, Role } from "@/types";
 
 export type AnnouncementCategory = (typeof ANNOUNCEMENT_CATEGORIES)[number];
 
-type Announcement = BaseModel & {
+export type Announcement = BaseModel & {
   category: AnnouncementCategory;
 
   title: string;
@@ -14,5 +13,3 @@ type Announcement = BaseModel & {
 
   audience: Role[];
 };
-
-export default Announcement;

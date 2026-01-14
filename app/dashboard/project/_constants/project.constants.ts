@@ -1,4 +1,4 @@
-import { Project } from "../_types/project.types";
+import type { Project } from "@/app/dashboard/project/_types";
 
 export const PROJECT_FIELDS = {
   name: "name",

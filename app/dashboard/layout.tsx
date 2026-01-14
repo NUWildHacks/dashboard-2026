@@ -3,12 +3,10 @@
 import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-import { getHeaderText } from "@/app/dashboard/_lib/sidebar.lib";
+import { DashboardSidebar, ThemeProvider } from "@/app/dashboard/_components";
+import { getHeaderText } from "@/app/dashboard/_lib";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-
-import DashboardSidebar from "./_components/_sidebar/dashboard-sidebar";
-import { ThemeProvider } from "./_components/theme-provider";
 
 type DashboardLayoutProps = PropsWithChildren;
 

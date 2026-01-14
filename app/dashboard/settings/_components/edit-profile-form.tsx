@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
+import { useEditProfileForm } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -23,10 +24,8 @@ import {
   MultiSelectGroup,
   MultiSelectItem,
 } from "@/components/ui/multi-select";
-import { DIETARY_RESTRICTIONS } from "@/constants/user.constants";
-import User from "@/types/user.types";
-
-import useEditProfileForm from "../_hooks/use-edit-profile-form";
+import { DIETARY_RESTRICTIONS } from "@/constants";
+import type { User } from "@/types";
 
 type EditProfileFormProps = {
   user: User;

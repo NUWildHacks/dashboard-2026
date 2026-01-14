@@ -5,9 +5,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants/cookie.constants";
-import { LOGIN_PATH, ROOT_PATH } from "@/constants/routes.constants";
-import type User from "@/types/user.types";
+import { LOGIN_PATH, ROOT_PATH, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants";
+import type { User } from "@/types";
 
 /**
  * Create a session cookie from a Firebase ID token.

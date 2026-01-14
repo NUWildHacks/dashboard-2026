@@ -3,8 +3,8 @@ import { Clock } from "lucide-react";
 import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getEventTimeRange } from "@/lib/time.lib";
+import type { UseDialogReturn } from "@/hooks";
+import { getEventTimeRange } from "@/lib";
 
 type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem"> &
   Pick<Event, "id" | "category" | "title" | "start_time" | "end_time">;

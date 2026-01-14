@@ -3,9 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { DASHBOARD_PATH, ROOT_PATH } from "@/constants/routes.constants";
-
-import { verifySession } from "../../lib/session.lib";
+import { DASHBOARD_PATH, ROOT_PATH } from "@/constants";
+import { verifySession } from "@/lib";
 
 import LoginButton from "./_components/login-button";
 

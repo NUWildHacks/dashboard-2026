@@ -17,25 +17,24 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
 import {
   PROJECTS_COLLECTION,
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
   WILDHACKS_STATISTICS_DOC,
-} from "@/constants/db.constants";
-import { ROOT_PATH } from "@/constants/routes.constants";
-import { USER_FIELDS } from "@/constants/user.constants";
-import User from "@/types/user.types";
-
-import { Project } from "../../project/_types/project.types";
+  ROOT_PATH,
+  USER_FIELDS,
+} from "@/constants";
+import type { User } from "@/types";
 
 export type UseEventWithdrawReturn = {
   isWithdrawing: boolean;
   withdraw: () => Promise<void>;
 };
 
-const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => {
+export const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => {
   const router = useRouter();
 
   const [isWithdrawing, setIsWithdrawing] = useState(false);
@@ -119,5 +118,3 @@ const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => {
     withdraw,
   };
 };
-
-export default useEventWithdraw;

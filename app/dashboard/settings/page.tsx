@@ -1,14 +1,10 @@
 import { redirect } from "next/navigation";
 
+import { EditProfileForm, EventWithdraw, ThemeSelect } from "@/app/dashboard/settings/_components";
 import { Separator } from "@/components/ui/separator";
-import { DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { verifySession } from "@/lib/session.lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import User from "@/types/user.types";
-
-import EditProfileForm from "./_components/edit-profile-form";
-import EventWithdraw from "./_components/event-withdraw";
-import ThemeSelect from "./_components/theme-select";
+import { DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getUserDocSnapshot, verifySession } from "@/lib";
+import type { User } from "@/types";
 
 const SettingsPage = async () => {
   const userId = await verifySession();
