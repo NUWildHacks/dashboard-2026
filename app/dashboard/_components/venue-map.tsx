@@ -1,3 +1,5 @@
+import { MapPinX } from "lucide-react";
+
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -7,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 
 const VenueMap = () => {
   return (
@@ -26,6 +29,17 @@ const VenueMap = () => {
           <DialogTitle>View Venue Map</DialogTitle>
           <DialogDescription>Locate workshop rooms, food stands, and merch giveaways.</DialogDescription>
         </DialogHeader>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <MapPinX />
+            </EmptyMedia>
+            <EmptyTitle>No venue map available</EmptyTitle>
+            <EmptyDescription>
+              The venue map will become available closer to the event. Please check back later.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       </DialogContent>
     </Dialog>
   );
