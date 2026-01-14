@@ -9,6 +9,21 @@ import { SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from 
 import { LOGIN_PATH, ROOT_PATH } from "@/constants/routes.constants";
 import type User from "@/types/user.types";
 
+/**
+ * Create a session cookie from a Firebase ID token.
+ * Sets the session cookie in the response with configured expiration and options.
+ *
+ * @param idToken - Firebase ID token string from the client
+ * @returns Promise that resolves when the session cookie is created
+ * @throws {Error} If session cookie creation fails
+ * @example
+ * ```ts
+ * // In a login API route
+ * const idToken = request.body.idToken;
+ * await createSession(idToken);
+ * // Session cookie is now set in the response
+ * ```
+ */
 export async function createSession(idToken: string) {
   try {
     const adminAuth = firebaseAdmin.auth();
@@ -24,6 +39,21 @@ export async function createSession(idToken: string) {
   }
 }
 
+/**
+ * Verify the current session cookie and return the user ID.
+ * Validates the session cookie and extracts the user ID from the payload.
+ * Returns null if the session is invalid or missing.
+ *
+ * @returns Promise resolving to the user ID if session is valid, null otherwise
+ * @example
+ * ```ts
+ * const userId = await verifySession();
+ * if (!userId) {
+ *   redirect('/login');
+ * }
+ * // User is authenticated, proceed with userId
+ * ```
+ */
 export async function verifySession() {
   const adminAuth = firebaseAdmin.auth();
   const cookieStore = await cookies();
@@ -47,6 +77,20 @@ export async function verifySession() {
   }
 }
 
+/**
+ * Update the session cookie expiration time.
+ * Refreshes the session cookie with updated expiration time.
+ * Redirects to login if the session is invalid.
+ *
+ * @returns Promise that resolves when the session is updated
+ * @throws Redirects to login page if session verification fails
+ * @example
+ * ```ts
+ * // In a protected route
+ * await updateSession();
+ * // Session expiration has been refreshed
+ * ```
+ */
 export async function updateSession() {
   const adminAuth = firebaseAdmin.auth();
   const cookieStore = await cookies();
@@ -70,6 +114,19 @@ export async function updateSession() {
   }
 }
 
+/**
+ * Delete the current session and revoke refresh tokens.
+ * Removes the session cookie and revokes all refresh tokens for the user.
+ * Always redirects to the root path after execution.
+ *
+ * @returns Promise that resolves after session deletion (always redirects)
+ * @example
+ * ```ts
+ * // In a logout handler
+ * await deleteSession();
+ * // User is logged out and redirected to home page
+ * ```
+ */
 export async function deleteSession() {
   const adminAuth = firebaseAdmin.auth();
   const cookieStore = await cookies();
