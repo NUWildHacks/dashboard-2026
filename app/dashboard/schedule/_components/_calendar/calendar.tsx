@@ -1,46 +1,117 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constants";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
-import { createOverlapGroups, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib/calendar.lib";
+import {
+  createOverlapGroups,
+  filterEventsByDay,
+  getDayStart,
+  getVisibleCalendarRows,
+} from "@/app/dashboard/schedule/_lib/calendar.lib";
 import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ONE_DAY } from "@/constants/time.constants";
 import { useDialog } from "@/hooks/use-dialog";
 import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
+import { getDateFromMilliseconds } from "@/lib/time.lib";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import { EventDialog } from "../";
 
 import CalendarRow from "./calendar-row";
 
-const Calendar = () => {
+type CalendarProps = {
+  config: WildHacksConfig;
+};
+
+const Calendar = ({ config }: CalendarProps) => {
+  const { start_time, end_time } = config;
+
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
   const useEventsReturn = useEvents({ category, search });
-  const { events } = useEventsReturn;
+  const { allEvents } = useEventsReturn;
 
-  const useEventDialogReturn = useDialog<Event>(events);
+  const availableDays = useMemo(() => {
+    const days: { dayStart: number; dayEnd: number; label: string }[] = [];
+    let currentDayStart = getDayStart(start_time);
 
-  const overlapGroups = createOverlapGroups(events);
+    while (currentDayStart < end_time) {
+      const dayEnd = currentDayStart + ONE_DAY;
+      const dayLabel = getDateFromMilliseconds(currentDayStart);
+      days.push({ dayStart: currentDayStart, dayEnd, label: dayLabel });
+      currentDayStart = dayEnd;
+    }
 
-  const visibleCalendarRows = getVisibleCalendarRows(events);
+    return days;
+  }, [start_time, end_time]);
+
+  const defaultSelectedDay = useMemo(() => {
+    const now = new Date().getTime();
+    const todayStart = getDayStart(now);
+
+    const todayInRange = availableDays.some((day) => day.dayStart <= todayStart && day.dayEnd > todayStart);
+
+    if (todayInRange) {
+      return todayStart;
+    }
+
+    return availableDays[0]?.dayStart ?? start_time;
+  }, [availableDays, start_time]);
+
+  const [selectedDayStart, setSelectedDayStart] = useState<number>(() => defaultSelectedDay);
+
+  useEffect(() => {
+    setSelectedDayStart(defaultSelectedDay);
+  }, [defaultSelectedDay]);
+
+  const selectedDay = availableDays.find((day) => day.dayStart === selectedDayStart);
+  const dayStart = selectedDay?.dayStart ?? defaultSelectedDay;
+  const dayEnd = selectedDay?.dayEnd ?? defaultSelectedDay + ONE_DAY;
+
+  const filteredEvents = useMemo(() => filterEventsByDay(allEvents, dayStart, dayEnd), [allEvents, dayStart, dayEnd]);
+
+  const useEventDialogReturn = useDialog<Event>(filteredEvents);
+
+  const overlapGroups = createOverlapGroups(filteredEvents);
+
+  const visibleCalendarRows = getVisibleCalendarRows(filteredEvents, dayStart);
 
   return (
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <Tabs value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<EventCategory>)}>
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              {EVENT_CATEGORIES.map((category) => (
-                <TabsTrigger key={category} value={category}>
-                  {category}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Select value={selectedDayStart.toString()} onValueChange={(value) => setSelectedDayStart(Number(value))}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select day" />
+              </SelectTrigger>
+              <SelectContent>
+                {availableDays.map((day) => (
+                  <SelectItem key={day.dayStart} value={day.dayStart.toString()}>
+                    {day.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<EventCategory>)}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {EVENT_CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <InputGroup className="max-w-[350px]">
             <InputGroupInput
               id="search"
@@ -58,8 +129,9 @@ const Calendar = () => {
           {visibleCalendarRows.slice(0, -1).map((calendarRow) => (
             <CalendarRow
               key={calendarRow.label}
-              events={events}
+              events={filteredEvents}
               overlapGroups={overlapGroups}
+              dayStart={dayStart}
               {...calendarRow}
               {...useEventDialogReturn}
             />

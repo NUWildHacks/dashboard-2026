@@ -16,7 +16,8 @@ export type UseEventsSettings = {
 };
 
 export type UseEventsReturn = {
-  events: Event[];
+  allEvents: Event[];
+  upcomingEvents: Event[];
   isLoading: boolean;
 };
 
@@ -27,7 +28,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
   const { category, search, limitCount } = settings;
 
   useEffect(() => {
-    let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start, "asc"));
+    let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start_time, "asc"));
 
     if (limitCount) {
       q = query(q, limit(limitCount));
@@ -77,5 +78,10 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return result;
   }, [events, category, search]);
 
-  return { events: filteredEvents, isLoading };
+  const upcomingEvents = useMemo(() => {
+    const now = new Date().getTime();
+    return events.filter((event) => event.end_time > now);
+  }, [events]);
+
+  return { allEvents: filteredEvents, upcomingEvents, isLoading };
 };

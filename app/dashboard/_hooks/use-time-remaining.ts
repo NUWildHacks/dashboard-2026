@@ -12,20 +12,15 @@ export type UseTimeRemainingReturn = {
 };
 
 export const useTimeRemaining = (
-  started_at: WildHacksConfig["started_at"],
-  duration: WildHacksConfig["duration"]
+  start_time: WildHacksConfig["start_time"],
+  end_time: WildHacksConfig["end_time"]
 ): UseTimeRemainingReturn => {
   const [timeMilliseconds, setTimeMilliseconds] = useState<number>(0);
 
   useEffect(() => {
-    if (!started_at) {
-      return;
-    }
-
     const getRemainingTime = () => {
-      if (!started_at) return 0;
       const now = new Date().getTime();
-      return Math.max(duration - (now - started_at), 0);
+      return Math.max(end_time - now, 0);
     };
 
     const updateCountdown = () => {
@@ -45,7 +40,7 @@ export const useTimeRemaining = (
       clearTimeout(timeoutId);
       clearInterval(interval);
     };
-  }, [started_at, duration]);
+  }, [start_time, end_time]);
 
   let remainingMilliseconds = timeMilliseconds;
 

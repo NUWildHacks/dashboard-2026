@@ -8,11 +8,12 @@ import { UseDialogReturn } from "@/hooks/use-dialog";
 type CalendarRowProps = {
   events: Event[];
   overlapGroups: Map<Event["id"], Set<Event["id"]>>;
+  dayStart: number;
 } & CalendarRowConfig &
   Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
-const CalendarRow = ({ events, overlapGroups, start, end, label, handleSelectItem }: CalendarRowProps) => {
-  const calendarItems = getCalendarItems(events, start, end, overlapGroups, handleSelectItem);
+const CalendarRow = ({ events, overlapGroups, start, end, label, handleSelectItem, dayStart }: CalendarRowProps) => {
+  const calendarItems = getCalendarItems(events, start, end, overlapGroups, handleSelectItem, dayStart);
 
   return (
     <div className={`w-full h-[${ROW_HEIGHT}px] grid grid-cols-[50px_1fr] space-x-2`}>

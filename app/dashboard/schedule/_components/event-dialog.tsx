@@ -15,14 +15,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getTimeFromMinutes } from "@/lib/time.lib";
+import { getEventTimeRange } from "@/lib/time.lib";
 
 type EventDialogProps = Pick<UseDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
 
 const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
   if (!selectedItem) return null;
 
-  const { category, title, body, start, end } = selectedItem;
+  const { category, title, body, start_time, end_time } = selectedItem;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -37,7 +37,7 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
                   <Clock className="size-3" />
-                  {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
+                  {getEventTimeRange(start_time, end_time)}
                 </span>
               </div>
               <p className="text-center sm:text-left">{body}</p>

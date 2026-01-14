@@ -5,8 +5,8 @@ export type WildHacksConfig = {
 
   max_team_size: number;
 
-  started_at: number | null;
-  duration: number;
+  start_time: number;
+  end_time: number;
 
   updated_at: number;
 };

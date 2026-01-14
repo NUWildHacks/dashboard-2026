@@ -12,8 +12,8 @@ export const EVENT_FIELDS = {
   category: "category",
   title: "title",
   body: "body",
-  start: "start",
-  end: "end",
+  start_time: "start_time",
+  end_time: "end_time",
   created_at: "created_at",
   updated_at: "updated_at",
 } as const satisfies Record<keyof Omit<Event, "id">, string>;

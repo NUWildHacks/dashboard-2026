@@ -16,9 +16,10 @@ const UpcomingEvents = () => {
   const useEventsReturn = useEvents({
     limitCount: 3,
   });
-  const { events } = useEventsReturn;
 
-  const useEventDialogReturn = useDialog<Event>(events);
+  const { upcomingEvents } = useEventsReturn;
+
+  const useEventDialogReturn = useDialog<Event>(upcomingEvents);
 
   return (
     <>
@@ -32,7 +33,7 @@ const UpcomingEvents = () => {
         <CardContent
           className={cn(
             "flex-1 flex flex-col justify-center gap-4",
-            events.length === 0 ? "items-center" : "items-start"
+            upcomingEvents.length === 0 ? "items-center" : "items-start"
           )}
         >
           <EventsList {...useEventsReturn} {...useEventDialogReturn} />
