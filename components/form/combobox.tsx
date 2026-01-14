@@ -7,7 +7,7 @@ import { FieldValues, UseControllerReturn } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils.lib";
 
 type ComboboxProps<T extends FieldValues = FieldValues> = {
   options: string[];
@@ -18,7 +18,7 @@ type ComboboxProps<T extends FieldValues = FieldValues> = {
   maxResults: number;
 } & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
-export default function Combobox<T extends FieldValues>({
+const Combobox = <T extends FieldValues>({
   options,
   placeholder,
   field,
@@ -27,7 +27,7 @@ export default function Combobox<T extends FieldValues>({
   searchPlaceholder,
   minSearchLength,
   maxResults,
-}: ComboboxProps<T>) {
+}: ComboboxProps<T>) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -57,7 +57,7 @@ export default function Combobox<T extends FieldValues>({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
+      <PopoverContent className="w-(--radix-popover-trigger-width) p-0" align="start">
         <Command shouldFilter={false}>
           <CommandInput placeholder={searchPlaceholder} value={search} onValueChange={setSearch} className="h-9" />
           <CommandList>
@@ -87,4 +87,6 @@ export default function Combobox<T extends FieldValues>({
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default Combobox;

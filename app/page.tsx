@@ -3,33 +3,32 @@
 import Image from "next/image";
 
 import "@/config/firebase-admin";
-import Footer from "@/components/layout/footer";
-import Navbar from "@/components/layout/navbar";
-import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/event";
-import Event from "@/types/event";
-
-import getEventDocSnapshot from "../lib/event";
+import Footer from "@/app/_components/footer";
+import Navbar from "@/app/_components/navbar";
+import { COMPLETED, ONGOING, REGISTRATION } from "@/constants/wildhacks.constants";
+import { getConfigDocSnapshot } from "@/lib/wildhacks.lib";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import Completed from "./_components/completed";
 import Ongoing from "./_components/ongoing";
-import Registration from "./_components/registration";
 
-export default async function Home() {
-  const eventDocSnapshot = await getEventDocSnapshot();
-  const { state } = eventDocSnapshot.data() as Event;
+const RootPage = async () => {
+  const configDocSnapshot = await getConfigDocSnapshot();
+  const { state } = configDocSnapshot.data() as WildHacksConfig;
 
   return (
     <>
       <Navbar />
-      <main className="flex-1 px-6 sm:px-12 py-4 flex flex-col justify-center items-center gap-12">
+      <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
         <div className="max-w-[650px] text-center space-y-5">
           <Image src="/wildhacks-splash.svg" alt="Main Logo" width={650} height={246.55} loading="eager" />
-          {state === REGISTRATION && <Registration />}
-          {state === ONGOING && <Ongoing />}
+          {(state === ONGOING || state === REGISTRATION) && <Ongoing />}
           {state === COMPLETED && <Completed />}
         </div>
       </main>
       <Footer />
     </>
   );
-}
+};
+
+export default RootPage;

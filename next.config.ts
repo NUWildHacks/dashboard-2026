@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-import { WILDHACKS_HOME } from "./constants/routes";
+import { WILDHACKS_HOME } from "./constants/routes.constants";
 
 const nextConfig: NextConfig = {
   async redirects() {

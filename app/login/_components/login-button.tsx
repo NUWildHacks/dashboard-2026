@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
-import { DASHBOARD_PATH } from "@/constants/routes";
-import { createSession } from "@/lib/session";
+import { DASHBOARD_PATH } from "@/constants/routes.constants";
+import { createSession } from "@/lib/session.lib";
 
-export default function LoginButton() {
+const LoginButton = () => {
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -42,4 +42,6 @@ export default function LoginButton() {
       Login with Github
     </Button>
   );
-}
+};
+
+export default LoginButton;

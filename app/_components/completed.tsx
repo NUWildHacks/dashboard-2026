@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export default async function Completed() {
+const Completed = async () => {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">That&apos;s a wrap! 🎉</h2>
@@ -24,4 +24,6 @@ export default async function Completed() {
       </div>
     </>
   );
-}
+};
+
+export default Completed;

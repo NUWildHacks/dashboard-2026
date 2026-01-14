@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { Controller } from "react-hook-form";
 
 import Combobox from "@/components/form/combobox";
@@ -28,7 +29,7 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ONGOING } from "@/constants/event";
+import { ROOT_PATH } from "@/constants/routes.constants";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -38,22 +39,23 @@ import {
   RACES,
   SCHOOLS,
   TSHIRT_SIZES,
-} from "@/constants/user";
-import Event from "@/types/event";
-import type User from "@/types/user";
+} from "@/constants/user.constants";
+import { ONGOING } from "@/constants/wildhacks.constants";
+import type User from "@/types/user.types";
+import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import useRegistrationForm from "../_hooks/use-registration-form";
 
 type RegistrationFormProps = {
   userId: User["id"];
-  eventState: Event["state"];
+  state: WildHacksConfig["state"];
 };
 
-export default function RegistrationForm({ userId, eventState }: RegistrationFormProps) {
-  const { control, handleSubmit, reset, onSubmit, isSubmitting } = useRegistrationForm(userId, eventState);
+const RegistrationForm = ({ userId, state }: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(userId, state);
 
   return (
-    <Card className="bg-[#fefefe] rounded-2xl shadow-md">
+    <Card className="rounded-2xl shadow-sm">
       <CardContent>
         <form id="registration-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
@@ -247,7 +249,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                         <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
-                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                        <SelectContent className="w-(--radix-select-trigger-width)">
                           {LEVELS_OF_STUDY.map((levelOfStudy) => (
                             <SelectItem key={levelOfStudy} value={levelOfStudy}>
                               {levelOfStudy}
@@ -272,7 +274,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                         <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
-                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                        <SelectContent className="w-(--radix-select-trigger-width)">
                           {FIELDS_OF_STUDY.map((fieldOfStudy) => (
                             <SelectItem key={fieldOfStudy} value={fieldOfStudy}>
                               {fieldOfStudy}
@@ -328,7 +330,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                         <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
-                        <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                        <SelectContent className="w-(--radix-select-trigger-width)">
                           {TSHIRT_SIZES.map((tshirtSize) => (
                             <SelectItem key={tshirtSize} value={tshirtSize}>
                               {tshirtSize}
@@ -363,7 +365,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                           <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
-                          <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                          <SelectContent className="w-(--radix-select-trigger-width)">
                             {GENDERS.map((gender) => (
                               <SelectItem key={gender} value={gender}>
                                 {gender}
@@ -391,7 +393,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
                           <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
                             <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
-                          <SelectContent className="w-[var(--radix-select-trigger-width)]">
+                          <SelectContent className="w-(--radix-select-trigger-width)">
                             {RACES.map((race) => (
                               <SelectItem key={race} value={race}>
                                 {race}
@@ -457,7 +459,7 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
 
             <FieldSeparator />
 
-            {eventState === ONGOING && (
+            {state === ONGOING && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
@@ -599,11 +601,15 @@ export default function RegistrationForm({ userId, eventState }: RegistrationFor
           <Button type="submit" form="registration-form" disabled={isSubmitting}>
             {isSubmitting ? <Loader2 /> : "Submit"}
           </Button>
-          <Button type="button" variant="outline" onClick={() => reset()} disabled={isSubmitting}>
-            Reset
-          </Button>
+          <Link href={ROOT_PATH}>
+            <Button type="button" variant="outline" disabled={isSubmitting}>
+              Go back
+            </Button>
+          </Link>
         </Field>
       </CardFooter>
     </Card>
   );
-}
+};
+
+export default RegistrationForm;
