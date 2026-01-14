@@ -4,12 +4,12 @@ import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getTimeFromMinutes } from "@/lib/time.lib";
+import { getEventTimeRange } from "@/lib/time.lib";
 
 type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem"> &
-  Pick<Event, "id" | "category" | "title" | "start" | "end">;
+  Pick<Event, "id" | "category" | "title" | "start_time" | "end_time">;
 
-const EventItem = ({ handleSelectItem, id, category, title, start, end }: EventItemProps) => {
+const EventItem = ({ handleSelectItem, id, category, title, start_time, end_time }: EventItemProps) => {
   return (
     <Item
       variant="outline"
@@ -24,7 +24,7 @@ const EventItem = ({ handleSelectItem, id, category, title, start, end }: EventI
         <ItemDescription className="flex flex-wrap items-center gap-4">
           <span className="flex items-center gap-1 text-xs font-medium">
             <Clock className="size-3" />
-            {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
+            {getEventTimeRange(start_time, end_time)}
           </span>
         </ItemDescription>
       </ItemContent>

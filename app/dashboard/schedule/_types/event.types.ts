@@ -9,8 +9,8 @@ type Event = BaseModel & {
   title: string;
   body: string;
 
-  start: number;
-  end: number;
+  start_time: number;
+  end_time: number;
 };
 
 export default Event;

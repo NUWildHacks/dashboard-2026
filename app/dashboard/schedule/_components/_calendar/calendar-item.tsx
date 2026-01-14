@@ -8,10 +8,10 @@ import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { UseDialogReturn } from "@/hooks/use-dialog";
-import { getTimeFromMinutes } from "@/lib/time.lib";
+import { getEventTimeRange } from "@/lib/time.lib";
 import { cn } from "@/lib/utils.lib";
 
-type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start" | "end"> &
+type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time"> &
   Pick<UseDialogReturn<Event>, "handleSelectItem"> & {
     left: number;
     top: number;
@@ -24,8 +24,8 @@ const CalendarItem = ({
   id,
   category,
   title,
-  start,
-  end,
+  start_time,
+  end_time,
   handleSelectItem,
   left,
   top,
@@ -54,9 +54,7 @@ const CalendarItem = ({
             <ItemTitle className="text-nowrap shrink-0">{title}</ItemTitle>
             <ItemDescription className="flex flex-nowrap items-center gap-1 shrink-0">
               <Clock className="size-3 shrink-0" />
-              <span className="text-xs text-nowrap font-medium">
-                {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
-              </span>
+              <span className="text-xs text-nowrap font-medium">{getEventTimeRange(start_time, end_time)}</span>
             </ItemDescription>
             <Badge variant="secondary" className="text-nowrap shrink-0 ml-auto">
               {category}
@@ -72,9 +70,7 @@ const CalendarItem = ({
             </div>
             <ItemDescription className="flex flex-nowrap items-center gap-1">
               <Clock className="size-3 shrink-0" />
-              <span className="text-xs text-nowrap font-medium">
-                {getTimeFromMinutes(start)} - {getTimeFromMinutes(end)}
-              </span>
+              <span className="text-xs text-nowrap font-medium">{getEventTimeRange(start_time, end_time)}</span>
             </ItemDescription>
           </>
         )}

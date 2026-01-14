@@ -5,22 +5,27 @@ import { WildHacksConfig } from "@/types/wildhacks.types";
 
 import { useTimeRemaining } from "../_hooks/use-time-remaining";
 
-type TimeRemainingProps = Pick<WildHacksConfig, "started_at" | "duration">;
+type TimeRemainingProps = Pick<WildHacksConfig, "start_time" | "end_time">;
 
-const TimeRemaining = ({ started_at, duration }: TimeRemainingProps) => {
-  const { hours, minutes, seconds } = useTimeRemaining(started_at, duration);
+const TimeRemaining = ({ start_time, end_time }: TimeRemainingProps) => {
+  const { hours, minutes, seconds } = useTimeRemaining(start_time, end_time);
+  const now = new Date().getTime();
+  const hasStarted = now >= start_time;
+  const hasEnded = now >= end_time;
 
   return (
     <Card className="shadow-xs md:col-span-2">
       <CardHeader>
         <CardTitle>Time Remaining</CardTitle>
         <CardDescription>
-          {started_at
+          {hasStarted && !hasEnded
             ? "The clock is ticking! See how much time you have left to build your project."
-            : "Waiting for event organizers to start the clock. In the meantime, get together with your team and start brainstorming!"}
+            : hasEnded
+              ? "The event has ended. Thank you for participating!"
+              : "Waiting for event organizers to start the clock. In the meantime, get together with your team and start brainstorming!"}
         </CardDescription>
       </CardHeader>
-      {started_at && (
+      {hasStarted && !hasEnded && (
         <CardContent className="grid grid-cols-3 gap-2 sm:gap-4">
           <div className="flex flex-col justify-center items-center bg-secondary py-2 rounded-lg">
             <strong className="text-3xl text-primary">{String(hours).padStart(2, "0")}</strong>

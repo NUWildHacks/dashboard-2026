@@ -12,6 +12,28 @@ export const getTimeFromMinutes = (time: number) => {
   return `${hours > 12 ? hours - 12 : hours}:${minutes.toString().padStart(2, "0")}${hours >= 12 ? " PM" : " AM"}`;
 };
 
+export const getTimeFromMilliseconds = (milliseconds: number) => {
+  const date = new Date(milliseconds);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours > 12 ? hours - 12 : hours || 12}:${minutes.toString().padStart(2, "0")}${hours >= 12 ? " PM" : " AM"}`;
+};
+
+/**
+ * Format an event time range with date
+ * Returns format: "April 11, 8:00 AM - 5:00 PM"
+ * Events are assumed to fit within one day
+ */
+export const getEventTimeRange = (start_time: number, end_time: number) => {
+  const startDate = new Date(start_time);
+  const month = MONTH_ABBREVIATIONS[startDate.getMonth()];
+  const day = startDate.getDate();
+  const startTime = getTimeFromMilliseconds(start_time);
+  const endTime = getTimeFromMilliseconds(end_time);
+
+  return `${month} ${day}, ${startTime} - ${endTime}`;
+};
+
 export function getSendTime(sendMilliseconds: number) {
   const now = new Date();
 

@@ -27,7 +27,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
   const { category, search, limitCount } = settings;
 
   useEffect(() => {
-    let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start, "asc"));
+    let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start_time, "asc"));
 
     if (limitCount) {
       q = query(q, limit(limitCount));
