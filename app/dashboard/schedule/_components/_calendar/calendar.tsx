@@ -34,7 +34,7 @@ const Calendar = ({ config }: CalendarProps) => {
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
   const useEventsReturn = useEvents({ category, search });
-  const { events } = useEventsReturn;
+  const { allEvents } = useEventsReturn;
 
   const availableDays = useMemo(() => {
     const days: { dayStart: number; dayEnd: number; label: string }[] = [];
@@ -73,7 +73,7 @@ const Calendar = ({ config }: CalendarProps) => {
   const dayStart = selectedDay?.dayStart ?? defaultSelectedDay;
   const dayEnd = selectedDay?.dayEnd ?? defaultSelectedDay + ONE_DAY;
 
-  const filteredEvents = useMemo(() => filterEventsByDay(events, dayStart, dayEnd), [events, dayStart, dayEnd]);
+  const filteredEvents = useMemo(() => filterEventsByDay(allEvents, dayStart, dayEnd), [allEvents, dayStart, dayEnd]);
 
   const useEventDialogReturn = useDialog<Event>(filteredEvents);
 

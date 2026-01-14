@@ -5,14 +5,14 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import { UseDialogReturn } from "@/hooks/use-dialog";
 
+import { UseEventsReturn } from "../_hooks";
+
 import EventItem from "./event-item";
 
-type EventsListProps = {
-  events: Event[];
-  isLoading: boolean;
-} & Pick<UseDialogReturn<Event>, "handleSelectItem">;
+type EventsListProps = Pick<UseEventsReturn, "upcomingEvents" | "isLoading"> &
+  Pick<UseDialogReturn<Event>, "handleSelectItem">;
 
-const EventsList = ({ events, isLoading, handleSelectItem }: EventsListProps) => {
+const EventsList = ({ upcomingEvents, isLoading, handleSelectItem }: EventsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -23,7 +23,7 @@ const EventsList = ({ events, isLoading, handleSelectItem }: EventsListProps) =>
     );
   }
 
-  if (events.length === 0) {
+  if (upcomingEvents.length === 0) {
     return (
       <Empty>
         <EmptyHeader>
@@ -37,7 +37,9 @@ const EventsList = ({ events, isLoading, handleSelectItem }: EventsListProps) =>
     );
   }
 
-  return events.map((event) => <EventItem key={event.id} handleSelectItem={handleSelectItem} {...event} />);
+  return upcomingEvents.map((upcomingEvent) => (
+    <EventItem key={upcomingEvent.id} handleSelectItem={handleSelectItem} {...upcomingEvent} />
+  ));
 };
 
 export default EventsList;
