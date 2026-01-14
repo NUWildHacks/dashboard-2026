@@ -3,12 +3,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils.lib";
 
 const ScheduleLoading = async () => {
-  const visibleCalendarRows = getVisibleCalendarRows([]);
+  const visibleCalendarRows = getVisibleCalendarRows([], 0);
 
   return (
     <div className="flex-1 flex flex-col gap-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <Skeleton className="md:flex-1 max-w-[400px] w-full h-9" />
+        <div className="w-full md:flex-1 flex flex-col sm:flex-row gap-4">
+          <Skeleton className="w-[200px] h-9" />
+          <Skeleton className="w-[200px] h-9" />
+        </div>
         <Skeleton className="md:flex-1 max-w-[350px] w-full h-9" />
       </div>
       <div className="w-full flex flex-col py-2">

@@ -14,7 +14,6 @@ import {
 import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ONE_DAY } from "@/constants/time.constants";
 import { useDialog } from "@/hooks/use-dialog";
 import { CategoryWithAll, useFilters } from "@/hooks/use-filters";
@@ -99,16 +98,19 @@ const Calendar = ({ config }: CalendarProps) => {
                 ))}
               </SelectContent>
             </Select>
-            <Tabs value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<EventCategory>)}>
-              <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-                {EVENT_CATEGORIES.map((category) => (
-                  <TabsTrigger key={category} value={category}>
-                    {category}
-                  </TabsTrigger>
+            <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<EventCategory>)}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {EVENT_CATEGORIES.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
                 ))}
-              </TabsList>
-            </Tabs>
+              </SelectContent>
+            </Select>
           </div>
           <InputGroup className="max-w-[350px]">
             <InputGroupInput
