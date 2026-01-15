@@ -518,12 +518,12 @@ export type CreateProjectFormSchema = z.infer<typeof createProjectFormSchema>;
 
 ### Branch Naming
 
-Use descriptive branch names:
+Use descriptive branch names with your Github username:
 
-- `feature/add-user-profile` - New features
-- `fix/login-redirect-issue` - Bug fixes
-- `refactor/improve-project-hooks` - Refactoring
-- `docs/update-contributing-guide` - Documentation
+- `feature/<github-username>/add-user-profile` - New features
+- `fix/<github-username>/login-redirect-issue` - Bug fixes
+- `refactor/<github-username>/improve-project-hooks` - Refactoring
+- `docs/<github-username>/update-contributing-guide` - Documentation
 
 ### Commit Messages
 
