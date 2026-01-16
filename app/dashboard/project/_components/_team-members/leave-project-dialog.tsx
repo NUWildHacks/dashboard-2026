@@ -13,15 +13,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import type { User } from "@/types";
 
 type LeaveProjectDialogProps = {
-  userId: User["id"];
   projectId: Project["id"];
 };
 
-const LeaveProjectDialog = ({ userId, projectId }: LeaveProjectDialogProps) => {
-  const { handleLeaveProject, isLoading } = useLeaveProjectDialog(userId, projectId);
+const LeaveProjectDialog = ({ projectId }: LeaveProjectDialogProps) => {
+  const { handleLeaveProject, isLoading } = useLeaveProjectDialog();
 
   return (
     <Dialog>
@@ -42,8 +40,8 @@ const LeaveProjectDialog = ({ userId, projectId }: LeaveProjectDialogProps) => {
               Go Back
             </Button>
           </DialogClose>
-          <Button disabled={isLoading} variant="destructive" onClick={handleLeaveProject}>
-            {isLoading ? <Loader2 /> : "Leave project"}
+          <Button disabled={isLoading} variant="destructive" onClick={() => handleLeaveProject(projectId)}>
+            {isLoading ? <Loader2 className="animate-spin" /> : "Leave project"}
           </Button>
         </DialogFooter>
       </DialogContent>

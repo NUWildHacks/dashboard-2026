@@ -9,14 +9,14 @@ import { toast } from "sonner";
 import { joinProject } from "../_actions/join-project.actions";
 import { joinProjectFormSchema, type JoinProjectFormSchema } from "../_schemas";
 
-export type UseJoinProjectFormReturn = {
+export type UseJoinProjectDialogReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onSubmit: SubmitHandler<JoinProjectFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<JoinProjectFormSchema>, "control" | "handleSubmit">;
 
-export const useJoinProjectForm = (): UseJoinProjectFormReturn => {
+export const useJoinProjectDialog = (): UseJoinProjectDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);

@@ -3,7 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
-import { useJoinProjectForm } from "@/app/dashboard/project/_hooks";
+import { useJoinProjectDialog } from "@/app/dashboard/project/_hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,7 +19,7 @@ import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 
 const JoinProjectDialog = () => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useJoinProjectForm();
+  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useJoinProjectDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

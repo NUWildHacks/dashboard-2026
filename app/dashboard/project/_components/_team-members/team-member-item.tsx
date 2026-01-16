@@ -32,7 +32,7 @@ const TeamMemberItem = ({
           </p>
         </div>
       </div>
-      {userId === teamMemberId && <LeaveProjectDialog userId={userId} projectId={projectId} />}
+      {userId === teamMemberId && <LeaveProjectDialog projectId={projectId} />}
     </div>
   );
 };
