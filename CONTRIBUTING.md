@@ -123,6 +123,7 @@ app/
 
 Each feature (route segment) follows this structure:
 
+- `_actions/` - Server actions for database operations (if applicable)
 - `_components/` - React components specific to this feature
 - `_hooks/` - Custom React hooks for this feature
 - `_types/` - TypeScript type definitions for this feature
@@ -417,6 +418,280 @@ export { useMyHook } from "./use-my-hook";
 export type { UseMyHookReturn } from "./use-my-hook";
 ```
 
+## Server Actions
+
+### Overview
+
+Server actions are Next.js functions that run on the server and handle database operations securely using the Firebase Admin SDK. They provide a secure way to perform write operations that bypass Firestore security rules.
+
+### When to Use Server Actions
+
+✅ **Use server actions for:**
+
+- All database write operations (create, update, delete)
+- Operations that require Admin SDK privileges
+- Form submissions that have server-side logic
+- Operations that should bypass Firestore security rules
+
+❌ **Do NOT use server actions for:**
+
+- Read-only operations that need real-time updates (use `onSnapshot` with client SDK)
+- Operations that don't require database access
+- Client-side only operations
+
+### Hybrid Approach: React Hook Form + Server Actions
+
+The project uses a **hybrid approach** for forms:
+
+1. **React Hook Form** handles client-side validation and form state
+2. **Server Actions** handle database operations using Admin SDK
+3. **Toast notifications** display server-side errors
+
+This provides:
+
+- Better UX with real-time client-side validation
+- Security with server-side database operations
+- Clear error handling with field-specific and general errors
+
+### File Organization
+
+Server actions are located in `_actions` folders within feature directories:
+
+```
+app/dashboard/project/
+├── _actions/
+│   ├── create-project.actions.ts
+│   ├── edit-project.actions.ts
+│   ├── join-project.actions.ts
+│   └── leave-project.actions.ts
+```
+
+**Naming Convention**: `kebab-case.actions.ts` (e.g., `create-project.actions.ts`)
+
+### Server Action Structure
+
+**Basic Template:**
+
+```typescript
+"use server";
+
+import { getFirestore } from "firebase-admin/firestore";
+import { redirect } from "next/navigation";
+
+import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH } from "@/constants";
+import { verifySession } from "@/lib";
+import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types";
+
+import { type MyFormSchema } from "../_schemas/my-form.schemas";
+
+export type MyActionResult = ActionResult<MyFormSchema>;
+
+export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+  const userId = await verifySession();
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
+
+  const db = getFirestore();
+  const now = Date.now();
+
+  try {
+    // Validate user exists
+    const userDocSnapshot = await getUserDocSnapshot(userId);
+    if (!userDocSnapshot.exists) {
+      return {
+        success: false,
+        error: "User document not found",
+      };
+    }
+
+    // Perform database operations
+    // ...
+
+    return { success: true };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Action error:", errorMessage);
+
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+};
+```
+
+### Using ActionResult Type
+
+The project uses a generic `ActionResult<T>` type for consistent error handling:
+
+```typescript
+import type { ActionResult } from "@/types";
+
+// For forms with field validation
+export type MyFormResult = ActionResult<MyFormSchema>;
+
+// For non-form operations (no field property)
+export type MyActionResult = ActionResult;
+```
+
+**Result Structure:**
+
+- **Success**: `{ success: true }`
+- **Error with field**: `{ success: false; error: string; field?: keyof FormSchema }`
+- **Error without field**: `{ success: false; error: string }`
+
+### Error Handling Patterns
+
+**In Server Actions:**
+
+```typescript
+// Field-specific error (for form validation)
+if (!isValid) {
+  return {
+    success: false,
+    error: "Invalid input",
+    field: "fieldName", // Only available when ActionResult<FormSchema>
+  };
+}
+
+// General error
+if (!exists) {
+  return {
+    success: false,
+    error: "Resource not found",
+  };
+}
+```
+
+**In Hooks (Client-Side):**
+
+```typescript
+const onSubmit = async (data: FormSchema) => {
+  try {
+    const result = await myAction(data);
+    const { success } = result;
+
+    if (!success) {
+      const { field, error } = result;
+
+      if (field) {
+        // Field-specific error - set on form field
+        setError(field, {
+          type: "server",
+          message: error,
+        });
+      } else {
+        // General error - show toast
+        toast.error("Operation failed", { description: error });
+      }
+      return;
+    }
+
+    // Success - refresh or redirect
+    router.refresh();
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    toast.error("Operation failed", { description: errorMessage });
+  }
+};
+```
+
+### Authentication and Authorization
+
+**Always verify session in server actions:**
+
+```typescript
+const userId = await verifySession();
+if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(TARGET_PATH)}`);
+```
+
+**Check user permissions:**
+
+```typescript
+const userDocSnapshot = await getUserDocSnapshot(userId);
+if (!userDocSnapshot.exists) {
+  return { success: false, error: "User not found" };
+}
+
+// Check ownership or permissions
+if (userId !== ownerId) {
+  return { success: false, error: "Permission denied" };
+}
+```
+
+### Integration with React Hook Form
+
+**Hook Pattern:**
+
+```typescript
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { myAction } from "../_actions/my-action.actions";
+import { myFormSchema, type MyFormSchema } from "../_schemas/my-form.schemas";
+
+export const useMyForm = () => {
+  const router = useRouter();
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { isSubmitting },
+  } = useForm<MyFormSchema>({
+    resolver: zodResolver(myFormSchema),
+    defaultValues: {
+      // ...
+    },
+  });
+
+  const onSubmit: SubmitHandler<MyFormSchema> = async (data) => {
+    try {
+      const result = await myAction(data);
+      const { success } = result;
+
+      if (!success) {
+        const { field, error } = result;
+
+        if (field) {
+          setError(field, {
+            type: "server",
+            message: error,
+          });
+        } else {
+          toast.error("Operation failed", { description: error });
+        }
+        return;
+      }
+
+      router.refresh();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      toast.error("Operation failed", { description: errorMessage });
+    }
+  };
+
+  return { control, handleSubmit, onSubmit, isSubmitting };
+};
+```
+
+### Best Practices
+
+1. **Always use Admin SDK** in server actions (never client SDK)
+2. **Verify session** at the start of every server action
+3. **Return structured errors** using `ActionResult` type
+4. **Handle redirects** for unauthenticated users
+5. **Use try-catch** for error handling
+6. **Log errors** to console for debugging
+7. **Validate permissions** before performing operations
+8. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
+9. **Keep actions focused** - one action per operation
+10. **Export result types** for type safety
+
 ## Type Definitions
 
 ### Type vs Interface
@@ -644,6 +919,8 @@ pnpm run build
 
    ```
    app/dashboard/my-feature/
+   ├── _actions/          # Server actions (if needed)
+   │   └── my-action.actions.ts
    ├── _components/
    │   └── index.ts
    ├── _hooks/
