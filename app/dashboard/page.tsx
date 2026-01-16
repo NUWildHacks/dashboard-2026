@@ -11,8 +11,8 @@ import {
 } from "@/app/dashboard/_components";
 import "@/config/firebase-client";
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getConfigDocSnapshot, getStatisticsDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
-import type { User, WildHacksConfig, WildHacksStatistics } from "@/types";
+import { calculateStatistics, getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
+import type { User, WildHacksConfig } from "@/types";
 
 const DashboardPage = async () => {
   const userId = await verifySession();
@@ -26,8 +26,7 @@ const DashboardPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
-  const statisticsDocSnapshot = await getStatisticsDocSnapshot();
-  const wildHacksStatistics = statisticsDocSnapshot.data() as WildHacksStatistics;
+  const wildHacksStatistics = await calculateStatistics();
 
   return (
     <>

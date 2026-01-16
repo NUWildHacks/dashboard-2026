@@ -1,32 +1,14 @@
 "use client";
 
 import { FirebaseError } from "firebase/app";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  increment,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import {
-  PROJECTS_COLLECTION,
-  USERS_COLLECTION,
-  WILDHACKS_COLLECTION,
-  WILDHACKS_STATISTICS_DOC,
-  ROOT_PATH,
-  USER_FIELDS,
-} from "@/constants";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, ROOT_PATH, USER_FIELDS } from "@/constants";
 import type { User } from "@/types";
 
 export type UseEventWithdrawReturn = {
@@ -44,8 +26,6 @@ export const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => 
 
     try {
       const now = Date.now();
-
-      const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
 
       const userDocRef = doc(db, USERS_COLLECTION, userId);
       const userDocSnapshot = await getDoc(userDocRef);
@@ -77,15 +57,7 @@ export const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => 
         const remainingTeamMemberDocs = await getDocs(q);
 
         if (remainingTeamMemberDocs.size === 0) {
-          const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
-
-          const deleteProjectDocPromise = deleteDoc(projectDocRef);
-          const updateStatisticsDocPromise = updateDoc(statisticsDocRef, {
-            projects: increment(-1),
-            updated_at: now,
-          });
-
-          await Promise.all([deleteProjectDocPromise, updateStatisticsDocPromise]);
+          await deleteDoc(projectDocRef);
         } else if (isOwner) {
           const newOwnerId = remainingTeamMemberDocs.docs[0].id;
 
@@ -97,10 +69,6 @@ export const useEventWithdraw = (userId: User["id"]): UseEventWithdrawReturn => 
       }
 
       await deleteDoc(userDocRef);
-      await updateDoc(statisticsDocRef, {
-        participants: increment(-1),
-        updated_at: now,
-      });
 
       router.replace(ROOT_PATH);
     } catch (e) {

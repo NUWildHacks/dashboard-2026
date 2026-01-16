@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
-import { Combobox } from "@/components";
+import Combobox from "@/components/form/combobox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,17 +41,16 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
-import type { User, WildHacksConfig } from "@/types";
+import type { WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
 type RegistrationFormProps = {
-  userId: User["id"];
   state: WildHacksConfig["state"];
 };
 
-const RegistrationForm = ({ userId, state }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(userId, state);
+const RegistrationForm = ({ state }: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(state);
 
   return (
     <Card className="rounded-2xl shadow-sm">
@@ -477,7 +476,7 @@ const RegistrationForm = ({ userId, state }: RegistrationFormProps) => {
                             id={field.name}
                             placeholder="Enter your permission code"
                             aria-invalid={fieldState.invalid}
-                            autoComplete="given-name"
+                            autoComplete="off"
                           />
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} className="w-full text-start" />
@@ -598,7 +597,7 @@ const RegistrationForm = ({ userId, state }: RegistrationFormProps) => {
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
           <Button type="submit" form="registration-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 /> : "Submit"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
           </Button>
           <Link href={ROOT_PATH}>
             <Button type="button" variant="outline" disabled={isSubmitting}>

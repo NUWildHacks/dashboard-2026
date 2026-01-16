@@ -8,7 +8,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  increment,
   orderBy,
   query,
   updateDoc,
@@ -20,13 +19,7 @@ import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import {
-  PROJECTS_COLLECTION,
-  USERS_COLLECTION,
-  WILDHACKS_COLLECTION,
-  WILDHACKS_STATISTICS_DOC,
-  USER_FIELDS,
-} from "@/constants";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, USER_FIELDS } from "@/constants";
 import type { User } from "@/types";
 
 export type UseLeaveProjectDialogReturn = {
@@ -72,15 +65,7 @@ export const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id
       const remainingTeamMemberDocs = await getDocs(q);
 
       if (remainingTeamMemberDocs.size === 0) {
-        const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
-
-        const deleteProjectDocPromise = deleteDoc(projectDocRef);
-        const updateStatisticsDocPromise = updateDoc(statisticsDocRef, {
-          projects: increment(-1),
-          updated_at: now,
-        });
-
-        await Promise.all([deleteProjectDocPromise, updateStatisticsDocPromise]);
+        await deleteDoc(projectDocRef);
       } else if (isOwner) {
         const newOwnerId = remainingTeamMemberDocs.docs[0].id;
 

@@ -17,6 +17,4 @@ export type WildHacksStatistics = {
   admins: number;
   projects: number;
   submissions: number;
-
-  updated_at: number;
 };

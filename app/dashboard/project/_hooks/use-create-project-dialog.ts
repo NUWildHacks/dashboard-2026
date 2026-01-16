@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
-import { addDoc, collection, doc, getDoc, increment, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION, USERS_COLLECTION, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC } from "@/constants";
+import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants";
 import type { User } from "@/types";
 
 import { createProjectFormSchema, CreateProjectFormSchema } from "../_schemas";
@@ -57,8 +57,6 @@ export const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectD
 
       const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
 
-      const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
-
       if (project_id) {
         setError("root", { type: "validate", message: "You already have a project" });
         return;
@@ -78,18 +76,11 @@ export const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectD
         updated_at: now,
       } as Omit<Project, "id">);
 
-      const updateUserDocPromise = updateDoc(userDocRef, {
+      await updateDoc(userDocRef, {
         project_id: projectDocRef.id,
         joined_project_at: now,
         updated_at: now,
       } as Pick<User, "project_id" | "joined_project_at" | "updated_at">);
-
-      const updateStatisticsDocPromise = updateDoc(statisticsDocRef, {
-        projects: increment(1),
-        updated_at: now,
-      });
-
-      await Promise.all([updateUserDocPromise, updateStatisticsDocPromise]);
 
       setIsOpen(false);
 
