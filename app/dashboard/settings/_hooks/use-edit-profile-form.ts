@@ -1,13 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { doc, updateDoc, FirestoreError } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { db } from "@/config/firebase-client";
-import { USERS_COLLECTION } from "@/constants";
 import type { User } from "@/types";
 
-import { editProfileFormSchema, EditProfileFormSchema } from "../_schemas";
+import { editProfile } from "../_actions/edit-profile.actions";
+import { editProfileFormSchema, type EditProfileFormSchema } from "../_schemas";
 
 export type UseEditProfileFormReturn = {
   onSubmit: SubmitHandler<EditProfileFormSchema>;
@@ -17,12 +16,16 @@ export type UseEditProfileFormReturn = {
 } & Pick<UseFormReturn<EditProfileFormSchema>, "control" | "handleSubmit">;
 
 export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
-  const { id, first_name, last_name, email, phone, github_username, dietary_restrictions, other_dietary_restrictions } =
+  const { first_name, last_name, email, phone, github_username, dietary_restrictions, other_dietary_restrictions } =
     user;
+
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting, isDirty },
   } = useForm<EditProfileFormSchema>({
     resolver: zodResolver(editProfileFormSchema),
@@ -39,22 +42,42 @@ export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
 
   const onSubmit = async (data: EditProfileFormSchema) => {
     try {
-      const now = Date.now();
+      const result = await editProfile(data);
+      const { success } = result;
 
-      const { ...rest } = data;
+      if (!success) {
+        const { field, error } = result;
 
-      const userDocRef = doc(db, USERS_COLLECTION, id);
-      await updateDoc(userDocRef, { ...rest, updated_at: now });
-    } catch (e) {
-      const errorMessage = e instanceof FirestoreError || e instanceof Error ? e.message : "An unknown error occurred";
-      console.error(errorMessage);
+        if (field) {
+          setError(field, {
+            type: "server",
+            message: error,
+          });
+        } else {
+          toast.error("Failed to update profile", { description: error });
+        }
+        return;
+      }
+
+      router.refresh();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Edit profile error:", errorMessage);
 
       toast.error("Failed to update profile", { description: errorMessage });
     }
   };
 
   const handleReset = () => {
-    reset();
+    reset({
+      first_name,
+      last_name,
+      email,
+      phone,
+      github_username,
+      dietary_restrictions,
+      other_dietary_restrictions,
+    });
   };
 
   return {
