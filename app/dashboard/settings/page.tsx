@@ -21,7 +21,7 @@ const SettingsPage = async () => {
         <h2 className="text-md font-semibold">General</h2>
         <Separator />
         <ThemeSelect />
-        <EventWithdraw userId={userId} />
+        <EventWithdraw />
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>

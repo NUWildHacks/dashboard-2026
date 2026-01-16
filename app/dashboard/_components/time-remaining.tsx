@@ -21,7 +21,7 @@ const TimeRemaining = ({ start_time, end_time }: TimeRemainingProps) => {
             ? "The clock is ticking! See how much time you have left to build your project."
             : hasEnded
               ? "The event has ended. Thank you for participating!"
-              : "Waiting for event organizers to start the clock. In the meantime, get together with your team and start brainstorming!"}
+              : "Waiting for the event to start. In the meantime, get together with your team and start brainstorming!"}
         </CardDescription>
       </CardHeader>
       {hasStarted && !hasEnded && (
