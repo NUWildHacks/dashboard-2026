@@ -1,37 +1,149 @@
 # Dashboard 2026
 
-This is the WildHacks Dashboard, the all-in-one hackathon management system for WildHacks 2026.
+The WildHacks Dashboard is the management system for WildHacks 2026. It provides participants with a platform to make the most of their hackathon experience, including project collaboration, event scheduling, announcements, and more.
 
-https://dashboard.wildhacks.net
+**Live Site**: https://dashboard.wildhacks.net
 
-## Acknowledgements
+## Tech Stack
 
-### Firebase
+### Frontend
 
-- [Overview](https://firebase.google.com/docs)
-- [Authentication](https://firebase.google.com/docs/auth)
-- [Cloud Firestore](https://firebase.google.com/docs/firestore)
-- [Hosting](https://firebase.google.com/docs/hosting)
-- [Cloud Functions](https://firebase.google.com/docs/functions)
-- [Security Rules](https://firebase.google.com/docs/rules)
+- **Next.js 16** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **TailwindCSS** - Utility-first CSS framework
+- **ShadCN UI** - Component library built on Radix UI
 
-### React
+### Backend
 
-- [Reference](https://react.dev/reference/react)
+- **Firebase Authentication** - User authentication
+- **Cloud Firestore** - NoSQL database
+- **Vercel** - Static hosting
 
-### UI Libraries
+### Validation & Forms
 
-- [ShadCN](https://ui.shadcn.com)
-- [TailwindCSS](https://tailwindcss.com/docs)
+- **Zod** - Schema validation
+- **React Hook Form** - Form state management
+- **@hookform/resolvers** - Zod integration for React Hook Form
 
-### Next.js
+### Utilities
 
-- [Getting Started](https://nextjs.org/docs/getting-started)
-- [Pages](https://nextjs.org/docs/basic-features/pages)
-- [Routing](https://nextjs.org/docs/routing/introduction)
-- [Static HTML Export](https://nextjs.org/docs/advanced-features/static-html-export)
+- **date-fns** - Date manipulation
+- **lucide-react** - Icon library
+- **recharts** - Chart library
+- **next-themes** - Theme management
 
-### Backend Tools
+## Features
 
-- [Express](https://expressjs.com/)
-- [Axios](https://axios-http.com/)
+### Dashboard Home
+
+- Real-time statistics and hackathon metrics
+- Personal QR code for check-in
+- Countdown timer showing time remaining
+- Interactive venue map
+- Live announcements feed
+- Upcoming events calendar
+
+### Announcements
+
+- View all hackathon announcements
+- Real-time updates for important information
+
+### Schedule
+
+- Interactive calendar view of all events
+- Event details and timing information
+- Filter and navigate through the schedule
+
+### Project Management
+
+- Create and manage hackathon projects
+- Join existing projects with team codes
+- Leave projects
+- Manage team members and roles
+- Edit project details (name, description, GitHub links)
+
+### Settings
+
+- Edit user profile information
+- Theme selection (light/dark mode)
+- Event withdrawal functionality
+
+### Support
+
+- Access to support resources and help
+
+### Authentication
+
+- Secure login with Firebase Authentication
+- User registration with profile setup
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: Version 18 or higher
+- **pnpm**: Version 10.12.1 (specified in `package.json`)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/NUWildHacks/dashboard-2026.git
+   cd dashboard-2026
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Set up environment variables (if needed):
+   - Configure Firebase credentials and other required environment variables
+
+4. Start the development server:
+
+   ```bash
+   pnpm run dev
+   ```
+
+   The application will be available at `http://localhost:3000`.
+
+### Available Scripts
+
+- `pnpm run dev` - Start the development server
+- `pnpm run build` - Build the application for production
+- `pnpm run start` - Start the production server
+- `pnpm run lint` - Run ESLint to check for code issues
+- `pnpm run lint:fix` - Automatically fix ESLint issues
+- `pnpm run format` - Format code with Prettier
+- `pnpm run format:check` - Check if code is formatted correctly
+- `pnpm run clean` - Remove build artifacts and cache
+
+For detailed setup instructions, code style guidelines, and contribution workflow, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Future Developments
+
+The following features are planned for future implementation:
+
+### Admin Features
+
+- **User Management**: Interface for administrators to manage user accounts, roles, and permissions
+- **WildHacks Config Editing**: Admin panel to edit hackathon configuration settings
+- **Creating Announcements**: Admin interface to create and publish announcements
+- **Creating Events**: Admin interface to create and manage schedule events
+
+### Security
+
+- **Firestore Security Rules**: Implementation of comprehensive security rules to protect database access and ensure proper authorization
+
+## Contributing
+
+Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
+
+- Project structure and organization
+- Code style and conventions
+- Development workflow
+- Git workflow and commit message format
+- Testing and quality standards
