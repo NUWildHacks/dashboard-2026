@@ -26,7 +26,7 @@ const EmptyProject = ({ userId }: EmptyProjectProps) => {
         </EmptyHeader>
         <EmptyContent className="flex-row justify-center">
           <CreateProjectDialog userId={userId} />
-          <JoinProjectDialog userId={userId} />
+          <JoinProjectDialog />
         </EmptyContent>
       </Empty>
     </div>
