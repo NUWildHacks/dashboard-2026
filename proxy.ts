@@ -1,10 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH, SESSION_COOKIE_NAME } from "@/constants";
+import {
+  DASHBOARD_ANNOUNCEMENTS_PATH,
+  DASHBOARD_PATH,
+  DASHBOARD_PROJECT_PATH,
+  DASHBOARD_SCHEDULE_PATH,
+  DASHBOARD_SETTINGS_PATH,
+  DASHBOARD_SUPPORT_PATH,
+  LOGIN_PATH,
+  REGISTRATION_PATH,
+  SESSION_COOKIE_NAME,
+} from "@/constants";
 
 export async function proxy(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
-  const isProtectedRoute = currentPath === DASHBOARD_PATH || currentPath === REGISTRATION_PATH;
+  const isProtectedRoute =
+    currentPath === REGISTRATION_PATH ||
+    currentPath === DASHBOARD_PATH ||
+    currentPath === DASHBOARD_ANNOUNCEMENTS_PATH ||
+    currentPath === DASHBOARD_PROJECT_PATH ||
+    currentPath === DASHBOARD_SCHEDULE_PATH ||
+    currentPath === DASHBOARD_SUPPORT_PATH ||
+    currentPath === DASHBOARD_SETTINGS_PATH;
 
   if (isProtectedRoute) {
     const sessionCookie = req.cookies.get(SESSION_COOKIE_NAME)?.value;
