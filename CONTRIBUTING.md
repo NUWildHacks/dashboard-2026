@@ -10,13 +10,14 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
 4. [File Organization Patterns](#file-organization-patterns)
 5. [Component Development](#component-development)
 6. [Hooks Development](#hooks-development)
-7. [Type Definitions](#type-definitions)
-8. [Constants and Schemas](#constants-and-schemas)
-9. [Styling Guidelines](#styling-guidelines)
-10. [Git Workflow](#git-workflow)
-11. [Testing and Quality](#testing-and-quality)
-12. [Common Patterns and Examples](#common-patterns-and-examples)
-13. [Troubleshooting](#troubleshooting)
+7. [Server Actions](#server-actions)
+8. [Type Definitions](#type-definitions)
+9. [Constants and Schemas](#constants-and-schemas)
+10. [Styling Guidelines](#styling-guidelines)
+11. [Git Workflow](#git-workflow)
+12. [Testing and Quality](#testing-and-quality)
+13. [Common Patterns and Examples](#common-patterns-and-examples)
+14. [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
