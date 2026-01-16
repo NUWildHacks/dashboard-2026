@@ -1,19 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FirebaseError } from "firebase/app";
-import { collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants";
-import type { User } from "@/types";
-
-import { PROJECT_FIELDS } from "../_constants";
-import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas";
+import { joinProject } from "../_actions/join-project.actions";
+import { joinProjectFormSchema, type JoinProjectFormSchema } from "../_schemas";
 
 export type UseJoinProjectDialogReturn = {
   isOpen: boolean;
@@ -22,7 +16,7 @@ export type UseJoinProjectDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<JoinProjectFormSchema>, "control" | "handleSubmit">;
 
-export const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn => {
+export const useJoinProjectDialog = (): UseJoinProjectDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -41,49 +35,28 @@ export const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogRe
 
   const onSubmit = async (data: JoinProjectFormSchema) => {
     try {
-      const now = Date.now();
+      const result = await joinProject(data);
+      const { success } = result;
 
-      const { invitation_code } = data;
+      if (!success) {
+        const { field, error } = result;
 
-      const userDocRef = doc(db, USERS_COLLECTION, userId);
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (!userDocSnapshot.exists()) {
-        setError("invitation_code", { type: "validate", message: "User document not found" });
+        if (field) {
+          setError(field, {
+            type: "server",
+            message: error,
+          });
+        } else {
+          toast.error("Failed to join project", { description: error });
+        }
         return;
       }
-
-      const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
-
-      if (project_id) {
-        setError("invitation_code", { type: "validate", message: "You already have a project" });
-        return;
-      }
-
-      const projectDocQuery = query(
-        collection(db, PROJECTS_COLLECTION),
-        where(PROJECT_FIELDS.invitation_code, "==", invitation_code),
-        limit(1)
-      );
-      const projectDocQuerySnapshot = await getDocs(projectDocQuery);
-
-      if (projectDocQuerySnapshot.empty) {
-        setError("invitation_code", { type: "validate", message: "Invalid invitation code" });
-        return;
-      }
-
-      await updateDoc(userDocRef, {
-        project_id: projectDocQuerySnapshot.docs[0].id,
-        joined_project_at: now,
-        updated_at: now,
-      } as Pick<User, "project_id" | "joined_project_at" | "updated_at">);
 
       setIsOpen(false);
-
       router.refresh();
-    } catch (e) {
-      const errorMessage = e instanceof FirebaseError || e instanceof Error ? e.message : "An unknown error occurred";
-      console.error(errorMessage);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Join project error:", errorMessage);
 
       toast.error("Failed to join project", { description: errorMessage });
     }

@@ -15,14 +15,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader } from "@/components/ui/item";
-import type { User } from "@/types";
 
-type EventWithdrawProps = {
-  userId: User["id"];
-};
-
-const EventWithdraw = ({ userId }: EventWithdrawProps) => {
-  const { isWithdrawing, withdraw } = useEventWithdraw(userId);
+const EventWithdraw = () => {
+  const { isWithdrawing, withdraw } = useEventWithdraw();
 
   return (
     <Item variant="outline" className="w-full shadow-sm bg-card">

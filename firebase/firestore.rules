@@ -1,0 +1,108 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && getUserRole() == 'Admin';
+    }
+
+    function userOwnsDocument(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isProjectMember(projectId) {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
+    }
+
+    function isProjectOwner(projectData) {
+      return isAuthenticated() && request.auth.uid == projectData.owner_id;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Authenticated users can read user documents (needed for team members queries)
+      allow read: if isAuthenticated();
+
+      // Users can create their own document (during registration via server action)
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow create: if isAuthenticated() && userOwnsDocument(userId);
+
+      // Users can update their own document (except role field)
+      // Role can only be modified by admins
+      allow update: if isAuthenticated() &&
+                     userOwnsDocument(userId) &&
+                     (request.resource.data.role == resource.data.role || isAdmin());
+
+      // Users can delete their own document (withdraw from event) or admins can delete any
+      allow delete: if isAuthenticated() && (userOwnsDocument(userId) || isAdmin());
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      // Authenticated users can read project documents (needed for project details and team member queries)
+      allow read: if isAuthenticated();
+
+      // Project members can create projects (via server action)
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow create: if isAuthenticated();
+
+      // Any project member can update the project
+      allow update: if isAuthenticated() && isProjectMember(projectId);
+
+      // Only admins can delete projects (or via server action when last member leaves)
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow delete: if isAdmin();
+    }
+
+    // Announcements collection
+    match /announcements/{announcementId} {
+      // All authenticated users can read announcements
+      // Filtering by audience/role is handled client-side
+      allow read: if isAuthenticated();
+
+      // Only admins can create, update, or delete announcements
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow write: if isAdmin();
+    }
+
+    // Events collection
+    match /events/{eventId} {
+      // All authenticated users can read events
+      allow read: if isAuthenticated();
+
+      // Only admins can create, update, or delete events
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow write: if isAdmin();
+    }
+
+    // WildHacks collection (config document)
+    match /wildhacks/{document=**} {
+      // All authenticated users can read config
+      allow read: if isAuthenticated();
+
+      // Only admins can write to config
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow write: if isAdmin();
+    }
+
+    // Permission codes collection
+    match /permission_codes/{document=**} {
+      // Only admins can read, create, update, and delete permission codes
+      // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

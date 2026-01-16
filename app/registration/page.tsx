@@ -29,7 +29,7 @@ const RegistrationPage = async () => {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm userId={userId} state={state} />
+          <RegistrationForm state={state} />
         </div>
       </div>
     </main>

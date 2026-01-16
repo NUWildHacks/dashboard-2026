@@ -1,17 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FirebaseError } from "firebase/app";
-import { doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
-import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION } from "@/constants";
 
-import { editProjectFormSchema, EditProjectFormSchema } from "../_schemas";
+import { editProject } from "../_actions/edit-project.actions";
+import { editProjectFormSchema, type EditProjectFormSchema } from "../_schemas";
 
 export type UseEditProjectFormReturn = {
   onSubmit: SubmitHandler<EditProjectFormSchema>;
@@ -29,6 +26,7 @@ export const useEditProjectForm = (project: Project): UseEditProjectFormReturn =
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { isSubmitting, isDirty },
   } = useForm<EditProjectFormSchema>({
     resolver: zodResolver(editProjectFormSchema),
@@ -42,24 +40,27 @@ export const useEditProjectForm = (project: Project): UseEditProjectFormReturn =
 
   const onSubmit = async (data: EditProjectFormSchema) => {
     try {
-      const now = Date.now();
+      const result = await editProject(id, data);
+      const { success } = result;
 
-      const { name, description, github_url, demo_url } = data;
+      if (!success) {
+        const { field, error } = result;
 
-      const projectDocRef = doc(db, PROJECTS_COLLECTION, id);
-
-      await updateDoc(projectDocRef, {
-        name,
-        description,
-        github_url,
-        demo_url,
-        updated_at: now,
-      });
+        if (field) {
+          setError(field, {
+            type: "server",
+            message: error,
+          });
+        } else {
+          toast.error("Failed to edit project", { description: error });
+        }
+        return;
+      }
 
       router.refresh();
-    } catch (e) {
-      const errorMessage = e instanceof FirebaseError || e instanceof Error ? e.message : "An unknown error occurred";
-      console.error(errorMessage);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Edit project error:", errorMessage);
 
       toast.error("Failed to edit project", { description: errorMessage });
     }

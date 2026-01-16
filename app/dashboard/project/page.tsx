@@ -18,7 +18,7 @@ const ProjectPage = async () => {
   const projectDocSnapshot = await getProjectDocSnapshot(project_id);
 
   if (!projectDocSnapshot || !projectDocSnapshot.exists) {
-    return <EmptyProject userId={userId} />;
+    return <EmptyProject />;
   }
 
   const project: Project = { id: project_id!, ...(projectDocSnapshot.data() as Omit<Project, "id">) };

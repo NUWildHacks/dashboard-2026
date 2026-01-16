@@ -1,31 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { deleteDoc, doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
-import { FirestoreError } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { db } from "@/config/firebase-client";
-import {
-  WILDHACKS_COLLECTION,
-  PERMISSION_CODES_COLLECTION,
-  USERS_COLLECTION,
-  WILDHACKS_STATISTICS_DOC,
-  DASHBOARD_PATH,
-  ONGOING,
-  PARTICIPANT,
-} from "@/constants";
-import type { User, WildHacksConfig } from "@/types";
+import { DASHBOARD_PATH } from "@/constants";
+import { WildHacksConfig } from "@/types";
 
-import { RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schemas";
-import type { PermissionCode } from "../_types";
+import { registerUser } from "../_actions/register-user.actions";
+import { type RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schemas";
 
 export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-export const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
+export const useRegistrationForm = (state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
   const router = useRouter();
 
   const {
@@ -65,49 +54,29 @@ export const useRegistrationForm = (userId: User["id"], state: WildHacksConfig["
 
   const onSubmit = async (data: RegistrationFormSchema) => {
     try {
-      const now = Date.now();
+      const result = await registerUser(data, state);
+      const { success } = result;
 
-      const { permission_code, ...rest } = data;
+      if (!success) {
+        const { field, error } = result;
 
-      if (state === ONGOING) {
-        const permissionCodeDocRef = doc(db, PERMISSION_CODES_COLLECTION, permission_code);
-        const permissionCodeDocSnap = await getDoc(permissionCodeDocRef);
-
-        if (!permissionCodeDocSnap.exists()) {
-          setError("permission_code", { type: "validate", message: "Invalid permission code" });
-          return;
+        if (field) {
+          setError(field, {
+            type: "server",
+            message: error,
+          });
+        } else {
+          toast.error("Registration failed", { description: error });
         }
-
-        const { email, expires_at } = permissionCodeDocSnap.data() as PermissionCode;
-
-        if (email !== rest.email) {
-          setError("permission_code", { type: "validate", message: "Invalid permission code" });
-          return;
-        }
-
-        if (expires_at <= now) {
-          setError("permission_code", { type: "validate", message: "Expired permission code" });
-          return;
-        }
-
-        await deleteDoc(permissionCodeDocRef);
+        return;
       }
 
-      const userDocRef = doc(db, USERS_COLLECTION, userId);
-      await setDoc(userDocRef, { ...rest, role: PARTICIPANT, created_at: now, updated_at: now });
-
-      const statisticsDocRef = doc(db, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC);
-      await updateDoc(statisticsDocRef, {
-        participants: increment(1),
-        updated_at: now,
-      });
-
       router.replace(DASHBOARD_PATH);
-    } catch (e) {
-      const errorMessage = e instanceof FirestoreError || e instanceof Error ? e.message : "An unknown error occurred";
-      console.error(errorMessage);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Registration error:", errorMessage);
 
-      toast.error("Form submission failed", { description: errorMessage });
+      toast.error("Registration failed", { description: errorMessage });
     }
   };
 

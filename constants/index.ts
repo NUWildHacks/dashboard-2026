@@ -8,7 +8,6 @@ export {
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
   WILDHACKS_CONFIG_DOC,
-  WILDHACKS_STATISTICS_DOC,
 } from "./db.constants";
 
 export {

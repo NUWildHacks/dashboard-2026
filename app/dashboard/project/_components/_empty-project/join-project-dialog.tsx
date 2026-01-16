@@ -17,14 +17,9 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { User } from "@/types";
 
-type JoinProjectDialogProps = {
-  userId: User["id"];
-};
-
-const JoinProjectDialog = ({ userId }: JoinProjectDialogProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useJoinProjectDialog(userId);
+const JoinProjectDialog = () => {
+  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useJoinProjectDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -68,7 +63,7 @@ const JoinProjectDialog = ({ userId }: JoinProjectDialogProps) => {
             </Button>
           </DialogClose>
           <Button type="submit" form="join-project-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 /> : "Join project"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Join project"}
           </Button>
         </DialogFooter>
       </DialogContent>
