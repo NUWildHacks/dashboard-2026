@@ -5,13 +5,12 @@ import { redirect } from "next/navigation";
 
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
 import { verifySession } from "@/lib";
+import type { ActionResult } from "@/types";
 
 import { PROJECT_FIELDS } from "../_constants";
 import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
 
-export type JoinProjectResult =
-  | { success: true }
-  | { success: false; error: string; field?: keyof JoinProjectFormSchema };
+export type JoinProjectResult = ActionResult<JoinProjectFormSchema>;
 
 export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProjectResult> => {
   const userId = await verifySession();

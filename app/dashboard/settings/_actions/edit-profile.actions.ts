@@ -6,12 +6,11 @@ import { redirect } from "next/navigation";
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types";
 
 import { type EditProfileFormSchema } from "../_schemas/edit-profile-form.schemas";
 
-export type EditProfileResult =
-  | { success: true }
-  | { success: false; error: string; field?: keyof EditProfileFormSchema };
+export type EditProfileResult = ActionResult<EditProfileFormSchema>;
 
 export const editProfile = async (data: EditProfileFormSchema): Promise<EditProfileResult> => {
   const userId = await verifySession();

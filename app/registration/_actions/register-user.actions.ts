@@ -12,14 +12,12 @@ import {
   REGISTRATION_PATH,
 } from "@/constants";
 import { verifySession } from "@/lib";
-import type { WildHacksConfig } from "@/types";
+import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type RegistrationFormSchema } from "../_schemas/registration-form.schemas";
 import type { PermissionCode } from "../_types";
 
-export type RegisterUserResult =
-  | { success: true }
-  | { success: false; error: string; field?: keyof RegistrationFormSchema };
+export type RegisterUserResult = ActionResult<RegistrationFormSchema>;
 
 export const registerUser = async (
   data: RegistrationFormSchema,

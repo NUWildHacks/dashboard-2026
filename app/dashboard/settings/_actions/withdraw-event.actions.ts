@@ -6,8 +6,9 @@ import { redirect } from "next/navigation";
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH, USER_FIELDS } from "@/constants";
 import { verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types/action-result.types";
 
-export type WithdrawEventResult = { success: true } | { success: false; error: string };
+export type WithdrawEventResult = ActionResult;
 
 export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
   const userId = await verifySession();

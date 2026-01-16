@@ -6,8 +6,9 @@ import { redirect } from "next/navigation";
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, USER_FIELDS } from "@/constants";
 import { verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types/action-result.types";
 
-export type LeaveProjectResult = { success: true } | { success: false; error: string };
+export type LeaveProjectResult = ActionResult;
 
 export const leaveProject = async (projectId: string): Promise<LeaveProjectResult> => {
   const userId = await verifySession();

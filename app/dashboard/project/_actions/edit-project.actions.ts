@@ -6,12 +6,11 @@ import { redirect } from "next/navigation";
 import { PROJECTS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
 import { verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types";
 
 import { type EditProjectFormSchema } from "../_schemas/edit-project-form.schemas";
 
-export type EditProjectResult =
-  | { success: true }
-  | { success: false; error: string; field?: keyof EditProjectFormSchema };
+export type EditProjectResult = ActionResult<EditProjectFormSchema>;
 
 export const editProject = async (projectId: string, data: EditProjectFormSchema): Promise<EditProjectResult> => {
   const userId = await verifySession();

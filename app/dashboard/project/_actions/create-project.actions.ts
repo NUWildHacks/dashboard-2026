@@ -6,12 +6,11 @@ import { redirect } from "next/navigation";
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
 import { verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
+import type { ActionResult } from "@/types";
 
 import { type CreateProjectFormSchema } from "../_schemas/create-project-form.schemas";
 
-export type CreateProjectResult =
-  | { success: true }
-  | { success: false; error: string; field?: keyof CreateProjectFormSchema };
+export type CreateProjectResult = ActionResult<CreateProjectFormSchema>;
 
 export const createProject = async (data: CreateProjectFormSchema): Promise<CreateProjectResult> => {
   const userId = await verifySession();
