@@ -18,14 +18,9 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { User } from "@/types";
 
-type CreateProjectDialogProps = {
-  userId: User["id"];
-};
-
-const CreateProjectDialog = ({ userId }: CreateProjectDialogProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useCreateProjectDialog(userId);
+const CreateProjectDialog = () => {
+  const { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen } = useCreateProjectDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -112,7 +107,7 @@ const CreateProjectDialog = ({ userId }: CreateProjectDialogProps) => {
             </Button>
           </DialogClose>
           <Button type="submit" form="create-project-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 /> : "Create project"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Create project"}
           </Button>
         </DialogFooter>
       </DialogContent>

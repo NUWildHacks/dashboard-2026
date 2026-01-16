@@ -1,16 +1,11 @@
 import { FolderX } from "lucide-react";
 
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import type { User } from "@/types";
 
 import CreateProjectDialog from "./create-project-dialog";
 import JoinProjectDialog from "./join-project-dialog";
 
-type EmptyProjectProps = {
-  userId: User["id"];
-};
-
-const EmptyProject = ({ userId }: EmptyProjectProps) => {
+const EmptyProject = () => {
   return (
     <div className="flex-1 flex justify-center items-center">
       <Empty>
@@ -25,7 +20,7 @@ const EmptyProject = ({ userId }: EmptyProjectProps) => {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent className="flex-row justify-center">
-          <CreateProjectDialog userId={userId} />
+          <CreateProjectDialog />
           <JoinProjectDialog />
         </EmptyContent>
       </Empty>
