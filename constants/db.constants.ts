@@ -6,4 +6,3 @@ export const PROJECTS_COLLECTION = "projects" as const;
 export const WILDHACKS_COLLECTION = "wildhacks" as const;
 
 export const WILDHACKS_CONFIG_DOC = "config" as const;
-export const WILDHACKS_STATISTICS_DOC = "statistics" as const;
