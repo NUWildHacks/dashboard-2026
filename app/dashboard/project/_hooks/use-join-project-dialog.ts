@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
 import { collection, doc, getDoc, getDocs, limit, query, updateDoc, where } from "firebase/firestore";
@@ -7,11 +9,11 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants/db.constants";
-import User from "@/types/user.types";
+import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants";
+import type { User } from "@/types";
 
-import { PROJECT_FIELDS } from "../_constants/project.constants";
-import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
+import { PROJECT_FIELDS } from "../_constants";
+import { joinProjectFormSchema, JoinProjectFormSchema } from "../_schemas";
 
 export type UseJoinProjectDialogReturn = {
   isOpen: boolean;
@@ -20,7 +22,7 @@ export type UseJoinProjectDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<JoinProjectFormSchema>, "control" | "handleSubmit">;
 
-const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn => {
+export const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -89,5 +91,3 @@ const useJoinProjectDialog = (userId: User["id"]): UseJoinProjectDialogReturn =>
 
   return { control, handleSubmit, onSubmit, isSubmitting, isOpen, setIsOpen };
 };
-
-export default useJoinProjectDialog;

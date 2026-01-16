@@ -9,9 +9,9 @@ import {
   ROLES,
   SCHOOLS,
   TSHIRT_SIZES,
-} from "@/constants/user.constants";
+} from "@/constants";
 
-import BaseModel from "./base-model.types";
+import type { BaseModel } from "./base-model.types";
 
 export type Country = (typeof COUNTRIES)[number];
 export type School = (typeof SCHOOLS)[number];
@@ -24,7 +24,7 @@ export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
 
 export type Role = (typeof ROLES)[number];
 
-type User = BaseModel & {
+export type User = BaseModel & {
   email: string;
   first_name: string;
   last_name: string;
@@ -53,5 +53,3 @@ type User = BaseModel & {
   project_id?: Project["id"];
   joined_project_at?: number;
 };
-
-export default User;

@@ -1,19 +1,18 @@
+"use client";
+
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import type { Project, TeamMember } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import { USERS_COLLECTION } from "@/constants/db.constants";
-import { USER_FIELDS } from "@/constants/user.constants";
-
-import { Project } from "../_types/project.types";
-import { TeamMember } from "../_types/team-member.types";
+import { USERS_COLLECTION, USER_FIELDS } from "@/constants";
 
 export type UseTeamMembersListReturn = {
   teamMembers: TeamMember[];
   isLoading: boolean;
 };
 
-const useTeamMembersList = (projectId: Project["id"]): UseTeamMembersListReturn => {
+export const useTeamMembersList = (projectId: Project["id"]): UseTeamMembersListReturn => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -49,5 +48,3 @@ const useTeamMembersList = (projectId: Project["id"]): UseTeamMembersListReturn 
 
   return { teamMembers, isLoading };
 };
-
-export default useTeamMembersList;

@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
+import { useCreateProjectDialog } from "@/app/dashboard/project/_hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,9 +18,7 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import User from "@/types/user.types";
-
-import useCreateProjectDialog from "../../_hooks/use-create-project-dialog";
+import type { User } from "@/types";
 
 type CreateProjectDialogProps = {
   userId: User["id"];

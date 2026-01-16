@@ -4,7 +4,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { WildHacksStatistics } from "@/types/wildhacks.types";
+import type { WildHacksStatistics } from "@/types";
 
 const chartConfig = {
   count: {

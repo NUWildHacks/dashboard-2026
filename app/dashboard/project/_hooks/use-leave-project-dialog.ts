@@ -1,3 +1,5 @@
+"use client";
+
 import { FirebaseError } from "firebase/app";
 import {
   collection,
@@ -16,24 +18,23 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
 import {
   PROJECTS_COLLECTION,
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
   WILDHACKS_STATISTICS_DOC,
-} from "@/constants/db.constants";
-import { USER_FIELDS } from "@/constants/user.constants";
-import User from "@/types/user.types";
-
-import { Project } from "../_types/project.types";
+  USER_FIELDS,
+} from "@/constants";
+import type { User } from "@/types";
 
 export type UseLeaveProjectDialogReturn = {
   handleLeaveProject: () => Promise<void>;
   isLoading: boolean;
 };
 
-const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): UseLeaveProjectDialogReturn => {
+export const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): UseLeaveProjectDialogReturn => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -102,5 +103,3 @@ const useLeaveProjectDialog = (userId: User["id"], projectId: Project["id"]): Us
 
   return { handleLeaveProject, isLoading };
 };
-
-export default useLeaveProjectDialog;

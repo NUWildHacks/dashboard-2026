@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
 import { addDoc, collection, doc, getDoc, increment, updateDoc } from "firebase/firestore";
@@ -6,17 +8,12 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import type { Project } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import {
-  PROJECTS_COLLECTION,
-  USERS_COLLECTION,
-  WILDHACKS_COLLECTION,
-  WILDHACKS_STATISTICS_DOC,
-} from "@/constants/db.constants";
-import User from "@/types/user.types";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, WILDHACKS_COLLECTION, WILDHACKS_STATISTICS_DOC } from "@/constants";
+import type { User } from "@/types";
 
-import { createProjectFormSchema, CreateProjectFormSchema } from "../_schemas/create-project-form.schemas";
-import { Project } from "../_types/project.types";
+import { createProjectFormSchema, CreateProjectFormSchema } from "../_schemas";
 
 export type UseCreateNewProjectDialogReturn = {
   isOpen: boolean;
@@ -25,7 +22,7 @@ export type UseCreateNewProjectDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<CreateProjectFormSchema>, "control" | "handleSubmit">;
 
-const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogReturn => {
+export const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -107,5 +104,3 @@ const useCreateProjectDialog = (userId: User["id"]): UseCreateNewProjectDialogRe
 
   return { onSubmit, isSubmitting, control, handleSubmit, isOpen, setIsOpen };
 };
-
-export default useCreateProjectDialog;

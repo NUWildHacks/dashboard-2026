@@ -2,6 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 
+import { useEventWithdraw } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,9 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader } from "@/components/ui/item";
-import User from "@/types/user.types";
-
-import useEventWithdraw from "../_hooks/use-event-withdraw";
+import type { User } from "@/types";
 
 type EventWithdrawProps = {
   userId: User["id"];

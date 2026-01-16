@@ -8,9 +8,9 @@ import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import type { Event } from "@/app/dashboard/schedule/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { DASHBOARD_SCHEDULE_PATH } from "@/constants/routes.constants";
-import { useDialog } from "@/hooks/use-dialog";
-import { cn } from "@/lib/utils.lib";
+import { DASHBOARD_SCHEDULE_PATH } from "@/constants";
+import { useDialog } from "@/hooks";
+import { cn } from "@/lib";
 
 const UpcomingEvents = () => {
   const useEventsReturn = useEvents({

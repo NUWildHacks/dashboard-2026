@@ -6,7 +6,7 @@ import levelsOfStudy from "@/data/levels-of-study.json";
 import races from "@/data/races.json";
 import schools from "@/data/schools.json";
 import tshirtSizes from "@/data/tshirt-sizes.json";
-import User from "@/types/user.types";
+import type { User } from "@/types";
 
 export const COUNTRIES = countries;
 export const SCHOOLS = schools;

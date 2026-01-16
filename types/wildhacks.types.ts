@@ -1,4 +1,4 @@
-import { STATES } from "@/constants/wildhacks.constants";
+import { STATES } from "@/constants";
 
 export type WildHacksConfig = {
   state: (typeof STATES)[number];

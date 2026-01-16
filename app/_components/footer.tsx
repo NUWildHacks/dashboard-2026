@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { WILDHACKS_HOME } from "@/constants/routes.constants";
+import { WILDHACKS_HOME } from "@/constants";
 
 const Footer = async () => {
   return (

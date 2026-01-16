@@ -4,10 +4,10 @@ import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
-import { USERS_COLLECTION } from "@/constants/db.constants";
-import User from "@/types/user.types";
+import { USERS_COLLECTION } from "@/constants";
+import type { User } from "@/types";
 
-import { editProfileFormSchema, EditProfileFormSchema } from "../_schemas/edit-profile-form.schemas";
+import { editProfileFormSchema, EditProfileFormSchema } from "../_schemas";
 
 export type UseEditProfileFormReturn = {
   onSubmit: SubmitHandler<EditProfileFormSchema>;
@@ -16,7 +16,7 @@ export type UseEditProfileFormReturn = {
   handleReset: () => void;
 } & Pick<UseFormReturn<EditProfileFormSchema>, "control" | "handleSubmit">;
 
-const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
+export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
   const { id, first_name, last_name, email, phone, github_username, dietary_restrictions, other_dietary_restrictions } =
     user;
   const {
@@ -66,5 +66,3 @@ const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
     handleReset,
   };
 };
-
-export default useEditProfileForm;

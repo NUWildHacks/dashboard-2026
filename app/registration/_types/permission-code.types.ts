@@ -1,8 +1,6 @@
-import User from "@/types/user.types";
+import type { User } from "@/types";
 
-type PermissionCode = {
+export type PermissionCode = {
   email: User["email"];
   expires_at: number;
 };
-
-export default PermissionCode;

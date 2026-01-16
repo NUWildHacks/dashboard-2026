@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 import "@/config/firebase-admin";
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { WildHacksConfig } from "@/types/wildhacks.types";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import type { WildHacksConfig } from "@/types";
 
 import { verifySession } from "../../lib/session.lib";
 import { getUserDocSnapshot } from "../../lib/user.lib";

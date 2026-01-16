@@ -1,5 +1,4 @@
-import BaseModel from "@/types/base-model.types";
-import User from "@/types/user.types";
+import type { BaseModel, User } from "@/types";
 
 export type Project = BaseModel & {
   name: string;

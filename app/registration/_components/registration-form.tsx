@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 
-import Combobox from "@/components/form/combobox";
+import { Combobox } from "@/components";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,22 +29,21 @@ import {
   MultiSelectValue,
 } from "@/components/ui/multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ROOT_PATH } from "@/constants/routes.constants";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
   FIELDS_OF_STUDY,
   GENDERS,
   LEVELS_OF_STUDY,
+  ONGOING,
   RACES,
+  ROOT_PATH,
   SCHOOLS,
   TSHIRT_SIZES,
-} from "@/constants/user.constants";
-import { ONGOING } from "@/constants/wildhacks.constants";
-import type User from "@/types/user.types";
-import { WildHacksConfig } from "@/types/wildhacks.types";
+} from "@/constants";
+import type { User, WildHacksConfig } from "@/types";
 
-import useRegistrationForm from "../_hooks/use-registration-form";
+import { useRegistrationForm } from "../_hooks";
 
 type RegistrationFormProps = {
   userId: User["id"];

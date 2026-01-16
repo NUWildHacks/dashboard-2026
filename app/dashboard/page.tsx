@@ -1,20 +1,18 @@
 import "@/config/firebase-admin";
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { verifySession } from "@/lib/session.lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
+import {
+  LiveAnnouncements,
+  QRCode,
+  Statistics,
+  TimeRemaining,
+  UpcomingEvents,
+  VenueMap,
+} from "@/app/dashboard/_components";
 import "@/config/firebase-client";
-import { getConfigDocSnapshot, getStatisticsDocSnapshot } from "@/lib/wildhacks.lib";
-import User from "@/types/user.types";
-import { WildHacksConfig, WildHacksStatistics } from "@/types/wildhacks.types";
-
-import LiveAnnouncements from "./_components/live-announcements";
-import QRCode from "./_components/qr-code";
-import Statistics from "./_components/statistics";
-import TimeRemaining from "./_components/time-remaining";
-import UpcomingEvents from "./_components/upcoming-events";
-import VenueMap from "./_components/venue-map";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getConfigDocSnapshot, getStatisticsDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
+import type { User, WildHacksConfig, WildHacksStatistics } from "@/types";
 
 const DashboardPage = async () => {
   const userId = await verifySession();

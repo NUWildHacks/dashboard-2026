@@ -1,15 +1,11 @@
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { verifySession } from "@/lib/session.lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import User from "@/types/user.types";
-
-import EmptyProject from "./_components/_empty-project/empty-project";
-import TeamMembersList from "./_components/_team-members/team-members-list";
-import EditProjectForm from "./_components/edit-project-form";
-import { getProjectDocSnapshot } from "./_lib/project.lib";
-import { Project } from "./_types/project.types";
+import { EditProjectForm, EmptyProject, TeamMembersList } from "@/app/dashboard/project/_components";
+import { getProjectDocSnapshot } from "@/app/dashboard/project/_lib";
+import type { Project } from "@/app/dashboard/project/_types";
+import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getUserDocSnapshot, verifySession } from "@/lib";
+import type { User } from "@/types";
 
 const ProjectPage = async () => {
   const userId = await verifySession();

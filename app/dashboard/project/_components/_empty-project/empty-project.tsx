@@ -1,7 +1,7 @@
 import { FolderX } from "lucide-react";
 
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import User from "@/types/user.types";
+import type { User } from "@/types";
 
 import CreateProjectDialog from "./create-project-dialog";
 import JoinProjectDialog from "./join-project-dialog";

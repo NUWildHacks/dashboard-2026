@@ -1,4 +1,4 @@
-import { TeamMember } from "../_types/team-member.types";
+import type { TeamMember } from "@/app/dashboard/project/_types";
 
 export const TEAM_MEMBER_FIELDS = {
   first_name: "first_name",

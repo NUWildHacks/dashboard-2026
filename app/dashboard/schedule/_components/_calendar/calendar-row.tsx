@@ -1,9 +1,9 @@
 "use client";
 
-import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants/calendar.constants";
-import { getCalendarItems } from "@/app/dashboard/schedule/_lib/calendar.lib";
+import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants";
+import { getCalendarItems } from "@/app/dashboard/schedule/_lib";
 import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
-import { UseDialogReturn } from "@/hooks/use-dialog";
+import type { UseDialogReturn } from "@/hooks";
 
 type CalendarRowProps = {
   events: Event[];

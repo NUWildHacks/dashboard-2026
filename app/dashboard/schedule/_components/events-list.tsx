@@ -1,13 +1,11 @@
 import { CalendarX } from "lucide-react";
 
+import { EventItem } from "@/app/dashboard/schedule/_components";
+import { UseEventsReturn } from "@/app/dashboard/schedule/_hooks";
 import type { Event } from "@/app/dashboard/schedule/_types";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UseDialogReturn } from "@/hooks/use-dialog";
-
-import { UseEventsReturn } from "../_hooks";
-
-import EventItem from "./event-item";
+import type { UseDialogReturn } from "@/hooks";
 
 type EventsListProps = Pick<UseEventsReturn, "upcomingEvents" | "isLoading"> &
   Pick<UseDialogReturn<Event>, "handleSelectItem">;

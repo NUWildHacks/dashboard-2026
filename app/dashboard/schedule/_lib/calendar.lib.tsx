@@ -8,10 +8,10 @@ import {
   DEFAULT_LAST_CALENDAR_ROW_INDEX,
   ROW_HEIGHT,
   ROW_WIDTH_PERCENTAGE,
-} from "@/app/dashboard/schedule/_constants/calendar.constants";
+} from "@/app/dashboard/schedule/_constants";
 import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
-import { ONE_DAY, ONE_MINUTE } from "@/constants/time.constants";
-import { UseDialogReturn } from "@/hooks/use-dialog";
+import { ONE_DAY, ONE_MINUTE } from "@/constants";
+import type { UseDialogReturn } from "@/hooks";
 
 /**
  * Get the start of a day (midnight) in milliseconds for a given timestamp.

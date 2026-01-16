@@ -1,4 +1,4 @@
-import { CalendarRowConfig } from "../_types";
+import type { CalendarRowConfig } from "@/app/dashboard/schedule/_types";
 
 export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;

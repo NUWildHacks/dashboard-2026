@@ -14,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants/routes.constants";
+import { DASHBOARD_SETTINGS_PATH, DASHBOARD_SUPPORT_PATH } from "@/constants";
 
 import SidebarLogoutButton from "./sidebar-logout-button";
 

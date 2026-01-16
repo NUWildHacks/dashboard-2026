@@ -1,9 +1,9 @@
-import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants/event.constants";
-import BaseModel from "@/types/base-model.types";
+import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants";
+import type { BaseModel } from "@/types";
 
 export type EventCategory = (typeof EVENT_CATEGORIES)[number];
 
-type Event = BaseModel & {
+export type Event = BaseModel & {
   category: EventCategory;
 
   title: string;
@@ -12,5 +12,3 @@ type Event = BaseModel & {
   start_time: number;
   end_time: number;
 };
-
-export default Event;

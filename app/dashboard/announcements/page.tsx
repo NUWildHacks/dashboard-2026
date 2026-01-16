@@ -1,11 +1,9 @@
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants/routes.constants";
-import { verifySession } from "@/lib/session.lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import User from "@/types/user.types";
-
-import { AnnouncementsWithFilters } from "./_components";
+import { AnnouncementsWithFilters } from "@/app/dashboard/announcements/_components";
+import { DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getUserDocSnapshot, verifySession } from "@/lib";
+import type { User } from "@/types";
 
 const AnnouncementsPage = async () => {
   const userId = await verifySession();

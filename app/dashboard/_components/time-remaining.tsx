@@ -1,9 +1,8 @@
 "use client";
 
+import { useTimeRemaining } from "@/app/dashboard/_hooks";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { WildHacksConfig } from "@/types/wildhacks.types";
-
-import { useTimeRemaining } from "../_hooks/use-time-remaining";
+import type { WildHacksConfig } from "@/types";
 
 type TimeRemainingProps = Pick<WildHacksConfig, "start_time" | "end_time">;
 

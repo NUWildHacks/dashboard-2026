@@ -1,9 +1,29 @@
 import { headerTextMap } from "@/app/dashboard/_constants/sidebar.constants";
 
-export function getHeaderText(pathname: string) {
+/**
+ * Get the header text for a given pathname based on the last segment of the path.
+ * Maps the pathname's last segment to a header text from the sidebar constants.
+ *
+ * @param pathname - The full pathname string (e.g., "/dashboard/schedule", "/dashboard/project")
+ * @returns The header text for the pathname, or "Home" if no mapping exists
+ * @example
+ * ```ts
+ * const header1 = getHeaderText("/dashboard/schedule");
+ * // Returns: "Schedule" (or mapped value from headerTextMap)
+ *
+ * const header2 = getHeaderText("/dashboard/project");
+ * // Returns: "Project" (or mapped value from headerTextMap)
+ *
+ * const header3 = getHeaderText("/dashboard/unknown");
+ * // Returns: "Home" (default fallback)
+ * ```
+ */
+const getHeaderText = (pathname: string) => {
   const subpath = pathname.split("/").at(-1);
 
   const headerText = headerTextMap[subpath ?? ""] || "Home";
 
   return headerText;
-}
+};
+
+export { getHeaderText };

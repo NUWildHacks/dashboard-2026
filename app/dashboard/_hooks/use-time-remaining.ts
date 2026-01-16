@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from "@/constants/time.constants";
-import { WildHacksConfig } from "@/types/wildhacks.types";
+import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from "@/constants";
+import type { WildHacksConfig } from "@/types";
 
 export type UseTimeRemainingReturn = {
   hours: number;
