@@ -6,17 +6,17 @@ on:
       - main
       - master
     paths:
-      - "firebase/firestore.rules"
-      - "firebase/firestore.indexes.json"
-      - "firebase/firebase.json"
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
   pull_request:
     branches:
       - main
       - master
     paths:
-      - "firebase/firestore.rules"
-      - "firebase/firestore.indexes.json"
-      - "firebase/firebase.json"
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
     types: [closed]
 
 jobs:
