@@ -23,10 +23,6 @@ service cloud.firestore {
       return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
     }
 
-    function isProjectOwner(projectData) {
-      return isAuthenticated() && request.auth.uid == projectData.owner_id;
-    }
-
     // Users collection
     match /users/{userId} {
       // Authenticated users can read user documents (needed for team members queries)
