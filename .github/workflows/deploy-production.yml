@@ -23,7 +23,7 @@ on:
 jobs:
   deploy-firestore:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
       - name: Checkout code
@@ -44,5 +44,4 @@ jobs:
 
       - name: Deploy Firestore rules and indexes
         working-directory: ./firebase
-        run: firebase deploy --only firestore --project ${{ secrets.PROD_FIREBASE_PROJECT_ID }} --non-interactive
-
+        run: firebase deploy --only firestore --project ${{ secrets.PRODUCTION_FIREBASE_PROJECT_ID }} --non-interactive
