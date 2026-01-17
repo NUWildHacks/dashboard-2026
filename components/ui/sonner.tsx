@@ -5,7 +5,10 @@ import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
+  // useTheme from next-themes returns default values when ThemeProvider is not available
+  // It should work during SSR/build, but we provide a fallback just in case
+  const themeContext = useTheme();
+  const theme = (themeContext?.theme || themeContext?.resolvedTheme || "system") as ToasterProps["theme"];
 
   return (
     <Sonner
