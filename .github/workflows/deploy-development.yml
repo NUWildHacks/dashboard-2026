@@ -72,7 +72,9 @@ jobs:
           credentials_json: ${{ secrets.DEV_FIREBASE_SERVICE_ACCOUNT_KEY }}
 
       - name: Deploy Firestore Rules
+        working-directory: ./firebase
         run: firebase deploy --only firestore:rules --project development --non-interactive
 
       - name: Deploy Firestore Indexes
+        working-directory: ./firebase
         run: firebase deploy --only firestore:indexes --project development --non-interactive
