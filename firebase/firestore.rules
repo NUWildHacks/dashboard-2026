@@ -20,8 +20,7 @@ service cloud.firestore {
     }
 
     function isProjectMember(projectId) {
-      return isAuthenticated() &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
     }
 
     function isProjectOwner(projectData) {
