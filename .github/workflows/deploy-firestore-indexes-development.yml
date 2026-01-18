@@ -1,4 +1,4 @@
-name: Deploy to Development
+name: Deploy Firestore Indexes to Development
 
 on:
   push:
@@ -7,24 +7,12 @@ on:
       - "!main"
       - "!master"
     paths:
-      - "firestore.rules"
       - "firestore.indexes.json"
       - "firebase.json"
-  pull_request:
-    branches:
-      - "**"
-      - "!main"
-      - "!master"
-    paths:
-      - "firestore.rules"
-      - "firestore.indexes.json"
-      - "firebase.json"
-    types: [closed]
 
 jobs:
-  deploy-firestore:
+  deploy-firestore-indexes:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
       - name: Checkout code
@@ -42,9 +30,6 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.DEV_FIREBASE_SERVICE_ACCOUNT_KEY }}
-
-      - name: Deploy Firestore rules
-        run: firebase deploy --only firestore:rules --project development --non-interactive
 
       - name: Deploy Firestore indexes
         run: firebase deploy --only firestore:indexes --project development --non-interactive --force
