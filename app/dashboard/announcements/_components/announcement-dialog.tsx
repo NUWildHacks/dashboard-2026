@@ -37,7 +37,7 @@ const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDia
               <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
-                  <Clock className="size-3" />
+                  <Clock className="size-3" aria-hidden="true" />
                   {getSendTime(created_at)}
                 </span>
               </div>

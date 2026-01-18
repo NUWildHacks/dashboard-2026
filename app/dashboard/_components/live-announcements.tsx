@@ -41,10 +41,10 @@ const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
           <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />
         </CardContent>
         <CardFooter className="flex-row-reverse">
-          <Link href={DASHBOARD_ANNOUNCEMENTS_PATH}>
+          <Link href={DASHBOARD_ANNOUNCEMENTS_PATH} aria-label="View all announcements">
             <Button variant="link">
               View all announcements
-              <ArrowRight />
+              <ArrowRight aria-hidden="true" />
             </Button>
           </Link>
         </CardFooter>

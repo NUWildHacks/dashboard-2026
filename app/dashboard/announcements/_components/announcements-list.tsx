@@ -9,35 +9,43 @@ import type { UseDialogReturn } from "@/hooks";
 type AnnouncementsListProps = {
   announcements: Announcement[];
   isLoading: boolean;
-} & Pick<UseDialogReturn<Announcement>, "handleSelectItem">;
+} & Pick<UseDialogReturn<Announcement>, "handleSelectItem" | "handleKeyDown">;
 
-const AnnouncementsList = ({ announcements, isLoading, handleSelectItem }: AnnouncementsListProps) => {
+const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleKeyDown }: AnnouncementsListProps) => {
   if (isLoading) {
     return (
-      <>
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-      </>
+      <div role="status" aria-live="polite" aria-busy="true" aria-label="Loading announcements">
+        <span className="sr-only">Loading announcements, please wait</span>
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+      </div>
     );
   }
 
   if (announcements.length === 0) {
     return (
-      <Empty>
+      <Empty role="status" aria-live="polite">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MegaphoneOff />
+            <MegaphoneOff aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>No announcements</EmptyTitle>
-          <EmptyDescription>Keep an eye out for any updates!</EmptyDescription>
+          <EmptyTitle>No announcements made</EmptyTitle>
+          <EmptyDescription>
+            Announcements will be made closer to the event start date. Check back soon!
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
   }
 
   return announcements.map((announcement) => (
-    <AnnouncementItem key={announcement.id} handleSelectItem={handleSelectItem} {...announcement} />
+    <AnnouncementItem
+      key={announcement.id}
+      handleSelectItem={handleSelectItem}
+      handleKeyDown={handleKeyDown}
+      {...announcement}
+    />
   ));
 };
 

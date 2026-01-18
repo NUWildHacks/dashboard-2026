@@ -243,7 +243,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                         Level of Study
                       </FieldLabel>
                       <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
                           <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
@@ -268,7 +268,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                         Field of Study
                       </FieldLabel>
                       <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
@@ -324,7 +324,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                         T-shirt Size
                       </FieldLabel>
                       <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
+                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
@@ -359,7 +359,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                           Gender
                         </FieldLabel>
                         <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                           <SelectContent className="w-(--radix-select-trigger-width)">
@@ -387,7 +387,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                           Racial/Ethnic Background
                         </FieldLabel>
                         <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
                             <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
                           <SelectContent className="w-(--radix-select-trigger-width)">
@@ -456,7 +456,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
 
             <FieldSeparator />
 
-            {now < end_time && (
+            {now >= start_time && now < end_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>

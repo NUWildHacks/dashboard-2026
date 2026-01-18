@@ -6,7 +6,13 @@ const ScheduleLoading = async () => {
   const visibleCalendarRows = getVisibleCalendarRows([], 0);
 
   return (
-    <div className="flex-1 flex flex-col gap-4">
+    <div
+      className="flex-1 flex flex-col gap-4"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Loading schedule"
+    >
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <Skeleton className="w-full h-9" />
       </div>

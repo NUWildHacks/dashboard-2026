@@ -8,35 +8,41 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { UseDialogReturn } from "@/hooks";
 
 type EventsListProps = Pick<UseEventsReturn, "upcomingEvents" | "isLoading"> &
-  Pick<UseDialogReturn<Event>, "handleSelectItem">;
+  Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
 
-const EventsList = ({ upcomingEvents, isLoading, handleSelectItem }: EventsListProps) => {
+const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
   if (isLoading) {
     return (
-      <>
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" />
-      </>
+      <div role="status" aria-live="polite" aria-busy="true" aria-label="Loading events">
+        <span className="sr-only">Loading events, please wait</span>
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+      </div>
     );
   }
 
   if (upcomingEvents.length === 0) {
     return (
-      <Empty>
+      <Empty role="status" aria-live="polite">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <CalendarX />
+            <CalendarX aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No upcoming events</EmptyTitle>
-          <EmptyDescription>Check back in closer to the event start date.</EmptyDescription>
+          <EmptyDescription>We will be adding events closer to the event start date. Check back soon!</EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
   }
 
   return upcomingEvents.map((upcomingEvent) => (
-    <EventItem key={upcomingEvent.id} handleSelectItem={handleSelectItem} {...upcomingEvent} />
+    <EventItem
+      key={upcomingEvent.id}
+      handleSelectItem={handleSelectItem}
+      handleKeyDown={handleKeyDown}
+      {...upcomingEvent}
+    />
   ));
 };
 

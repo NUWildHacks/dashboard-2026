@@ -7,6 +7,7 @@ export type UseDialogReturn<T extends { id: string }> = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   handleSelectItem: (itemId: T["id"]) => void;
+  handleKeyDown: (event: React.KeyboardEvent, id: T["id"]) => void;
 };
 
 export const useDialog = <T extends { id: string }>(items: T[]): UseDialogReturn<T> => {
@@ -27,5 +28,12 @@ export const useDialog = <T extends { id: string }>(items: T[]): UseDialogReturn
     [items]
   );
 
-  return { selectedItem, isOpen, setIsOpen, handleSelectItem };
+  const handleKeyDown = (event: React.KeyboardEvent, id: T["id"]) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleSelectItem(id);
+    }
+  };
+
+  return { selectedItem, isOpen, setIsOpen, handleSelectItem, handleKeyDown };
 };

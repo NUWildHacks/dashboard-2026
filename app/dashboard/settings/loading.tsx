@@ -3,7 +3,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const SettingsLoading = async () => {
   return (
-    <div className="flex-1 flex flex-col gap-6">
+    <div
+      className="flex-1 flex flex-col gap-6"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label="Loading settings"
+    >
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">General</h2>
         <Separator />

@@ -39,10 +39,10 @@ const UpcomingEvents = () => {
           <EventsList {...useEventsReturn} {...useEventDialogReturn} />
         </CardContent>
         <CardFooter className="flex-row-reverse">
-          <Link href={DASHBOARD_SCHEDULE_PATH}>
+          <Link href={DASHBOARD_SCHEDULE_PATH} aria-label="View all events">
             <Button variant="link">
               View all events
-              <ArrowRight />
+              <ArrowRight aria-hidden="true" />
             </Button>
           </Link>
         </CardFooter>
