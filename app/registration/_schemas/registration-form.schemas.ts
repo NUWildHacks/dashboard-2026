@@ -1,3 +1,4 @@
+import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 
 import {
@@ -19,7 +20,7 @@ export const registrationFormSchema = z.object({
     .string()
     .min(1, "Age is required")
     .refine((val) => Number(val) >= 13, "You must be at least 13 years old"),
-  phone: z.e164("Invalid phone number"),
+  phone: z.string().refine((val) => isMobilePhone(val, "en-US"), "Invalid phone number"),
   country: z.enum(COUNTRIES, {
     message: "Please select a country",
   }),
