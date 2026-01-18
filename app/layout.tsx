@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 
 import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
+
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -27,20 +29,15 @@ const RootLayout = ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen w-full bg-[#ffffff] relative">
-          <div
-            className="absolute inset-0 z-0"
-            style={{
-              backgroundImage: `
-                radial-gradient(circle at 25% 75%, rgba(255, 243, 190, 0.9), transparent 50%),
-                radial-gradient(circle at 75% 25%, rgba(178, 255, 193, 0.7), transparent 50%)`,
-            }}
-          />
-          <div className="relative z-10">
-            <div className="flex flex-col min-h-screen">{children}</div>
-            <Toaster />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
+          <div className="min-h-screen w-full relative root-background">
+            <div className="absolute inset-0 z-0 root-background-gradient" />
+            <div className="relative z-10">
+              <div className="flex flex-col min-h-screen">{children}</div>
+              <Toaster />
+            </div>
           </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );
