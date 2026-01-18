@@ -29,8 +29,7 @@ const Statistics = ({ participants, judges, admins, projects, submissions }: Sta
       <CardHeader>
         <CardTitle>Event Statistics</CardTitle>
         <CardDescription>
-          WildHacks by the numbers. Track participant counts, judge availability, submitted projects, and more in
-          real-time.
+          WildHacks by the numbers. Track the number of participants, judges, admins, projects, and submissions.
         </CardDescription>
       </CardHeader>
       <CardContent>
