@@ -20,12 +20,7 @@ service cloud.firestore {
     }
 
     function isProjectMember(projectId) {
-      return isAuthenticated() &&
-             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
-    }
-
-    function isProjectOwner(projectData) {
-      return isAuthenticated() && request.auth.uid == projectData.owner_id;
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
     }
 
     // Users collection
@@ -39,9 +34,7 @@ service cloud.firestore {
 
       // Users can update their own document (except role field)
       // Role can only be modified by admins
-      allow update: if isAuthenticated() &&
-                     userOwnsDocument(userId) &&
-                     (request.resource.data.role == resource.data.role || isAdmin());
+      allow update: if isAuthenticated() && userOwnsDocument(userId) && (request.resource.data.role == resource.data.role || isAdmin());
 
       // Users can delete their own document (withdraw from event) or admins can delete any
       allow delete: if isAuthenticated() && (userOwnsDocument(userId) || isAdmin());

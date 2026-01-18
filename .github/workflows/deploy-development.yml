@@ -1,0 +1,50 @@
+name: Deploy to Development
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+      - "!master"
+    paths:
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
+  pull_request:
+    branches:
+      - "**"
+      - "!main"
+      - "!master"
+    paths:
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
+    types: [closed]
+
+jobs:
+  deploy-firestore:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@14.10.1
+
+      - name: Authenticate with Firebase
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.DEV_FIREBASE_SERVICE_ACCOUNT_KEY }}
+
+      - name: Deploy Firestore rules
+        run: firebase deploy --only firestore:rules --project development --non-interactive
+
+      - name: Deploy Firestore indexes
+        run: firebase deploy --only firestore:indexes --project development --non-interactive --force
