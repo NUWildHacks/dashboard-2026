@@ -6,7 +6,7 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader } from "@/c
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ThemeSelect = () => {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme = "dark" } = useTheme();
 
   const handleThemeChange = (theme: string) => {
     setTheme(theme);

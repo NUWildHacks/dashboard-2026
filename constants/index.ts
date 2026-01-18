@@ -40,4 +40,3 @@ export {
   TSHIRT_SIZES,
   USER_FIELDS,
 } from "./user.constants";
-export { COMPLETED, ONGOING, REGISTRATION, STATES } from "./wildhacks.constants";

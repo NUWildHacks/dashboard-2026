@@ -14,7 +14,10 @@ export type UseRegistrationFormReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
-export const useRegistrationForm = (state: WildHacksConfig["state"]): UseRegistrationFormReturn => {
+export const useRegistrationForm = (
+  start_time: WildHacksConfig["start_time"],
+  end_time: WildHacksConfig["end_time"]
+): UseRegistrationFormReturn => {
   const router = useRouter();
 
   const {
@@ -54,7 +57,7 @@ export const useRegistrationForm = (state: WildHacksConfig["state"]): UseRegistr
 
   const onSubmit = async (data: RegistrationFormSchema) => {
     try {
-      const result = await registerUser(data, state);
+      const result = await registerUser(data, start_time, end_time);
       const { success } = result;
 
       if (!success) {

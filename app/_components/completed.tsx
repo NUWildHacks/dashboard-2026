@@ -8,7 +8,7 @@ const Completed = async () => {
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">That&apos;s a wrap! 🎉</h2>
       <p>
-        Thank you to every participant, mentor, sponsor, and volunteer who made this year&apos;s hackathon
+        Thank you to every participant, mentor, sponsor, and volunteer who made this year&apos;s WildHacks
         extraordinary. From first-time hackers to returning champions, you all brought your best.
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">

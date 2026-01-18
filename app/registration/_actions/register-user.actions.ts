@@ -3,14 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import {
-  PERMISSION_CODES_COLLECTION,
-  USERS_COLLECTION,
-  ONGOING,
-  PARTICIPANT,
-  LOGIN_PATH,
-  REGISTRATION_PATH,
-} from "@/constants";
+import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION, PARTICIPANT, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import { verifySession } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
@@ -21,7 +14,8 @@ export type RegisterUserResult = ActionResult<RegistrationFormSchema>;
 
 export const registerUser = async (
   data: RegistrationFormSchema,
-  state: WildHacksConfig["state"]
+  start_time: WildHacksConfig["start_time"],
+  end_time: WildHacksConfig["end_time"]
 ): Promise<RegisterUserResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
@@ -29,10 +23,17 @@ export const registerUser = async (
   const db = getFirestore();
   const now = Date.now();
 
+  if (now >= end_time) {
+    return {
+      success: false,
+      error: "The event has ended",
+    };
+  }
+
   try {
     const { permission_code, ...rest } = data;
 
-    if (state === ONGOING) {
+    if (now >= start_time && now < end_time) {
       if (!permission_code || permission_code.trim() === "") {
         return {
           success: false,

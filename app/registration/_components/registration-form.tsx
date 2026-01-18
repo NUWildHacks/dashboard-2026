@@ -35,7 +35,6 @@ import {
   FIELDS_OF_STUDY,
   GENDERS,
   LEVELS_OF_STUDY,
-  ONGOING,
   RACES,
   ROOT_PATH,
   SCHOOLS,
@@ -45,12 +44,12 @@ import type { WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = {
-  state: WildHacksConfig["state"];
-};
+type RegistrationFormProps = Pick<WildHacksConfig, "start_time" | "end_time">;
 
-const RegistrationForm = ({ state }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(state);
+const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(start_time, end_time);
+
+  const now = new Date().getTime();
 
   return (
     <Card className="rounded-2xl shadow-sm">
@@ -457,7 +456,7 @@ const RegistrationForm = ({ state }: RegistrationFormProps) => {
 
             <FieldSeparator />
 
-            {state === ONGOING && (
+            {now < end_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
