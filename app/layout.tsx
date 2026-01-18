@@ -34,8 +34,8 @@ const RootLayout = ({
             <div className="absolute inset-0 z-0 root-background-gradient" />
             <div className="relative z-10">
               <div className="flex flex-col min-h-screen">{children}</div>
-              <Toaster />
             </div>
+            <Toaster />
           </div>
         </ThemeProvider>
       </body>
