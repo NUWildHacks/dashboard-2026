@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy Firestore Rules to Production
 
 on:
   pull_request:
@@ -7,17 +7,8 @@ on:
       - master
     paths:
       - "firestore.rules"
-      - "firestore.indexes.json"
       - "firebase.json"
     types: [closed]
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - "firestore.rules"
-      - "firestore.indexes.json"
-      - "firebase.json"
   workflow_dispatch:
     inputs:
       confirm:
@@ -26,10 +17,9 @@ on:
         type: string
 
 jobs:
-  deploy-firestore:
+  deploy-firestore-rules:
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'push' ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'deploy')
 
@@ -52,6 +42,3 @@ jobs:
 
       - name: Deploy Firestore rules
         run: firebase deploy --only firestore:rules --project production --non-interactive
-
-      - name: Deploy Firestore indexes
-        run: firebase deploy --only firestore:indexes --project production --non-interactive --force
