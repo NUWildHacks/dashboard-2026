@@ -46,6 +46,38 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
    - Copy `.env.example` to `.env.local` (if available)
    - Configure Firebase credentials and other required environment variables
 
+### Firebase Setup
+
+1. Install Firebase CLI (if not already installed):
+
+   ```bash
+   npm install -g firebase-tools
+   ```
+
+2. Login to Firebase:
+
+   ```bash
+   firebase login
+   ```
+
+3. Select the correct Firebase project:
+
+   ```bash
+   # For development
+   firebase use development
+
+   # Or for production (use with caution)
+   firebase use production
+   ```
+
+4. Pull remote Firestore indexes to keep `firestore.indexes.json` in sync:
+
+   ```bash
+   firebase firestore:indexes --project=development > firestore.indexes.json
+   ```
+
+   **Important**: Run this command whenever indexes are updated remotely (via Firebase Console or CI/CD) to keep your local `firestore.indexes.json` file synchronized. Failing to do so will cause the `firebase deploy` command to fail.
+
 ### Development Server
 
 Start the development server:
