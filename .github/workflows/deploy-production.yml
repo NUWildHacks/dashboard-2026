@@ -1,14 +1,6 @@
 name: Deploy to Production
 
 on:
-  push:
-    branches:
-      - main
-      - master
-    paths:
-      - "firestore.rules"
-      - "firestore.indexes.json"
-      - "firebase.json"
   pull_request:
     branches:
       - main
@@ -18,11 +10,28 @@ on:
       - "firestore.indexes.json"
       - "firebase.json"
     types: [closed]
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "firestore.rules"
+      - "firestore.indexes.json"
+      - "firebase.json"
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+        type: string
 
 jobs:
   deploy-firestore:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'deploy')
 
     steps:
       - name: Checkout code

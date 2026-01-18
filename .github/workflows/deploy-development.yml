@@ -10,21 +10,10 @@ on:
       - "firestore.rules"
       - "firestore.indexes.json"
       - "firebase.json"
-  pull_request:
-    branches:
-      - "**"
-      - "!main"
-      - "!master"
-    paths:
-      - "firestore.rules"
-      - "firestore.indexes.json"
-      - "firebase.json"
-    types: [closed]
 
 jobs:
   deploy-firestore:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
 
     steps:
       - name: Checkout code
