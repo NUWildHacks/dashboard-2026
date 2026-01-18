@@ -4,8 +4,8 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
-import { verifySession } from "@/lib";
-import type { ActionResult } from "@/types";
+import { getConfigDocSnapshot, verifySession } from "@/lib";
+import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { PROJECT_FIELDS } from "../_constants";
 import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
@@ -20,6 +20,16 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
   const now = Date.now();
 
   try {
+    const configDocSnapshot = await getConfigDocSnapshot();
+    const { end_time } = configDocSnapshot.data() as WildHacksConfig;
+
+    if (now >= end_time) {
+      return {
+        success: false,
+        error: "The event has ended",
+      };
+    }
+
     const { invitation_code } = data;
 
     const userDocRef = db.collection(USERS_COLLECTION).doc(userId);

@@ -4,9 +4,9 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
-import { verifySession } from "@/lib";
+import { getConfigDocSnapshot, verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type CreateProjectFormSchema } from "../_schemas/create-project-form.schemas";
 
@@ -20,6 +20,16 @@ export const createProject = async (data: CreateProjectFormSchema): Promise<Crea
   const now = Date.now();
 
   try {
+    const configDocSnapshot = await getConfigDocSnapshot();
+    const { end_time } = configDocSnapshot.data() as WildHacksConfig;
+
+    if (now >= end_time) {
+      return {
+        success: false,
+        error: "The event has ended",
+      };
+    }
+
     const userDocSnapshot = await getUserDocSnapshot(userId);
     if (!userDocSnapshot.exists) {
       return {

@@ -1,8 +1,4 @@
-import { STATES } from "@/constants";
-
 export type WildHacksConfig = {
-  state: (typeof STATES)[number];
-
   max_team_size: number;
 
   start_time: number;

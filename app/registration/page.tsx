@@ -12,7 +12,11 @@ import RegistrationForm from "./_components/registration-form";
 
 const RegistrationPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
-  const { state } = configDocSnapshot.data() as WildHacksConfig;
+  const wildHackConfig = configDocSnapshot.data() as WildHacksConfig;
+
+  const now = new Date().getTime();
+  const { end_time } = wildHackConfig;
+  if (now >= end_time) redirect(DASHBOARD_PATH);
 
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
@@ -29,7 +33,7 @@ const RegistrationPage = async () => {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm state={state} />
+          <RegistrationForm {...wildHackConfig} />
         </div>
       </div>
     </main>
