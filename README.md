@@ -127,16 +127,22 @@ For detailed setup instructions, code style guidelines, and contribution workflo
 
 The following features are planned for future implementation:
 
+### Support Page
+
+- **FAQ**: Answers to commonly asked questions (eg. Wifi connections, logistics)
+- **Contacts** Contact information for users to request support
+
+### Projects Page
+
+- **Project Submission**: Allow users to submit the current version of their project
+- **View All Projects**: After the event concludes, display all submitted projects
+
 ### Admin Features
 
 - **User Management**: Interface for administrators to manage user accounts, roles, and permissions
 - **WildHacks Config Editing**: Admin panel to edit hackathon configuration settings
 - **Creating Announcements**: Admin interface to create and publish announcements
 - **Creating Events**: Admin interface to create and manage schedule events
-
-### Security
-
-- **Firestore Security Rules**: Implementation of comprehensive security rules to protect database access and ensure proper authorization
 
 ## Contributing
 

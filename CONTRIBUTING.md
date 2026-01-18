@@ -13,11 +13,10 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
 7. [Server Actions](#server-actions)
 8. [Type Definitions](#type-definitions)
 9. [Constants and Schemas](#constants-and-schemas)
-10. [Styling Guidelines](#styling-guidelines)
-11. [Git Workflow](#git-workflow)
-12. [Testing and Quality](#testing-and-quality)
-13. [Common Patterns and Examples](#common-patterns-and-examples)
-14. [Troubleshooting](#troubleshooting)
+10. [Git Workflow](#git-workflow)
+11. [Testing and Quality](#testing-and-quality)
+12. [Common Patterns and Examples](#common-patterns-and-examples)
+13. [Additional Resources](#additional-resources)
 
 ## Getting Started
 
@@ -242,6 +241,8 @@ Key ESLint rules enforced:
 - **React Hooks**: Must follow rules of hooks
 - **TypeScript**: Strict type checking
 - **Accessibility**: JSX a11y rules enabled
+
+The project uses ESLint's flat config format (newer configuration style).
 
 ## File Organization Patterns
 
@@ -599,6 +600,8 @@ if (!exists) {
 **In Hooks (Client-Side):**
 
 ```typescript
+import { toast } from "sonner";
+
 const onSubmit = async (data: FormSchema) => {
   try {
     const result = await myAction(data);
