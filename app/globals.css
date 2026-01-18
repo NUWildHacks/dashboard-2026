@@ -261,8 +261,8 @@
 
   .root-background-gradient {
     background-image:
-      radial-gradient(circle at 25% 75%, rgba(255, 243, 190, 0.9), transparent 50%),
-      radial-gradient(circle at 75% 25%, rgba(178, 255, 193, 0.7), transparent 50%);
+      radial-gradient(circle at 25% 75%, rgba(255, 239, 169, 0.9), transparent 50%),
+      radial-gradient(circle at 75% 25%, rgba(64, 224, 208, 0.7), transparent 50%);
   }
 
   .dark .root-background {
@@ -272,6 +272,6 @@
   .dark .root-background-gradient {
     background-image:
       radial-gradient(circle at 25% 75%, rgba(120, 100, 70, 0.5), transparent 50%),
-      radial-gradient(circle at 75% 25%, rgba(70, 130, 90, 0.4), transparent 50%);
+      radial-gradient(circle at 75% 25%, rgba(70, 180, 170, 0.4), transparent 50%);
   }
 }

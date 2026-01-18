@@ -27,7 +27,7 @@ const DashboardSidebar = ({ ...props }: DashboardSidebarProps) => {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" className="font-semibold text-lg text-nowrap px-2 flex items-center gap-3">
-              <Image src="/wildhacks.svg" alt="Navigation Logo" width={48} height={30} />
+              <Image src="/wildhacks.svg" alt="Dashboard Logo" width={30} height={39} />
               <span>Dashboard</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
