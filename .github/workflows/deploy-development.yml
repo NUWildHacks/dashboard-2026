@@ -44,4 +44,4 @@ jobs:
           credentials_json: ${{ secrets.DEV_FIREBASE_SERVICE_ACCOUNT_KEY }}
 
       - name: Deploy Firestore rules and indexes
-        run: firebase deploy --only firestore --project ${{ secrets.DEV_FIREBASE_PROJECT_ID }} --non-interactive
+        run: firebase deploy --only firestore --project development --non-interactive
