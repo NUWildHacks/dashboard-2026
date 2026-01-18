@@ -130,6 +130,7 @@ The following features are planned for future implementation:
 ### Support Page
 
 - **FAQ**: Answers to commonly asked questions (eg. Wifi connections, logistics)
+- **Issue Reports**: Interface for users to report issues or bugs
 - **Contacts** Contact information for users to request support
 
 ### Projects Page
