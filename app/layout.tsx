@@ -29,7 +29,7 @@ const RootLayout = ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
           <div className="min-h-screen w-full relative root-background">
             <div className="absolute inset-0 z-0 root-background-gradient" />
             <div className="relative z-10">

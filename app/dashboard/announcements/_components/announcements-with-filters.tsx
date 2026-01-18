@@ -7,7 +7,7 @@ import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constant
 import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
 import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import type { User } from "@/types";
 
@@ -27,16 +27,22 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <Tabs value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<AnnouncementCategory>)}>
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
+          <Select
+            value={category}
+            onValueChange={(value) => setCategory(value as CategoryWithAll<AnnouncementCategory>)}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All</SelectItem>
               {ANNOUNCEMENT_CATEGORIES.map((category) => (
-                <TabsTrigger key={category} value={category}>
+                <SelectItem key={category} value={category}>
                   {category}
-                </TabsTrigger>
+                </SelectItem>
               ))}
-            </TabsList>
-          </Tabs>
+            </SelectContent>
+          </Select>
           <InputGroup className="max-w-[350px]">
             <InputGroupInput
               id="search"
