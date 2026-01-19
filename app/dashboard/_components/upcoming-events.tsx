@@ -23,7 +23,7 @@ const UpcomingEvents = () => {
 
   return (
     <>
-      <Card className="shadow-xs row-span-3 md:col-span-2">
+      <Card className="shadow-xs flex-1">
         <CardHeader>
           <CardTitle>Upcoming Events</CardTitle>
           <CardDescription>

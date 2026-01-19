@@ -35,10 +35,8 @@ const DashboardPage = async () => {
         <QRCode userId={userId} />
         <VenueMap />
       </div>
-      <div className="grid gap-4 auto-rows-min grid-rows-3 md:grid-cols-2 lg:grid-cols-4">
-        <LiveAnnouncements userRole={role} />
-      </div>
-      <div className="grid gap-4 auto-rows-min grid-rows-2 md:grid-cols-2 lg:grid-cols-4">
+      <LiveAnnouncements userRole={role} />
+      <div className="flex flex-col lg:flex-row gap-4">
         <UpcomingEvents />
         <Statistics {...wildHacksStatistics} />
       </div>

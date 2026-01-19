@@ -108,13 +108,14 @@ const Calendar = ({ config }: CalendarProps) => {
               </SelectContent>
             </Select>
           </div>
-          <InputGroup className="max-w-[350px]">
+          <InputGroup className="max-w-[350px] min-w-[200px] w-full">
             <InputGroupInput
               id="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search events..."
               className="truncate"
+              aria-label="Search events"
             />
             <InputGroupAddon>
               <SearchIcon />

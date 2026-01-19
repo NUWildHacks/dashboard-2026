@@ -14,12 +14,12 @@ type AnnouncementsListProps = {
 const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleKeyDown }: AnnouncementsListProps) => {
   if (isLoading) {
     return (
-      <div role="status" aria-live="polite" aria-busy="true" aria-label="Loading announcements">
+      <>
         <span className="sr-only">Loading announcements, please wait</span>
         <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
         <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
         <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-      </div>
+      </>
     );
   }
 
@@ -39,14 +39,20 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
     );
   }
 
-  return announcements.map((announcement) => (
-    <AnnouncementItem
-      key={announcement.id}
-      handleSelectItem={handleSelectItem}
-      handleKeyDown={handleKeyDown}
-      {...announcement}
-    />
-  ));
+  return (
+    <ul className="flex flex-col gap-4 w-full" aria-label="Announcements list">
+      {announcements.map((announcement) => (
+        <li key={announcement.id}>
+          <AnnouncementItem
+            key={announcement.id}
+            handleSelectItem={handleSelectItem}
+            handleKeyDown={handleKeyDown}
+            {...announcement}
+          />
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default AnnouncementsList;

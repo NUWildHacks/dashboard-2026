@@ -30,7 +30,7 @@ const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown
             <CalendarX aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No upcoming events</EmptyTitle>
-          <EmptyDescription>We will be adding events closer to the event start date. Check back soon!</EmptyDescription>
+          <EmptyDescription>Events will be added closer to the event start date. Check back soon!</EmptyDescription>
         </EmptyHeader>
       </Empty>
     );

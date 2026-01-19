@@ -25,7 +25,7 @@ const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
 
   return (
     <>
-      <Card className="shadow-xs row-span-3 md:col-span-2 lg:col-span-4">
+      <Card className="shadow-xs flex-1">
         <CardHeader>
           <CardTitle>Live Announcements</CardTitle>
           <CardDescription>
