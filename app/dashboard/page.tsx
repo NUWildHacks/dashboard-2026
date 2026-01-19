@@ -10,7 +10,7 @@ import {
   VenueMap,
 } from "@/app/dashboard/_components";
 import "@/config/firebase-client";
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import { calculateStatistics, getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
 import type { User, WildHacksConfig } from "@/types";
 
@@ -26,7 +26,7 @@ const DashboardPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
-  const wildHacksStatistics = await calculateStatistics();
+  const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
 
   return (
     <>
@@ -38,7 +38,7 @@ const DashboardPage = async () => {
       <LiveAnnouncements userRole={role} />
       <div className="flex flex-col lg:flex-row gap-4">
         <UpcomingEvents />
-        <Statistics {...wildHacksStatistics} />
+        {role === ADMIN && wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>
     </>
   );

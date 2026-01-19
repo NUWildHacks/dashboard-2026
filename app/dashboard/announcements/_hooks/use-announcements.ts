@@ -1,6 +1,6 @@
 "use client";
 
-import { collection, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
 import { ANNOUNCEMENT_FIELDS } from "@/app/dashboard/announcements/_constants";
@@ -31,11 +31,7 @@ export const useAnnouncements = (
   const { category, search, limitCount } = settings;
 
   useEffect(() => {
-    let q = query(
-      collection(db, ANNOUNCEMENTS_COLLECTION),
-      where(ANNOUNCEMENT_FIELDS.audience, "array-contains", userRole),
-      orderBy(ANNOUNCEMENT_FIELDS.created_at, "desc")
-    );
+    let q = query(collection(db, ANNOUNCEMENTS_COLLECTION), orderBy(ANNOUNCEMENT_FIELDS.created_at, "desc"));
 
     if (limitCount) {
       q = query(q, limit(limitCount));

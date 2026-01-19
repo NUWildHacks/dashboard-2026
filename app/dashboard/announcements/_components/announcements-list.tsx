@@ -16,9 +16,9 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
     return (
       <>
         <span className="sr-only">Loading announcements, please wait</span>
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
       </>
     );
   }
@@ -43,12 +43,7 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
     <ul className="flex flex-col gap-4 w-full" aria-label="Announcements list">
       {announcements.map((announcement) => (
         <li key={announcement.id}>
-          <AnnouncementItem
-            key={announcement.id}
-            handleSelectItem={handleSelectItem}
-            handleKeyDown={handleKeyDown}
-            {...announcement}
-          />
+          <AnnouncementItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...announcement} />
         </li>
       ))}
     </ul>

@@ -13,12 +13,12 @@ type EventsListProps = Pick<UseEventsReturn, "upcomingEvents" | "isLoading"> &
 const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
   if (isLoading) {
     return (
-      <div role="status" aria-live="polite" aria-busy="true" aria-label="Loading events">
+      <>
         <span className="sr-only">Loading events, please wait</span>
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[115px] md:h-[86px] w-full" aria-hidden="true" />
-      </div>
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+      </>
     );
   }
 
@@ -36,14 +36,15 @@ const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown
     );
   }
 
-  return upcomingEvents.map((upcomingEvent) => (
-    <EventItem
-      key={upcomingEvent.id}
-      handleSelectItem={handleSelectItem}
-      handleKeyDown={handleKeyDown}
-      {...upcomingEvent}
-    />
-  ));
+  return (
+    <ul className="flex flex-col gap-4 w-full" aria-label="Upcoming events list">
+      {upcomingEvents.map((upcomingEvent) => (
+        <li key={upcomingEvent.id}>
+          <EventItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...upcomingEvent} />
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default EventsList;
