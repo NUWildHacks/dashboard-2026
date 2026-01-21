@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm, UseFormReturn, UseFieldArrayReturn } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,8 +20,6 @@ export type UseCreateAnnouncementDialogReturn = {
   Pick<UseFieldArrayReturn<CreateAnnouncementDialogSchema, "links">, "fields" | "append" | "remove">;
 
 export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -54,20 +51,19 @@ export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn
       if (!success) {
         const { field, error } = result;
 
-        if (field) {
-          setError(field, {
-            type: "server",
-            message: error,
-          });
-        } else {
-          toast.error("Failed to create announcement", { description: error });
+        if (!field) {
+          throw new Error(error);
         }
+
+        setError(field, {
+          type: "server",
+          message: error,
+        });
         return;
       }
 
       reset();
       setIsOpen(false);
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Create announcement error:", errorMessage);

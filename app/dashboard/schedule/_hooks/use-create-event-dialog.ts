@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
@@ -17,8 +16,6 @@ export type UseCreateEventDialogReturn = {
 } & Pick<UseFormReturn<CreateEventDialogSchema>, "control" | "handleSubmit">;
 
 export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -47,20 +44,19 @@ export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
       if (!success) {
         const { field, error } = result;
 
-        if (field) {
-          setError(field, {
-            type: "server",
-            message: error,
-          });
-        } else {
-          toast.error("Failed to create event", { description: error });
+        if (!field) {
+          throw new Error(error);
         }
+
+        setError(field, {
+          type: "server",
+          message: error,
+        });
         return;
       }
 
       reset();
       setIsOpen(false);
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Create event error:", errorMessage);

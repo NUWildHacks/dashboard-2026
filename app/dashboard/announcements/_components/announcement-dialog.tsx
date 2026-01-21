@@ -1,7 +1,9 @@
 "use client";
 
-import { Clock } from "lucide-react";
+import { Clock, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Badge } from "@/components/ui/badge";
@@ -18,12 +20,39 @@ import {
 import type { UseDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
 
+import { deleteAnnouncement } from "../_actions";
+
 type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
 
 const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+
   if (!selectedItem) return null;
 
-  const { category, title, body, links, created_at } = selectedItem;
+  const { id, category, title, body, links, created_at } = selectedItem;
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+
+    try {
+      const result = await deleteAnnouncement(id);
+      const { success } = result;
+
+      if (!success) {
+        const { error } = result;
+        toast.error("Failed to delete announcement", { description: error });
+      }
+
+      setIsOpen(false);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Error deleting announcement:", errorMessage);
+
+      toast.error("Failed to delete announcement", { description: errorMessage });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -60,8 +89,13 @@ const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDia
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
+          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+            {isDeleting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
+          </Button>
           <DialogClose asChild>
-            <Button variant="outline">Go back</Button>
+            <Button variant="outline" disabled={isDeleting}>
+              Go back
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

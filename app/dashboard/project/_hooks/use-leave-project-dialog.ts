@@ -26,8 +26,8 @@ export const useLeaveProjectDialog = (): UseLeaveProjectDialogReturn => {
       const { success } = result;
 
       if (!success) {
-        toast.error("Failed to leave project", { description: result.error });
-        return;
+        const { error } = result;
+        throw new Error(error);
       }
 
       router.refresh();

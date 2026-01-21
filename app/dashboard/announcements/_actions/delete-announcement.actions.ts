@@ -7,16 +7,13 @@ import { ANNOUNCEMENTS_COLLECTION, LOGIN_PATH, DASHBOARD_ANNOUNCEMENTS_PATH, ADM
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
-import { type CreateAnnouncementDialogSchema } from "../_schemas/create-announcement-dialog.schemas";
+export type DeleteAnnouncementResult = ActionResult;
 
-export type CreateAnnouncementResult = ActionResult<CreateAnnouncementDialogSchema>;
-
-export const createAnnouncement = async (data: CreateAnnouncementDialogSchema): Promise<CreateAnnouncementResult> => {
+export const deleteAnnouncement = async (announcementId: string): Promise<DeleteAnnouncementResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
 
   const db = getFirestore();
-  const now = Date.now();
 
   try {
     const userDocSnapshot = await getUserDocSnapshot(userId);
@@ -31,24 +28,25 @@ export const createAnnouncement = async (data: CreateAnnouncementDialogSchema): 
     if (role !== ADMIN) {
       return {
         success: false,
-        error: "You are not authorized to create announcements",
+        error: "You are not authorized to delete announcements",
       };
     }
 
-    const announcementDocRef = db.collection(ANNOUNCEMENTS_COLLECTION).doc();
+    const announcementDocRef = db.collection(ANNOUNCEMENTS_COLLECTION).doc(announcementId);
+    const announcementDocSnapshot = await announcementDocRef.get();
+    if (!announcementDocSnapshot.exists) {
+      return {
+        success: false,
+        error: "Announcement not found",
+      };
+    }
 
-    const { links, ...rest } = data;
-    await announcementDocRef.set({
-      ...rest,
-      links: links.map((link) => link.url.toString()),
-      created_at: now,
-      updated_at: now,
-    });
+    await announcementDocRef.delete();
 
     return { success: true };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Create announcement error:", errorMessage);
+    console.error("Delete announcement error:", errorMessage);
 
     return {
       success: false,

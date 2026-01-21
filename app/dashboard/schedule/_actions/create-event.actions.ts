@@ -11,9 +11,7 @@ import { type CreateEventDialogSchema } from "../_schemas/create-event-dialog.sc
 
 export type CreateEventResult = ActionResult<CreateEventDialogSchema>;
 
-export const createEvent = async (
-  data: CreateEventDialogSchema,
-): Promise<CreateEventResult> => {
+export const createEvent = async (data: CreateEventDialogSchema): Promise<CreateEventResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
 

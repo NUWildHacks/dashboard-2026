@@ -43,7 +43,7 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
     }
 
     const { project_id, role } = userDocSnapshot.data() as Omit<User, "id">;
-    
+
     if (role !== PARTICIPANT) {
       return {
         success: false,
