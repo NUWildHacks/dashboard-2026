@@ -119,4 +119,72 @@ const getSendTime = (sendMilliseconds: number) => {
   }
 };
 
-export { getDateFromMilliseconds, getEventTimeRange, getSendTime, getTimeFromMilliseconds, getTimeFromMinutes };
+/**
+ * Convert milliseconds to a Date object.
+ *
+ * @param milliseconds - Timestamp in milliseconds since epoch
+ * @returns Date object or undefined if invalid
+ * @example
+ * ```ts
+ * const timestamp = new Date('2026-04-11T08:00:00').getTime();
+ * const date = millisecondsToDate(timestamp);
+ * // Returns: Date object for April 11, 2026 at 8:00 AM
+ * ```
+ */
+const millisecondsToDate = (milliseconds: number): Date | undefined => {
+  if (!milliseconds || milliseconds <= 0) return undefined;
+  return new Date(milliseconds);
+};
+
+/**
+ * Convert Date and time string to milliseconds.
+ *
+ * @param date - Date object
+ * @param time - Time string in HH:mm format
+ * @returns Timestamp in milliseconds since epoch
+ * @example
+ * ```ts
+ * const date = new Date('2026-04-11');
+ * const time = "14:30";
+ * const timestamp = combineDateAndTime(date, time);
+ * // Returns: milliseconds for April 11, 2026 at 2:30 PM
+ * ```
+ */
+const combineDateAndTime = (date: Date | undefined, time: string): number => {
+  if (!date || !time) return 0;
+  const [hours, minutes] = time.split(":").map(Number);
+  const combined = new Date(date);
+  combined.setHours(hours, minutes, 0, 0);
+  return combined.getTime();
+};
+
+/**
+ * Convert milliseconds to a time string in HH:mm format.
+ *
+ * @param milliseconds - Timestamp in milliseconds since epoch
+ * @returns Time string in HH:mm format (e.g., "14:30")
+ * @example
+ * ```ts
+ * const timestamp = new Date('2026-04-11T14:30:00').getTime();
+ * const timeStr = millisecondsToTime(timestamp);
+ * // Returns: "14:30"
+ * ```
+ */
+const millisecondsToTime = (milliseconds: number): string => {
+  if (!milliseconds || milliseconds <= 0) return "";
+  const date = new Date(milliseconds);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+export {
+  combineDateAndTime,
+  getDateFromMilliseconds,
+  getEventTimeRange,
+  getSendTime,
+  getTimeFromMilliseconds,
+  getTimeFromMinutes,
+  millisecondsToDate,
+  millisecondsToTime,
+};

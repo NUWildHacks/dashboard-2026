@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 import type { User } from "@/types";
 
-import { editProfile } from "../_actions/edit-profile.actions";
-import { editProfileFormSchema, type EditProfileFormSchema } from "../_schemas";
+import { editProfile } from "../_actions";
+import { type EditProfileFormSchema, editProfileFormSchema } from "../_schemas";
 
 export type UseEditProfileFormReturn = {
   onSubmit: SubmitHandler<EditProfileFormSchema>;

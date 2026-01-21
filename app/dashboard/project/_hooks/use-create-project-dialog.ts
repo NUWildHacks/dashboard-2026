@@ -6,7 +6,7 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createProject } from "../_actions/create-project.actions";
+import { createProject } from "../_actions";
 import { createProjectFormSchema, type CreateProjectFormSchema } from "../_schemas";
 
 export type UseCreateNewProjectDialogReturn = {

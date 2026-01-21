@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { ROOT_PATH } from "@/constants";
 
-import { withdrawEvent } from "../_actions/withdraw-event.actions";
+import { withdrawEvent } from "../_actions";
 
 export type UseEventWithdrawReturn = {
   isWithdrawing: boolean;

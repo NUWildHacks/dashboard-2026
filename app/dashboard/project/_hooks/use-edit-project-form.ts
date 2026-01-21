@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
 
-import { editProject } from "../_actions/edit-project.actions";
+import { editProject } from "../_actions";
 import { editProjectFormSchema, type EditProjectFormSchema } from "../_schemas";
 
 export type UseEditProjectFormReturn = {

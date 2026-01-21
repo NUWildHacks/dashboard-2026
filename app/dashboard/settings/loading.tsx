@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const SettingsLoading = async () => {
@@ -11,14 +10,12 @@ const SettingsLoading = async () => {
       aria-label="Loading settings"
     >
       <div className="flex flex-col gap-4">
-        <h2 className="text-md font-semibold">General</h2>
-        <Separator />
+        <Skeleton className="w-full h-[24px]" />
         <Skeleton className="h-[100px] lg:h-[80px]" />
         <Skeleton className="h-[100px] lg:h-[80px]" />
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="text-md font-semibold">Profile</h2>
-        <Separator />
+        <Skeleton className="w-full h-[24px]" />
         <Skeleton className="h-[600px]" />
       </div>
     </div>

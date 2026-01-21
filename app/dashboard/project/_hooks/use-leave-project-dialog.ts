@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import type { Project } from "@/app/dashboard/project/_types";
 
-import { leaveProject } from "../_actions/leave-project.actions";
+import { leaveProject } from "../_actions";
 
 export type UseLeaveProjectDialogReturn = {
   handleLeaveProject: (projectId: Project["id"]) => Promise<void>;
