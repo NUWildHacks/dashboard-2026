@@ -18,18 +18,16 @@ import { FieldError, Field, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import type { User } from "@/types";
 
 import { EVENT_CATEGORIES } from "../_constants";
 import { useCreateEventDialog } from "../_hooks/use-create-event-dialog";
 
 type CreateEventDialogProps = {
-  userRole: User["role"];
   availableDays: { dayStart: number; dayEnd: number; label: string }[];
 };
 
-const CreateEventDialog = ({ userRole, availableDays }: CreateEventDialogProps) => {
-  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreateEventDialog(userRole);
+const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
+  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreateEventDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

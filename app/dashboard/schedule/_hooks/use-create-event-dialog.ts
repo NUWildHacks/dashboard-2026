@@ -6,8 +6,6 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { User } from "@/types";
-
 import { createEvent } from "../_actions/create-event.actions";
 import { createEventDialogSchema, CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
 
@@ -18,7 +16,7 @@ export type UseCreateEventDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<CreateEventDialogSchema>, "control" | "handleSubmit">;
 
-export const useCreateEventDialog = (userRole: User["role"]): UseCreateEventDialogReturn => {
+export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -43,7 +41,7 @@ export const useCreateEventDialog = (userRole: User["role"]): UseCreateEventDial
 
   const onSubmit = async (data: CreateEventDialogSchema) => {
     try {
-      const result = await createEvent(data, userRole);
+      const result = await createEvent(data);
       const { success } = result;
 
       if (!success) {

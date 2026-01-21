@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { ANNOUNCEMENTS_COLLECTION, LOGIN_PATH, DASHBOARD_ANNOUNCEMENTS_PATH, ADMIN } from "@/constants";
-import { verifySession } from "@/lib";
+import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
 import { type CreateAnnouncementDialogSchema } from "../_schemas/create-announcement-dialog.schemas";
@@ -13,22 +13,30 @@ export type CreateAnnouncementResult = ActionResult<CreateAnnouncementDialogSche
 
 export const createAnnouncement = async (
   data: CreateAnnouncementDialogSchema,
-  userRole: User["role"]
 ): Promise<CreateAnnouncementResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
-
-  if (userRole !== ADMIN) {
-    return {
-      success: false,
-      error: "You are not authorized to create announcements",
-    };
-  }
 
   const db = getFirestore();
   const now = Date.now();
 
   try {
+    const userDocSnapshot = await getUserDocSnapshot(userId);
+    if (!userDocSnapshot.exists) {
+      return {
+        success: false,
+        error: "User document not found",
+      };
+    }
+
+    const { role } = userDocSnapshot.data() as Omit<User, "id">;
+    if (role !== ADMIN) {
+      return {
+        success: false,
+        error: "You are not authorized to create announcements",
+      };
+    }
+
     const announcementDocRef = db.collection(ANNOUNCEMENTS_COLLECTION).doc();
 
     const { links, ...rest } = data;

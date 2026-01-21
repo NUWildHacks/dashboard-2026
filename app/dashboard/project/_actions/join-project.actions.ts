@@ -3,9 +3,9 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
 import { getConfigDocSnapshot, verifySession } from "@/lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import type { ActionResult, User, WildHacksConfig } from "@/types";
 
 import { PROJECT_FIELDS } from "../_constants";
 import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
@@ -34,7 +34,6 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
 
     const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
     const userDocSnapshot = await userDocRef.get();
-
     if (!userDocSnapshot.exists) {
       return {
         success: false,
@@ -43,8 +42,14 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
       };
     }
 
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
+    const { project_id, role } = userDocSnapshot.data() as Omit<User, "id">;
+    
+    if (role !== PARTICIPANT) {
+      return {
+        success: false,
+        error: "You are not authorized to join a project",
+      };
+    }
 
     if (project_id) {
       return {

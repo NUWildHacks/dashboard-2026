@@ -21,8 +21,8 @@ import { getDateFromMilliseconds } from "@/lib";
 import type { User, WildHacksConfig } from "@/types";
 
 type CalendarProps = {
-  config: WildHacksConfig;
   userRole: User["role"];
+  config: WildHacksConfig;
 };
 
 const Calendar = ({ config, userRole }: CalendarProps) => {
@@ -83,7 +83,7 @@ const Calendar = ({ config, userRole }: CalendarProps) => {
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="w-full flex flex-col lg:flex-row gap-4">
-            {userRole === ADMIN && <CreateEventDialog userRole={userRole} availableDays={availableDays} />}
+            {userRole === ADMIN && <CreateEventDialog availableDays={availableDays} />}
             <Select value={selectedDayStart.toString()} onValueChange={(value) => setSelectedDayStart(Number(value))}>
               <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
                 <SelectValue placeholder="Select day" />

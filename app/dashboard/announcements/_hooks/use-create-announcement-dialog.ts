@@ -6,8 +6,6 @@ import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm, UseFormReturn, UseFieldArrayReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { User } from "@/types";
-
 import { createAnnouncement } from "../_actions/create-announcement.actions";
 import {
   createAnnouncementDialogSchema,
@@ -22,7 +20,7 @@ export type UseCreateAnnouncementDialogReturn = {
 } & Pick<UseFormReturn<CreateAnnouncementDialogSchema>, "control" | "handleSubmit"> &
   Pick<UseFieldArrayReturn<CreateAnnouncementDialogSchema, "links">, "fields" | "append" | "remove">;
 
-export const useCreateAnnouncementDialog = (userRole: User["role"]): UseCreateAnnouncementDialogReturn => {
+export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn => {
   const router = useRouter();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,7 +48,7 @@ export const useCreateAnnouncementDialog = (userRole: User["role"]): UseCreateAn
 
   const onSubmit = async (data: CreateAnnouncementDialogSchema) => {
     try {
-      const result = await createAnnouncement(data, userRole);
+      const result = await createAnnouncement(data);
       const { success } = result;
 
       if (!success) {

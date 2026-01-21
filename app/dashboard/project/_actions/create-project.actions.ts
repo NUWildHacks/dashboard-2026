@@ -3,10 +3,10 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH } from "@/constants";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
 import { getConfigDocSnapshot, verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import type { ActionResult, User, WildHacksConfig } from "@/types";
 
 import { type CreateProjectFormSchema } from "../_schemas/create-project-form.schemas";
 
@@ -38,8 +38,14 @@ export const createProject = async (data: CreateProjectFormSchema): Promise<Crea
       };
     }
 
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
+    const { project_id, role } = userDocSnapshot.data() as Omit<User, "id">;
+    
+    if (role !== PARTICIPANT) {
+      return {
+        success: false,
+        error: "You are not authorized to create a project",
+      };
+    }
 
     if (project_id) {
       return {

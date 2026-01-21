@@ -18,18 +18,13 @@ import { FieldError, Field, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { User } from "@/types";
 
 import { ANNOUNCEMENT_CATEGORIES } from "../_constants";
 import { useCreateAnnouncementDialog } from "../_hooks/use-create-announcement-dialog";
 
-type CreateAnnouncementDialogProps = {
-  userRole: User["role"];
-};
-
-const CreateAnnouncementDialog = ({ userRole }: CreateAnnouncementDialogProps) => {
+const CreateAnnouncementDialog = () => {
   const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen, fields, append, remove } =
-    useCreateAnnouncementDialog(userRole);
+    useCreateAnnouncementDialog();
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
