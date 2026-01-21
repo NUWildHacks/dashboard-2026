@@ -145,7 +145,7 @@ const Calendar = ({ config, userRole }: CalendarProps) => {
           </div>
         </div>
       </div>
-      <EventDialog {...useEventDialogReturn} />
+      <EventDialog userRole={userRole} {...useEventDialogReturn} />
     </>
   );
 };

@@ -1,6 +1,8 @@
 "use client";
 
-import { Clock } from "lucide-react";
+import { Clock, Loader2Icon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
@@ -14,15 +16,47 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ADMIN } from "@/constants";
 import type { UseDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
+import { User } from "@/types";
 
-type EventDialogProps = Pick<UseDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
+import { deleteEvent } from "../_actions/delete-event.actions";
 
-const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
+type EventDialogProps = { userRole: User["role"] } & Pick<
+  UseDialogReturn<Event>,
+  "isOpen" | "setIsOpen" | "selectedItem"
+>;
+
+const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
   if (!selectedItem) return null;
 
-  const { category, title, body, start_time, end_time } = selectedItem;
+  const { id, category, title, body, start_time, end_time } = selectedItem;
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+
+    try {
+      const result = await deleteEvent(id);
+      const { success } = result;
+
+      if (!success) {
+        const { error } = result;
+        throw new Error(error);
+      }
+
+      setIsOpen(false);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Error deleting event:", errorMessage);
+
+      toast.error("Failed to delete event", { description: errorMessage });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -45,8 +79,15 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
+          {userRole === ADMIN && (
+            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? <Loader2Icon className="size-4 animate-spin" /> : "Delete event"}
+            </Button>
+          )}
           <DialogClose asChild>
-            <Button variant="outline">Go back</Button>
+            <Button variant="outline" disabled={isDeleting}>
+              Go back
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

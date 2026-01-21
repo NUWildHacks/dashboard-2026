@@ -17,15 +17,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ADMIN } from "@/constants";
 import type { UseDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
+import { User } from "@/types";
 
 import { deleteAnnouncement } from "../_actions";
 
-type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
+type AnnouncementDialogProps = { userRole: User["role"] } & Pick<
+  UseDialogReturn<Announcement>,
+  "isOpen" | "setIsOpen" | "selectedItem"
+>;
 
-const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
-  const [isDeleting, setIsDeleting] = useState(false);
+const AnnouncementDialog = ({ userRole, isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   if (!selectedItem) return null;
 
@@ -89,9 +94,11 @@ const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDia
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
-            {isDeleting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
-          </Button>
+          {userRole === ADMIN && (
+            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
+            </Button>
+          )}
           <DialogClose asChild>
             <Button variant="outline" disabled={isDeleting}>
               Go back

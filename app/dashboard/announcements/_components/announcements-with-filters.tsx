@@ -71,7 +71,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
         </div>
         <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />
       </div>
-      <AnnouncementDialog {...useAnnouncementDialogReturn} />
+      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} />
     </>
   );
 };
