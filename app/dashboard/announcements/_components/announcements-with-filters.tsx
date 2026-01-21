@@ -2,12 +2,17 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { AnnouncementDialog, AnnouncementsList } from "@/app/dashboard/announcements/_components";
+import {
+  AnnouncementDialog,
+  AnnouncementsList,
+  CreateAnnouncementDialog,
+} from "@/app/dashboard/announcements/_components";
 import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants";
 import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
 import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ADMIN } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import type { User } from "@/types";
 
@@ -27,26 +32,29 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <Select
-            value={category}
-            onValueChange={(value) => setCategory(value as CategoryWithAll<AnnouncementCategory>)}
-          >
-            <SelectTrigger
-              id="category-filter"
-              className="max-w-[200px] w-full"
-              aria-label="Filter announcements by category"
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+            {userRole === ADMIN && <CreateAnnouncementDialog userRole={userRole} />}
+            <Select
+              value={category}
+              onValueChange={(value) => setCategory(value as CategoryWithAll<AnnouncementCategory>)}
             >
-              <SelectValue placeholder="Select category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              {ANNOUNCEMENT_CATEGORIES.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              <SelectTrigger
+                id="category-filter"
+                className="max-w-[200px] w-full"
+                aria-label="Filter announcements by category"
+              >
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                {ANNOUNCEMENT_CATEGORIES.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <InputGroup className="max-w-[350px] min-w-[200px] w-full">
             <InputGroupInput
               id="search"
