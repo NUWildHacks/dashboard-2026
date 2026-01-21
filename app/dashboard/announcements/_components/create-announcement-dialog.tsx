@@ -34,7 +34,7 @@ const CreateAnnouncementDialog = ({ userRole }: CreateAnnouncementDialogProps) =
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Create Announcement</Button>
+        <Button className="w-full md:w-auto">Create announcement</Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] flex flex-col">
         <DialogHeader>
@@ -153,7 +153,7 @@ const CreateAnnouncementDialog = ({ userRole }: CreateAnnouncementDialogProps) =
                     ))}
                     <Button
                       type="button"
-                      variant="ghost"
+                      variant="outline"
                       onClick={() => append({ url: "" })}
                       disabled={isSubmitting || fields.length >= 4}
                       aria-label="Add link"

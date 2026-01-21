@@ -118,7 +118,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
           <Button type="submit" form="edit-project-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save Changes"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
           </Button>
           <Button type="button" variant="outline" disabled={isSubmitting || !isDirty} onClick={handleReset}>
             Reset

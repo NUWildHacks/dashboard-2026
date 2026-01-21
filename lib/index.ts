@@ -8,6 +8,7 @@ export {
   getTimeFromMinutes,
   millisecondsToDate,
   millisecondsToTime,
+  parseDateLabel,
 } from "./time.lib";
 export { getUserDocSnapshot } from "./user.lib";
 export { cn } from "./utils.lib";

@@ -81,7 +81,7 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
           <Button type="submit" form="edit-wildhacks-config-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save Changes"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
           </Button>
           <Button type="button" variant="outline" onClick={handleReset} disabled={isSubmitting || !isDirty}>
             Reset

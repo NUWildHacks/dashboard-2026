@@ -4,7 +4,7 @@ import "@/config/firebase-admin";
 import { Calendar } from "@/app/dashboard/schedule/_components";
 import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
-import type { WildHacksConfig } from "@/types";
+import type { User, WildHacksConfig } from "@/types";
 
 const SchedulePage = async () => {
   const userId = await verifySession();
@@ -13,10 +13,12 @@ const SchedulePage = async () => {
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
+  const { role } = userDocSnapshot.data() as Omit<User, "id">;
+
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
-  return <Calendar config={wildhacksConfig} />;
+  return <Calendar config={wildhacksConfig} userRole={role} />;
 };
 
 export default SchedulePage;

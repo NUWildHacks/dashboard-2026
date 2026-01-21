@@ -3,7 +3,7 @@
 import { SearchIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { CalendarRow, EventDialog } from "@/app/dashboard/schedule/_components";
+import { CalendarRow, CreateEventDialog, EventDialog } from "@/app/dashboard/schedule/_components";
 import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import {
@@ -15,16 +15,17 @@ import {
 import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ONE_DAY } from "@/constants";
+import { ADMIN, ONE_DAY } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import { getDateFromMilliseconds } from "@/lib";
-import type { WildHacksConfig } from "@/types";
+import type { User, WildHacksConfig } from "@/types";
 
 type CalendarProps = {
   config: WildHacksConfig;
+  userRole: User["role"];
 };
 
-const Calendar = ({ config }: CalendarProps) => {
+const Calendar = ({ config, userRole }: CalendarProps) => {
   const { start_time, end_time } = config;
 
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
@@ -80,10 +81,11 @@ const Calendar = ({ config }: CalendarProps) => {
   return (
     <>
       <div className="flex-1 flex flex-col gap-4">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div className="w-full flex flex-col lg:flex-row gap-4">
+            {userRole === ADMIN && <CreateEventDialog userRole={userRole} availableDays={availableDays} />}
             <Select value={selectedDayStart.toString()} onValueChange={(value) => setSelectedDayStart(Number(value))}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
                 <SelectValue placeholder="Select day" />
               </SelectTrigger>
               <SelectContent>
@@ -95,7 +97,7 @@ const Calendar = ({ config }: CalendarProps) => {
               </SelectContent>
             </Select>
             <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<EventCategory>)}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="min-w-[125px] lg:w-[125px] w-full">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
@@ -108,7 +110,7 @@ const Calendar = ({ config }: CalendarProps) => {
               </SelectContent>
             </Select>
           </div>
-          <InputGroup className="max-w-[350px] min-w-[200px] w-full">
+          <InputGroup className="lg:max-w-[350px] min-w-[200px] w-full">
             <InputGroupInput
               id="search"
               value={search}

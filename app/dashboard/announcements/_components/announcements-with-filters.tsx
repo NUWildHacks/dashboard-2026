@@ -32,7 +32,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-4">
             {userRole === ADMIN && <CreateAnnouncementDialog userRole={userRole} />}
             <Select
               value={category}
@@ -40,7 +40,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
             >
               <SelectTrigger
                 id="category-filter"
-                className="max-w-[200px] w-full"
+                className="min-w-[115px] lg:w-[115px] w-full"
                 aria-label="Filter announcements by category"
               >
                 <SelectValue placeholder="Select category" />
@@ -55,7 +55,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
               </SelectContent>
             </Select>
           </div>
-          <InputGroup className="max-w-[350px] min-w-[200px] w-full">
+          <InputGroup className="lg:max-w-[350px] min-w-[200px] w-full">
             <InputGroupInput
               id="search"
               value={search}

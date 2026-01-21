@@ -178,6 +178,43 @@ const millisecondsToTime = (milliseconds: number): string => {
   return `${hours}:${minutes}`;
 };
 
+/**
+ * Parse a date label string to a Date object.
+ * Parses format: "Mar 10, 2026" (abbreviated month from MONTH_ABBREVIATIONS)
+ *
+ * @param dateLabel - Date string in format "Month Day, Year" (e.g., "Mar 10, 2026")
+ * @returns Date object or undefined if invalid
+ * @example
+ * ```ts
+ * const date = parseDateLabel("Mar 10, 2026");
+ * // Returns: Date object for March 10, 2026
+ * ```
+ */
+const parseDateLabel = (dateLabel: string): Date | undefined => {
+  if (!dateLabel) return undefined;
+
+  // Format: "Mar 10, 2026"
+  const parts = dateLabel.split(" ");
+  if (parts.length !== 3) return undefined;
+
+  const monthAbbr = parts[0];
+  const day = parseInt(parts[1].replace(",", ""), 10);
+  const year = parseInt(parts[2], 10);
+
+  if (isNaN(day) || isNaN(year)) return undefined;
+
+  const monthIndex = MONTH_ABBREVIATIONS.indexOf(monthAbbr as (typeof MONTH_ABBREVIATIONS)[number]);
+  if (monthIndex === -1) return undefined;
+
+  const date = new Date(year, monthIndex, day);
+  // Validate the date is valid (handles cases like Feb 30)
+  if (date.getDate() !== day || date.getMonth() !== monthIndex || date.getFullYear() !== year) {
+    return undefined;
+  }
+
+  return date;
+};
+
 export {
   combineDateAndTime,
   getDateFromMilliseconds,
@@ -187,4 +224,5 @@ export {
   getTimeFromMinutes,
   millisecondsToDate,
   millisecondsToTime,
+  parseDateLabel,
 };

@@ -7,7 +7,7 @@ export const MONTH_ABBREVIATIONS = [
   "Jan",
   "Feb",
   "Mar",
-  "April",
+  "Apr",
   "May",
   "Jun",
   "Jul",
