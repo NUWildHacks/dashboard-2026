@@ -9,7 +9,6 @@ import {
   UpcomingEvents,
   VenueMap,
 } from "@/app/dashboard/_components";
-import "@/config/firebase-client";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import { calculateStatistics, getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
 import type { User, WildHacksConfig } from "@/types";

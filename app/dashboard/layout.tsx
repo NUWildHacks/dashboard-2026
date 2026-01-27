@@ -1,33 +1,24 @@
-"use client";
-
-import { usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-import { DashboardSidebar } from "@/app/dashboard/_components";
-import { getHeaderText } from "@/app/dashboard/_lib";
-import { Separator } from "@/components/ui/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getUserDocSnapshot, verifySession } from "@/lib";
+import type { User } from "@/types";
+
+import { DashboardSidebar } from "./_components";
 
 type DashboardLayoutProps = PropsWithChildren;
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const pathname = usePathname();
+const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
+  const userId = await verifySession();
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
 
-  return (
-    <SidebarProvider>
-      <DashboardSidebar />
-      <SidebarInset className="flex-1">
-        <div className="h-full flex flex-col rounded-lg">
-          <div className="flex h-12 shrink-0 items-center gap-2 px-4 border-b border-border">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            <p className="flex-1">{getHeaderText(pathname)}</p>
-          </div>
-          <main className="flex-1 flex flex-col gap-4 p-4">{children}</main>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  );
+  const userDocSnapshot = await getUserDocSnapshot(userId);
+  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
+
+  const { role } = userDocSnapshot.data() as Omit<User, "id">;
+
+  return <DashboardSidebar role={role}>{children}</DashboardSidebar>;
 };
 
 export default DashboardLayout;

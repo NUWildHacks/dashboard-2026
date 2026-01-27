@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import "@/config/firebase-admin";
 import { Calendar } from "@/app/dashboard/schedule/_components";
 import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";

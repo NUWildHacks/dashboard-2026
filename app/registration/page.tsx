@@ -1,6 +1,8 @@
-import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 import "@/config/firebase-admin";
+import { redirect } from "next/navigation";
+
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
 import type { WildHacksConfig } from "@/types";
 
@@ -18,8 +20,11 @@ const RegistrationPage = async () => {
   const { end_time } = wildHackConfig;
   if (now >= end_time) redirect(DASHBOARD_PATH);
 
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || REGISTRATION_PATH;
+
   const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(pathname)}`);
 
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);

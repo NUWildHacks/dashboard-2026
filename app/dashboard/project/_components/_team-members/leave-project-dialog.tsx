@@ -30,8 +30,8 @@ const LeaveProjectDialog = ({ projectId }: LeaveProjectDialogProps) => {
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            You will need to be reinvited if you still wish to collaborate on this project. Or you can create your own
-            project.
+            You will need the invitation code from the project owner to join the project again. Or you can create your
+            own project.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
