@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ChevronDown, ChevronUp, MoreHorizontal } from "lucide-react";
 
 import { PermissionCode } from "@/app/registration/_types";
 import { Badge } from "@/components/ui/badge";
@@ -42,38 +42,59 @@ export const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
     accessorKey: "id",
     header: "ID",
     cell: ({ row }) => {
-      return <div className="text-left">{row.original.id}</div>;
+      return <div className="text-left text-muted-foreground">{row.original.id}</div>;
     },
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Email
+          {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+        </Button>
+      );
+    },
     cell: ({ row }) => {
-      return <div className="text-left">{row.original.email}</div>;
+      return <div className="text-left text-muted-foreground">{row.original.email}</div>;
     },
   },
   {
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
-      return <div className="text-left">{getPermissionCodeType(row.original.type)}</div>;
+      return <div className="text-left text-muted-foreground">{getPermissionCodeType(row.original.type)}</div>;
     },
   },
   {
     accessorKey: "created_at",
-    header: "Created At",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Created At
+          {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       return (
-        <div className="text-left">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
+        <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
       );
     },
   },
   {
     accessorKey: "expires_at",
-    header: "Expires At",
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Expires At
+          {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       return (
-        <div className="text-left">{`${getDateFromMilliseconds(row.original.expires_at)}, ${getTimeFromMilliseconds(row.original.expires_at)}`}</div>
+        <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.expires_at)}, ${getTimeFromMilliseconds(row.original.expires_at)}`}</div>
       );
     },
   },
