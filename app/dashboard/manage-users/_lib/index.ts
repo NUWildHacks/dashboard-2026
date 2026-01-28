@@ -1,1 +1,2 @@
-export { getPermissionCodeType } from "./permission-codes.lib";
+export { getPermissionCodes } from "./permission-codes.lib";
+export { getPermissionCodeType } from "./permission-code-type.lib";

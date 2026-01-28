@@ -8,7 +8,6 @@ import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 
 import { usePermissionCodesTable } from "../../_hooks/use-permission-codes-table";
-import { getPermissionCodeColumns } from "../../_lib/permission-codes.lib";
 
 import CreatePermissionCodeDialog from "./create-permission-code-dialog";
 
@@ -17,9 +16,8 @@ type PermissionCodesTableProps = {
 };
 
 const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) => {
-  const { table, selectedPermissionCodeIds, handleDeletePermissionCodes } = usePermissionCodesTable(permissionCodes);
-
-  const permissionCodesColumns = getPermissionCodeColumns(handleDeletePermissionCodes);
+  const { table, selectedPermissionCodeIds, handleDeletePermissionCodes, permissionCodesColumns } =
+    usePermissionCodesTable(permissionCodes);
 
   return (
     <div className="space-y-4">
@@ -27,7 +25,11 @@ const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) =>
         <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-4">
           <CreatePermissionCodeDialog />
           {selectedPermissionCodeIds.length > 0 && (
-            <Button variant="destructive" onClick={() => handleDeletePermissionCodes(selectedPermissionCodeIds)} className="w-full md:w-auto">
+            <Button
+              variant="destructive"
+              onClick={() => handleDeletePermissionCodes(selectedPermissionCodeIds)}
+              className="w-full md:w-auto"
+            >
               Delete permission code(s)
             </Button>
           )}

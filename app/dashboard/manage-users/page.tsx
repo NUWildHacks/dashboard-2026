@@ -5,7 +5,7 @@ import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { User } from "@/types";
 
 import { PermissionCodesTable } from "./_components";
-import { MOCK_PERMISSION_CODES } from "./_constants/permission-codes.constants";
+import { getPermissionCodes } from "./_lib/permission-codes.lib";
 
 const ManageUsersPage = async () => {
   const userId = await verifySession();
@@ -17,11 +17,13 @@ const ManageUsersPage = async () => {
   const { role } = userDocSnapshot.data() as Omit<User, "id">;
   if (role !== ADMIN) redirect(DASHBOARD_PATH);
 
+  const permissionCodes = await getPermissionCodes();
+
   return (
     <div className="flex-1 flex flex-col gap-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Permission Codes</h2>
-        <PermissionCodesTable permissionCodes={MOCK_PERMISSION_CODES} />
+        <PermissionCodesTable permissionCodes={permissionCodes} />
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Users</h2>

@@ -18,6 +18,7 @@ export type UseCreatePermissionCodeDialogReturn = {
 
 export const useCreatePermissionCodeDialog = (): UseCreatePermissionCodeDialogReturn => {
   const router = useRouter();
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {

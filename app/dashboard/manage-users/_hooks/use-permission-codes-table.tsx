@@ -10,7 +10,7 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown, ChevronUp, MoreHorizontal } from "lucide-react";
+import { ChevronUp, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ import {
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 
 import { deletePermissionCodes } from "../_actions";
-import { getPermissionCodeType } from "../_lib";
+import { getPermissionCodeType } from "../_lib/permission-code-type.lib";
 
 export type UsePermissionCodesTableReturn = {
   table: Table<PermissionCode>;
@@ -45,6 +45,30 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  const handleDeletePermissionCodes = async (permissionCodeIds: PermissionCode["id"][]) => {
+    try {
+      const result = await deletePermissionCodes(permissionCodeIds);
+      const { success } = result;
+
+      if (!success) {
+        const { field, error } = result;
+
+        if (!field) {
+          throw new Error(error);
+        }
+
+        return;
+      }
+
+      router.refresh();
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Delete permission codes error:", errorMessage);
+
+      toast.error("Failed to delete permission codes", { description: errorMessage });
+    }
+  };
 
   const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
     {
@@ -187,32 +211,6 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
   const selectedPermissionCodeIds = table
     .getFilteredSelectedRowModel()
     .rows.map((row) => (row.original as PermissionCode).id);
-
-  const handleDeletePermissionCodes = async (permissionCodeIds: PermissionCode["id"][]) => {
-    try {
-      const result = await deletePermissionCodes(permissionCodeIds);
-      const { success } = result;
-
-      if (!success) {
-        const { field, error } = result;
-
-        if (!field) {
-          throw new Error(error);
-        }
-
-        return;
-      }
-
-      router.refresh();
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Delete permission codes error:", errorMessage);
-
-      toast.error("Failed to delete permission codes", { description: errorMessage });
-    }
-  };
-
-
 
   return {
     table,
