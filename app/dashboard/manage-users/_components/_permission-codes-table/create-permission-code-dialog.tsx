@@ -18,8 +18,8 @@ import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { PERMISSION_CODE_TYPE_MAP, PERMISSION_CODE_TYPES } from "../_constants";
-import { useCreatePermissionCodeDialog } from "../_hooks";
+import { PERMISSION_CODE_TYPE_MAP, PERMISSION_CODE_TYPES } from "../../_constants";
+import { useCreatePermissionCodeDialog } from "../../_hooks";
 
 const CreatePermissionCodeDialog = () => {
   const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreatePermissionCodeDialog();
