@@ -12,10 +12,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 
+import { deletePermissionCodes } from "../_actions";
 import { getPermissionCodeType } from "../_lib";
 
 export const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
@@ -127,6 +129,10 @@ export const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.email)}>
               Copy email
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={() => deletePermissionCodes([row.original.id])}>
+              Delete permission code
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

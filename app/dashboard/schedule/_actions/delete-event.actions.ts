@@ -7,9 +7,11 @@ import { LOGIN_PATH, ADMIN, EVENTS_COLLECTION, DASHBOARD_SCHEDULE_PATH } from "@
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
+import { Event } from "../_types";
+
 export type DeleteEventResult = ActionResult;
 
-export const deleteEvent = async (eventId: string): Promise<DeleteEventResult> => {
+export const deleteEvent = async (eventId: Event["id"]): Promise<DeleteEventResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
 

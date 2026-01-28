@@ -8,9 +8,11 @@ import { getConfigDocSnapshot, verifySession } from "@/lib";
 import { getUserDocSnapshot } from "@/lib/user.lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
+import { Project } from "../_types";
+
 export type LeaveProjectResult = ActionResult;
 
-export const leaveProject = async (projectId: string): Promise<LeaveProjectResult> => {
+export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProjectResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
 

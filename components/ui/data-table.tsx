@@ -20,6 +20,8 @@ import { useState } from "react";
 import { CreatePermissionCodeDialog } from "@/app/dashboard/manage-users/_components";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group";
 import { SearchIcon } from "lucide-react";
+import { deletePermissionCodes } from "@/app/dashboard/manage-users/_actions";
+import { PermissionCode } from "@/app/registration/_types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,11 +50,25 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     },
   });
 
+  const selectedPermissionCodeIds = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => (row.original as PermissionCode).id);
+  const handleDeletePermissionCodes = async () => {
+    await deletePermissionCodes(selectedPermissionCodeIds);
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <CreatePermissionCodeDialog />
-        <InputGroup className="lg:max-w-[350px] min-w-[200px] w-full">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-4">
+          <CreatePermissionCodeDialog />
+          {selectedPermissionCodeIds.length > 0 && (
+            <Button variant="destructive" onClick={handleDeletePermissionCodes} className="w-full md:w-auto">
+              Delete permission code(s)
+            </Button>
+          )}
+        </div>
+        <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
             id="search"
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}

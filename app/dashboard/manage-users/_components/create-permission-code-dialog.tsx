@@ -27,7 +27,7 @@ const CreatePermissionCodeDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>Create permission code</Button>
+        <Button className="w-full md:w-auto">Create permission code</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

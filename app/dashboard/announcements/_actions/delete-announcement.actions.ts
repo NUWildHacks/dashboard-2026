@@ -7,9 +7,11 @@ import { ANNOUNCEMENTS_COLLECTION, LOGIN_PATH, DASHBOARD_ANNOUNCEMENTS_PATH, ADM
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
+import { Announcement } from "../_types";
+
 export type DeleteAnnouncementResult = ActionResult;
 
-export const deleteAnnouncement = async (announcementId: string): Promise<DeleteAnnouncementResult> => {
+export const deleteAnnouncement = async (announcementId: Announcement["id"]): Promise<DeleteAnnouncementResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
 

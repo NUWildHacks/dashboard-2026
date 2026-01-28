@@ -9,10 +9,14 @@ import { getUserDocSnapshot } from "@/lib/user.lib";
 import type { ActionResult, User, WildHacksConfig } from "@/types";
 
 import { type EditProjectFormSchema } from "../_schemas/edit-project-form.schemas";
+import { Project } from "../_types";
 
 export type EditProjectResult = ActionResult<EditProjectFormSchema>;
 
-export const editProject = async (projectId: string, data: EditProjectFormSchema): Promise<EditProjectResult> => {
+export const editProject = async (
+  projectId: Project["id"],
+  data: EditProjectFormSchema
+): Promise<EditProjectResult> => {
   const userId = await verifySession();
   if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
 
