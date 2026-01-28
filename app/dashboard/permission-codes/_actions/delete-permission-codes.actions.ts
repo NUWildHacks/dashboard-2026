@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { PermissionCode } from "@/app/registration/_types";
-import { LOGIN_PATH, ADMIN, PERMISSION_CODES_COLLECTION, DASHBOARD_MANAGE_USERS_PATH } from "@/constants";
+import { LOGIN_PATH, ADMIN, PERMISSION_CODES_COLLECTION, DASHBOARD_PERMISSION_CODES_PATH } from "@/constants";
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
@@ -14,7 +14,7 @@ export const deletePermissionCodes = async (
   permissionCodeIds: PermissionCode["id"][]
 ): Promise<DeletePermissionCodesResult> => {
   const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`);
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PERMISSION_CODES_PATH)}`);
 
   const db = getFirestore();
 

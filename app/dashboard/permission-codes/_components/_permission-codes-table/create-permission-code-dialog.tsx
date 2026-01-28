@@ -18,7 +18,7 @@ import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { PERMISSION_CODE_TYPE_MAP, PERMISSION_CODE_TYPES } from "../../_constants";
+import { PERMISSION_CODE_TYPES } from "../../_constants";
 import { useCreatePermissionCodeDialog } from "../../_hooks";
 
 const CreatePermissionCodeDialog = () => {
@@ -74,7 +74,7 @@ const CreatePermissionCodeDialog = () => {
                       <SelectContent>
                         {PERMISSION_CODE_TYPES.map((type) => (
                           <SelectItem key={type} value={type}>
-                            {PERMISSION_CODE_TYPE_MAP[type]}
+                            {type}
                           </SelectItem>
                         ))}
                       </SelectContent>

@@ -12,10 +12,10 @@ import {
 } from "@tanstack/react-table";
 import { ChevronUp, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { PermissionCode } from "@/app/registration/_types";
+import { PermissionCode, PermissionCodeType } from "@/app/registration/_types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -27,10 +27,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CategoryWithAll } from "@/hooks";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 
 import { deletePermissionCodes } from "../_actions";
-import { getPermissionCodeType } from "../_lib/permission-code-type.lib";
 
 export type UsePermissionCodesTableReturn = {
   table: Table<PermissionCode>;
@@ -39,12 +39,25 @@ export type UsePermissionCodesTableReturn = {
   permissionCodesColumns: ColumnDef<PermissionCode>[];
 };
 
-export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCodesTableReturn => {
+export const usePermissionCodesTable = (
+  data: PermissionCode[],
+  type: CategoryWithAll<PermissionCodeType>
+): UsePermissionCodesTableReturn => {
   const router = useRouter();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+
+  const filteredPermissionCodes = useMemo(() => {
+    let result = data;
+
+    if (type && type !== "all") {
+      result = result.filter((permissionCode) => permissionCode.type === type);
+    }
+
+    return result;
+  }, [data, type]);
 
   const handleDeletePermissionCodes = async (permissionCodeIds: PermissionCode["id"][]) => {
     try {
@@ -115,7 +128,11 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
       accessorKey: "type",
       header: "Type",
       cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{getPermissionCodeType(row.original.type)}</div>;
+        return (
+          <div className="text-left text-muted-foreground">
+            {<Badge variant="secondary">{row.original.type}</Badge>}
+          </div>
+        );
       },
     },
     {
@@ -155,9 +172,23 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
       header: "Status",
       cell: ({ row }) => {
         if (row.original.expires_at < Date.now()) {
-          return <Badge variant="outline">Expired</Badge>;
+          return (
+            <Badge
+              variant="outline"
+              className="text-destructive [a&]:hover:bg-destructive/10 [a&]:hover:text-destructive/90 border-destructive"
+            >
+              Expired
+            </Badge>
+          );
         }
-        return <Badge variant="outline">Active</Badge>;
+        return (
+          <Badge
+            variant="outline"
+            className="border-green-600 text-green-600 dark:border-green-400 dark:text-green-400 [a&]:hover:bg-green-600/10 [a&]:hover:text-green-600/90 dark:[a&]:hover:bg-green-400/10 dark:[a&]:hover:text-green-400/90"
+          >
+            Active
+          </Badge>
+        );
       },
     },
     {
@@ -192,7 +223,7 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
   ];
 
   const table = useReactTable({
-    data,
+    data: filteredPermissionCodes,
     columns: permissionCodesColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

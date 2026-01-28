@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import {
-  DASHBOARD_MANAGE_USERS_PATH,
+  DASHBOARD_PERMISSION_CODES_PATH,
   LOGIN_PATH,
   ONE_HOUR,
   PERMISSION_CODES_COLLECTION,
@@ -22,7 +22,7 @@ export const createPermissionCode = async (
   data: CreatePermissionCodeDialogSchema
 ): Promise<CreatePermissionCodeResult> => {
   const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`);
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PERMISSION_CODES_PATH)}`);
 
   const db = getFirestore();
   const now = Date.now();
