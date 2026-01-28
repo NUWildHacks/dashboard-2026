@@ -3,7 +3,14 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_MANAGE_USERS_PATH, LOGIN_PATH, ONE_HOUR, PERMISSION_CODES_COLLECTION, ADMIN } from "@/constants";
+import {
+  DASHBOARD_MANAGE_USERS_PATH,
+  LOGIN_PATH,
+  ONE_HOUR,
+  PERMISSION_CODES_COLLECTION,
+  ADMIN,
+  USERS_COLLECTION,
+} from "@/constants";
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";
 
@@ -38,6 +45,14 @@ export const createPermissionCode = async (
     }
 
     const { email, type } = data;
+
+    const existingUserDocSnapshot = await db.collection(USERS_COLLECTION).where("email", "==", email).get();
+    if (!existingUserDocSnapshot.empty) {
+      return {
+        success: false,
+        error: "User already registered",
+      };
+    }
 
     const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION).doc();
     await permissionCodeDocRef.set({
