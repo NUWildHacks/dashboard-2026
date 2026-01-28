@@ -1,1 +1,1 @@
-export type { PermissionCode } from "./permission-code.types";
+export type { PermissionCode, PermissionCodeType } from "./permission-code.types";

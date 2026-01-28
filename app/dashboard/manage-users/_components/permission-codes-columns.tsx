@@ -1,0 +1,115 @@
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+
+import { PermissionCode } from "@/app/registration/_types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
+
+import { getPermissionCodeType } from "../_lib";
+
+export const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => {
+      return <div className="text-left">{row.original.id}</div>;
+    },
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+    cell: ({ row }) => {
+      return <div className="text-left">{row.original.email}</div>;
+    },
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => {
+      return <div className="text-left">{getPermissionCodeType(row.original.type)}</div>;
+    },
+  },
+  {
+    accessorKey: "created_at",
+    header: "Created At",
+    cell: ({ row }) => {
+      return (
+        <div className="text-left">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "expires_at",
+    header: "Expires At",
+    cell: ({ row }) => {
+      return (
+        <div className="text-left">{`${getDateFromMilliseconds(row.original.expires_at)}, ${getTimeFromMilliseconds(row.original.expires_at)}`}</div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      if (row.original.expires_at < Date.now()) {
+        return <Badge variant="outline">Expired</Badge>;
+      }
+      return <Badge variant="outline">Active</Badge>;
+    },
+  },
+  {
+    accessorKey: "actions",
+    header: () => null,
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel className="text-xs font-bold text-muted-foreground">Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
+              Copy permission code
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.email)}>
+              Copy email
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];

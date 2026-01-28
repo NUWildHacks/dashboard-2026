@@ -25,7 +25,7 @@ import {
 import { DASHBOARD_SUPPORT_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
-import { items } from "../../_constants";
+import { SIDEBAR_ITEMS } from "../../_constants";
 
 type DashboardSidebarProps = PropsWithChildren<{
   role: Role;
@@ -51,7 +51,7 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
         <SidebarContent>
           <SidebarGroup className="flex flex-col gap-4">
             <SidebarMenu className="gap-2">
-              {items.map((item) => {
+              {SIDEBAR_ITEMS.map((item) => {
                 if (!item.visibleTo.includes(role)) return null;
                 return (
                   <SidebarMenuItem key={item.title}>

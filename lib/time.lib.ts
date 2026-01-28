@@ -218,9 +218,9 @@ const parseDateLabel = (dateLabel: string): Date | undefined => {
 export {
   combineDateAndTime,
   getDateFromMilliseconds,
+  getTimeFromMilliseconds,
   getEventTimeRange,
   getSendTime,
-  getTimeFromMilliseconds,
   getTimeFromMinutes,
   millisecondsToDate,
   millisecondsToTime,

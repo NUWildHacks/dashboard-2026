@@ -61,7 +61,7 @@ export const registerUser = async (
         };
       }
 
-      const permissionCodeData = permissionCodeDocSnap.data() as PermissionCode;
+      const permissionCodeData = permissionCodeDocSnap.data() as Omit<PermissionCode, "id">;
 
       if (permissionCodeData.email !== rest.email) {
         return {

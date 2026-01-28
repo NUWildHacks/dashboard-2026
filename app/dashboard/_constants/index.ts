@@ -1,1 +1,1 @@
-export { headerTextMap, items } from "./sidebar.constants";
+export { HEADER_TEXT_MAP, SIDEBAR_ITEMS } from "./sidebar.constants";

@@ -11,7 +11,7 @@ import { ADMIN, PARTICIPANT } from "@/constants/user.constants";
 
 import type { SidebarItem } from "../_components/_types/sidebar.types";
 
-export const items: SidebarItem[] = [
+export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     title: "Home",
     url: DASHBOARD_PATH,
@@ -44,7 +44,7 @@ export const items: SidebarItem[] = [
   },
 ];
 
-export const headerTextMap: Record<string, string> = {
+export const HEADER_TEXT_MAP: Record<string, string> = {
   announcements: "Announcements",
   schedule: "Schedule",
   project: "Project",
