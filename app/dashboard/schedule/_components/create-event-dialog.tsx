@@ -37,7 +37,7 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
       <DialogContent className="max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
-          <DialogDescription>Please enter your event details to continue.</DialogDescription>
+          <DialogDescription>Please enter event details to continue.</DialogDescription>
         </DialogHeader>
         <div className="overflow-y-auto flex-1 min-h-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <form id="create-event-form" onSubmit={handleSubmit(onSubmit)}>

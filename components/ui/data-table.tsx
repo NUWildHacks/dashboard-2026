@@ -17,6 +17,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { CreatePermissionCodeDialog } from "@/app/dashboard/manage-users/_components";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group";
+import { SearchIcon } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,12 +51,20 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
-          className="max-w-[300px]"
-        />
+        <CreatePermissionCodeDialog />
+        <InputGroup className="lg:max-w-[350px] min-w-[200px] w-full">
+          <InputGroupInput
+            id="search"
+            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+            placeholder="Search emails..."
+            className="truncate"
+            aria-label="Search emails"
+          />
+          <InputGroupAddon>
+            <SearchIcon />
+          </InputGroupAddon>
+        </InputGroup>
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
