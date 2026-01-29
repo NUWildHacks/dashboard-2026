@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { Project } from "@/app/dashboard/project/_types";
-
 import { editProject } from "../_actions";
 import { editProjectFormSchema, type EditProjectFormSchema } from "../_schemas";
+import type { Project } from "../types";
 
 export type UseEditProjectFormReturn = {
   onSubmit: SubmitHandler<EditProjectFormSchema>;

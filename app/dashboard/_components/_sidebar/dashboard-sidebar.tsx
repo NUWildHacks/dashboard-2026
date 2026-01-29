@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { ComponentProps, PropsWithChildren } from "react";
 
 import { SidebarLogoutButton } from "@/app/dashboard/_components";
-import { getHeaderText } from "@/app/dashboard/_lib";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -25,7 +24,8 @@ import {
 import { DASHBOARD_SUPPORT_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
-import { SIDEBAR_ITEMS } from "../../_constants";
+import { SIDEBAR_ITEMS } from "../../constants";
+import { getHeaderText } from "../../lib";
 
 type DashboardSidebarProps = PropsWithChildren<{
   role: Role;

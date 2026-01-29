@@ -7,7 +7,7 @@ import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
 import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { type EditProjectFormSchema } from "../_schemas/edit-project-form.schemas";
-import { Project } from "../_types";
+import type { Project } from "../types";
 
 export type EditProjectResult = ActionResult<EditProjectFormSchema>;
 

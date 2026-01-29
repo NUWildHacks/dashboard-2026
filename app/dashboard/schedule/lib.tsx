@@ -1,6 +1,9 @@
 import { JSX } from "react";
 
 import { CalendarItem } from "@/app/dashboard/schedule/_components";
+import { ONE_DAY, ONE_MINUTE } from "@/constants";
+import type { UseDialogReturn } from "@/hooks";
+
 import {
   BASE_Z_INDEX,
   CALENDAR_ROWS,
@@ -8,10 +11,8 @@ import {
   DEFAULT_LAST_CALENDAR_ROW_INDEX,
   ROW_HEIGHT,
   ROW_WIDTH_PERCENTAGE,
-} from "@/app/dashboard/schedule/_constants";
-import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
-import { ONE_DAY, ONE_MINUTE } from "@/constants";
-import type { UseDialogReturn } from "@/hooks";
+} from "./constants";
+import type { CalendarRowConfig, Event } from "./types";
 
 /**
  * Get the start of a day (midnight) in milliseconds for a given timestamp.

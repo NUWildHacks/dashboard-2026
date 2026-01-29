@@ -4,7 +4,6 @@ import { Check, Copy } from "lucide-react";
 
 import { TeamMemberItem } from "@/app/dashboard/project/_components";
 import { useTeamMembersList } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +11,8 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useClipboard } from "@/hooks";
 import type { ParticipantUser } from "@/types";
+
+import { Project } from "../../types";
 
 type TeamMembersListProps = {
   userId: ParticipantUser["id"];

@@ -6,7 +6,7 @@ import { EVENTS_COLLECTION, DASHBOARD_SCHEDULE_PATH, ADMIN, LOGIN_PATH } from "@
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
-import { Event } from "../_types";
+import type { Event } from "../types";
 
 export type DeleteEventResult = ActionResult;
 

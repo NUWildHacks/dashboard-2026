@@ -4,21 +4,17 @@ import { SearchIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { CalendarRow, CreateEventDialog, EventDialog } from "@/app/dashboard/schedule/_components";
-import { EVENT_CATEGORIES } from "@/app/dashboard/schedule/_constants";
-import { useEvents } from "@/app/dashboard/schedule/_hooks";
-import {
-  createOverlapGroups,
-  filterEventsByDay,
-  getDayStart,
-  getVisibleCalendarRows,
-} from "@/app/dashboard/schedule/_lib";
-import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ADMIN, ONE_DAY } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import { getDateFromMilliseconds } from "@/lib";
 import type { User, WildHacksConfig } from "@/types";
+
+import { useEvents } from "../../_hooks";
+import { EVENT_CATEGORIES } from "../../constants";
+import { createOverlapGroups, filterEventsByDay, getDayStart, getVisibleCalendarRows } from "../../lib";
+import type { Event, EventCategory } from "../../types";
 
 type CalendarProps = {
   userRole: User["role"];

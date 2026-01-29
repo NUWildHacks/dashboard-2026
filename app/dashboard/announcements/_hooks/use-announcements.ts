@@ -3,11 +3,12 @@
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-import { ANNOUNCEMENT_FIELDS } from "@/app/dashboard/announcements/_constants";
-import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
+
+import { ANNOUNCEMENT_FIELDS } from "../constants";
+import type { AnnouncementCategory, Announcement } from "../types";
 
 export type UseAnnouncementsSettings = {
   category?: UseFiltersReturn<AnnouncementCategory>["category"];

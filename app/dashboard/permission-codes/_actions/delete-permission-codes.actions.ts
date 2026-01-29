@@ -2,10 +2,11 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { PERMISSION_CODES_COLLECTION, DASHBOARD_PERMISSION_CODES_PATH, ADMIN, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
+
+import type { PermissionCode } from "../types";
 
 export type DeletePermissionCodesResult = ActionResult;
 

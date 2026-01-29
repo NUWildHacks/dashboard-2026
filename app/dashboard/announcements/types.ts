@@ -1,5 +1,6 @@
-import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants";
 import type { BaseModel } from "@/types";
+
+import { ANNOUNCEMENT_CATEGORIES } from "./constants";
 
 export type AnnouncementCategory = (typeof ANNOUNCEMENT_CATEGORIES)[number];
 

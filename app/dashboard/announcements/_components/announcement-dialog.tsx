@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +22,7 @@ import { getSendTime } from "@/lib";
 import { User } from "@/types";
 
 import { deleteAnnouncement } from "../_actions";
+import { Announcement } from "../types";
 
 type AnnouncementDialogProps = { userRole: User["role"] } & Pick<
   UseDialogReturn<Announcement>,

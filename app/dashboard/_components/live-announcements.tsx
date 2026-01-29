@@ -5,13 +5,14 @@ import Link from "next/link";
 
 import { AnnouncementDialog, AnnouncementsList } from "@/app/dashboard/announcements/_components";
 import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
-import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants";
 import { useDialog } from "@/hooks";
 import { cn } from "@/lib";
 import type { User } from "@/types";
+
+import type { Announcement } from "../announcements/types";
 
 type LiveAnnouncementsProps = {
   userRole: User["role"];

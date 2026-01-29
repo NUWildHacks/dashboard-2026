@@ -2,12 +2,12 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 
 import { usePermissionCodesTable } from "../../_hooks/use-permission-codes-table";
+import { PermissionCode } from "../../types";
 
 import CreatePermissionCodeDialog from "./create-permission-code-dialog";
 

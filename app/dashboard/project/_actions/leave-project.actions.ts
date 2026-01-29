@@ -13,7 +13,7 @@ import {
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
 import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
-import { Project } from "../_types";
+import type { Project } from "../types";
 
 export type LeaveProjectResult = ActionResult;
 

@@ -1,4 +1,6 @@
-import type { BaseModel, User } from "@/types";
+import type { BaseModel, ParticipantUser, User } from "@/types";
+
+export type TeamMember = Pick<ParticipantUser, "id" | "first_name" | "last_name" | "github_username" | "email">;
 
 export type Project = BaseModel & {
   name: string;

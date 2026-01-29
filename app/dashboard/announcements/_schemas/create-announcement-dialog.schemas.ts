@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ANNOUNCEMENT_CATEGORIES } from "../_constants";
+import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 
 export const createAnnouncementDialogSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),

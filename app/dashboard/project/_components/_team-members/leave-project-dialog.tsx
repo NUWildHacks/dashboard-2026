@@ -2,7 +2,6 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
 
 import { useLeaveProjectDialog } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import type { Project } from "../../types";
 
 type LeaveProjectDialogProps = {
   projectId: Project["id"];

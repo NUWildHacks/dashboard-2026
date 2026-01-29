@@ -1,4 +1,4 @@
-import { Project } from "@/app/dashboard/project/_types/project.types";
+import { Project } from "@/app/dashboard/project/types";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,

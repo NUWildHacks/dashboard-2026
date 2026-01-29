@@ -4,7 +4,6 @@ import { Clock, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +21,7 @@ import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
 import { deleteEvent } from "../_actions/delete-event.actions";
+import type { Event } from "../types";
 
 type EventDialogProps = { userRole: User["role"] } & Pick<
   UseDialogReturn<Event>,

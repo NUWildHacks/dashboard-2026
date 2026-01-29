@@ -1,4 +1,4 @@
-import { HEADER_TEXT_MAP } from "../_constants";
+import { HEADER_TEXT_MAP } from "./constants";
 
 /**
  * Get the header text for a given pathname based on the last segment of the path.

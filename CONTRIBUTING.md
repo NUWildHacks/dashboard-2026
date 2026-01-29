@@ -108,7 +108,6 @@ dashboard-2026/
 ├── components/             # Shared React components
 │   ├── form/              # Form-specific components
 │   ├── ui/                # ShadCN UI components (do not edit directly)
-│   └── index.ts           # Barrel export for form components
 ├── config/                # Configuration files (Firebase, etc.)
 ├── constants/            # Application-wide constants
 │   └── index.ts          # Barrel export for all constants
@@ -130,24 +129,32 @@ app/
 ├── _components/          # Root-level components (Navbar, Footer, etc.)
 ├── dashboard/           # Dashboard route segment
 │   ├── _components/     # Dashboard-specific components
-│   ├── _constants/      # Dashboard-specific constants
 │   ├── _hooks/          # Dashboard-specific hooks
-│   ├── _lib/            # Dashboard-specific utilities
+│   ├── constants.ts     # Dashboard-specific constants
+│   ├── lib.ts           # Dashboard-specific utilities
+│   ├── types.ts         # Dashboard-specific types
 │   ├── announcements/   # Announcements feature
+│   │   ├── _actions/
 │   │   ├── _components/
-│   │   ├── _constants/
 │   │   ├── _hooks/
-│   │   ├── _types/
-│   │   └── page.tsx
-│   ├── project/         # Project feature
-│   │   ├── _components/
-│   │   ├── _constants/
-│   │   ├── _hooks/
-│   │   ├── _lib/
 │   │   ├── _schemas/
-│   │   ├── _types/
-│   │   └── page.tsx
+│   │   ├── constants.ts
+│   │   ├── types.ts
+│   │   ├── page.tsx
+│   │   └── loading.tsx
+│   ├── project/         # Project feature
+│   │   ├── _actions/
+│   │   ├── _components/
+│   │   ├── _hooks/
+│   │   ├── _schemas/
+│   │   ├── constants.ts
+│   │   ├── lib.ts
+│   │   ├── types.ts
+│   │   ├── page.tsx
+│   │   └── loading.tsx
 │   └── ...
+├── login/               # Login route
+├── registration/        # Registration route
 └── ...
 ```
 
@@ -158,15 +165,28 @@ Each feature (route segment) follows this structure:
 - `_actions/` - Server actions for database operations (if applicable)
 - `_components/` - React components specific to this feature
 - `_hooks/` - Custom React hooks for this feature
-- `_types/` - TypeScript type definitions for this feature
-- `_constants/` - Constants specific to this feature
-- `_lib/` - Utility functions for this feature
 - `_schemas/` - Zod validation schemas (if applicable)
+- `constants.ts` - Constants specific to this feature (optional)
+- `lib.ts` or `lib.tsx` - Utility functions for this feature (optional)
+- `types.ts` - TypeScript type definitions for this feature (optional)
 - `page.tsx` - Next.js page component
 - `loading.tsx` - Loading UI (optional)
 - `error.tsx` - Error UI (optional)
 
-**Note**: Folders prefixed with `_` are private and not part of the URL routing.
+**Note**:
+- Folders prefixed with `_` are private and not part of the URL routing
+- `constants.ts`, `types.ts`, and `lib.ts` are single files (not folders) and are optional
+- Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
+
+### Dashboard-Level Organization
+
+The `dashboard/` route segment also has its own shared resources:
+
+- `_components/` - Components shared across dashboard features
+- `_hooks/` - Hooks shared across dashboard features
+- `constants.ts` - Constants shared across dashboard features
+- `lib.ts` - Utilities shared across dashboard features
+- `types.ts` - Types shared across dashboard features
 
 ## Code Style and Conventions
 
@@ -196,7 +216,7 @@ import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
+import type { Project } from "@/app/dashboard/project/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 ```
@@ -207,10 +227,10 @@ import { Card, CardContent } from "@/components/ui/card";
 
 - **Components**: `kebab-case.tsx` (e.g., `edit-project-form.tsx`)
 - **Hooks**: `use-kebab-case.ts` (e.g., `use-edit-project-form.ts`)
-- **Types**: `kebab-case.types.ts` (e.g., `project.types.ts`)
-- **Constants**: `kebab-case.constants.ts` (e.g., `project.constants.ts`)
+- **Types**: `types.ts` (single file per feature, e.g., `app/dashboard/project/types.ts`)
+- **Constants**: `constants.ts` (single file per feature, e.g., `app/dashboard/project/constants.ts`)
 - **Schemas**: `kebab-case.schemas.ts` (e.g., `create-project-form.schemas.ts`)
-- **Utilities**: `kebab-case.lib.ts` (e.g., `project.lib.ts`)
+- **Utilities**: `lib.ts` or `lib.tsx` (single file per feature, e.g., `app/dashboard/project/lib.ts`)
 
 #### Code
 
@@ -231,8 +251,6 @@ The project uses Prettier with the following settings:
 - **Quotes**: Double quotes
 - **Trailing Commas**: ES5 style
 
-Always run `pnpm run format` before committing.
-
 ### ESLint Rules
 
 Key ESLint rules enforced:
@@ -243,6 +261,8 @@ Key ESLint rules enforced:
 - **Accessibility**: JSX a11y rules enabled
 
 The project uses ESLint's flat config format (newer configuration style).
+
+Always run `pnpm run format && pnpm run lint:fix` before committing.
 
 ## File Organization Patterns
 
@@ -275,13 +295,14 @@ export type { UseEditProjectFormReturn } from "./use-edit-project-form";
 
 ✅ **Use barrel imports for:**
 
-- Feature-level folders (`_components`, `_hooks`, `_types`, etc.)
+- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`)
 - Root-level shared folders (`components`, `hooks`, `lib`, `types`, `constants`)
 
 ❌ **Do NOT use barrel imports for:**
 
 - `components/ui/` - ShadCN UI components (import directly)
-- Single-file folders
+- Single files (`constants.ts`, `types.ts`, `lib.ts`) - import directly
+- `page.tsx`, `loading.tsx`, `error.tsx` - import directly
 
 #### Import Examples
 
@@ -289,8 +310,9 @@ export type { UseEditProjectFormReturn } from "./use-edit-project-form";
 
 ```typescript
 import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
-import { PROJECT_FIELDS } from "@/app/dashboard/project/_constants";
+import type { Project } from "@/app/dashboard/project/types";
+import { PROJECT_FIELDS } from "@/app/dashboard/project/constants";
+import { getProject } from "@/app/dashboard/project/lib";
 ```
 
 ❌ **Bad:**
@@ -298,6 +320,7 @@ import { PROJECT_FIELDS } from "@/app/dashboard/project/_constants";
 ```typescript
 import { useEditProjectForm } from "@/app/dashboard/project/_hooks/use-edit-project-form";
 import type { Project } from "@/app/dashboard/project/_types/project.types";
+import { PROJECT_FIELDS } from "@/app/dashboard/project/_constants/project.constants";
 ```
 
 ### Component Organization
@@ -497,7 +520,8 @@ app/dashboard/project/
 │   ├── create-project.actions.ts
 │   ├── edit-project.actions.ts
 │   ├── join-project.actions.ts
-│   └── leave-project.actions.ts
+│   ├── leave-project.actions.ts
+│   └── index.ts
 ```
 
 **Naming Convention**: `kebab-case.actions.ts` (e.g., `create-project.actions.ts`)
@@ -510,11 +534,9 @@ app/dashboard/project/
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH } from "@/constants";
-import { verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
+import { LOGIN_PATH, DASHBOARD_PATH } from "@/constants";
+import { getAuthenticatedUser } from "@/lib";
 import type { ActionResult } from "@/types";
 
 import { type MyFormSchema } from "../_schemas/my-form.schemas";
@@ -522,21 +544,13 @@ import { type MyFormSchema } from "../_schemas/my-form.schemas";
 export type MyActionResult = ActionResult<MyFormSchema>;
 
 export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
   try {
-    // Validate user exists
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
+    // User is guaranteed to be authenticated and exist in database at this point
 
     // Perform database operations
     // ...
@@ -634,24 +648,56 @@ const onSubmit = async (data: FormSchema) => {
 
 ### Authentication and Authorization
 
-**Always verify session in server actions:**
+**Always use `getAuthenticatedUser` in server actions:**
+
+The `getAuthenticatedUser` function handles session verification, user document retrieval, and redirects automatically:
 
 ```typescript
-const userId = await verifySession();
-if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(TARGET_PATH)}`);
+import { getAuthenticatedUser, requireRole } from "@/lib";
+import { LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
+
+export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
+  const user = await getAuthenticatedUser(redirectPath);
+
+  // User is guaranteed to be authenticated and exist in database at this point
+  // ...
+};
 ```
 
-**Check user permissions:**
+**Check user roles:**
+
+Use `requireRole` to validate user permissions:
 
 ```typescript
-const userDocSnapshot = await getUserDocSnapshot(userId);
-if (!userDocSnapshot.exists) {
-  return { success: false, error: "User not found" };
-}
+import { getAuthenticatedUser, requireRole } from "@/lib";
+import { PARTICIPANT } from "@/constants";
 
-// Check ownership or permissions
+export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
+  const user = await getAuthenticatedUser(redirectPath);
+
+  const roleError = requireRole(user, PARTICIPANT, "You are not authorized to perform this action");
+  if (roleError) return roleError;
+
+  // User has required role, proceed with action
+  // ...
+};
+```
+
+**Check ownership or custom permissions:**
+
+```typescript
+const user = await getAuthenticatedUser(redirectPath);
+
+// Check ownership
 if (userId !== ownerId) {
   return { success: false, error: "Permission denied" };
+}
+
+// Custom permission checks
+if (!hasPermission) {
+  return { success: false, error: "You don't have permission to perform this action" };
 }
 ```
 
@@ -664,13 +710,18 @@ if (userId !== ownerId) {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
 import { myAction } from "../_actions/my-action.actions";
 import { myFormSchema, type MyFormSchema } from "../_schemas/my-form.schemas";
 
-export const useMyForm = () => {
+export type UseMyFormReturn = {
+  onSubmit: SubmitHandler<MyFormSchema>;
+  isSubmitting: boolean;
+} & Pick<UseFormReturn<MyFormSchema>, "control" | "handleSubmit">;
+
+export const useMyForm = (): UseMyFormReturn => {
   const router = useRouter();
 
   const {
@@ -693,20 +744,23 @@ export const useMyForm = () => {
       if (!success) {
         const { field, error } = result;
 
-        if (field) {
-          setError(field, {
-            type: "server",
-            message: error,
-          });
-        } else {
-          toast.error("Operation failed", { description: error });
+        if (!field) {
+          throw new Error(error);
         }
+
+        setError(field, {
+          type: "server",
+          message: error,
+        });
         return;
       }
 
-      router.refresh();
+      // Success - navigate or refresh
+      router.refresh(); // or router.replace(DASHBOARD_PATH)
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Action error:", errorMessage);
+
       toast.error("Operation failed", { description: errorMessage });
     }
   };
@@ -714,6 +768,13 @@ export const useMyForm = () => {
   return { control, handleSubmit, onSubmit, isSubmitting };
 };
 ```
+
+**Key points:**
+
+- **Field-specific errors**: If `field` exists in the result, use `setError` and return early
+- **General errors**: If `field` doesn't exist, throw an error which gets caught and displayed as a toast
+- **Navigation**: Use `router.refresh()` to refresh server components, or `router.replace()` for navigation to a different route
+- **Error logging**: Always log errors to console for debugging
 
 ### Best Practices
 
@@ -754,21 +815,20 @@ export interface Project extends BaseModel {
 
 ```typescript
 // Good
-export type { Project, TeamMember } from "./project.types";
+export type { Project, TeamMember } from "./types";
 
 // Bad
-export type { default as Project } from "./project.types";
+export type { default as Project } from "./types";
 ```
 
 ### Type Organization
 
-Types should be organized in `_types` folders with descriptive file names:
+Types should be organized in a single `types.ts` file per feature:
 
 ```
-_types/
-├── project.types.ts
-├── team-member.types.ts
-└── index.ts
+app/dashboard/project/
+├── types.ts
+└── ...
 ```
 
 **Example type file:**
@@ -789,14 +849,20 @@ export type TeamMember = BaseModel & {
 };
 ```
 
+**Importing types:**
+
+```typescript
+import type { Project } from "@/app/dashboard/project/types";
+```
+
 ## Constants and Schemas
 
 ### Constants Organization
 
-Constants are organized by domain in `_constants` folders:
+Constants are organized in a single `constants.ts` file per feature:
 
 ```typescript
-import type { Project } from "@/app/dashboard/project/_types";
+import type { Project } from "./types";
 
 export const PROJECT_FIELDS = {
   name: "name",
@@ -806,6 +872,12 @@ export const PROJECT_FIELDS = {
 ```
 
 **Naming**: Use `UPPER_SNAKE_CASE` for constants.
+
+**Importing constants:**
+
+```typescript
+import { PROJECT_FIELDS } from "@/app/dashboard/project/constants";
+```
 
 ### Zod Schemas
 
@@ -824,6 +896,13 @@ export type CreateProjectFormSchema = z.infer<typeof createProjectFormSchema>;
 ```
 
 **Pattern**: Export both the schema and the inferred type.
+
+**Barrel exports**: Schemas should be exported from `_schemas/index.ts`:
+
+```typescript
+export { createProjectFormSchema } from "./create-project-form.schemas";
+export type { CreateProjectFormSchema } from "./create-project-form.schemas";
+```
 
 ## Git Workflow
 
@@ -956,19 +1035,20 @@ pnpm run build
    ```
    app/dashboard/my-feature/
    ├── _actions/          # Server actions (if needed)
-   │   └── my-action.actions.ts
+   │   ├── my-action.actions.ts
+   │   └── index.ts
    ├── _components/
    │   └── index.ts
    ├── _hooks/
    │   └── index.ts
-   ├── _types/
+   ├── _schemas/          # Zod schemas (if needed)
    │   └── index.ts
-   ├── _constants/
-   │   └── index.ts
-   ├── _schemas/
-   │   └── index.ts
-   ├── _lib/
-   └── page.tsx
+   ├── constants.ts       # Optional
+   ├── lib.ts            # Optional (use lib.tsx if contains JSX)
+   ├── types.ts          # Optional
+   ├── page.tsx
+   ├── loading.tsx        # Optional
+   └── error.tsx          # Optional
    ```
 
 3. **Create barrel exports** in each `index.ts` file
@@ -1028,6 +1108,53 @@ pnpm run build
    // _hooks/index.ts
    export { useMyHook } from "./use-my-hook";
    export type { UseMyHookReturn } from "./use-my-hook";
+   ```
+
+### Adding Types
+
+1. **Add to `types.ts` file**:
+
+   ```typescript
+   import type { BaseModel } from "@/types";
+
+   export type MyType = BaseModel & {
+     // fields
+   };
+   ```
+
+2. **Import where needed**:
+   ```typescript
+   import type { MyType } from "@/app/dashboard/my-feature/types";
+   ```
+
+### Adding Constants
+
+1. **Add to `constants.ts` file**:
+
+   ```typescript
+   export const MY_CONSTANT = "value" as const;
+   ```
+
+2. **Import where needed**:
+   ```typescript
+   import { MY_CONSTANT } from "@/app/dashboard/my-feature/constants";
+   ```
+
+### Adding Utility Functions
+
+1. **Add to `lib.ts` or `lib.tsx` file**:
+
+   ```typescript
+   "use server"; // If using server-side code
+
+   export const myUtility = () => {
+     // implementation
+   };
+   ```
+
+2. **Import where needed**:
+   ```typescript
+   import { myUtility } from "@/app/dashboard/my-feature/lib";
    ```
 
 ### Updating Barrel Imports

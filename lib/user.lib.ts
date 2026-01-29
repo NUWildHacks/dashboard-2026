@@ -10,10 +10,18 @@ import { verifySession } from ".";
 
 /**
  * Get the authenticated user data.
- * Verifies the session and retrieves the user document.
+ * Verifies the session and retrieves the user document from Firestore.
+ * Redirects to login if session is invalid, or to registration if user document doesn't exist.
  *
- * @param redirectPath - Optional path to redirect to if session is invalid
- * @returns Promise resolving to the user (redirects if user doesn't exist)
+ * @param redirectPath - Optional path to redirect to if session is invalid (defaults to LOGIN_PATH)
+ * @returns Promise resolving to the authenticated user object
+ * @throws {Redirect} Always redirects if session is invalid or user document doesn't exist
+ * @example
+ * ```ts
+ * const user = await getAuthenticatedUser();
+ * console.log(user.email, user.role);
+ * // User is guaranteed to be authenticated and exist in database
+ * ```
  */
 const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
   const userId = await verifySession();
@@ -27,17 +35,26 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
   const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userId).get();
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  return { ...(userDocSnapshot.data() as User), id: userId } as User;
+  return { ...userDocSnapshot.data(), id: userId } as User;
 };
 
 /**
  * Require a specific role for an action.
- * Returns an error result if the user doesn't have the required role.
+ * Validates that the user has the required role and returns an error result if they don't.
  *
- * @param user - The user data
+ * @param user - The user data to check
  * @param requiredRole - The required role (PARTICIPANT, ADMIN, or JUDGE)
- * @param errorMessage - Custom error message (optional)
- * @returns Error result if role doesn't match, null if authorized
+ * @param errorMessage - Optional custom error message (uses default message if not provided)
+ * @returns ActionResult with success: false and error message if role doesn't match, null if authorized
+ * @example
+ * ```ts
+ * const user = await getAuthenticatedUser();
+ * const roleCheck = requireRole(user, ADMIN);
+ * if (roleCheck) {
+ *   return roleCheck; // User is not an admin
+ * }
+ * // User has required role, proceed with action
+ * ```
  */
 const requireRole = <T extends User["role"]>(
   user: User,

@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
+import { PermissionCode } from "@/app/dashboard/permission-codes/types";
 import {
   PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,
@@ -15,7 +16,6 @@ import { verifySession } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type RegistrationFormSchema } from "../_schemas/registration-form.schemas";
-import type { PermissionCode } from "../../dashboard/permission-codes/_types";
 
 export type RegisterUserResult = ActionResult<RegistrationFormSchema>;
 

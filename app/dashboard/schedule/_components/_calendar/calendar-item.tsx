@@ -3,12 +3,13 @@
 import { Clock } from "lucide-react";
 import { memo } from "react";
 
-import { ROW_HEIGHT } from "@/app/dashboard/schedule/_constants";
-import type { Event } from "@/app/dashboard/schedule/_types";
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import type { UseDialogReturn } from "@/hooks";
 import { cn, getEventTimeRange } from "@/lib";
+
+import { ROW_HEIGHT } from "../../constants";
+import type { Event } from "../../types";
 
 type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time"> &
   Pick<UseDialogReturn<Event>, "handleSelectItem"> & {

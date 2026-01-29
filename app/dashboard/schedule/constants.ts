@@ -1,4 +1,22 @@
-import type { CalendarRowConfig } from "@/app/dashboard/schedule/_types";
+import type { Event, CalendarRowConfig } from "./types";
+
+export const FOOD = "Food" as const;
+export const WORKSHOP = "Workshop" as const;
+export const SPEAKER = "Speaker" as const;
+export const MENTORSHOP = "Mentorship" as const;
+export const SOCIAL = "Social" as const;
+
+export const EVENT_CATEGORIES = [FOOD, WORKSHOP, SPEAKER, MENTORSHOP, SOCIAL] as const;
+
+export const EVENT_FIELDS = {
+  category: "category",
+  title: "title",
+  body: "body",
+  start_time: "start_time",
+  end_time: "end_time",
+  created_at: "created_at",
+  updated_at: "updated_at",
+} as const satisfies Record<keyof Omit<Event, "id">, string>;
 
 export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;

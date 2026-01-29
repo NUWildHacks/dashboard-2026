@@ -1,4 +1,4 @@
-import type { Announcement } from "@/app/dashboard/announcements/_types";
+import { Announcement } from "./types";
 
 export const URGENT = "Urgent" as const;
 export const SCHEDULE = "Schedule" as const;

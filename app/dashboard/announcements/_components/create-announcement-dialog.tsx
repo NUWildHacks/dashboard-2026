@@ -19,8 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { ANNOUNCEMENT_CATEGORIES } from "../_constants";
 import { useCreateAnnouncementDialog } from "../_hooks/use-create-announcement-dialog";
+import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 
 const CreateAnnouncementDialog = () => {
   const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen, fields, append, remove } =

@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,6 +29,7 @@ import {
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 
 import { deletePermissionCodes } from "../_actions";
+import { PermissionCode } from "../types";
 
 export type UsePermissionCodesTableReturn = {
   table: Table<PermissionCode>;

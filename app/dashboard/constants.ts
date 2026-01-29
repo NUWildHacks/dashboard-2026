@@ -9,7 +9,7 @@ import {
 } from "@/constants/routes.constants";
 import { ADMIN, PARTICIPANT } from "@/constants/user.constants";
 
-import type { SidebarItem } from "../_components/_types/sidebar.types";
+import type { SidebarItem } from "./types";
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {

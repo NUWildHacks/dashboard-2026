@@ -3,11 +3,12 @@
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-import { EVENT_FIELDS } from "@/app/dashboard/schedule/_constants";
-import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
+
+import { EVENT_FIELDS } from "../constants";
+import type { Event, EventCategory } from "../types";
 
 export type UseEventsSettings = {
   category?: UseFiltersReturn<EventCategory>["category"];

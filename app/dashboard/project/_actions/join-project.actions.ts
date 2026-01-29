@@ -13,8 +13,8 @@ import {
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
 import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
-import { PROJECT_FIELDS } from "../_constants";
 import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
+import { PROJECT_FIELDS } from "../constants";
 
 export type JoinProjectResult = ActionResult<JoinProjectFormSchema>;
 

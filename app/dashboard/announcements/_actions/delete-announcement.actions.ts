@@ -6,7 +6,7 @@ import { ADMIN, ANNOUNCEMENTS_COLLECTION, DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PA
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
-import { Announcement } from "../_types";
+import { Announcement } from "../types";
 
 export type DeleteAnnouncementResult = ActionResult;
 

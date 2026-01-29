@@ -7,14 +7,15 @@ import {
   AnnouncementsList,
   CreateAnnouncementDialog,
 } from "@/app/dashboard/announcements/_components";
-import { ANNOUNCEMENT_CATEGORIES } from "@/app/dashboard/announcements/_constants";
 import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
-import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announcements/_types";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ADMIN } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import type { User } from "@/types";
+
+import { ANNOUNCEMENT_CATEGORIES } from "../constants";
+import { AnnouncementCategory, Announcement } from "../types";
 
 type AnnouncementsWithFiltersProps = {
   userRole: User["role"];

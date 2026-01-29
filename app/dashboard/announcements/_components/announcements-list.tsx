@@ -1,10 +1,11 @@
 import { MegaphoneOff } from "lucide-react";
 
 import { AnnouncementItem } from "@/app/dashboard/announcements/_components";
-import type { Announcement } from "@/app/dashboard/announcements/_types";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { UseDialogReturn } from "@/hooks";
+
+import type { Announcement } from "../types";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];

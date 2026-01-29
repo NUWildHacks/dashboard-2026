@@ -3,9 +3,10 @@
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
-import type { Project, TeamMember } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
 import { USERS_COLLECTION, PARTICIPANT_USER_FIELDS } from "@/constants";
+
+import type { Project, TeamMember } from "../types";
 
 export type UseTeamMembersListReturn = {
   teamMembers: TeamMember[];

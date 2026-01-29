@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { EVENT_CATEGORIES } from "../_constants";
+import { EVENT_CATEGORIES } from "../constants";
 
 export const createEventDialogSchema = z
   .object({

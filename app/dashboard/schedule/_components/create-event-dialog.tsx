@@ -19,8 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { EVENT_CATEGORIES } from "../_constants";
 import { useCreateEventDialog } from "../_hooks/use-create-event-dialog";
+import { EVENT_CATEGORIES } from "../constants";
 
 type CreateEventDialogProps = {
   availableDays: { dayStart: number; dayEnd: number; label: string }[];
