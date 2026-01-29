@@ -3,7 +3,14 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
+import {
+  PROJECTS_COLLECTION,
+  USERS_COLLECTION,
+  LOGIN_PATH,
+  DASHBOARD_PROJECT_PATH,
+  PARTICIPANT,
+  USER_FIELDS,
+} from "@/constants";
 import { getConfigDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User, WildHacksConfig } from "@/types";
 
@@ -21,7 +28,7 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
 
   try {
     const configDocSnapshot = await getConfigDocSnapshot();
-    const { end_time } = configDocSnapshot.data() as WildHacksConfig;
+    const { end_time, max_team_size } = configDocSnapshot.data() as WildHacksConfig;
 
     if (now >= end_time) {
       return {
@@ -74,6 +81,16 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
     }
 
     const projectId = projectQuerySnapshot.docs[0].id;
+
+    const teamMembersDocRefs = db.collection(USERS_COLLECTION).where(USER_FIELDS.project_id, "==", projectId);
+    const teamMembersDocSnapshots = await teamMembersDocRefs.get();
+    if (teamMembersDocSnapshots.docs.length >= max_team_size) {
+      return {
+        success: false,
+        error: "Project is full",
+        field: "invitation_code",
+      };
+    }
 
     await userDocRef.update({
       project_id: projectId,
