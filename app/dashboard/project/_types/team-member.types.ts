@@ -1,3 +1,3 @@
-import type { User } from "@/types";
+import type { ParticipantUser } from "@/types";
 
-export type TeamMember = Pick<User, "id" | "first_name" | "last_name" | "github_username" | "email">;
+export type TeamMember = Pick<ParticipantUser, "id" | "first_name" | "last_name" | "github_username" | "email">;

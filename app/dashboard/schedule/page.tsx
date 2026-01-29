@@ -1,23 +1,17 @@
-import { redirect } from "next/navigation";
-
 import { Calendar } from "@/app/dashboard/schedule/_components";
-import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
-import type { User, WildHacksConfig } from "@/types";
+import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { WildHacksConfig } from "@/types";
 
 const SchedulePage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
-
-  const { role } = userDocSnapshot.data() as Omit<User, "id">;
+  const { role } = await getAuthenticatedUser(redirectPath);
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
-  return <Calendar config={wildhacksConfig} userRole={role} />;
+  return <Calendar {...wildhacksConfig} userRole={role} />;
 };
 
 export default SchedulePage;

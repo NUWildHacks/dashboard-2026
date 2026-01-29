@@ -11,10 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useClipboard } from "@/hooks";
-import type { User } from "@/types";
+import type { ParticipantUser } from "@/types";
 
 type TeamMembersListProps = {
-  userId: User["id"];
+  userId: ParticipantUser["id"];
 } & Pick<Project, "id" | "owner_id" | "invitation_code">;
 
 const TeamMembersList = ({ userId, id: projectId, owner_id, invitation_code }: TeamMembersListProps) => {

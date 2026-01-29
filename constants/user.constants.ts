@@ -6,7 +6,7 @@ import levelsOfStudy from "@/data/levels-of-study.json";
 import races from "@/data/races.json";
 import schools from "@/data/schools.json";
 import tshirtSizes from "@/data/tshirt-sizes.json";
-import type { User } from "@/types";
+import type { ParticipantUser, AdminUser, JudgeUser } from "@/types/user.types";
 
 export const COUNTRIES = countries;
 export const SCHOOLS = schools;
@@ -17,12 +17,14 @@ export const GENDERS = genders;
 export const RACES = races;
 export const DIETARY_RESTRICTIONS = dietaryRestrictions;
 
+export const MODALITIES = ["In-Person", "Hybrid", "Online"] as const;
+
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
 export const ADMIN = "Admin" as const;
 export const ROLES = [PARTICIPANT, JUDGE, ADMIN] as const;
 
-export const USER_FIELDS = {
+export const PARTICIPANT_USER_FIELDS = {
   email: "email",
   first_name: "first_name",
   last_name: "last_name",
@@ -46,4 +48,31 @@ export const USER_FIELDS = {
   joined_project_at: "joined_project_at",
   created_at: "created_at",
   updated_at: "updated_at",
-} as const satisfies Record<keyof Omit<User, "id">, string>;
+} as const satisfies Record<keyof Omit<ParticipantUser, "id">, string>;
+
+export const ADMIN_USER_FIELDS = {
+  email: "email",
+  first_name: "first_name",
+  last_name: "last_name",
+  dietary_restrictions: "dietary_restrictions",
+  other_dietary_restrictions: "other_dietary_restrictions",
+  tshirt_size: "tshirt_size",
+  role: "role",
+  created_at: "created_at",
+  updated_at: "updated_at",
+} as const satisfies Record<keyof Omit<AdminUser, "id">, string>;
+
+export const JUDGE_USER_FIELDS = {
+  email: "email",
+  first_name: "first_name",
+  last_name: "last_name",
+  dietary_restrictions: "dietary_restrictions",
+  other_dietary_restrictions: "other_dietary_restrictions",
+  tshirt_size: "tshirt_size",
+  role: "role",
+  affiliated_company: "affiliated_company",
+  modality: "modality",
+  assigned_project_id: "assigned_project_id",
+  created_at: "created_at",
+  updated_at: "updated_at",
+} as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;

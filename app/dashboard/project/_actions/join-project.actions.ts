@@ -1,18 +1,17 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
 import {
   PROJECTS_COLLECTION,
   USERS_COLLECTION,
-  LOGIN_PATH,
   DASHBOARD_PROJECT_PATH,
+  PARTICIPANT_USER_FIELDS,
   PARTICIPANT,
-  USER_FIELDS,
+  LOGIN_PATH,
 } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import type { ActionResult, User, WildHacksConfig } from "@/types";
+import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
+import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { PROJECT_FIELDS } from "../_constants";
 import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schemas";
@@ -20,9 +19,6 @@ import { type JoinProjectFormSchema } from "../_schemas/join-project-form.schema
 export type JoinProjectResult = ActionResult<JoinProjectFormSchema>;
 
 export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProjectResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
@@ -39,24 +35,13 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
 
     const { invitation_code } = data;
 
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-    const userDocSnapshot = await userDocRef.get();
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-        field: "invitation_code",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const { project_id, role } = userDocSnapshot.data() as Omit<User, "id">;
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to join a project");
+    if (roleError) return roleError;
 
-    if (role !== PARTICIPANT) {
-      return {
-        success: false,
-        error: "You are not authorized to join a project",
-      };
-    }
+    const { project_id, id: userId } = user as ParticipantUser;
 
     if (project_id) {
       return {
@@ -82,7 +67,9 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
 
     const projectId = projectQuerySnapshot.docs[0].id;
 
-    const teamMembersDocRefs = db.collection(USERS_COLLECTION).where(USER_FIELDS.project_id, "==", projectId);
+    const teamMembersDocRefs = db
+      .collection(USERS_COLLECTION)
+      .where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId);
     const teamMembersDocSnapshots = await teamMembersDocRefs.get();
     if (teamMembersDocSnapshots.docs.length >= max_team_size) {
       return {
@@ -92,6 +79,7 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
       };
     }
 
+    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
     await userDocRef.update({
       project_id: projectId,
       joined_project_at: now,

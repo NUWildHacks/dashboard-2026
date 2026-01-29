@@ -1,38 +1,24 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { LOGIN_PATH, ADMIN, EVENTS_COLLECTION, DASHBOARD_SCHEDULE_PATH } from "@/constants";
-import { getUserDocSnapshot, verifySession } from "@/lib";
-import type { ActionResult, User } from "@/types";
+import { EVENTS_COLLECTION, DASHBOARD_SCHEDULE_PATH, ADMIN, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser, requireRole } from "@/lib";
+import type { ActionResult } from "@/types";
 
 import { Event } from "../_types";
 
 export type DeleteEventResult = ActionResult;
 
 export const deleteEvent = async (eventId: Event["id"]): Promise<DeleteEventResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
-
   const db = getFirestore();
 
   try {
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const { role } = userDocSnapshot.data() as Omit<User, "id">;
-    if (role !== ADMIN) {
-      return {
-        success: false,
-        error: "You are not authorized to delete events",
-      };
-    }
+    const roleError = requireRole(user, ADMIN, "You are not authorized to delete events");
+    if (roleError) return roleError;
 
     const eventDocRef = db.collection(EVENTS_COLLECTION).doc(eventId);
     const eventDocSnapshot = await eventDocRef.get();

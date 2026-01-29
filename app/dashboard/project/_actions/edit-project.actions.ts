@@ -1,12 +1,10 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, User, WildHacksConfig } from "@/types";
+import { PROJECTS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
+import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { type EditProjectFormSchema } from "../_schemas/edit-project-form.schemas";
 import { Project } from "../_types";
@@ -17,13 +15,16 @@ export const editProject = async (
   projectId: Project["id"],
   data: EditProjectFormSchema
 ): Promise<EditProjectResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
   try {
+    const user = await getAuthenticatedUser(`${DASHBOARD_PROJECT_PATH}`);
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to edit this project");
+    if (roleError) return roleError;
+
+    const { project_id } = user as ParticipantUser;
+
     const configDocSnapshot = await getConfigDocSnapshot();
     const { end_time } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -31,23 +32,6 @@ export const editProject = async (
       return {
         success: false,
         error: "The event has ended",
-      };
-    }
-
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
-
-    const { project_id, role } = userDocSnapshot.data() as Omit<User, "id">;
-
-    if (role !== PARTICIPANT) {
-      return {
-        success: false,
-        error: "You are not authorized to edit this project",
       };
     }
 

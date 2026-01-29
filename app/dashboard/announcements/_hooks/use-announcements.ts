@@ -8,7 +8,6 @@ import type { Announcement, AnnouncementCategory } from "@/app/dashboard/announc
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
-import type { User } from "@/types";
 
 export type UseAnnouncementsSettings = {
   category?: UseFiltersReturn<AnnouncementCategory>["category"];
@@ -21,10 +20,7 @@ export type UseAnnouncementsReturn = {
   isLoading: boolean;
 };
 
-export const useAnnouncements = (
-  userRole: User["role"],
-  settings: UseAnnouncementsSettings
-): UseAnnouncementsReturn => {
+export const useAnnouncements = (settings: UseAnnouncementsSettings): UseAnnouncementsReturn => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -58,7 +54,7 @@ export const useAnnouncements = (
     );
 
     return () => unsubscribe();
-  }, [userRole, limitCount]);
+  }, [limitCount]);
 
   const filteredAnnouncements = useMemo(() => {
     let result = announcements;

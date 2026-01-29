@@ -39,5 +39,7 @@ export {
   ROLES,
   SCHOOLS,
   TSHIRT_SIZES,
-  USER_FIELDS,
+  ADMIN_USER_FIELDS,
+  JUDGE_USER_FIELDS,
+  PARTICIPANT_USER_FIELDS,
 } from "./user.constants";

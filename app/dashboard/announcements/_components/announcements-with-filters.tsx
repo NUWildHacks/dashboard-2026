@@ -23,7 +23,7 @@ type AnnouncementsWithFiltersProps = {
 const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) => {
   const { category, setCategory, search, setSearch } = useFilters<AnnouncementCategory>();
 
-  const useAnnouncementsReturn = useAnnouncements(userRole, { category, search });
+  const useAnnouncementsReturn = useAnnouncements({ category, search });
   const { announcements } = useAnnouncementsReturn;
 
   const useAnnouncementDialogReturn = useDialog<Announcement>(announcements);

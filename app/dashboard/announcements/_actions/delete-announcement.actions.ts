@@ -1,38 +1,24 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { ANNOUNCEMENTS_COLLECTION, LOGIN_PATH, DASHBOARD_ANNOUNCEMENTS_PATH, ADMIN } from "@/constants";
-import { getUserDocSnapshot, verifySession } from "@/lib";
-import type { ActionResult, User } from "@/types";
+import { ADMIN, ANNOUNCEMENTS_COLLECTION, DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser, requireRole } from "@/lib";
+import type { ActionResult } from "@/types";
 
 import { Announcement } from "../_types";
 
 export type DeleteAnnouncementResult = ActionResult;
 
 export const deleteAnnouncement = async (announcementId: Announcement["id"]): Promise<DeleteAnnouncementResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`);
-
   const db = getFirestore();
 
   try {
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const { role } = userDocSnapshot.data() as Omit<User, "id">;
-    if (role !== ADMIN) {
-      return {
-        success: false,
-        error: "You are not authorized to delete announcements",
-      };
-    }
+    const roleError = requireRole(user, ADMIN, "You are not authorized to delete announcements");
+    if (roleError) return roleError;
 
     const announcementDocRef = db.collection(ANNOUNCEMENTS_COLLECTION).doc(announcementId);
     const announcementDocSnapshot = await announcementDocRef.get();

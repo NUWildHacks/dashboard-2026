@@ -1,20 +1,19 @@
-import { redirect } from "next/navigation";
-
 import { EditProjectForm, EmptyProject, TeamMembersList } from "@/app/dashboard/project/_components";
 import { getProjectDocSnapshot } from "@/app/dashboard/project/_lib";
 import type { Project } from "@/app/dashboard/project/_types";
-import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getUserDocSnapshot, verifySession } from "@/lib";
-import type { User } from "@/types";
+import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
+import { getAuthenticatedUser } from "@/lib";
+import type { ParticipantUser } from "@/types";
 
 const ProjectPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
-  const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
+  const user = await getAuthenticatedUser(redirectPath);
+  if (user.role !== PARTICIPANT) {
+    return <EmptyProject />;
+  }
 
+  const { id: userId, project_id } = user as ParticipantUser;
   const projectDocSnapshot = await getProjectDocSnapshot(project_id);
 
   if (!projectDocSnapshot || !projectDocSnapshot.exists) {

@@ -1,21 +1,23 @@
 "use server";
 
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, USER_FIELDS } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import {
+  PROJECTS_COLLECTION,
+  USERS_COLLECTION,
+  DASHBOARD_PROJECT_PATH,
+  PARTICIPANT_USER_FIELDS,
+  PARTICIPANT,
+  LOGIN_PATH,
+} from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
+import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { Project } from "../_types";
 
 export type LeaveProjectResult = ActionResult;
 
 export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProjectResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
@@ -30,16 +32,13 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
       };
     }
 
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to leave this project");
+    if (roleError) return roleError;
+
+    const { project_id, id: userId } = user as ParticipantUser;
 
     if (!project_id || project_id !== projectId) {
       return {
@@ -71,8 +70,8 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
 
     const remainingTeamMembersQuery = await db
       .collection(USERS_COLLECTION)
-      .where(USER_FIELDS.project_id, "==", projectId)
-      .orderBy(USER_FIELDS.joined_project_at, "asc")
+      .where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId)
+      .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
       .get();
 
     if (remainingTeamMembersQuery.empty) {

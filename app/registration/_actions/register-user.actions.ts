@@ -9,7 +9,7 @@ import {
   PARTICIPANT,
   LOGIN_PATH,
   REGISTRATION_PATH,
-  USER_FIELDS,
+  PARTICIPANT_USER_FIELDS,
 } from "@/constants";
 import { verifySession } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
@@ -39,7 +39,6 @@ export const registerUser = async (
 
     const { permission_code, ...rest } = data;
 
-    // Check if permission code is required (after deadline and before start time)
     if (now >= registration_deadline && now < start_time) {
       if (!permission_code || permission_code.trim() === "") {
         return {
@@ -49,7 +48,6 @@ export const registerUser = async (
         };
       }
 
-      // Validate permission code format
       if (!/^[a-zA-Z0-9]{20}$/.test(permission_code)) {
         return {
           success: false,
@@ -58,7 +56,6 @@ export const registerUser = async (
         };
       }
 
-      // Check if permission code exists in database
       const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION).doc(permission_code);
       const permissionCodeDocSnap = await permissionCodeDocRef.get();
 
@@ -72,7 +69,6 @@ export const registerUser = async (
 
       const permissionCodeData = permissionCodeDocSnap.data() as Omit<PermissionCode, "id">;
 
-      // Validate permission code email matches registration email
       if (permissionCodeData.email !== rest.email) {
         return {
           success: false,
@@ -81,7 +77,6 @@ export const registerUser = async (
         };
       }
 
-      // Validate permission code hasn't expired
       if (permissionCodeData.expires_at <= now) {
         return {
           success: false,
@@ -90,11 +85,10 @@ export const registerUser = async (
         };
       }
 
-      // Delete used permission code
       await permissionCodeDocRef.delete();
     }
 
-    const participantsDocRefs = db.collection(USERS_COLLECTION).where(USER_FIELDS.role, "==", PARTICIPANT);
+    const participantsDocRefs = db.collection(USERS_COLLECTION).where(PARTICIPANT_USER_FIELDS.role, "==", PARTICIPANT);
     const participantsDocSnapshots = await participantsDocRefs.get();
     if (participantsDocSnapshots.docs.length >= max_participants) {
       throw new Error("The event is full");

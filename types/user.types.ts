@@ -10,6 +10,7 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
+import { ADMIN, JUDGE, MODALITIES, PARTICIPANT } from "@/constants/user.constants";
 
 import type { BaseModel } from "./base-model.types";
 
@@ -21,13 +22,22 @@ export type TShirtSize = (typeof TSHIRT_SIZES)[number];
 export type Gender = (typeof GENDERS)[number];
 export type Race = (typeof RACES)[number];
 export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
+export type Modality = (typeof MODALITIES)[number];
 
 export type Role = (typeof ROLES)[number];
 
-export type User = BaseModel & {
+export type BaseUser = BaseModel & {
   email: string;
   first_name: string;
   last_name: string;
+  dietary_restrictions: DietaryRestriction[];
+  other_dietary_restrictions: string;
+  tshirt_size: TShirtSize;
+};
+
+export type ParticipantUser = BaseUser & {
+  role: typeof PARTICIPANT;
+
   age: string;
   phone: string;
   country: Country;
@@ -37,19 +47,29 @@ export type User = BaseModel & {
   field_of_study: FieldOfStudy;
 
   github_username: string;
-  tshirt_size: TShirtSize;
 
   gender: Gender;
   race: Race;
-  dietary_restrictions: DietaryRestriction[];
-  other_dietary_restrictions: string;
 
   mlh_code_of_conduct: boolean;
   mlh_privacy_policy: boolean;
   mlh_marketing: boolean;
 
-  role: Role;
-
   project_id?: Project["id"];
   joined_project_at?: number;
 };
+
+export type AdminUser = BaseUser & {
+  role: typeof ADMIN;
+};
+
+export type JudgeUser = BaseUser & {
+  role: typeof JUDGE;
+
+  affiliated_company: string;
+  modality: Modality;
+
+  assigned_project_id?: Project["id"];
+};
+
+export type User = ParticipantUser | AdminUser | JudgeUser;

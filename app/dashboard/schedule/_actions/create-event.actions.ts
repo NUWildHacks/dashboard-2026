@@ -1,41 +1,25 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH, USERS_COLLECTION } from "@/constants";
-import { combineDateAndTime, parseDateLabel, verifySession } from "@/lib";
-import type { ActionResult, User } from "@/types";
+import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH } from "@/constants";
+import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
+import type { ActionResult } from "@/types";
 
 import { type CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
 
 export type CreateEventResult = ActionResult<CreateEventDialogSchema>;
 
 export const createEvent = async (data: CreateEventDialogSchema): Promise<CreateEventResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
   try {
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-    const userDocSnapshot = await userDocRef.get();
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User not found",
-      };
-    }
-
-    const { role } = userDocSnapshot.data() as Omit<User, "id">;
-    if (role !== ADMIN) {
-      return {
-        success: false,
-        error: "You are not authorized to create events",
-      };
-    }
+    const roleError = requireRole(user, ADMIN, "You are not authorized to create events");
+    if (roleError) return roleError;
 
     const eventDocRef = db.collection(EVENTS_COLLECTION).doc();
 

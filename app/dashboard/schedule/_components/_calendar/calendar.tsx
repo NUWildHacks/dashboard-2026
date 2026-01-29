@@ -22,12 +22,9 @@ import type { User, WildHacksConfig } from "@/types";
 
 type CalendarProps = {
   userRole: User["role"];
-  config: WildHacksConfig;
-};
+} & Pick<WildHacksConfig, "start_time" | "end_time">;
 
-const Calendar = ({ config, userRole }: CalendarProps) => {
-  const { start_time, end_time } = config;
-
+const Calendar = ({ start_time, end_time, userRole }: CalendarProps) => {
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
   const useEventsReturn = useEvents({ category, search });

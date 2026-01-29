@@ -1,6 +1,3 @@
-import "@/config/firebase-admin";
-import { redirect } from "next/navigation";
-
 import {
   LiveAnnouncements,
   QRCode,
@@ -9,18 +6,14 @@ import {
   UpcomingEvents,
   VenueMap,
 } from "@/app/dashboard/_components";
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { calculateStatistics, getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
-import type { User, WildHacksConfig } from "@/types";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH } from "@/constants";
+import { calculateStatistics, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { WildHacksConfig } from "@/types";
 
 const DashboardPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
-
-  const { role } = userDocSnapshot.data() as Omit<User, "id">;
+  const { id: userId, role } = await getAuthenticatedUser(redirectPath);
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
@@ -37,7 +30,7 @@ const DashboardPage = async () => {
       <LiveAnnouncements userRole={role} />
       <div className="flex flex-col lg:flex-row gap-4">
         <UpcomingEvents userRole={role} />
-        {role === ADMIN && wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
+        {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>
     </>
   );

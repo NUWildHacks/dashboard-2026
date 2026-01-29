@@ -1,27 +1,23 @@
-import { redirect } from "next/navigation";
-
 import {
   EditProfileForm,
   EventWithdraw,
   ThemeSelect,
   EditWildhacksConfigForm,
 } from "@/app/dashboard/settings/_components";
-import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
-import type { User, WildHacksConfig } from "@/types";
+import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { WildHacksConfig } from "@/types";
 
 const SettingsPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
+  const user = await getAuthenticatedUser(redirectPath);
 
-  const userData = userDocSnapshot.data() as Omit<User, "id">;
-  const { role } = userData;
-
-  const configDocSnapshot = role === ADMIN ? await getConfigDocSnapshot() : undefined;
-  const wildHacksConfig = configDocSnapshot?.data() as WildHacksConfig | undefined;
+  let wildHacksConfig: WildHacksConfig | undefined;
+  if (user.role === ADMIN) {
+    const configDocSnapshot = await getConfigDocSnapshot();
+    wildHacksConfig = configDocSnapshot.data() as WildHacksConfig;
+  }
 
   return (
     <div className="flex-1 flex flex-col gap-6">
@@ -30,7 +26,7 @@ const SettingsPage = async () => {
         <ThemeSelect />
         <EventWithdraw />
       </div>
-      {role === ADMIN && wildHacksConfig && (
+      {wildHacksConfig && (
         <div className="flex flex-col gap-4">
           <h2 className="text-md font-semibold">WildHacks Configuration</h2>
           <EditWildhacksConfigForm wildhacksConfig={wildHacksConfig} />
@@ -38,7 +34,7 @@ const SettingsPage = async () => {
       )}
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>
-        <EditProfileForm user={{ ...userData, id: userId } as User} />
+        <EditProfileForm user={user} />
       </div>
     </div>
   );

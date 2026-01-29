@@ -1,52 +1,37 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { LOGIN_PATH, DASHBOARD_SETTINGS_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, ADMIN } from "@/constants";
-import { verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, User } from "@/types";
+import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
+import { getAuthenticatedUser, requireRole } from "@/lib";
+import type { ActionResult } from "@/types";
 
 import { EditWildhacksConfigFormSchema } from "../_schemas/edit-wildhacks-config-form.schemas";
 
 export type EditWildhacksConfigResult = ActionResult<EditWildhacksConfigFormSchema>;
 
 export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): Promise<EditWildhacksConfigResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
   try {
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const user = userDocSnapshot.data() as Omit<User, "id">;
-    const { role } = user;
-
-    if (role !== ADMIN) {
-      return {
-        success: false,
-        error: "You are not authorized to edit the Wildhacks config",
-      };
-    }
-
-    const configDocRef = db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC);
+    const roleError = requireRole(user, ADMIN, "You are not authorized to edit the Wildhacks config");
+    if (roleError) return roleError;
 
     const { max_team_size, max_participants, ...rest } = data;
-    await configDocRef.update({
-      ...rest,
-      max_team_size: Number(max_team_size),
-      max_participants: Number(max_participants),
-      updated_at: now,
-    });
+
+    await db
+      .collection(WILDHACKS_COLLECTION)
+      .doc(WILDHACKS_CONFIG_DOC)
+      .update({
+        ...rest,
+        max_team_size: Number(max_team_size),
+        max_participants: Number(max_participants),
+        updated_at: now,
+      });
 
     return { success: true };
   } catch (error) {

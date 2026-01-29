@@ -1,23 +1,21 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH, USER_FIELDS } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import { PROJECTS_COLLECTION, USERS_COLLECTION, DASHBOARD_SETTINGS_PATH, PARTICIPANT_USER_FIELDS } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { ActionResult, ParticipantUser, User, WildHacksConfig } from "@/types";
 
 export type WithdrawEventResult = ActionResult;
 
 export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
   try {
+    const user = await getAuthenticatedUser(DASHBOARD_SETTINGS_PATH);
+    const { project_id, id: userId } = user as { project_id?: ParticipantUser["project_id"]; id: User["id"] };
+
     const configDocSnapshot = await getConfigDocSnapshot();
     const { end_time } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -27,17 +25,6 @@ export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
         error: "The event has ended",
       };
     }
-
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
-
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
 
     if (project_id) {
       const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(project_id);
@@ -55,8 +42,8 @@ export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
 
       const remainingTeamMembersQuery = await db
         .collection(USERS_COLLECTION)
-        .where(USER_FIELDS.project_id, "==", project_id)
-        .orderBy(USER_FIELDS.joined_project_at, "asc")
+        .where(PARTICIPANT_USER_FIELDS.project_id, "==", project_id)
+        .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
         .get();
 
       if (remainingTeamMembersQuery.empty) {
@@ -71,8 +58,7 @@ export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
       }
     }
 
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-    await userDocRef.delete();
+    await db.collection(USERS_COLLECTION).doc(userId).delete();
 
     return { success: true };
   } catch (error) {
