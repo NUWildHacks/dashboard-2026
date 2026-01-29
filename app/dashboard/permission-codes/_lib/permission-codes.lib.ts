@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PermissionCode } from "@/app/registration/_types";
+import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { PERMISSION_CODES_COLLECTION } from "@/constants";
 
 export const getPermissionCodes = async (): Promise<PermissionCode[]> => {

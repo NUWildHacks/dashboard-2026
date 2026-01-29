@@ -2,14 +2,11 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { PermissionCode, PermissionCodeType } from "@/app/registration/_types";
+import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CategoryWithAll, useFilters } from "@/hooks";
 
-import { PERMISSION_CODE_TYPES } from "../../_constants";
 import { usePermissionCodesTable } from "../../_hooks/use-permission-codes-table";
 
 import CreatePermissionCodeDialog from "./create-permission-code-dialog";
@@ -19,10 +16,8 @@ type PermissionCodesTableProps = {
 };
 
 const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) => {
-  const { category: type, setCategory: setType } = useFilters<PermissionCodeType>();
-
   const { table, selectedPermissionCodeIds, handleDeletePermissionCodes, permissionCodesColumns } =
-    usePermissionCodesTable(permissionCodes, type);
+    usePermissionCodesTable(permissionCodes);
 
   return (
     <div className="flex-1 space-y-4">
@@ -38,19 +33,6 @@ const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) =>
               Delete permission code(s)
             </Button>
           )}
-          <Select value={type} onValueChange={(value) => setType(value as CategoryWithAll<PermissionCodeType>)}>
-            <SelectTrigger className="min-w-[180px] md:w-[180px] w-full">
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              {PERMISSION_CODE_TYPES.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput

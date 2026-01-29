@@ -44,7 +44,7 @@ export const createPermissionCode = async (
       };
     }
 
-    const { email, type } = data;
+    const { email } = data;
 
     const existingUserDocSnapshot = await db.collection(USERS_COLLECTION).where("email", "==", email).get();
     if (!existingUserDocSnapshot.empty) {
@@ -57,7 +57,6 @@ export const createPermissionCode = async (
     const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION).doc();
     await permissionCodeDocRef.set({
       email,
-      type,
       created_at: now,
       expires_at: now + ONE_HOUR,
     });

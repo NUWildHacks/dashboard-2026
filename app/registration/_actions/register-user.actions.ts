@@ -8,7 +8,7 @@ import { verifySession } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type RegistrationFormSchema } from "../_schemas/registration-form.schemas";
-import type { PermissionCode } from "../_types";
+import type { PermissionCode } from "../../dashboard/permission-codes/_types";
 
 export type RegisterUserResult = ActionResult<RegistrationFormSchema>;
 

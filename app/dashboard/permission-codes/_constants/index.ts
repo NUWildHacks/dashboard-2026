@@ -1,6 +1,1 @@
-export {
-  LATE_REGISTRATION,
-  JUDGE_REGISTRATION,
-  PERMISSION_CODE_TYPES,
-  MOCK_PERMISSION_CODES,
-} from "./permission-codes.constants";
+export { MOCK_PERMISSION_CODES } from "./permission-codes.constants";

@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PermissionCode } from "@/app/registration/_types";
+import { PermissionCode } from "@/app/dashboard/permission-codes/_types";
 import { LOGIN_PATH, ADMIN, PERMISSION_CODES_COLLECTION, DASHBOARD_PERMISSION_CODES_PATH } from "@/constants";
 import { getUserDocSnapshot, verifySession } from "@/lib";
 import type { ActionResult, User } from "@/types";

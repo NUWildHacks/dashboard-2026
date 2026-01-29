@@ -31,7 +31,6 @@ export const useCreatePermissionCodeDialog = (): UseCreatePermissionCodeDialogRe
     resolver: zodResolver(createPermissionCodeDialogSchema),
     defaultValues: {
       email: "",
-      type: undefined,
     },
   });
 

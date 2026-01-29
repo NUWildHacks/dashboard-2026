@@ -36,7 +36,7 @@ const DashboardPage = async () => {
       </div>
       <LiveAnnouncements userRole={role} />
       <div className="flex flex-col lg:flex-row gap-4">
-        <UpcomingEvents />
+        <UpcomingEvents userRole={role} />
         {role === ADMIN && wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>
     </>

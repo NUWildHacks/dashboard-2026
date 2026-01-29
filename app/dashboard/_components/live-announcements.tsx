@@ -49,7 +49,7 @@ const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
           </Link>
         </CardFooter>
       </Card>
-      <AnnouncementDialog {...useAnnouncementDialogReturn} />
+      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} />
     </>
   );
 };

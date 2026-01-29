@@ -16,9 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { PERMISSION_CODE_TYPES } from "../../_constants";
 import { useCreatePermissionCodeDialog } from "../../_hooks";
 
 const CreatePermissionCodeDialog = () => {
@@ -53,32 +51,6 @@ const CreatePermissionCodeDialog = () => {
                       aria-invalid={fieldState.invalid}
                       autoComplete="email"
                     />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                  </Field>
-                )}
-              />
-            </FieldSet>
-            <FieldSet disabled={isSubmitting}>
-              <Controller
-                name="type"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                      Type
-                    </FieldLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
-                        <SelectValue placeholder="Select permission code type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {PERMISSION_CODE_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
