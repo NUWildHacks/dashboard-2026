@@ -40,14 +40,22 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
-import type { WildHacksConfig } from "@/types";
+import { WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = Pick<WildHacksConfig, "start_time" | "end_time">;
+type RegistrationFormProps = Pick<
+  WildHacksConfig,
+  "start_time" | "end_time" | "max_participants" | "registration_deadline"
+>;
 
-const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(start_time, end_time);
+const RegistrationForm = ({ start_time, end_time, max_participants, registration_deadline }: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(
+    start_time,
+    end_time,
+    max_participants,
+    registration_deadline
+  );
 
   const now = new Date().getTime();
 

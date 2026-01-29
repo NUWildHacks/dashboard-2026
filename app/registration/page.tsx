@@ -1,33 +1,24 @@
-import { headers } from "next/headers";
-
 import "@/config/firebase-admin";
 import { redirect } from "next/navigation";
 
 import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
+import { getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
 import { verifySession } from "../../lib/session.lib";
 import { getUserDocSnapshot } from "../../lib/user.lib";
-import { getConfigDocSnapshot } from "../../lib/wildhacks.lib";
 
 import RegistrationForm from "./_components/registration-form";
 
 const RegistrationPage = async () => {
-  const configDocSnapshot = await getConfigDocSnapshot();
-  const wildHackConfig = configDocSnapshot.data() as WildHacksConfig;
-
-  const now = new Date().getTime();
-  const { end_time } = wildHackConfig;
-  if (now >= end_time) redirect(DASHBOARD_PATH);
-
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || REGISTRATION_PATH;
-
   const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(pathname)}`);
+  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
 
   const userDocSnapshot = await getUserDocSnapshot(userId);
   if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
+
+  const configDocSnapshot = await getConfigDocSnapshot();
+  const wildHackConfig = configDocSnapshot.data() as WildHacksConfig;
 
   return (
     <main className="flex-1 px-6 sm:px-12 py-6 flex flex-col justify-center items-center">

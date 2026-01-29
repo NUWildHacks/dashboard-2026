@@ -21,7 +21,7 @@ export type UseEditWildhacksConfigFormReturn = {
 };
 
 export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
-  const { max_team_size, start_time, end_time } = wildhacksConfig;
+  const { max_team_size, max_participants, registration_deadline, start_time, end_time } = wildhacksConfig;
 
   const router = useRouter();
 
@@ -35,6 +35,8 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
     resolver: zodResolver(editWildhacksConfigFormSchema),
     defaultValues: {
       max_team_size: max_team_size.toString(),
+      max_participants: max_participants.toString(),
+      registration_deadline,
       start_time,
       end_time,
     },
@@ -71,6 +73,8 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
   const handleReset = () => {
     reset({
       max_team_size: max_team_size.toString(),
+      max_participants: max_participants.toString(),
+      registration_deadline,
       start_time,
       end_time,
     });

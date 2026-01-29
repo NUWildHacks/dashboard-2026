@@ -26,7 +26,19 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
         <form id="edit-wildhacks-config-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <Controller
+                  name="registration_deadline"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <DateTimePickerField
+                      label="Registration Deadline"
+                      fieldName={field.name}
+                      field={field}
+                      fieldState={fieldState}
+                    />
+                  )}
+                />
                 <Controller
                   name="start_time"
                   control={control}
@@ -54,26 +66,49 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                 />
               </div>
 
-              <Controller
-                name="max_team_size"
-                control={control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                      Max Team Size
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="number"
-                      step={1}
-                      placeholder="Enter max team size"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                  </Field>
-                )}
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Controller
+                  name="max_team_size"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>Max Team Size</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type="number"
+                        step={1}
+                        disabled
+                        readOnly
+                        aria-invalid={fieldState.invalid}
+                        className="bg-muted cursor-not-allowed"
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="max_participants"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>Max Participants</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type="number"
+                        step={1}
+                        disabled
+                        readOnly
+                        aria-invalid={fieldState.invalid}
+                        className="bg-muted cursor-not-allowed"
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                    </Field>
+                  )}
+                />
+              </div>
             </FieldSet>
           </FieldGroup>
         </form>

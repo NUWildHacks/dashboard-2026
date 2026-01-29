@@ -40,10 +40,11 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
 
     const configDocRef = db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC);
 
-    const { max_team_size, ...rest } = data;
+    const { max_team_size, max_participants, ...rest } = data;
     await configDocRef.update({
       ...rest,
-      max_team_size: Number(max_team_size) || 4,
+      max_team_size: Number(max_team_size),
+      max_participants: Number(max_participants),
       updated_at: now,
     });
 
