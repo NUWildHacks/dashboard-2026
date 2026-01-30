@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, ANNOUNCEMENTS_COLLECTION, DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -21,13 +21,13 @@ export const createAnnouncement = async (data: CreateAnnouncementDialogSchema): 
     const roleError = requireRole(user, ADMIN, "You are not authorized to create announcements");
     if (roleError) return roleError;
 
-    const { links, ...rest } = data;
+    const { links } = data;
 
     await db
       .collection(ANNOUNCEMENTS_COLLECTION)
       .doc()
       .set({
-        ...rest,
+        ...data,
         links: links.map((link) => link.url.toString()),
         created_at: now,
         updated_at: now,
@@ -35,12 +35,15 @@ export const createAnnouncement = async (data: CreateAnnouncementDialogSchema): 
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Create announcement error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };
