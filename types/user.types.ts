@@ -27,9 +27,9 @@ export type Modality = (typeof MODALITIES)[number];
 export type Role = (typeof ROLES)[number];
 
 export type BaseUser = BaseModel & {
-  email: string;
   first_name: string;
   last_name: string;
+  email: string;
   dietary_restrictions: DietaryRestriction[];
   other_dietary_restrictions: string;
   tshirt_size: TShirtSize;

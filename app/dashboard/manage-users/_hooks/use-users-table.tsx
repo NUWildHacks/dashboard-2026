@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -26,28 +25,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PARTICIPANT } from "@/constants";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
+import { User } from "@/types";
 
-import { deletePermissionCodes } from "../_actions";
-import { PermissionCode } from "../types";
+import { deleteUsers } from "../_actions";
 
-export type UsePermissionCodesTableReturn = {
-  table: Table<PermissionCode>;
-  selectedPermissionCodeIds: PermissionCode["id"][];
-  handleDeletePermissionCodes: (permissionCodeIds: PermissionCode["id"][]) => Promise<void>;
-  permissionCodesColumns: ColumnDef<PermissionCode>[];
+export type UseUsersTableReturn = {
+  role: User["role"];
+  setRole: (role: User["role"]) => void;
+  search: string;
+  setSearch: (search: string) => void;
+  table: Table<User>;
+  selectedUserIds: User["id"][];
+  handleDeleteUsers: (userIds: User["id"][]) => Promise<void>;
+  usersColumns: ColumnDef<User>[];
 };
 
-export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCodesTableReturn => {
+export const useUsersTable = (data: User[]): UseUsersTableReturn => {
   const router = useRouter();
 
+  const [role, setRole] = useState<User["role"]>(PARTICIPANT);
+  const [search, setSearch] = useState<string>("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
-  const handleDeletePermissionCodes = async (permissionCodeIds: PermissionCode["id"][]) => {
+  const handleDeleteUsers = async (userIds: User["id"][]) => {
     try {
-      const result = await deletePermissionCodes(permissionCodeIds);
+      const result = await deleteUsers(userIds);
       const { success } = result;
 
       if (!success) {
@@ -69,7 +75,7 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
     }
   };
 
-  const permissionCodesColumns: ColumnDef<PermissionCode>[] = [
+  const usersColumns: ColumnDef<User>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -90,24 +96,51 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
       enableHiding: false,
     },
     {
-      accessorKey: "id",
-      header: "ID",
+      accessorKey: "first_name",
+      header: "First Name",
       cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.id}</div>;
+        return <div className="text-left text-muted-foreground">{row.original.first_name}</div>;
+      },
+    },
+    {
+      accessorKey: "last_name",
+      header: "Last Name",
+      cell: ({ row }) => {
+        return <div className="text-left text-muted-foreground">{row.original.last_name}</div>;
       },
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Email
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
+      header: "Email",
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.email}</div>;
+      },
+    },
+    {
+      accessorKey: "dietary_restrictions",
+      header: "Dietary Restrictions",
+      cell: ({ row }) => {
+        return (
+          <div className="text-left text-muted-foreground">
+            {row.original.dietary_restrictions.length > 0 ? row.original.dietary_restrictions.join(", ") : "None"}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "other_dietary_restrictions",
+      header: "Other Dietary Restrictions",
+      cell: ({ row }) => {
+        return (
+          <div className="text-left text-muted-foreground">{row.original.other_dietary_restrictions || "None"}</div>
+        );
+      },
+    },
+    {
+      accessorKey: "tshirt_size",
+      header: "T-Shirt Size",
+      cell: ({ row }) => {
+        return <div className="text-left text-muted-foreground">{row.original.tshirt_size}</div>;
       },
     },
     {
@@ -115,7 +148,7 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
       header: ({ column }) => {
         return (
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Created At
+            Joined At
             {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
           </Button>
         );
@@ -123,46 +156,6 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
       cell: ({ row }) => {
         return (
           <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
-        );
-      },
-    },
-    {
-      accessorKey: "expires_at",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Expires At
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.expires_at)}, ${getTimeFromMilliseconds(row.original.expires_at)}`}</div>
-        );
-      },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => {
-        if (row.original.expires_at < Date.now()) {
-          return (
-            <Badge
-              variant="outline"
-              className="bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive border-none focus-visible:outline-none"
-            >
-              Expired
-            </Badge>
-          );
-        }
-        return (
-          <Badge
-            variant="outline"
-            className="border-none bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 focus-visible:outline-none dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5"
-          >
-            Active
-          </Badge>
         );
       },
     },
@@ -179,16 +172,13 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                Copy permission code
-              </DropdownMenuItem>
+              <DropdownMenuLabel className="text-md font-bold">Actions</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.email)}>
                 Copy email
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeletePermissionCodes([row.original.id])}>
-                Delete permission code
+              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteUsers([row.original.id])}>
+                Delete user
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -199,7 +189,7 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
 
   const table = useReactTable({
     data,
-    columns: permissionCodesColumns,
+    columns: usersColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -214,14 +204,16 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
     },
   });
 
-  const selectedPermissionCodeIds = table
-    .getFilteredSelectedRowModel()
-    .rows.map((row) => (row.original as PermissionCode).id);
+  const selectedUserIds = table.getFilteredSelectedRowModel().rows.map((row) => (row.original as User).id);
 
   return {
+    role,
+    setRole,
+    search,
+    setSearch,
     table,
-    selectedPermissionCodeIds,
-    handleDeletePermissionCodes,
-    permissionCodesColumns,
+    selectedUserIds,
+    handleDeleteUsers,
+    usersColumns,
   };
 };

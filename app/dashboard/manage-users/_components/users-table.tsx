@@ -5,50 +5,65 @@ import { SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
+import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ROLES } from "@/constants";
+import { User } from "@/types";
 
-import { usePermissionCodesTable } from "../../_hooks";
-import { PermissionCode } from "../../types";
+import { useUsersTable } from "../_hooks/use-users-table";
 
-import CreatePermissionCodeDialog from "./create-permission-code-dialog";
-
-type PermissionCodesTableProps = {
-  permissionCodes: PermissionCode[];
+type UsersTableProps = {
+  users: User[];
 };
 
-const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) => {
-  const { table, selectedPermissionCodeIds, handleDeletePermissionCodes, permissionCodesColumns } =
-    usePermissionCodesTable(permissionCodes);
+const UsersTable = ({ users }: UsersTableProps) => {
+  const { role, setRole, search, setSearch, table, selectedUserIds, handleDeleteUsers, usersColumns } =
+    useUsersTable(users);
 
   return (
     <div className="flex-1 space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
-          <CreatePermissionCodeDialog />
-          {selectedPermissionCodeIds.length > 0 && (
+          <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
+            <SelectTrigger
+              id="role-filter"
+              className="min-w-[125px] lg:w-[125px] w-full"
+              aria-label="Filter users by role"
+            >
+              <SelectValue placeholder="Select role" />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLES.map((role) => (
+                <SelectItem key={role} value={role}>
+                  {role}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {selectedUserIds.length > 0 && (
             <Button
               variant="destructive"
-              onClick={() => handleDeletePermissionCodes(selectedPermissionCodeIds)}
+              onClick={() => handleDeleteUsers(selectedUserIds)}
               className="w-full md:w-auto"
             >
-              Delete permission code(s)
+              Delete user(s)
             </Button>
           )}
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
             id="search"
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
-            placeholder="Search emails..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search users..."
             className="truncate"
-            aria-label="Search emails"
+            aria-label="Search users"
           />
           <InputGroupAddon>
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
       </div>
-      <DataTable columns={permissionCodesColumns} table={table} />
+      <DataTable columns={usersColumns} table={table} />
       <div className="flex justify-between items-center">
         <div className="text-muted-foreground text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
@@ -72,4 +87,4 @@ const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) =>
   );
 };
 
-export default PermissionCodesTable;
+export default UsersTable;
