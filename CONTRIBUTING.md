@@ -174,6 +174,7 @@ Each feature (route segment) follows this structure:
 - `error.tsx` - Error UI (optional)
 
 **Note**:
+
 - Folders prefixed with `_` are private and not part of the URL routing
 - `constants.ts`, `types.ts`, and `lib.ts` are single files (not folders) and are optional
 - Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code

@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, FirebaseFirestoreError } from "firebase-admin/firestore";
 
 import { PROJECTS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
@@ -19,12 +19,6 @@ export const editProject = async (
   const now = Date.now();
 
   try {
-    const user = await getAuthenticatedUser(`${DASHBOARD_PROJECT_PATH}`);
-    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to edit this project");
-    if (roleError) return roleError;
-
-    const { project_id } = user as ParticipantUser;
-
     const configDocSnapshot = await getConfigDocSnapshot();
     const { end_time } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -35,6 +29,12 @@ export const editProject = async (
       };
     }
 
+    const user = await getAuthenticatedUser(`${DASHBOARD_PROJECT_PATH}`);
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to edit this project");
+    if (roleError) return roleError;
+
+    const { project_id } = user as ParticipantUser;
+
     if (!project_id || project_id !== projectId) {
       return {
         success: false,
@@ -43,14 +43,6 @@ export const editProject = async (
     }
 
     const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
-    const projectDocSnapshot = await projectDocRef.get();
-    if (!projectDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "Project not found",
-      };
-    }
-
     const { name, description, github_url, demo_url } = data;
 
     await projectDocRef.update({
@@ -63,12 +55,15 @@ export const editProject = async (
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Edit project error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };

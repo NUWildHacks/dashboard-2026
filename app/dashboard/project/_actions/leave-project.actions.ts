@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import { getFirestore, FieldValue, FirebaseFirestoreError } from "firebase-admin/firestore";
 
 import {
   PROJECTS_COLLECTION,
@@ -47,22 +47,7 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
       };
     }
 
-    const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
-    const projectDocSnapshot = await projectDocRef.get();
-
-    if (!projectDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "Project not found",
-      };
-    }
-
-    const projectData = projectDocSnapshot.data();
-    const isOwner = projectData?.owner_id === userId;
-
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-
-    await userDocRef.update({
+    await db.collection(USERS_COLLECTION).doc(userId).update({
       project_id: FieldValue.delete(),
       joined_project_at: FieldValue.delete(),
       updated_at: now,
@@ -74,25 +59,35 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
       .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
       .get();
 
-    if (remainingTeamMembersQuery.empty) {
-      await projectDocRef.delete();
-    } else if (isOwner) {
-      const newOwnerId = remainingTeamMembersQuery.docs[0].id;
+    const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
+    const projectDocSnapshot = await projectDocRef.get();
 
-      await projectDocRef.update({
-        owner_id: newOwnerId,
-        updated_at: now,
-      });
+    if (projectDocSnapshot.exists) {
+      const { owner_id } = projectDocSnapshot.data() as Omit<Project, "id">;
+
+      if (remainingTeamMembersQuery.empty) {
+        await projectDocRef.delete();
+      } else if (owner_id === userId) {
+        const newOwnerId = remainingTeamMembersQuery.docs[0].id;
+
+        await projectDocRef.update({
+          owner_id: newOwnerId,
+          updated_at: now,
+        });
+      }
     }
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Leave project error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };

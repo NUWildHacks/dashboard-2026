@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { PROJECTS_COLLECTION, USERS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
@@ -46,31 +46,52 @@ export const createProject = async (data: CreateProjectFormSchema): Promise<Crea
     const invitation_code = db.collection(PROJECTS_COLLECTION).doc().id;
 
     const projectDocRef = db.collection(PROJECTS_COLLECTION).doc();
-    await projectDocRef.set({
-      name,
-      description,
-      owner_id: userId,
-      invitation_code,
-      github_url: github_url || "",
-      demo_url: "",
-      created_at: now,
-      updated_at: now,
-    });
+    const projectId = projectDocRef.id;
+    let projectCreated = false;
 
-    await db.collection(USERS_COLLECTION).doc(userId).update({
-      project_id: projectDocRef.id,
-      joined_project_at: now,
-      updated_at: now,
-    });
+    try {
+      await projectDocRef.set({
+        name,
+        description,
+        owner_id: userId,
+        invitation_code,
+        github_url: github_url || "",
+        demo_url: "",
+        created_at: now,
+        updated_at: now,
+      });
+      projectCreated = true;
 
-    return { success: true };
+      await db.collection(USERS_COLLECTION).doc(userId).update({
+        project_id: projectId,
+        joined_project_at: now,
+        updated_at: now,
+      });
+
+      return { success: true };
+    } catch (updateError) {
+      // If project was created but user update failed, clean up the orphaned project
+      if (projectCreated) {
+        try {
+          await projectDocRef.delete();
+          console.log(`Cleaned up orphaned project: ${projectId}`);
+        } catch (cleanupError) {
+          console.error(`Failed to cleanup orphaned project ${projectId}:`, cleanupError);
+        }
+      }
+
+      throw updateError;
+    }
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Create project error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };
