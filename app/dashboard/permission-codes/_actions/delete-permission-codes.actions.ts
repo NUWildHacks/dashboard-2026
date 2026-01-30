@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { PERMISSION_CODES_COLLECTION, DASHBOARD_PERMISSION_CODES_PATH, ADMIN, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -33,12 +33,15 @@ export const deletePermissionCodes = async (
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Delete permission codes error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };
