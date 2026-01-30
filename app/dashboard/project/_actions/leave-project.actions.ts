@@ -65,15 +65,19 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
         .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
         .get();
 
-      if (remainingTeamMembersQuery.empty) {
+      const otherMembers = remainingTeamMembersQuery.docs.filter((doc) => doc.id !== userId);
+
+      if (otherMembers.length === 0) {
         await projectDocRef.delete();
       } else if (owner_id === userId) {
-        const newOwnerId = remainingTeamMembersQuery.docs[0].id;
+        const newOwnerId = otherMembers[0]?.id;
 
-        await projectDocRef.update({
-          owner_id: newOwnerId,
-          updated_at: now,
-        });
+        if (newOwnerId) {
+          await projectDocRef.update({
+            owner_id: newOwnerId,
+            updated_at: now,
+          });
+        }
       }
     }
 

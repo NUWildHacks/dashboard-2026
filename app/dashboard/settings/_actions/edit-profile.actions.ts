@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, FirebaseFirestoreError } from "firebase-admin/firestore";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
@@ -15,9 +15,6 @@ export const editProfile = async (data: EditProfileFormSchema): Promise<EditProf
   const now = Date.now();
 
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
-    const { id: userId } = await getAuthenticatedUser(redirectPath);
-
     const configDocSnapshot = await getConfigDocSnapshot();
     const { end_time } = configDocSnapshot.data() as WildHacksConfig;
 
@@ -27,6 +24,9 @@ export const editProfile = async (data: EditProfileFormSchema): Promise<EditProf
         error: "The event has ended",
       };
     }
+
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
+    const { id: userId } = await getAuthenticatedUser(redirectPath);
 
     await db
       .collection(USERS_COLLECTION)
@@ -38,12 +38,15 @@ export const editProfile = async (data: EditProfileFormSchema): Promise<EditProf
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Edit profile error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };

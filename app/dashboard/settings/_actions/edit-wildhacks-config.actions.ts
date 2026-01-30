@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -35,12 +35,15 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Edit wildhacks config error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };
