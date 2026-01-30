@@ -21,6 +21,10 @@ export const deleteUsers = async (userIds: User["id"][]): Promise<DeleteUsersRes
     const batch = db.batch();
 
     for (const userId of userIds) {
+      if (userId === user.id) {
+        return { success: false, error: "You cannot delete yourself. Please withdraw from the event instead." };
+      }
+
       const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
       batch.delete(userDocRef);
     }
