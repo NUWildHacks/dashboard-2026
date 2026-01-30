@@ -6,7 +6,7 @@ export const DASHBOARD_PATH = "/dashboard" as const;
 export const DASHBOARD_ANNOUNCEMENTS_PATH = "/dashboard/announcements" as const;
 export const DASHBOARD_SCHEDULE_PATH = "/dashboard/schedule" as const;
 export const DASHBOARD_PROJECT_PATH = "/dashboard/project" as const;
-export const DASHBOARD_PERMISSION_CODES_PATH = "/dashboard/permission-codes" as const;
+export const DASHBOARD_MANAGE_USERS_PATH = "/dashboard/manage-users" as const;
 export const DASHBOARD_SUPPORT_PATH = "/dashboard/support" as const;
 export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
 

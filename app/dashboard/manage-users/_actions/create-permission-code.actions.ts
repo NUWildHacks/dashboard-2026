@@ -4,7 +4,7 @@ import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import {
   ADMIN,
-  DASHBOARD_PERMISSION_CODES_PATH,
+  DASHBOARD_MANAGE_USERS_PATH,
   LOGIN_PATH,
   ONE_HOUR,
   PERMISSION_CODES_COLLECTION,
@@ -24,7 +24,7 @@ export const createPermissionCode = async (
   const now = Date.now();
 
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PERMISSION_CODES_PATH)}`;
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
     const roleError = requireRole(user, ADMIN, "You are not authorized to create permission codes");

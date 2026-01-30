@@ -2,7 +2,7 @@ import { Calendar, FolderGit2, Home, Megaphone, Users } from "lucide-react";
 
 import {
   DASHBOARD_ANNOUNCEMENTS_PATH,
-  DASHBOARD_PERMISSION_CODES_PATH,
+  DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -37,8 +37,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [PARTICIPANT],
   },
   {
-    title: "Permission codes",
-    url: DASHBOARD_PERMISSION_CODES_PATH,
+    title: "Manage users",
+    url: DASHBOARD_MANAGE_USERS_PATH,
     icon: Users,
     visibleTo: [ADMIN],
   },
@@ -50,5 +50,5 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   project: "Project",
   support: "Support",
   settings: "Settings",
-  "permission-codes": "Permission codes",
+  "manage-users": "Manage users",
 };

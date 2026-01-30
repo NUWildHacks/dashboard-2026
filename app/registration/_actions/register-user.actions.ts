@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PermissionCode } from "@/app/dashboard/permission-codes/types";
+import { PermissionCode } from "@/app/dashboard/manage-users/types";
 import {
   PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,

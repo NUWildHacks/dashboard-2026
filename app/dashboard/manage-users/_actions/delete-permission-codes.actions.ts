@@ -2,7 +2,7 @@
 
 import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
-import { PERMISSION_CODES_COLLECTION, DASHBOARD_PERMISSION_CODES_PATH, ADMIN, LOGIN_PATH } from "@/constants";
+import { PERMISSION_CODES_COLLECTION, DASHBOARD_MANAGE_USERS_PATH, ADMIN, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -16,7 +16,7 @@ export const deletePermissionCodes = async (
   const db = getFirestore();
 
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PERMISSION_CODES_PATH)}`;
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
     const roleError = requireRole(user, ADMIN, "You are not authorized to delete permission codes");
