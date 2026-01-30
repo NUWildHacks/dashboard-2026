@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { EVENTS_COLLECTION, DASHBOARD_SCHEDULE_PATH, ADMIN, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -20,25 +20,19 @@ export const deleteEvent = async (eventId: Event["id"]): Promise<DeleteEventResu
     const roleError = requireRole(user, ADMIN, "You are not authorized to delete events");
     if (roleError) return roleError;
 
-    const eventDocRef = db.collection(EVENTS_COLLECTION).doc(eventId);
-    const eventDocSnapshot = await eventDocRef.get();
-    if (!eventDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "Event not found",
-      };
-    }
-
-    await eventDocRef.delete();
+    await db.collection(EVENTS_COLLECTION).doc(eventId).delete();
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Delete event error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };

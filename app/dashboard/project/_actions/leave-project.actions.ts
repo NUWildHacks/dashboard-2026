@@ -53,17 +53,17 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
       updated_at: now,
     });
 
-    const remainingTeamMembersQuery = await db
-      .collection(USERS_COLLECTION)
-      .where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId)
-      .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
-      .get();
-
     const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
     const projectDocSnapshot = await projectDocRef.get();
 
     if (projectDocSnapshot.exists) {
       const { owner_id } = projectDocSnapshot.data() as Omit<Project, "id">;
+
+      const remainingTeamMembersQuery = await db
+        .collection(USERS_COLLECTION)
+        .where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId)
+        .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
+        .get();
 
       if (remainingTeamMembersQuery.empty) {
         await projectDocRef.delete();

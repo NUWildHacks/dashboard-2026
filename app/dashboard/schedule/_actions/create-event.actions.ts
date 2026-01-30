@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore } from "firebase-admin/firestore";
+import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH } from "@/constants";
 import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
@@ -21,9 +21,7 @@ export const createEvent = async (data: CreateEventDialogSchema): Promise<Create
     const roleError = requireRole(user, ADMIN, "You are not authorized to create events");
     if (roleError) return roleError;
 
-    const eventDocRef = db.collection(EVENTS_COLLECTION).doc();
-
-    const { day, start_time, end_time, ...rest } = data;
+    const { day, start_time, end_time } = data;
 
     const dayDate = parseDateLabel(day);
     if (!dayDate) {
@@ -45,23 +43,28 @@ export const createEvent = async (data: CreateEventDialogSchema): Promise<Create
       };
     }
 
-    await eventDocRef.set({
-      ...rest,
-      day,
-      start_time: startTimeMs,
-      end_time: endTimeMs,
-      created_at: now,
-      updated_at: now,
-    });
+    await db
+      .collection(EVENTS_COLLECTION)
+      .doc()
+      .set({
+        ...data,
+        start_time: startTimeMs,
+        end_time: endTimeMs,
+        created_at: now,
+        updated_at: now,
+      });
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    let errorMessage;
+    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = "An unknown error occurred";
+    }
+
     console.error("Create event error:", errorMessage);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    return { success: false, error: errorMessage };
   }
 };

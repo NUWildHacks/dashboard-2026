@@ -20,7 +20,7 @@ import type { UseDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
-import { deleteEvent } from "../_actions/delete-event.actions";
+import { deleteEvent } from "../_actions";
 import type { Event } from "../types";
 
 type EventDialogProps = { userRole: User["role"] } & Pick<
