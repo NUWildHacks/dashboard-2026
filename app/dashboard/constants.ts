@@ -7,7 +7,7 @@ import {
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
 } from "@/constants/routes.constants";
-import { ADMIN, PARTICIPANT } from "@/constants/user.constants";
+import { ADMIN, JUDGE, PARTICIPANT } from "@/constants/user.constants";
 
 import type { SidebarItem } from "./types";
 
@@ -16,25 +16,25 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
   },
   {
     title: "Announcements",
     url: DASHBOARD_ANNOUNCEMENTS_PATH,
     icon: Megaphone,
-    visibleTo: [ADMIN, PARTICIPANT],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
   },
   {
     title: "Schedule",
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
   },
   {
     title: "Project",
     url: DASHBOARD_PROJECT_PATH,
     icon: FolderGit2,
-    visibleTo: [ADMIN, PARTICIPANT],
+    visibleTo: [PARTICIPANT],
   },
   {
     title: "Permission codes",
