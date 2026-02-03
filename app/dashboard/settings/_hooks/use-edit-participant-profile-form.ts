@@ -16,9 +16,6 @@ export type UseEditParticipantProfileFormReturn = {
 } & Pick<UseFormReturn<EditParticipantProfileFormSchema>, "control" | "handleSubmit">;
 
 export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditParticipantProfileFormReturn => {
-  const { first_name, last_name, email, phone, github_username, dietary_restrictions, other_dietary_restrictions } =
-    user;
-
   const router = useRouter();
 
   const {
@@ -29,15 +26,7 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
     formState: { isSubmitting, isDirty },
   } = useForm<EditParticipantProfileFormSchema>({
     resolver: zodResolver(editParticipantProfileFormSchema),
-    defaultValues: {
-      first_name,
-      last_name,
-      email,
-      phone,
-      github_username,
-      dietary_restrictions,
-      other_dietary_restrictions,
-    },
+    defaultValues: user,
   });
 
   const onSubmit = async (data: EditParticipantProfileFormSchema) => {
@@ -69,15 +58,7 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
   };
 
   const handleReset = () => {
-    reset({
-      first_name,
-      last_name,
-      email,
-      phone,
-      github_username,
-      dietary_restrictions,
-      other_dietary_restrictions,
-    });
+    reset(user);
   };
 
   return {

@@ -17,7 +17,7 @@ export const GENDERS = genders;
 export const RACES = races;
 export const DIETARY_RESTRICTIONS = dietaryRestrictions;
 
-export const MODALITIES = ["In-Person", "Remote"] as const;
+export const MODALITIES = ["In-Person", "Remote", "Other"] as const;
 
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
@@ -72,6 +72,7 @@ export const JUDGE_USER_FIELDS = {
   role: "role",
   affiliated_company: "affiliated_company",
   modality: "modality",
+  other_modality: "other_modality",
   assigned_project_ids: "assigned_project_ids",
   created_at: "created_at",
   updated_at: "updated_at",

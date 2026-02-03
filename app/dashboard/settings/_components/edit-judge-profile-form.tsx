@@ -145,9 +145,6 @@ const EditJudgeProfileForm = ({ judgeUser }: EditJudgeProfileFormProps) => {
                       <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
                         Modality
                       </FieldLabel>
-                      <FieldDescription className="w-full text-start">
-                        Please select your preferred modality
-                      </FieldDescription>
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
                           <SelectValue placeholder="Select your modality" />
@@ -166,6 +163,27 @@ const EditJudgeProfileForm = ({ judgeUser }: EditJudgeProfileFormProps) => {
                 />
               </FieldGroup>
             </FieldSet>
+
+            <Controller
+              name="other_modality"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Other Modality</FieldLabel>
+                  <FieldDescription className="w-full text-start">
+                    If you selected &quot;Other&quot;, please specify below
+                  </FieldDescription>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter your other modality"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                </Field>
+              )}
+            />
 
             <FieldSeparator />
 

@@ -68,6 +68,7 @@ export type JudgeUser = BaseUser & {
 
   affiliated_company: string;
   modality: Modality;
+  other_modality: string;
 
   assigned_project_ids: Project["id"][];
 };

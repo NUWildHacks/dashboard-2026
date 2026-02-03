@@ -3,13 +3,18 @@ import z from "zod";
 import { registrationFormSchema } from "@/app/registration/_schemas/registration-form.schemas";
 import { MODALITIES } from "@/constants/user.constants";
 
-export const editAdminProfileFormSchema = registrationFormSchema.pick({
-  first_name: true,
-  last_name: true,
-  email: true,
-  dietary_restrictions: true,
-  other_dietary_restrictions: true,
-});
+export const editAdminProfileFormSchema = registrationFormSchema
+  .pick({
+    first_name: true,
+    last_name: true,
+    email: true,
+    dietary_restrictions: true,
+    other_dietary_restrictions: true,
+  })
+  .refine((data) => !data.dietary_restrictions.includes("Other") || data.other_dietary_restrictions, {
+    message: "Other dietary restrictions must be specified",
+    path: ["other_dietary_restrictions"],
+  });
 
 export const editJudgeProfileFormSchema = registrationFormSchema
   .pick({
@@ -24,17 +29,31 @@ export const editJudgeProfileFormSchema = registrationFormSchema
     modality: z.enum(MODALITIES, {
       message: "Modality is required",
     }),
+    other_modality: z.string(),
+  })
+  .refine((data) => data.modality !== "Other" || data.other_modality, {
+    message: "Other modality must be specified",
+    path: ["other_modality"],
+  })
+  .refine((data) => !data.dietary_restrictions.includes("Other") || data.other_dietary_restrictions, {
+    message: "Other dietary restrictions must be specified",
+    path: ["other_dietary_restrictions"],
   });
 
-export const editParticipantProfileFormSchema = registrationFormSchema.pick({
-  first_name: true,
-  last_name: true,
-  email: true,
-  phone: true,
-  github_username: true,
-  dietary_restrictions: true,
-  other_dietary_restrictions: true,
-});
+export const editParticipantProfileFormSchema = registrationFormSchema
+  .pick({
+    first_name: true,
+    last_name: true,
+    email: true,
+    phone: true,
+    github_username: true,
+    dietary_restrictions: true,
+    other_dietary_restrictions: true,
+  })
+  .refine((data) => !data.dietary_restrictions.includes("Other") || data.other_dietary_restrictions, {
+    message: "Other dietary restrictions must be specified",
+    path: ["other_dietary_restrictions"],
+  });
 
 export type EditAdminProfileFormSchema = z.infer<typeof editAdminProfileFormSchema>;
 export type EditJudgeProfileFormSchema = z.infer<typeof editJudgeProfileFormSchema>;
