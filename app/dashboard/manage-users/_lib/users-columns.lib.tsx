@@ -144,12 +144,16 @@ export const getUsersColumns = (
         },
       },
       {
-        accessorKey: "assigned_project_id",
-        header: "Assigned Project ID",
+        accessorKey: "assigned_project_ids",
+        header: "Assigned Project IDs",
         cell: ({ row }) => {
           const user = row.original;
           if (user.role === "Judge") {
-            return <div className="text-left text-muted-foreground">{user.assigned_project_id || "None"}</div>;
+            return (
+              <div className="text-left text-muted-foreground">
+                {user.assigned_project_ids.length > 0 ? user.assigned_project_ids.join(", ") : "None"}
+              </div>
+            );
           }
           return null;
         },

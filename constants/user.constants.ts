@@ -72,7 +72,7 @@ export const JUDGE_USER_FIELDS = {
   role: "role",
   affiliated_company: "affiliated_company",
   modality: "modality",
-  assigned_project_id: "assigned_project_id",
+  assigned_project_ids: "assigned_project_ids",
   created_at: "created_at",
   updated_at: "updated_at",
 } as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;

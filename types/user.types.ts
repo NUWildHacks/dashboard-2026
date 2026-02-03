@@ -69,7 +69,7 @@ export type JudgeUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
 
-  assigned_project_id?: Project["id"];
+  assigned_project_ids: Project["id"][];
 };
 
 export type User = ParticipantUser | AdminUser | JudgeUser;
