@@ -1,13 +1,20 @@
-import { LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import { getFirestore } from "firebase-admin/firestore";
+import { redirect } from "next/navigation";
+
+import { DASHBOARD_PATH, LOGIN_PATH, USERS_COLLECTION } from "@/constants";
+import { getConfigDocSnapshot, verifySession } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
 import RegistrationForm from "./_components/registration-form";
 
 const RegistrationPage = async () => {
-  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`;
+  const userId = await verifySession();
+  if (!userId) redirect(LOGIN_PATH);
 
-  await getAuthenticatedUser(redirectPath);
+  const db = getFirestore();
+
+  const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userId).get();
+  if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;

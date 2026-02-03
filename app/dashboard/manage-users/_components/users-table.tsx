@@ -26,7 +26,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
           <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
             <SelectTrigger
               id="role-filter"
-              className="min-w-[125px] lg:w-[125px] w-full"
+              className="min-w-[125px] md:w-[125px] w-full"
               aria-label="Filter users by role"
             >
               <SelectValue placeholder="Select role" />

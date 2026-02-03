@@ -4,7 +4,7 @@ import { ADMIN, DASHBOARD_PATH, DASHBOARD_MANAGE_USERS_PATH, LOGIN_PATH } from "
 import { getAuthenticatedUser } from "@/lib";
 
 import { PermissionCodesTable, UsersTable } from "./_components";
-import { getPermissionCodes, getUsers } from "./lib";
+import { getPermissionCodes, getUsers } from "./_lib/lib";
 
 const PermissionCodesPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;

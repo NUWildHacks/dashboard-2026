@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -10,27 +12,15 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronUp, ChevronDown, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { PARTICIPANT } from "@/constants";
-import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 import { User } from "@/types";
 
 import { deleteUsers } from "../_actions";
+import { getUsersColumns } from "../_lib/users-columns.lib";
 
 export type UseUsersTableReturn = {
   role: User["role"];
@@ -48,7 +38,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
 
   const [role, setRole] = useState<User["role"]>(PARTICIPANT);
   const [search, setSearch] = useState<string>("");
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
@@ -95,120 +85,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
     }
   };
 
-  const usersColumns: ColumnDef<User>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "first_name",
-      header: "First Name",
-      cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.first_name}</div>;
-      },
-    },
-    {
-      accessorKey: "last_name",
-      header: "Last Name",
-      cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.last_name}</div>;
-      },
-    },
-    {
-      accessorKey: "email",
-      header: "Email",
-      cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.email}</div>;
-      },
-    },
-    {
-      accessorKey: "dietary_restrictions",
-      header: "Dietary Restrictions",
-      cell: ({ row }) => {
-        return (
-          <div className="text-left text-muted-foreground">
-            {row.original.dietary_restrictions.length > 0 ? row.original.dietary_restrictions.join(", ") : "None"}
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "other_dietary_restrictions",
-      header: "Other Dietary Restrictions",
-      cell: ({ row }) => {
-        return (
-          <div className="text-left text-muted-foreground">{row.original.other_dietary_restrictions || "None"}</div>
-        );
-      },
-    },
-    {
-      accessorKey: "tshirt_size",
-      header: "T-Shirt Size",
-      cell: ({ row }) => {
-        return <Badge variant="secondary">{row.original.tshirt_size}</Badge>;
-      },
-    },
-    {
-      accessorKey: "created_at",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Joined At
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
-        );
-      },
-    },
-    {
-      accessorKey: "actions",
-      header: () => null,
-      cell: ({ row }) => {
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                Copy user ID
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.email)}>
-                Copy email
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteUsers([row.original.id])}>
-                Delete user
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-  ];
+  const usersColumns = getUsersColumns(role, handleDeleteUsers);
 
   const table = useReactTable({
     data: filteredUsers,

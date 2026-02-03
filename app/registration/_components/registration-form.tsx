@@ -464,7 +464,7 @@ const RegistrationForm = ({ start_time, end_time, max_participants, registration
 
             <FieldSeparator />
 
-            {now >= start_time && now < end_time && (
+            {now >= registration_deadline && now < start_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>

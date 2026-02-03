@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -41,7 +43,7 @@ export type UsePermissionCodesTableReturn = {
 export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCodesTableReturn => {
   const router = useRouter();
 
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
@@ -98,14 +100,7 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Email
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
+      header: "Email",
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.email}</div>;
       },

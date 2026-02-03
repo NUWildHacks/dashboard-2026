@@ -3,7 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
 import type { User } from "@/types";
 
-import type { PermissionCode } from "./types";
+import type { PermissionCode } from "../types";
 
 /**
  * Get all permission codes from Firestore.
@@ -20,7 +20,7 @@ import type { PermissionCode } from "./types";
  * });
  * ```
  */
-export const getPermissionCodes = async (): Promise<PermissionCode[]> => {
+const getPermissionCodes = async (): Promise<PermissionCode[]> => {
   const db = getFirestore();
 
   const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION);
@@ -51,7 +51,7 @@ export const getPermissionCodes = async (): Promise<PermissionCode[]> => {
  * });
  * ```
  */
-export const getUsers = async (): Promise<User[]> => {
+const getUsers = async (): Promise<User[]> => {
   const db = getFirestore();
 
   const userDocRef = db.collection(USERS_COLLECTION);
@@ -66,3 +66,5 @@ export const getUsers = async (): Promise<User[]> => {
       }) as User
   );
 };
+
+export { getPermissionCodes, getUsers };
