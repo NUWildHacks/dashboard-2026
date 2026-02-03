@@ -12,13 +12,15 @@ import {
   EditParticipantProfileFormSchema,
 } from "../_schemas/edit-profile-form.schemas";
 
-export type EditProfileResult = ActionResult<
-  EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema
->;
+export type EditProfileResult<
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema,
+> = ActionResult<T>;
 
-export const editProfile = async (
-  data: EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema
-): Promise<EditProfileResult> => {
+export const editProfile = async <
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema,
+>(
+  data: T
+): Promise<EditProfileResult<T>> => {
   const db = getFirestore();
   const now = Date.now();
 

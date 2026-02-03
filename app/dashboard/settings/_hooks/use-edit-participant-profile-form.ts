@@ -31,7 +31,7 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
 
   const onSubmit = async (data: EditParticipantProfileFormSchema) => {
     try {
-      const result = await editProfile(data);
+      const result = await editProfile<EditParticipantProfileFormSchema>(data);
       const { success } = result;
 
       if (!success) {
@@ -41,7 +41,7 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
           throw new Error(error);
         }
 
-        setError(field as keyof EditParticipantProfileFormSchema, {
+        setError(field, {
           type: "server",
           message: error,
         });

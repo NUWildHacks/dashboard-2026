@@ -3,19 +3,19 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { JudgeUser } from "@/types";
+import type { AdminUser } from "@/types";
 
 import { editProfile } from "../_actions";
-import { type EditJudgeProfileFormSchema, editJudgeProfileFormSchema } from "../_schemas";
+import { type EditAdminProfileFormSchema, editAdminProfileFormSchema } from "../_schemas";
 
-export type UseEditJudgeProfileFormReturn = {
-  onSubmit: SubmitHandler<EditJudgeProfileFormSchema>;
+export type UseEditAdminProfileFormReturn = {
+  onSubmit: SubmitHandler<EditAdminProfileFormSchema>;
   isSubmitting: boolean;
   isDirty: boolean;
   handleReset: () => void;
-} & Pick<UseFormReturn<EditJudgeProfileFormSchema>, "control" | "handleSubmit">;
+} & Pick<UseFormReturn<EditAdminProfileFormSchema>, "control" | "handleSubmit">;
 
-export const useEditJudgeProfileForm = (user: JudgeUser): UseEditJudgeProfileFormReturn => {
+export const useEditAdminProfileForm = (user: AdminUser): UseEditAdminProfileFormReturn => {
   const router = useRouter();
 
   const {
@@ -24,14 +24,14 @@ export const useEditJudgeProfileForm = (user: JudgeUser): UseEditJudgeProfileFor
     reset,
     setError,
     formState: { isSubmitting, isDirty },
-  } = useForm<EditJudgeProfileFormSchema>({
-    resolver: zodResolver(editJudgeProfileFormSchema),
+  } = useForm<EditAdminProfileFormSchema>({
+    resolver: zodResolver(editAdminProfileFormSchema),
     defaultValues: user,
   });
 
-  const onSubmit = async (data: EditJudgeProfileFormSchema) => {
+  const onSubmit = async (data: EditAdminProfileFormSchema) => {
     try {
-      const result = await editProfile<EditJudgeProfileFormSchema>(data);
+      const result = await editProfile<EditAdminProfileFormSchema>(data);
       const { success } = result;
 
       if (!success) {

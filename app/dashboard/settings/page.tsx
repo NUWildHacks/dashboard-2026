@@ -8,6 +8,7 @@ import {
   ThemeSelect,
   EditWildhacksConfigForm,
   EditJudgeProfileForm,
+  EditAdminProfileForm,
 } from "./_components";
 
 const SettingsPage = async () => {
@@ -38,7 +39,7 @@ const SettingsPage = async () => {
         <h2 className="text-md font-semibold">Profile</h2>
         {user.role === PARTICIPANT && <EditParticipantProfileForm participantUser={user as ParticipantUser} />}
         {user.role === JUDGE && <EditJudgeProfileForm judgeUser={user as JudgeUser} />}
-        {/* {user.role === ADMIN && <EditAdminProfileForm user={user as AdminUser} />} */}
+        {user.role === ADMIN && <EditAdminProfileForm adminUser={user as AdminUser} />}
       </div>
     </div>
   );
