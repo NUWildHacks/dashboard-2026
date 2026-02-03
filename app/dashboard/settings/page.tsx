@@ -1,12 +1,14 @@
+import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, PARTICIPANT } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { AdminUser, JudgeUser, ParticipantUser, WildHacksConfig } from "@/types";
+
 import {
   EditParticipantProfileForm,
   EventWithdraw,
   ThemeSelect,
   EditWildhacksConfigForm,
-} from "@/app/dashboard/settings/_components";
-import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, PARTICIPANT } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { AdminUser, JudgeUser, ParticipantUser, WildHacksConfig } from "@/types";
+  EditJudgeProfileForm,
+} from "./_components";
 
 const SettingsPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
@@ -35,8 +37,8 @@ const SettingsPage = async () => {
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>
         {user.role === PARTICIPANT && <EditParticipantProfileForm participantUser={user as ParticipantUser} />}
-        {/* {user.role === JUDGE && <EditJudgeProfileForm user={user as JudgeUser} />}
-        {user.role === ADMIN && <EditAdminProfileForm user={user as AdminUser} />} */}
+        {user.role === JUDGE && <EditJudgeProfileForm judgeUser={user as JudgeUser} />}
+        {/* {user.role === ADMIN && <EditAdminProfileForm user={user as AdminUser} />} */}
       </div>
     </div>
   );

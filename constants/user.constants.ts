@@ -17,7 +17,7 @@ export const GENDERS = genders;
 export const RACES = races;
 export const DIETARY_RESTRICTIONS = dietaryRestrictions;
 
-export const MODALITIES = ["In-Person", "Hybrid", "Online"] as const;
+export const MODALITIES = ["In-Person", "Remote"] as const;
 
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
