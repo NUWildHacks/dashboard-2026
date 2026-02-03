@@ -3,19 +3,19 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { User } from "@/types";
+import type { ParticipantUser } from "@/types";
 
 import { editProfile } from "../_actions";
-import { type EditProfileFormSchema, editProfileFormSchema } from "../_schemas";
+import { type EditParticipantProfileFormSchema, editParticipantProfileFormSchema } from "../_schemas";
 
-export type UseEditProfileFormReturn = {
-  onSubmit: SubmitHandler<EditProfileFormSchema>;
+export type UseEditParticipantProfileFormReturn = {
+  onSubmit: SubmitHandler<EditParticipantProfileFormSchema>;
   isSubmitting: boolean;
   isDirty: boolean;
   handleReset: () => void;
-} & Pick<UseFormReturn<EditProfileFormSchema>, "control" | "handleSubmit">;
+} & Pick<UseFormReturn<EditParticipantProfileFormSchema>, "control" | "handleSubmit">;
 
-export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
+export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditParticipantProfileFormReturn => {
   const { first_name, last_name, email, phone, github_username, dietary_restrictions, other_dietary_restrictions } =
     user;
 
@@ -27,8 +27,8 @@ export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
     reset,
     setError,
     formState: { isSubmitting, isDirty },
-  } = useForm<EditProfileFormSchema>({
-    resolver: zodResolver(editProfileFormSchema),
+  } = useForm<EditParticipantProfileFormSchema>({
+    resolver: zodResolver(editParticipantProfileFormSchema),
     defaultValues: {
       first_name,
       last_name,
@@ -40,7 +40,7 @@ export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
     },
   });
 
-  const onSubmit = async (data: EditProfileFormSchema) => {
+  const onSubmit = async (data: EditParticipantProfileFormSchema) => {
     try {
       const result = await editProfile(data);
       const { success } = result;
@@ -52,7 +52,7 @@ export const useEditProfileForm = (user: User): UseEditProfileFormReturn => {
           throw new Error(error);
         }
 
-        setError(field, {
+        setError(field as keyof EditParticipantProfileFormSchema, {
           type: "server",
           message: error,
         });

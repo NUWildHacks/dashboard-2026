@@ -3,7 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
-import { useEditProfileForm } from "@/app/dashboard/settings/_hooks";
+import { useEditParticipantProfileForm } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -25,14 +25,15 @@ import {
   MultiSelectItem,
 } from "@/components/ui/multi-select";
 import { DIETARY_RESTRICTIONS } from "@/constants";
-import type { User } from "@/types";
+import type { ParticipantUser } from "@/types";
 
-type EditProfileFormProps = {
-  user: User;
+type EditParticipantProfileFormProps = {
+  participantUser: ParticipantUser;
 };
 
-const EditProfileForm = ({ user }: EditProfileFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } = useEditProfileForm(user);
+const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } =
+    useEditParticipantProfileForm(participantUser);
 
   return (
     <Card className="shadow-sm">
@@ -230,4 +231,4 @@ const EditProfileForm = ({ user }: EditProfileFormProps) => {
   );
 };
 
-export default EditProfileForm;
+export default EditParticipantProfileForm;

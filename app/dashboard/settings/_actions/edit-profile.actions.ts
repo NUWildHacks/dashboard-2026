@@ -6,11 +6,19 @@ import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constan
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
-import { type EditProfileFormSchema } from "../_schemas/edit-profile-form.schemas";
+import {
+  EditAdminProfileFormSchema,
+  EditJudgeProfileFormSchema,
+  EditParticipantProfileFormSchema,
+} from "../_schemas/edit-profile-form.schemas";
 
-export type EditProfileResult = ActionResult<EditProfileFormSchema>;
+export type EditProfileResult = ActionResult<
+  EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema
+>;
 
-export const editProfile = async (data: EditProfileFormSchema): Promise<EditProfileResult> => {
+export const editProfile = async (
+  data: EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema
+): Promise<EditProfileResult> => {
   const db = getFirestore();
   const now = Date.now();
 
