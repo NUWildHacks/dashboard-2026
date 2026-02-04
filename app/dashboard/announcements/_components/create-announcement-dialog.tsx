@@ -110,7 +110,7 @@ const CreateAnnouncementDialog = () => {
               </FieldSet>
               <FieldSet disabled={isSubmitting}>
                 <Field>
-                  <FieldLabel className="after:content-['*'] after:ml-0.5 after:text-red-500">Links</FieldLabel>
+                  <FieldLabel>Links</FieldLabel>
                   <FieldGroup className="gap-3">
                     {fields.map((field, index) => (
                       <Controller

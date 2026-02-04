@@ -34,116 +34,133 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
       <DialogTrigger asChild>
         <Button className="w-full md:w-auto">Create event</Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] flex flex-col">
+      <DialogContent className="w-full md:max-w-[800px] flex flex-col">
         <DialogHeader>
           <DialogTitle>Create event</DialogTitle>
           <DialogDescription>Please enter event details to continue.</DialogDescription>
         </DialogHeader>
-        <div className="overflow-y-auto flex-1 min-h-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <form id="create-event-form" onSubmit={handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <FieldSet disabled={isSubmitting}>
-                <Controller
-                  name="title"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Title
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter event title"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="off"
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
-              </FieldSet>
-              <FieldSet disabled={isSubmitting}>
-                <Controller
-                  name="body"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Body
-                      </FieldLabel>
-                      <Textarea
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter event body"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="off"
-                        className="max-h-40"
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
-              </FieldSet>
-              <FieldSet disabled={isSubmitting}>
-                <Controller
-                  name="category"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Category
-                      </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
-                          <SelectValue placeholder="Select event category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {EVENT_CATEGORIES.map((category) => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
-              </FieldSet>
-              <FieldSet disabled={isSubmitting}>
-                <Controller
-                  name="day"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Day
-                      </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
-                          <SelectValue placeholder="Select event day" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableDays.map((day) => (
-                            <SelectItem key={day.label} value={day.label}>
-                              {day.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
-              </FieldSet>
-              <FieldSet disabled={isSubmitting}>
-                <div className="flex gap-4">
+        <form id="create-event-form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex gap-6">
+            <div className="flex-3">
+              <FieldGroup>
+                <FieldSet disabled={isSubmitting}>
+                  <Controller
+                    name="title"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                        >
+                          Title
+                        </FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          placeholder="Enter event title"
+                          aria-invalid={fieldState.invalid}
+                          autoComplete="off"
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                </FieldSet>
+                <FieldSet disabled={isSubmitting}>
+                  <Controller
+                    name="body"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                        >
+                          Body
+                        </FieldLabel>
+                        <Textarea
+                          {...field}
+                          id={field.name}
+                          placeholder="Enter event body"
+                          aria-invalid={fieldState.invalid}
+                          autoComplete="off"
+                          className="min-h-32"
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                </FieldSet>
+                <FieldSet disabled={isSubmitting}>
+                  <Controller
+                    name="category"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                        >
+                          Category
+                        </FieldLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                            <SelectValue placeholder="Select event category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {EVENT_CATEGORIES.map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                </FieldSet>
+              </FieldGroup>
+            </div>
+            <div className="w-px bg-border self-stretch" />
+            <div className="flex-2">
+              <FieldGroup>
+                <FieldSet disabled={isSubmitting}>
+                  <Controller
+                    name="day"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                        >
+                          Day
+                        </FieldLabel>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                            <SelectValue placeholder="Select event day" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableDays.map((day) => (
+                              <SelectItem key={day.label} value={day.label}>
+                                {day.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                </FieldSet>
+                <FieldSet disabled={isSubmitting}>
                   <Controller
                     name="start_time"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="flex-1">
+                      <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -166,7 +183,7 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                     name="end_time"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid} className="flex-1">
+                      <Field data-invalid={fieldState.invalid}>
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -185,11 +202,11 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                       </Field>
                     )}
                   />
-                </div>
-              </FieldSet>
-            </FieldGroup>
-          </form>
-        </div>
+                </FieldSet>
+              </FieldGroup>
+            </div>
+          </div>
+        </form>
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="outline" disabled={isSubmitting}>
