@@ -62,7 +62,7 @@ const DateTimePicker = <T extends FieldValues>({ label, fieldName, field, fieldS
           <Input
             type="time"
             id={`${fieldName}-time`}
-            step="1"
+            step="60"
             value={time}
             onChange={(e) => {
               const newTime = e.target.value;

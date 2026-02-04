@@ -170,6 +170,7 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                         <Input
                           type="time"
                           id={field.name}
+                          step="60"
                           value={field.value || ""}
                           onChange={field.onChange}
                           aria-invalid={fieldState.invalid}
@@ -193,6 +194,7 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                         <Input
                           type="time"
                           id={field.name}
+                          step="60"
                           value={field.value || ""}
                           onChange={field.onChange}
                           aria-invalid={fieldState.invalid}
