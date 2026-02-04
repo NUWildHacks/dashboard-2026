@@ -11,8 +11,9 @@ const PermissionCodesLoading = async () => {
     >
       <div className="flex flex-col gap-4">
         <Skeleton className="w-full h-[24px]" />
-        <Skeleton className="h-[400px]" />
+        <Skeleton className="h-[300px]" />
         <Skeleton className="w-full h-[40px]" />
+        <Skeleton className="h-[300px]" />
       </div>
     </div>
   );

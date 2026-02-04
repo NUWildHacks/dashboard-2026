@@ -12,6 +12,7 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
+import { json2csv } from "json-2-csv";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ export type UseUsersTableReturn = {
   selectedUserIds: User["id"][];
   handleDeleteUsers: (userIds: User["id"][]) => Promise<void>;
   usersColumns: ColumnDef<User>[];
+  handleDownloadCSV: () => void;
 };
 
 export const useUsersTable = (data: User[]): UseUsersTableReturn => {
@@ -60,6 +62,17 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
 
     return result;
   }, [data, role, search]);
+
+  const handleDownloadCSV = () => {
+    const csv = json2csv(filteredUsers);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `users-${role}-${new Date().toISOString()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const handleDeleteUsers = async (userIds: User["id"][]) => {
     try {
@@ -115,5 +128,6 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
     selectedUserIds,
     handleDeleteUsers,
     usersColumns,
+    handleDownloadCSV,
   };
 };

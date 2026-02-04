@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ROLES } from "@/constants";
+import { JUDGE, PARTICIPANT, ROLES } from "@/constants";
 import { User } from "@/types";
 
 import { useUsersTable } from "../_hooks/use-users-table";
@@ -16,29 +16,45 @@ type UsersTableProps = {
 };
 
 const UsersTable = ({ users }: UsersTableProps) => {
-  const { role, setRole, search, setSearch, table, selectedUserIds, handleDeleteUsers, usersColumns } =
-    useUsersTable(users);
+  const {
+    role,
+    setRole,
+    search,
+    setSearch,
+    table,
+    selectedUserIds,
+    handleDeleteUsers,
+    usersColumns,
+    handleDownloadCSV,
+  } = useUsersTable(users);
 
   return (
     <div className="flex-1 space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
-          <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
-            <SelectTrigger
-              id="role-filter"
-              className="min-w-[125px] md:w-[125px] w-full"
-              aria-label="Filter users by role"
-            >
-              <SelectValue placeholder="Select role" />
-            </SelectTrigger>
-            <SelectContent>
-              {ROLES.map((role) => (
-                <SelectItem key={role} value={role}>
-                  {role}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-col md:flex-row gap-4">
+            <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
+              <SelectTrigger
+                id="role-filter"
+                className="min-w-[125px] md:w-[125px] w-full"
+                aria-label="Filter users by role"
+              >
+                <SelectValue placeholder="Select role" />
+              </SelectTrigger>
+              <SelectContent>
+                {ROLES.map((role) => (
+                  <SelectItem key={role} value={role}>
+                    {role}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {(role === PARTICIPANT || role === JUDGE) && (
+              <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
+                Download CSV
+              </Button>
+            )}
+          </div>
           {selectedUserIds.length > 0 && (
             <Button
               variant="destructive"
