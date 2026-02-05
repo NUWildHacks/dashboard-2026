@@ -7,8 +7,12 @@ import { EVENT_CATEGORIES } from "../constants";
 export const createEventDialogSchema = z
   .object({
     category: z.enum(EVENT_CATEGORIES, { message: "Category is required" }),
-    title: plainTextSingleLineSchema.min(1, { message: "Title is required" }),
-    body: plainTextMultiLineSchema.min(1, { message: "Body is required" }),
+    title: plainTextSingleLineSchema
+      .min(1, { message: "Title is required" })
+      .max(200, { message: "Title must be 200 characters or less" }),
+    body: plainTextMultiLineSchema
+      .min(1, { message: "Body is required" })
+      .max(2500, { message: "Body must be 2500 characters or less" }),
     day: z.string().min(1, { message: "Day is required" }),
     start_time: z
       .string()

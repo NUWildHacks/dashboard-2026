@@ -15,8 +15,12 @@ import { githubUsernameSchema, plainTextMultiLineSchema, plainTextSingleLineSche
 
 export const registrationFormSchema = z
   .object({
-    first_name: plainTextSingleLineSchema.min(1, "First name is required"),
-    last_name: plainTextSingleLineSchema.min(1, "Last name is required"),
+    first_name: plainTextSingleLineSchema
+      .min(1, "First name is required")
+      .max(50, "First name must be 50 characters or less"),
+    last_name: plainTextSingleLineSchema
+      .min(1, "Last name is required")
+      .max(50, "Last name must be 50 characters or less"),
     email: z.email("Invalid email address"),
     age: z
       .string()
@@ -49,7 +53,10 @@ export const registrationFormSchema = z
       message: "Please select a race/ethnicity",
     }),
     dietary_restrictions: z.array(z.enum(DIETARY_RESTRICTIONS)).min(1, "Please select a dietary restriction"),
-    other_dietary_restrictions: plainTextMultiLineSchema,
+    other_dietary_restrictions: plainTextMultiLineSchema.max(
+      500,
+      "Other dietary restrictions must be 500 characters or less"
+    ),
 
     permission_code: z
       .string()

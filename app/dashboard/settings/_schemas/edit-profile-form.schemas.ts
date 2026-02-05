@@ -26,11 +26,13 @@ export const editJudgeProfileFormSchema = registrationFormSchema
     other_dietary_restrictions: true,
   })
   .extend({
-    affiliated_company: plainTextSingleLineSchema.min(1, "Affiliated company is required"),
+    affiliated_company: plainTextSingleLineSchema
+      .min(1, "Affiliated company is required")
+      .max(100, "Affiliated company must be 100 characters or less"),
     modality: z.enum(MODALITIES, {
       message: "Modality is required",
     }),
-    other_modality: plainTextSingleLineSchema,
+    other_modality: plainTextSingleLineSchema.max(100, "Other modality must be 100 characters or less"),
   })
   .refine((data) => data.modality !== "Other" || data.other_modality, {
     message: "Other modality must be specified",
