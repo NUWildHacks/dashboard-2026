@@ -20,3 +20,4 @@ export {
 } from "./validation.lib";
 export { getConfigDocSnapshot } from "./wildhacks.lib";
 export { calculateStatistics } from "./statistics.lib";
+export { validateServerEnvVars, validateClientEnvVars } from "./env.lib";
