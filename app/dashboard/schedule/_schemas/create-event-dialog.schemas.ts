@@ -1,12 +1,14 @@
 import { z } from "zod";
 
+import { plainTextMultiLineSchema, plainTextSingleLineSchema } from "@/lib";
+
 import { EVENT_CATEGORIES } from "../constants";
 
 export const createEventDialogSchema = z
   .object({
     category: z.enum(EVENT_CATEGORIES, { message: "Category is required" }),
-    title: z.string().min(1, { message: "Title is required" }),
-    body: z.string().min(1, { message: "Body is required" }),
+    title: plainTextSingleLineSchema.min(1, { message: "Title is required" }),
+    body: plainTextMultiLineSchema.min(1, { message: "Body is required" }),
     day: z.string().min(1, { message: "Day is required" }),
     start_time: z
       .string()

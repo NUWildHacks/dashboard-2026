@@ -11,11 +11,12 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
+import { githubUsernameSchema, plainTextMultiLineSchema, plainTextSingleLineSchema } from "@/lib";
 
 export const registrationFormSchema = z
   .object({
-    first_name: z.string().min(1, "First name is required"),
-    last_name: z.string().min(1, "Last name is required"),
+    first_name: plainTextSingleLineSchema.min(1, "First name is required"),
+    last_name: plainTextSingleLineSchema.min(1, "Last name is required"),
     email: z.email("Invalid email address"),
     age: z
       .string()
@@ -36,7 +37,7 @@ export const registrationFormSchema = z
       message: "Please select a field of study",
     }),
 
-    github_username: z.string().min(1, "GitHub username is required"),
+    github_username: githubUsernameSchema,
     tshirt_size: z.enum(TSHIRT_SIZES, {
       message: "Please select a t-shirt size",
     }),
@@ -48,7 +49,7 @@ export const registrationFormSchema = z
       message: "Please select a race/ethnicity",
     }),
     dietary_restrictions: z.array(z.enum(DIETARY_RESTRICTIONS)).min(1, "Please select a dietary restriction"),
-    other_dietary_restrictions: z.string(),
+    other_dietary_restrictions: plainTextMultiLineSchema,
 
     permission_code: z
       .string()

@@ -2,6 +2,7 @@ import z from "zod";
 
 import { registrationFormSchema } from "@/app/registration/_schemas/registration-form.schemas";
 import { MODALITIES } from "@/constants/user.constants";
+import { plainTextSingleLineSchema } from "@/lib";
 
 export const editAdminProfileFormSchema = registrationFormSchema
   .pick({
@@ -25,11 +26,11 @@ export const editJudgeProfileFormSchema = registrationFormSchema
     other_dietary_restrictions: true,
   })
   .extend({
-    affiliated_company: z.string().min(1, "Affiliated company is required"),
+    affiliated_company: plainTextSingleLineSchema.min(1, "Affiliated company is required"),
     modality: z.enum(MODALITIES, {
       message: "Modality is required",
     }),
-    other_modality: z.string(),
+    other_modality: plainTextSingleLineSchema,
   })
   .refine((data) => data.modality !== "Other" || data.other_modality, {
     message: "Other modality must be specified",
