@@ -1,7 +1,6 @@
 "use client";
 
 import { Clock, Loader2 } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -82,9 +81,14 @@ const AnnouncementDialog = ({ userRole, isOpen, setIsOpen, selectedItem }: Annou
                   <ul className="space-y-1">
                     {links.map((link) => (
                       <li key={link}>
-                        <Link href={link} className="block hover:underline underline-offset-4">
+                        <a
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block hover:underline underline-offset-4"
+                        >
                           {link}
-                        </Link>
+                        </a>
                       </li>
                     ))}
                   </ul>
