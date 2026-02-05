@@ -44,5 +44,3 @@ export {
   JUDGE_USER_FIELDS,
   PARTICIPANT_USER_FIELDS,
 } from "./user.constants";
-
-export { REQUIRED_SERVER_ENV_VARS, REQUIRED_CLIENT_ENV_VARS } from "./env.constants";
