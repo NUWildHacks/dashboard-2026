@@ -2,6 +2,8 @@
 
 Thank you for your interest in contributing to the WildHacks Dashboard! This guide will help you understand our project structure, coding conventions, and development workflow.
 
+**Before you begin**: Please read the [README.md](README.md) for an overview of the project, its features, and setup instructions.
+
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
@@ -41,9 +43,29 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
    pnpm install
    ```
 
-3. Set up environment variables (if needed):
-   - Copy `.env.example` to `.env.local` (if available)
-   - Configure Firebase credentials and other required environment variables
+3. Set up environment variables:
+
+   Copy `.env.example` to create a `.env.local` file in the root directory with the following variables:
+
+   ```env
+   # Firebase Configuration (Client-side)
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+   # Firebase Admin SDK (Server-side)
+   FIREBASE_ADMIN_PROJECT_ID=your_project_id
+   FIREBASE_ADMIN_CLIENT_EMAIL=your_client_email
+   FIREBASE_ADMIN_PRIVATE_KEY=your_private_key
+
+   # Application Environment
+   APP_ENV=development
+   ```
+
+   **Note**: Contact the project maintainers for access to Firebase credentials. Never commit `.env.local` to version control.
 
 ### Firebase Setup
 
@@ -76,6 +98,8 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
    ```
 
    **Important**: Run this command whenever indexes are updated remotely (via Firebase Console or CI/CD) to keep your local `firestore.indexes.json` file synchronized. Failing to do so will cause the `firebase deploy` command to fail.
+
+   **Note**: Replace `development` with your actual Firebase project alias if different.
 
 ### Development Server
 
@@ -201,14 +225,14 @@ The `dashboard/` route segment also has its own shared resources:
 
 Imports are automatically sorted by ESLint's `perfectionist/sort-imports` rule:
 
-1. **Built-in modules** (Node.js)
-2. **External packages** (npm packages)
+1. **Built-in modules** (Node.js, e.g., `fs`, `path`)
+2. **External packages** (npm packages, e.g., `react`, `next`)
 3. **Internal imports** (using `@/` alias)
 4. **Parent imports** (`../`)
 5. **Sibling imports** (`./`)
 6. **Index imports** (barrel imports)
 
-Within each group, imports are sorted alphabetically.
+Within each group, imports are sorted alphabetically. Type imports should use `import type` syntax.
 
 **Example:**
 
@@ -220,6 +244,15 @@ import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
 import type { Project } from "@/app/dashboard/project/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+```
+
+**Type-only imports:**
+
+```typescript
+import type { NextConfig } from "next";
+
+import type { Project } from "@/app/dashboard/project/types";
+import type { User } from "@/types";
 ```
 
 ### Naming Conventions
@@ -244,13 +277,16 @@ import { Card, CardContent } from "@/components/ui/card";
 
 ### Prettier Configuration
 
-The project uses Prettier with the following settings:
+The project uses Prettier with the following settings (configured in `.prettierrc` or `package.json`):
 
 - **Print Width**: 120 characters
 - **Tab Width**: 2 spaces
 - **Semicolons**: Required
 - **Quotes**: Double quotes
 - **Trailing Commas**: ES5 style
+- **Arrow Parens**: Always (e.g., `(x) => x`)
+
+Always run `pnpm run format` before committing to ensure consistent formatting.
 
 ### ESLint Rules
 
@@ -950,27 +986,61 @@ docs: update contributing guide with barrel import examples
 
 ### Pull Request Process
 
-1. **Create a branch** from `main`
-2. **Make your changes** following this guide
-3. **Run quality checks**:
+1. **Create a branch** from `main`:
    ```bash
-   pnpm run lint
-   pnpm run format:check
-   pnpm run build
+   git checkout main
+   git pull origin main
+   git checkout -b feature/your-username/feature-name
    ```
-4. **Commit your changes** with descriptive messages
-5. **Push to your branch** and create a Pull Request
-6. **Ensure CI passes** (linting and formatting checks)
-7. **Address review feedback** if needed
+
+2. **Make your changes** following this guide and coding standards
+
+3. **Run quality checks** before committing:
+   ```bash
+   pnpm run format        # Format code
+   pnpm run lint:fix      # Fix linting issues
+   pnpm run lint          # Verify no remaining issues
+   pnpm run format:check  # Verify formatting
+   pnpm run build         # Ensure build succeeds
+   ```
+
+4. **Commit your changes** with descriptive conventional commit messages:
+   ```bash
+   git add .
+   git commit -m "feat(scope): add new feature"
+   ```
+
+5. **Push to your branch** and create a Pull Request:
+   ```bash
+   git push origin feature/your-username/feature-name
+   ```
+
+6. **Ensure CI passes** - All linting, formatting, and build checks must pass
+
+7. **Address review feedback** - Make requested changes and push updates to your branch
+
+8. **Keep your branch up to date** - Rebase or merge `main` into your branch if needed:
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout feature/your-username/feature-name
+   git rebase main  # or git merge main
+   ```
 
 ### Code Review Expectations
 
-- All code must pass linting and formatting checks
-- Follow the project's code style and conventions
-- Include appropriate type definitions
-- Update barrel imports if adding new exports
-- Add comments for complex logic
-- Ensure components are accessible
+When submitting a Pull Request, ensure:
+
+- ✅ All code passes linting and formatting checks
+- ✅ Follow the project's code style and conventions
+- ✅ Include appropriate type definitions (no `any` types)
+- ✅ Update barrel imports (`index.ts`) if adding new exports
+- ✅ Add comments for complex logic or non-obvious code
+- ✅ Ensure components are accessible (ARIA labels, keyboard navigation)
+- ✅ Test your changes locally before submitting
+- ✅ Update documentation if adding new features or changing behavior
+- ✅ Keep commits focused and atomic (one logical change per commit)
+- ✅ Write clear commit messages following conventional commit format
 
 ## Testing and Quality
 
@@ -978,12 +1048,18 @@ docs: update contributing guide with barrel import examples
 
 Before committing, ensure:
 
-- [ ] Code passes `pnpm run lint`
-- [ ] Code is formatted (`pnpm run format:check`)
+- [ ] Code passes `pnpm run lint` (no errors or warnings)
+- [ ] Code is formatted (`pnpm run format:check` passes)
 - [ ] Application builds successfully (`pnpm run build`)
-- [ ] No TypeScript errors
-- [ ] Barrel imports are updated if needed
-- [ ] New components/hooks/types are exported from `index.ts`
+- [ ] No TypeScript errors or warnings
+- [ ] Barrel imports are updated if adding new exports
+- [ ] New components/hooks/types are exported from appropriate `index.ts` files
+- [ ] Server actions follow the authentication and error handling patterns
+- [ ] Forms use React Hook Form with Zod validation
+- [ ] Client components have `"use client"` directive
+- [ ] Server components don't have `"use client"` directive
+- [ ] All imports are properly organized and sorted
+- [ ] No console.log statements left in production code (use console.error for errors)
 
 ### Linting
 
@@ -1173,16 +1249,67 @@ When adding new exports:
 
 3. **Update imports** in files that use the new export to use the barrel import
 
+## Troubleshooting
+
+### Common Issues
+
+**Build fails with TypeScript errors:**
+- Run `pnpm run lint` to see specific errors
+- Ensure all types are properly imported
+- Check that barrel exports are updated
+
+**Firebase connection issues:**
+- Verify `.env.local` file exists and has correct credentials
+- Check that Firebase project is active
+- Ensure Firebase Admin SDK credentials are properly formatted (newlines in private key)
+
+**Import errors:**
+- Verify barrel exports in `index.ts` files
+- Check import paths use `@/` alias correctly
+- Ensure file names match import paths (case-sensitive)
+
+**Linting/formatting issues:**
+- Run `pnpm run format && pnpm run lint:fix` to auto-fix most issues
+- Check ESLint configuration in `eslint.config.mjs`
+- Verify Prettier configuration
+
+**Server action errors:**
+- Ensure `"use server"` directive is at the top of the file
+- Verify authentication using `getAuthenticatedUser`
+- Check that Firebase Admin SDK is initialized
+
 ## Additional Resources
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://react.dev)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [ShadCN UI Documentation](https://ui.shadcn.com)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [Zod Documentation](https://zod.dev)
+### Documentation
+
+- [Next.js Documentation](https://nextjs.org/docs) - App Router, Server Actions, and more
+- [React Documentation](https://react.dev) - React 19 features and hooks
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - TypeScript best practices
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Utility classes and configuration
+- [ShadCN UI Documentation](https://ui.shadcn.com) - Component library and customization
+- [Firebase Documentation](https://firebase.google.com/docs) - Authentication, Firestore, Admin SDK
+- [Zod Documentation](https://zod.dev) - Schema validation and type inference
+- [React Hook Form Documentation](https://react-hook-form.com) - Form state management
+
+### Internal Resources
+
+- Review existing code in similar features for patterns
+- Check `lib/` folder for utility functions
+- Look at `types/` folder for type definitions
+- Examine `constants/` folder for shared constants
+
+## Getting Help
+
+If you need help or have questions:
+
+1. Check this contributing guide and the README
+2. Review existing code for similar patterns
+3. Search existing issues and pull requests
+4. Ask questions in your pull request
+5. Contact the project maintainers
 
 ---
 
 Thank you for contributing to WildHacks Dashboard 2026! 🚀
+
+Your contributions help make the hackathon experience better for everyone.
