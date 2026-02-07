@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-import { WILDHACKS_HOME } from "./constants/routes.constants";
+import { JUDGE_REGISTRATION_PATH, WILDHACKS_HOME } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
 
@@ -40,6 +40,13 @@ const nextConfig: NextConfig = {
       {
         source: WILDHACKS_HOME,
         destination: "https://www.wildhacks.net",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: JUDGE_REGISTRATION_PATH,
+        destination:
+          "https://docs.google.com/forms/d/e/1FAIpQLScyJ4OXjGQOlXSNj-nAZzdcXA1eQWc1URs2fsVpe2dahjlzXw/viewform?usp=dialog",
         basePath: false,
         permanent: false,
       },

@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
@@ -8,9 +8,18 @@ import { getEventTimeRange } from "@/lib";
 import type { Event } from "../types";
 
 type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
-  Pick<Event, "id" | "category" | "title" | "start_time" | "end_time">;
+  Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location">;
 
-const EventItem = ({ handleSelectItem, handleKeyDown, id, category, title, start_time, end_time }: EventItemProps) => {
+const EventItem = ({
+  handleSelectItem,
+  handleKeyDown,
+  id,
+  category,
+  title,
+  start_time,
+  end_time,
+  location,
+}: EventItemProps) => {
   return (
     <Item
       variant="outline"
@@ -26,10 +35,14 @@ const EventItem = ({ handleSelectItem, handleKeyDown, id, category, title, start
           <ItemTitle>{title}</ItemTitle>
           <Badge variant="secondary">{category}</Badge>
         </div>
-        <ItemDescription className="flex flex-wrap items-center gap-4">
+        <ItemDescription className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-1 text-xs font-medium">
             <Clock className="size-3" aria-hidden="true" />
             {getEventTimeRange(start_time, end_time)}
+          </span>
+          <span className="flex items-center gap-1 text-xs font-medium">
+            <MapPin className="size-3" aria-hidden="true" />
+            {location}
           </span>
         </ItemDescription>
       </ItemContent>

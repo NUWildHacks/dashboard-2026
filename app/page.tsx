@@ -20,8 +20,8 @@ const RootPage = async () => {
     <>
       <Navbar />
       <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
-        <div className="max-w-[650px] text-center space-y-5">
-          <Image src="/wildhacks-splash.svg" alt="Main Logo" width={650} height={246.55} loading="eager" />
+        <div className="max-w-[700px] text-center space-y-5">
+          <Image src="/wildhacks-splash.svg" alt="Main Logo" width={700} height={260} loading="eager" />
           {now < end_time && <Ongoing />}
           {now >= end_time && <Completed />}
         </div>

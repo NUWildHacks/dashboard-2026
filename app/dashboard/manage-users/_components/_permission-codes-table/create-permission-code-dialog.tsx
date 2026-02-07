@@ -30,7 +30,7 @@ const CreatePermissionCodeDialog = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create permission code</DialogTitle>
-          <DialogDescription>Please enter the email and type to create a new permission code.</DialogDescription>
+          <DialogDescription>Please enter the email to create a new permission code.</DialogDescription>
         </DialogHeader>
         <form id="create-permission-code-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">

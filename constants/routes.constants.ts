@@ -13,3 +13,4 @@ export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
 export const LOGIN_PATH = "/login" as const;
 
 export const WILDHACKS_HOME = "/wildhacks-home" as const;
+export const JUDGE_REGISTRATION_PATH = "/judge-registration" as const;

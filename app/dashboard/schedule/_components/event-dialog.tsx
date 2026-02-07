@@ -40,7 +40,7 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
           </DialogTitle>
           <DialogDescription asChild>
             <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
-              <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
+              <div className="flex justify-center sm:justify-start items-center gap-2">
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
                   <Clock className="size-3" />
