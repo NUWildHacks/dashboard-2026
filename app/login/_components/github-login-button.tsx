@@ -11,10 +11,10 @@ import { auth } from "@/config/firebase-client";
 import { DASHBOARD_PATH } from "@/constants";
 import { createSession } from "@/lib";
 
-const LoginButton = () => {
+const GithubLoginButton = () => {
   const router = useRouter();
 
-  const handleLogin = async () => {
+  const handleGithubLogin = async () => {
     const githubProvider = new GithubAuthProvider();
     githubProvider.addScope("user:email");
 
@@ -37,11 +37,11 @@ const LoginButton = () => {
   };
 
   return (
-    <Button variant="outline" size="lg" onClick={handleLogin}>
+    <Button variant="outline" size="lg" onClick={handleGithubLogin}>
       <Github />
       Login with Github
     </Button>
   );
 };
 
-export default LoginButton;
+export default GithubLoginButton;

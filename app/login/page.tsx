@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DASHBOARD_PATH, ROOT_PATH } from "@/constants";
 import { verifySession } from "@/lib";
 
-import LoginButton from "./_components/login-button";
+import { GithubLoginButton, GoogleLoginButton } from "./_components";
 
 const LoginPage = async () => {
   const userId = await verifySession();
@@ -21,7 +21,10 @@ const LoginPage = async () => {
               <Image src="/wildhacks-splash.svg" alt="Main Logo" width={300} height={114} loading="eager" />
             </Link>
             <p className="text-sm text-center">Before we continue, let&apos;s make sure you&apos;re logged in first</p>
-            <LoginButton />
+            <div className="flex flex-col items-center gap-2">
+              <GithubLoginButton />
+              <GoogleLoginButton />
+            </div>
           </CardContent>
         </Card>
       </div>

@@ -2,13 +2,9 @@ import { FolderGit2 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { EditProjectForm, EmptyProject, TeamMembersList } from "@/app/dashboard/project/_components";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { DASHBOARD_PATH, DASHBOARD_PROJECT_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
-import type { ParticipantUser } from "@/types";
-
-import { getProject } from "./lib";
 
 const ProjectPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;

@@ -987,6 +987,7 @@ docs: update contributing guide with barrel import examples
 ### Pull Request Process
 
 1. **Create a branch** from `main`:
+
    ```bash
    git checkout main
    git pull origin main
@@ -996,6 +997,7 @@ docs: update contributing guide with barrel import examples
 2. **Make your changes** following this guide and coding standards
 
 3. **Run quality checks** before committing:
+
    ```bash
    pnpm run format        # Format code
    pnpm run lint:fix      # Fix linting issues
@@ -1005,12 +1007,14 @@ docs: update contributing guide with barrel import examples
    ```
 
 4. **Commit your changes** with descriptive conventional commit messages:
+
    ```bash
    git add .
    git commit -m "feat(scope): add new feature"
    ```
 
 5. **Push to your branch** and create a Pull Request:
+
    ```bash
    git push origin feature/your-username/feature-name
    ```
@@ -1254,26 +1258,31 @@ When adding new exports:
 ### Common Issues
 
 **Build fails with TypeScript errors:**
+
 - Run `pnpm run lint` to see specific errors
 - Ensure all types are properly imported
 - Check that barrel exports are updated
 
 **Firebase connection issues:**
+
 - Verify `.env.local` file exists and has correct credentials
 - Check that Firebase project is active
 - Ensure Firebase Admin SDK credentials are properly formatted (newlines in private key)
 
 **Import errors:**
+
 - Verify barrel exports in `index.ts` files
 - Check import paths use `@/` alias correctly
 - Ensure file names match import paths (case-sensitive)
 
 **Linting/formatting issues:**
+
 - Run `pnpm run format && pnpm run lint:fix` to auto-fix most issues
 - Check ESLint configuration in `eslint.config.mjs`
 - Verify Prettier configuration
 
 **Server action errors:**
+
 - Ensure `"use server"` directive is at the top of the file
 - Verify authentication using `getAuthenticatedUser`
 - Check that Firebase Admin SDK is initialized
