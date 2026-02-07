@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore, FirebaseFirestoreError } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
@@ -48,14 +48,11 @@ export const editProfile = async <
 
     return { success: true };
   } catch (error) {
-    let errorMessage;
-    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
-      errorMessage = error.message;
-    } else {
-      errorMessage = "An unknown error occurred";
-    }
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Edit profile error:", detailedError);
 
-    console.error("Edit profile error:", errorMessage);
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return { success: false, error: errorMessage };
   }

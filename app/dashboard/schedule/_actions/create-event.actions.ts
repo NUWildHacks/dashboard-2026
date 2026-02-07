@@ -1,6 +1,6 @@
 "use server";
 
-import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH } from "@/constants";
 import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
@@ -56,14 +56,11 @@ export const createEvent = async (data: CreateEventDialogSchema): Promise<Create
 
     return { success: true };
   } catch (error) {
-    let errorMessage;
-    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
-      errorMessage = error.message;
-    } else {
-      errorMessage = "An unknown error occurred";
-    }
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Create event error:", detailedError);
 
-    console.error("Create event error:", errorMessage);
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return { success: false, error: errorMessage };
   }

@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore, FieldValue, FirebaseFirestoreError } from "firebase-admin/firestore";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
 
 import {
   PROJECTS_COLLECTION,
@@ -83,14 +83,11 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
 
     return { success: true };
   } catch (error) {
-    let errorMessage;
-    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
-      errorMessage = error.message;
-    } else {
-      errorMessage = "An unknown error occurred";
-    }
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Leave project error:", detailedError);
 
-    console.error("Leave project error:", errorMessage);
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return { success: false, error: errorMessage };
   }

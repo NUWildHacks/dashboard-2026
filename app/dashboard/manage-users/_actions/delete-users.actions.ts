@@ -1,6 +1,6 @@
 "use server";
 
-import { FirebaseFirestoreError, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { DASHBOARD_MANAGE_USERS_PATH, ADMIN, LOGIN_PATH, USERS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -33,14 +33,11 @@ export const deleteUsers = async (userIds: User["id"][]): Promise<DeleteUsersRes
 
     return { success: true };
   } catch (error) {
-    let errorMessage;
-    if (error instanceof FirebaseFirestoreError || error instanceof Error) {
-      errorMessage = error.message;
-    } else {
-      errorMessage = "An unknown error occurred";
-    }
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Delete users error:", detailedError);
 
-    console.error("Delete users error:", errorMessage);
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return { success: false, error: errorMessage };
   }
