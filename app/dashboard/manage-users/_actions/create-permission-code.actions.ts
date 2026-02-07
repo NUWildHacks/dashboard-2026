@@ -6,7 +6,7 @@ import {
   ADMIN,
   DASHBOARD_MANAGE_USERS_PATH,
   LOGIN_PATH,
-  ONE_HOUR,
+  ONE_DAY,
   PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,
 } from "@/constants";
@@ -46,7 +46,7 @@ export const createPermissionCode = async (
       .set({
         email,
         created_at: now,
-        expires_at: now + ONE_HOUR,
+        expires_at: now + ONE_DAY,
       });
 
     return { success: true };

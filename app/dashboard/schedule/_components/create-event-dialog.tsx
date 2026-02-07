@@ -85,7 +85,7 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                           placeholder="Enter event body"
                           aria-invalid={fieldState.invalid}
                           autoComplete="off"
-                          className="min-h-32"
+                          className="min-h-32 max-h-64"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>
@@ -199,6 +199,28 @@ const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
                           onChange={field.onChange}
                           aria-invalid={fieldState.invalid}
                           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                  <Controller
+                    name="location"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel
+                          htmlFor={field.name}
+                          className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                        >
+                          Location
+                        </FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          placeholder="Enter event location"
+                          aria-invalid={fieldState.invalid}
+                          autoComplete="off"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>

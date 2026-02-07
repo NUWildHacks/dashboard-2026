@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 import { memo } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,7 @@ import { cn, getEventTimeRange } from "@/lib";
 import { ROW_HEIGHT } from "../../constants";
 import type { Event } from "../../types";
 
-type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time"> &
+type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location"> &
   Pick<UseDialogReturn<Event>, "handleSelectItem"> & {
     left: number;
     top: number;
@@ -26,6 +26,7 @@ const CalendarItem = ({
   title,
   start_time,
   end_time,
+  location,
   handleSelectItem,
   left,
   top,
@@ -34,6 +35,19 @@ const CalendarItem = ({
   zIndex,
 }: CalendarItemProps) => {
   const isCompact = height < ROW_HEIGHT;
+
+  const timeLocationContent = (
+    <>
+      <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+        <Clock className="size-3 shrink-0" />
+        {getEventTimeRange(start_time, end_time)}
+      </span>
+      <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+        <MapPin className="size-3 shrink-0" />
+        {location}
+      </span>
+    </>
+  );
 
   return (
     <Item
@@ -52,9 +66,8 @@ const CalendarItem = ({
         {isCompact ? (
           <>
             <ItemTitle className="text-nowrap shrink-0">{title}</ItemTitle>
-            <ItemDescription className="flex flex-nowrap items-center gap-1 shrink-0">
-              <Clock className="size-3 shrink-0" />
-              <span className="text-xs text-nowrap font-medium">{getEventTimeRange(start_time, end_time)}</span>
+            <ItemDescription className="flex flex-row items-center gap-2 shrink-0">
+              {timeLocationContent}
             </ItemDescription>
             <Badge variant="secondary" className="text-nowrap shrink-0 ml-auto">
               {category}
@@ -62,16 +75,13 @@ const CalendarItem = ({
           </>
         ) : (
           <>
-            <div className="flex flex-row items-center justify-between gap-2 w-full">
+            <div className="flex items-center justify-between gap-2 w-full">
               <ItemTitle className="text-nowrap">{title}</ItemTitle>
               <Badge variant="secondary" className="text-nowrap shrink-0">
                 {category}
               </Badge>
             </div>
-            <ItemDescription className="flex flex-nowrap items-center gap-1">
-              <Clock className="size-3 shrink-0" />
-              <span className="text-xs text-nowrap font-medium">{getEventTimeRange(start_time, end_time)}</span>
-            </ItemDescription>
+            <ItemDescription className="flex flex-col items-start gap-1">{timeLocationContent}</ItemDescription>
           </>
         )}
       </ItemContent>

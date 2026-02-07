@@ -31,6 +31,7 @@ export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
       day: "",
       title: "",
       body: "",
+      location: "",
       start_time: "",
       end_time: "",
     },

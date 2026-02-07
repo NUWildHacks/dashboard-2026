@@ -12,6 +12,8 @@ export type Event = BaseModel & {
 
   start_time: number;
   end_time: number;
+
+  location: string;
 };
 
 export type CalendarRowConfig = {

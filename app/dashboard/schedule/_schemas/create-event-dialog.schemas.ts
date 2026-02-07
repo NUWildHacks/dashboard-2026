@@ -22,6 +22,9 @@ export const createEventDialogSchema = z
       .string()
       .min(0, { message: "End time is required" })
       .regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { message: "End time must be in HH:mm format" }),
+    location: plainTextSingleLineSchema
+      .min(1, { message: "Location is required" })
+      .max(50, { message: "Location must be 50 characters or less" }),
   })
   .refine((data) => data.end_time > data.start_time, {
     message: "End time must be after start time",
