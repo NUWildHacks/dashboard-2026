@@ -77,6 +77,39 @@ The WildHacks Dashboard is the management system for WildHacks 2026. It provides
 - Secure login with Firebase Authentication
 - User registration with profile setup
 
+## Security
+
+### CSRF Protection
+
+This application uses **Next.js App Router Server Actions**, which provide built-in CSRF (Cross-Site Request Forgery) protection by default. The protection mechanism includes:
+
+- **Origin Header Validation**: Server actions automatically verify that requests originate from the same origin
+- **SameSite Cookie Attributes**: Session cookies use secure, SameSite attributes to prevent cross-site attacks
+- **Automatic Token Validation**: Next.js validates the request origin and headers for all server actions
+
+**Note**: All server actions in this application benefit from this automatic protection. No additional CSRF tokens are required when using Next.js Server Actions.
+
+### Content Security Policy (CSP)
+
+The application implements a strict Content Security Policy to mitigate XSS attacks and other injection vulnerabilities. The CSP is configured in `next.config.ts` and restricts:
+
+- Script execution to trusted sources only
+- External resource loading (images, fonts, styles)
+- Network connections to approved domains (Firebase, GitHub OAuth)
+
+### Input Validation
+
+- All user inputs are validated using **Zod schemas** on both client and server
+- URL inputs are restricted to `http://` and `https://` protocols only
+- Text inputs are validated to prevent HTML injection
+- Input length limits are enforced to prevent DoS attacks
+
+### Authentication & Authorization
+
+- **Firebase Authentication** handles secure user authentication
+- Session cookies are verified server-side using Firebase Admin SDK
+- User roles and permissions are enforced in both Firestore security rules and server actions
+
 ## Getting Started
 
 ### Prerequisites
