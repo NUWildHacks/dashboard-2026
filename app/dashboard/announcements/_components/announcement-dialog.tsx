@@ -1,8 +1,6 @@
 "use client";
 
-import { Clock, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Clock, Loader2Icon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,38 +23,20 @@ import { Announcement } from "../types";
 
 type AnnouncementDialogProps = { userRole: User["role"] } & Pick<
   UseDialogReturn<Announcement>,
-  "isOpen" | "setIsOpen" | "selectedItem"
+  "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
 >;
 
-const AnnouncementDialog = ({ userRole, isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
-
+const AnnouncementDialog = ({
+  userRole,
+  isOpen,
+  setIsOpen,
+  selectedItem,
+  isDeleting,
+  handleDeleteItem,
+}: AnnouncementDialogProps) => {
   if (!selectedItem) return null;
 
-  const { id, category, title, body, links, created_at } = selectedItem;
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-
-    try {
-      const result = await deleteAnnouncement(id);
-      const { success } = result;
-
-      if (!success) {
-        const { error } = result;
-        toast.error("Failed to delete announcement", { description: error });
-      }
-
-      setIsOpen(false);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error deleting announcement:", errorMessage);
-
-      toast.error("Failed to delete announcement", { description: errorMessage });
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+  const { category, title, body, links, created_at } = selectedItem;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -99,8 +79,8 @@ const AnnouncementDialog = ({ userRole, isOpen, setIsOpen, selectedItem }: Annou
         </DialogHeader>
         <DialogFooter>
           {userRole === ADMIN && (
-            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
-              {isDeleting ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
+            <Button variant="destructive" onClick={() => handleDeleteItem(deleteAnnouncement)} disabled={isDeleting}>
+              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
             </Button>
           )}
           <DialogClose asChild>
