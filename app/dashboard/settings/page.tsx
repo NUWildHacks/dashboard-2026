@@ -27,7 +27,7 @@ const SettingsPage = async () => {
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">General</h2>
         <ThemeSelect />
-        <EventWithdraw />
+        {user.role !== ADMIN && <EventWithdraw />}
       </div>
       {wildHacksConfig && (
         <div className="flex flex-col gap-4">

@@ -31,17 +31,15 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
           <EmptyMedia variant="icon">
             <MegaphoneOff aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>No announcements made</EmptyTitle>
-          <EmptyDescription>
-            Announcements will be made closer to the event start date. Check back soon!
-          </EmptyDescription>
+          <EmptyTitle>No announcements found</EmptyTitle>
+          <EmptyDescription>More announcements will be made in the future. Check back soon!</EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
   }
 
   return (
-    <ul className="flex flex-col gap-4 w-full" aria-label="Announcements list">
+    <ul className="flex flex-col gap-4 w-full min-h-[272px]" aria-label="Announcements list">
       {announcements.map((announcement) => (
         <li key={announcement.id}>
           <AnnouncementItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...announcement} />
