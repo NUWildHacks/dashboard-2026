@@ -40,10 +40,10 @@ const AnnouncementDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[600px] lg:max-w-[800px]">
         <DialogHeader>
           <DialogTitle asChild>
-            <div className="flex justify-center sm:justify-start items-center gap-4">{title}</div>
+            <div className="flex justify-center sm:justify-start items-center gap-4 break-all">{title}</div>
           </DialogTitle>
           <DialogDescription asChild>
             <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
@@ -54,7 +54,7 @@ const AnnouncementDialog = ({
                   {getSendTime(created_at)}
                 </span>
               </div>
-              <p className="text-center sm:text-left">{body}</p>
+              <p className="text-center sm:text-left break-all">{body}</p>
               {links.length !== 0 && (
                 <div className="space-y-2">
                   <strong>Attached Links</strong>

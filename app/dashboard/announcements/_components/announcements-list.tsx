@@ -32,7 +32,9 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
             <MegaphoneOff aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No announcements found</EmptyTitle>
-          <EmptyDescription>More announcements will be made in the future. Check back soon!</EmptyDescription>
+          <EmptyDescription>
+            More announcements will be made in the future. Check back soon!
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     );

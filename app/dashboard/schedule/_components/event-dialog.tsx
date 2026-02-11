@@ -33,14 +33,14 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px]">
         <DialogHeader>
           <DialogTitle asChild>
-            <div className="flex justify-center sm:justify-start items-center gap-4">{title}</div>
+            <div className="flex justify-center sm:justify-start items-center gap-4 break-all">{title}</div>
           </DialogTitle>
           <DialogDescription asChild>
             <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
-              <div className="flex justify-center sm:justify-start items-center gap-2">
+              <div className="flex justify-center sm:justify-start items-center gap-3">
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
                   <Clock className="size-3" />
@@ -51,7 +51,7 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
                   {location}
                 </span>
               </div>
-              <p className="text-center sm:text-left">{body}</p>
+              <p className="text-center sm:text-left break-all">{body}</p>
             </div>
           </DialogDescription>
         </DialogHeader>

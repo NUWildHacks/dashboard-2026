@@ -31,7 +31,7 @@ const CreateAnnouncementDialog = () => {
       <DialogTrigger asChild>
         <Button className="w-full md:w-auto">Create announcement</Button>
       </DialogTrigger>
-      <DialogContent className="w-full md:max-w-[800px] flex flex-col">
+      <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] flex flex-col">
         <DialogHeader>
           <DialogTitle>Create announcement</DialogTitle>
           <DialogDescription>Please enter your announcement details to continue.</DialogDescription>
@@ -82,7 +82,7 @@ const CreateAnnouncementDialog = () => {
                           placeholder="Enter announcement body"
                           aria-invalid={fieldState.invalid}
                           autoComplete="off"
-                          className="min-h-32 max-h-64"
+                          className="min-h-32 max-h-64 break-all"
                         />
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </Field>

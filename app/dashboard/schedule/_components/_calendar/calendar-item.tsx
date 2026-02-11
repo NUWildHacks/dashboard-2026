@@ -65,8 +65,8 @@ const CalendarItem = ({
       <ItemContent className={cn("w-full", isCompact ? "flex-row items-center gap-2" : "flex-col gap-1")}>
         {isCompact ? (
           <>
-            <ItemTitle className="text-nowrap shrink-0">{title}</ItemTitle>
-            <ItemDescription className="flex flex-row items-center gap-2 shrink-0">
+            <ItemTitle className="text-nowrap">{title}</ItemTitle>
+            <ItemDescription className="flex flex-row items-center gap-3">
               {timeLocationContent}
             </ItemDescription>
             <Badge variant="secondary" className="text-nowrap shrink-0 ml-auto">
@@ -81,7 +81,7 @@ const CalendarItem = ({
                 {category}
               </Badge>
             </div>
-            <ItemDescription className="flex flex-col items-start gap-1">{timeLocationContent}</ItemDescription>
+            <ItemDescription className="flex flex-row items-start gap-3">{timeLocationContent}</ItemDescription>
           </>
         )}
       </ItemContent>

@@ -31,8 +31,8 @@ const EventItem = ({
       className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
     >
       <ItemContent className="gap-2">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
-          <ItemTitle>{title}</ItemTitle>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+          <ItemTitle className="break-all">{title}</ItemTitle>
           <Badge variant="secondary">{category}</Badge>
         </div>
         <ItemDescription className="flex flex-wrap items-center gap-2">
