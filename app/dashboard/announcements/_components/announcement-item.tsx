@@ -3,7 +3,7 @@
 import { Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import type { UseDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
 
@@ -30,11 +30,10 @@ const AnnouncementItem = ({
       aria-label={`View announcement: ${title}`}
       className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
     >
-      <ItemContent className="gap-2">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
-          <ItemTitle>{title}</ItemTitle>
-          <Badge variant="secondary">{category}</Badge>
-        </div>
+      <ItemContent className="gap-2 min-w-0">
+        <ItemTitle className="w-full truncate">
+          <span className="truncate">{title}</span>
+        </ItemTitle>
         <ItemDescription>
           <span className="flex items-center gap-1 text-xs font-medium">
             <Clock className="size-3" aria-hidden="true" />
@@ -42,6 +41,9 @@ const AnnouncementItem = ({
           </span>
         </ItemDescription>
       </ItemContent>
+      <ItemActions>
+        <Badge variant="secondary">{category}</Badge>
+      </ItemActions>
     </Item>
   );
 };
