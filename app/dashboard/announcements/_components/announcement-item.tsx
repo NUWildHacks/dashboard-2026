@@ -31,11 +31,11 @@ const AnnouncementItem = ({
       className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
     >
       <ItemContent className="gap-2 min-w-0">
-        <ItemTitle className="w-full truncate">
+        <ItemTitle className="w-full">
           <span className="truncate">{title}</span>
         </ItemTitle>
         <ItemDescription>
-          <span className="flex items-center gap-1 text-xs font-medium">
+          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
             <Clock className="size-3" aria-hidden="true" />
             {getSendTime(created_at)}
           </span>

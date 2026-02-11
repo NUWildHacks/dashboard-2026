@@ -33,7 +33,7 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px]">
+      <DialogContent className="sm:max-w-[600px] lg:max-w-[800px]">
         <DialogHeader>
           <DialogTitle asChild>
             <div className="flex justify-center sm:justify-start items-center gap-4 break-all">{title}</div>

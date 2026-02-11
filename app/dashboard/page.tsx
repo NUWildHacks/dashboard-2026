@@ -28,7 +28,7 @@ const DashboardPage = async () => {
         <VenueMap />
       </div>
       <LiveAnnouncements userRole={role} />
-      <div className="flex flex-col lg:flex-row gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <UpcomingEvents userRole={role} />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>

@@ -1,7 +1,7 @@
 import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import type { UseDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
@@ -30,22 +30,24 @@ const EventItem = ({
       aria-label={`View event: ${title}`}
       className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
     >
-      <ItemContent className="gap-2">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
-          <ItemTitle className="break-all">{title}</ItemTitle>
-          <Badge variant="secondary">{category}</Badge>
-        </div>
-        <ItemDescription className="flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-1 text-xs font-medium">
-            <Clock className="size-3" aria-hidden="true" />
+      <ItemContent className="gap-2 min-w-0">
+        <ItemTitle className="w-full">
+          <span className="truncate">{title}</span>
+        </ItemTitle>
+        <ItemDescription className="flex flex-row items-center gap-2">
+          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+            <Clock className="size-3 shrink-0" aria-hidden="true" />
             {getEventTimeRange(start_time, end_time)}
           </span>
-          <span className="flex items-center gap-1 text-xs font-medium">
-            <MapPin className="size-3" aria-hidden="true" />
+          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+            <MapPin className="size-3 shrink-0" aria-hidden="true" />
             {location}
           </span>
         </ItemDescription>
       </ItemContent>
+      <ItemActions>
+        <Badge variant="secondary">{category}</Badge>
+      </ItemActions>
     </Item>
   );
 };

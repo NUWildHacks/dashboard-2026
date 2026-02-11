@@ -103,7 +103,7 @@ const Calendar = ({ start_time, end_time, userRole }: CalendarProps) => {
               </SelectContent>
             </Select>
           </div>
-          <InputGroup className="lg:max-w-[350px] min-w-[200px] w-full">
+          <InputGroup className="lg:max-w-[350px] w-full">
             <InputGroupInput
               id="search"
               value={search}

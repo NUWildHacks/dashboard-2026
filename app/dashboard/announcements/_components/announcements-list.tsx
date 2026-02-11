@@ -39,7 +39,7 @@ const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleK
   }
 
   return (
-    <ul className="flex flex-col gap-4 w-full min-h-[272px]" aria-label="Announcements list">
+    <ul className="flex flex-col gap-4 w-full min-h-[250px]" aria-label="Announcements list">
       {announcements.map((announcement) => (
         <li key={announcement.id}>
           <AnnouncementItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...announcement} />

@@ -27,7 +27,7 @@ const UpcomingEvents = ({ userRole }: UpcomingEventsProps) => {
 
   return (
     <>
-      <Card className="shadow-xs flex-1">
+      <Card className="shadow-xs size-full">
         <CardHeader>
           <CardTitle>Upcoming Events</CardTitle>
           <CardDescription>
