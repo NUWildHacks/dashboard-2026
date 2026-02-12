@@ -2,7 +2,7 @@ import {
   LiveAnnouncements,
   QRCode,
   Statistics,
-  TimeRemaining,
+  Countdown,
   UpcomingEvents,
   VenueMap,
 } from "@/app/dashboard/_components";
@@ -23,7 +23,7 @@ const DashboardPage = async () => {
   return (
     <>
       <div className="grid gap-4 auto-rows-min md:grid-cols-2 lg:grid-cols-4">
-        <TimeRemaining {...wildhacksConfig} />
+        <Countdown {...wildhacksConfig} />
         <QRCode userId={userId} />
         <VenueMap />
       </div>

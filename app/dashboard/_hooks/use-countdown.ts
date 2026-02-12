@@ -2,24 +2,32 @@
 
 import { useEffect, useState } from "react";
 
-import { ONE_HOUR, ONE_MINUTE, ONE_SECOND } from "@/constants";
+import { ONE_DAY, ONE_HOUR, ONE_MINUTE, ONE_SECOND } from "@/constants";
 import type { WildHacksConfig } from "@/types";
 
-export type UseTimeRemainingReturn = {
+export type UseCountdownReturn = {
+  days: number;
   hours: number;
   minutes: number;
   seconds: number;
+  hasStarted: boolean;
+  hasEnded: boolean;
 };
 
-export const useTimeRemaining = (
+export const useCountdown = (
   start_time: WildHacksConfig["start_time"],
   end_time: WildHacksConfig["end_time"]
-): UseTimeRemainingReturn => {
+): UseCountdownReturn => {
   const [timeMilliseconds, setTimeMilliseconds] = useState<number>(0);
 
   useEffect(() => {
     const getRemainingTime = () => {
       const now = new Date().getTime();
+
+      if (now <= start_time) {
+        return Math.max(start_time - now, 0);
+      }
+
       return Math.max(end_time - now, 0);
     };
 
@@ -44,6 +52,9 @@ export const useTimeRemaining = (
 
   let remainingMilliseconds = timeMilliseconds;
 
+  const days = Math.floor(remainingMilliseconds / ONE_DAY);
+  remainingMilliseconds = remainingMilliseconds % ONE_DAY;
+
   const hours = Math.floor(remainingMilliseconds / ONE_HOUR);
   remainingMilliseconds = remainingMilliseconds % ONE_HOUR;
 
@@ -52,5 +63,9 @@ export const useTimeRemaining = (
 
   const seconds = Math.floor(remainingMilliseconds / ONE_SECOND);
 
-  return { hours, minutes, seconds };
+  const now = new Date().getTime();
+  const hasStarted = now >= start_time;
+  const hasEnded = now >= end_time;
+
+  return { days, hours, minutes, seconds, hasStarted, hasEnded };
 };
