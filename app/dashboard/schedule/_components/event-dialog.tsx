@@ -33,7 +33,7 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[600px] lg:max-w-[800px]">
+      <DialogContent className="sm:max-w-[600px] lg:max-w-[800px] min-w-0">
         <DialogHeader>
           <DialogTitle asChild>
             <div className="flex justify-center sm:justify-start items-center gap-4 break-all">{title}</div>
@@ -51,7 +51,7 @@ const EventDialog = ({ userRole, isOpen, setIsOpen, selectedItem, isDeleting, ha
                   {location}
                 </span>
               </div>
-              <p className="text-center sm:text-left break-all">{body}</p>
+              <p className="text-center sm:text-left break-all whitespace-pre-wrap">{body}</p>
             </div>
           </DialogDescription>
         </DialogHeader>

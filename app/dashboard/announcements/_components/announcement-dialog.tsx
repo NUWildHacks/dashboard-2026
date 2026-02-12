@@ -41,12 +41,12 @@ const AnnouncementDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[600px] lg:max-w-[800px]">
-        <DialogHeader>
+        <DialogHeader className="min-w-0">
           <DialogTitle asChild>
             <div className="flex justify-center sm:justify-start items-center gap-4 break-all">{title}</div>
           </DialogTitle>
           <DialogDescription asChild>
-            <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold">
+            <div className="flex flex-col gap-4 [&_strong]:text-foreground [&_strong]:font-semibold min-w-0">
               <div className="flex justify-center sm:justify-start items-center gap-x-4 gap-y-2">
                 <Badge variant="secondary">{category}</Badge>
                 <span className="flex items-center gap-1 text-xs font-medium">
@@ -54,7 +54,7 @@ const AnnouncementDialog = ({
                   {getSendTime(created_at)}
                 </span>
               </div>
-              <p className="text-center sm:text-left break-all">{body}</p>
+              <p className="text-center sm:text-left break-all whitespace-pre-wrap">{body}</p>
               {links.length !== 0 && (
                 <div className="space-y-2">
                   <strong>Attached Links</strong>
@@ -65,7 +65,7 @@ const AnnouncementDialog = ({
                           href={link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="block hover:underline underline-offset-4"
+                          className="block truncate hover:underline underline-offset-4"
                         >
                           {link}
                         </a>
