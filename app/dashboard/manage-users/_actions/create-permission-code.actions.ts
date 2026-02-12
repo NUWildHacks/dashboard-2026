@@ -32,11 +32,24 @@ export const createPermissionCode = async (
 
     const { email } = data;
 
+    const existingPermissionCodeDocSnapshots = await db
+      .collection(PERMISSION_CODES_COLLECTION)
+      .where("email", "==", email)
+      .get();
+    if (!existingPermissionCodeDocSnapshots.empty) {
+      return {
+        success: false,
+        error: "Email already has a permission code",
+        field: "email" as const,
+      };
+    }
+
     const existingUserDocSnapshots = await db.collection(USERS_COLLECTION).where("email", "==", email).get();
     if (!existingUserDocSnapshots.empty) {
       return {
         success: false,
         error: "User already registered",
+        field: "email" as const,
       };
     }
 
