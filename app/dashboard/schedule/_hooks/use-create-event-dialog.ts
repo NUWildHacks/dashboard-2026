@@ -5,6 +5,8 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import { WildHacksConfig } from "@/types";
+
 import { createEvent } from "../_actions/create-event.actions";
 import { createEventDialogSchema, CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
 
@@ -15,7 +17,10 @@ export type UseCreateEventDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<CreateEventDialogSchema>, "control" | "handleSubmit">;
 
-export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
+export const useCreateEventDialog = (
+  start_time: WildHacksConfig["start_time"],
+  end_time: WildHacksConfig["end_time"]
+): UseCreateEventDialogReturn => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -39,7 +44,7 @@ export const useCreateEventDialog = (): UseCreateEventDialogReturn => {
 
   const onSubmit = async (data: CreateEventDialogSchema) => {
     try {
-      const result = await createEvent(data);
+      const result = await createEvent(data, start_time, end_time);
       const { success } = result;
 
       if (!success) {

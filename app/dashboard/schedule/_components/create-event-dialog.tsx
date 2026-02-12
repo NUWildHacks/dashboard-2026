@@ -18,16 +18,20 @@ import { FieldError, Field, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { WildHacksConfig } from "@/types";
 
 import { useCreateEventDialog } from "../_hooks/use-create-event-dialog";
 import { EVENT_CATEGORIES } from "../constants";
 
 type CreateEventDialogProps = {
   availableDays: { dayStart: number; dayEnd: number; label: string }[];
-};
+} & Pick<WildHacksConfig, "start_time" | "end_time">;
 
-const CreateEventDialog = ({ availableDays }: CreateEventDialogProps) => {
-  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreateEventDialog();
+const CreateEventDialog = ({ availableDays, start_time, end_time }: CreateEventDialogProps) => {
+  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreateEventDialog(
+    start_time,
+    end_time
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -4,13 +4,17 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH } from "@/constants";
 import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
 
 export type CreateEventResult = ActionResult<CreateEventDialogSchema>;
 
-export const createEvent = async (data: CreateEventDialogSchema): Promise<CreateEventResult> => {
+export const createEvent = async (
+  data: CreateEventDialogSchema,
+  wildHacksStartTime: WildHacksConfig["start_time"],
+  wildHacksEndTime: WildHacksConfig["end_time"]
+): Promise<CreateEventResult> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -40,6 +44,22 @@ export const createEvent = async (data: CreateEventDialogSchema): Promise<Create
         success: false,
         error: "Invalid time format",
         field: startTimeMs === 0 ? ("start_time" as const) : ("end_time" as const),
+      };
+    }
+
+    if (startTimeMs < wildHacksStartTime) {
+      return {
+        success: false,
+        error: "Event cannot start before WildHacks start time",
+        field: "start_time" as const,
+      };
+    }
+
+    if (endTimeMs > wildHacksEndTime) {
+      return {
+        success: false,
+        error: "Event cannot end after WildHacks end time",
+        field: "end_time" as const,
       };
     }
 
