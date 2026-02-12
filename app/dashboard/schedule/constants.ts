@@ -1,12 +1,6 @@
 import type { Event, CalendarRowConfig } from "./types";
 
-export const FOOD = "Food" as const;
-export const WORKSHOP = "Workshop" as const;
-export const SPEAKER = "Speaker" as const;
-export const MENTORSHOP = "Mentorship" as const;
-export const SOCIAL = "Social" as const;
-
-export const EVENT_CATEGORIES = [FOOD, WORKSHOP, SPEAKER, MENTORSHOP, SOCIAL] as const;
+export const EVENT_CATEGORIES = ["Food", "Workshop", "Speaker", "Mentorship", "Social"] as const;
 
 export const EVENT_FIELDS = {
   category: "category",
@@ -23,33 +17,30 @@ export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;
 export const BASE_Z_INDEX = 10 as const;
 
-export const DEFAULT_FIRST_CALENDAR_ROW_INDEX = 9 as const;
-export const DEFAULT_LAST_CALENDAR_ROW_INDEX = 17 as const;
-
 export const CALENDAR_ROWS: CalendarRowConfig[] = [
-  { start: 0, end: 60, label: "12 AM" },
-  { start: 60, end: 120, label: "1 AM" },
-  { start: 120, end: 180, label: "2 AM" },
-  { start: 180, end: 240, label: "3 AM" },
-  { start: 240, end: 300, label: "4 AM" },
-  { start: 300, end: 360, label: "5 AM" },
-  { start: 360, end: 420, label: "6 AM" },
-  { start: 420, end: 480, label: "7 AM" },
-  { start: 480, end: 540, label: "8 AM" },
-  { start: 540, end: 600, label: "9 AM" },
-  { start: 600, end: 660, label: "10 AM" },
-  { start: 660, end: 720, label: "11 AM" },
-  { start: 720, end: 780, label: "12 PM" },
-  { start: 780, end: 840, label: "1 PM" },
-  { start: 840, end: 900, label: "2 PM" },
-  { start: 900, end: 960, label: "3 PM" },
-  { start: 960, end: 1020, label: "4 PM" },
-  { start: 1020, end: 1080, label: "5 PM" },
-  { start: 1080, end: 1140, label: "6 PM" },
-  { start: 1140, end: 1200, label: "7 PM" },
-  { start: 1200, end: 1260, label: "8 PM" },
-  { start: 1260, end: 1320, label: "9 PM" },
-  { start: 1320, end: 1380, label: "10 PM" },
-  { start: 1380, end: 1440, label: "11 PM" },
-  { start: 1440, end: 1500, label: "12 AM" },
+  { startMin: 0, endMin: 60, label: "12 AM" },
+  { startMin: 60, endMin: 120, label: "1 AM" },
+  { startMin: 120, endMin: 180, label: "2 AM" },
+  { startMin: 180, endMin: 240, label: "3 AM" },
+  { startMin: 240, endMin: 300, label: "4 AM" },
+  { startMin: 300, endMin: 360, label: "5 AM" },
+  { startMin: 360, endMin: 420, label: "6 AM" },
+  { startMin: 420, endMin: 480, label: "7 AM" },
+  { startMin: 480, endMin: 540, label: "8 AM" },
+  { startMin: 540, endMin: 600, label: "9 AM" },
+  { startMin: 600, endMin: 660, label: "10 AM" },
+  { startMin: 660, endMin: 720, label: "11 AM" },
+  { startMin: 720, endMin: 780, label: "12 PM" },
+  { startMin: 780, endMin: 840, label: "1 PM" },
+  { startMin: 840, endMin: 900, label: "2 PM" },
+  { startMin: 900, endMin: 960, label: "3 PM" },
+  { startMin: 960, endMin: 1020, label: "4 PM" },
+  { startMin: 1020, endMin: 1080, label: "5 PM" },
+  { startMin: 1080, endMin: 1140, label: "6 PM" },
+  { startMin: 1140, endMin: 1200, label: "7 PM" },
+  { startMin: 1200, endMin: 1260, label: "8 PM" },
+  { startMin: 1260, endMin: 1320, label: "9 PM" },
+  { startMin: 1320, endMin: 1380, label: "10 PM" },
+  { startMin: 1380, endMin: 1440, label: "11 PM" },
+  { startMin: 1440, endMin: 1500, label: "12 AM" },
 ];

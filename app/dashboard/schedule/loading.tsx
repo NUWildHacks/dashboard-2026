@@ -1,10 +1,19 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { ONE_DAY } from "@/constants";
 import { cn } from "@/lib";
 
 import { getVisibleCalendarRows } from "./lib";
 
 const ScheduleLoading = async () => {
-  const visibleCalendarRows = getVisibleCalendarRows([], 0);
+  const defaultStartTime = new Date().getTime();
+  const defaultEndTime = defaultStartTime + ONE_DAY;
+  const defaultDay = new Date().setHours(0, 0, 0, 0);
+  const visibleCalendarRows = getVisibleCalendarRows(
+    defaultStartTime,
+    defaultEndTime,
+    defaultDay,
+    defaultDay + ONE_DAY
+  );
 
   return (
     <div
@@ -18,9 +27,9 @@ const ScheduleLoading = async () => {
         <Skeleton className="w-full h-9" />
       </div>
       <div className="w-full flex flex-col py-2">
-        {visibleCalendarRows.map(({ start, label }, index) => (
+        {visibleCalendarRows.map(({ label }, index) => (
           <div
-            key={`${label}-${start}`}
+            key={`${label}-${index}`}
             className={cn(
               "w-full grid grid-cols-[50px_1fr] space-x-2",
               index !== visibleCalendarRows.length - 1 && "h-[80px]"

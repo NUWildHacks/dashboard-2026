@@ -1,19 +1,18 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
 
 import { CalendarRow, CreateEventDialog, EventDialog } from "@/app/dashboard/schedule/_components";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ADMIN, ONE_DAY } from "@/constants";
+import { ADMIN } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
-import { getDateFromMilliseconds } from "@/lib";
 import type { User, WildHacksConfig } from "@/types";
 
 import { useEvents } from "../../_hooks";
+import { useCalendar } from "../../_hooks/use-calendar";
 import { EVENT_CATEGORIES } from "../../constants";
-import { createOverlapGroups, filterEventsByDay, getDayStart, getVisibleCalendarRows } from "../../lib";
+import { createOverlapGroups } from "../../lib";
 import type { Event, EventCategory } from "../../types";
 
 type CalendarProps = {
@@ -23,53 +22,15 @@ type CalendarProps = {
 const Calendar = ({ start_time, end_time, userRole }: CalendarProps) => {
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
-  const useEventsReturn = useEvents({ category, search });
-  const { allEvents } = useEventsReturn;
+  const { selectedDay, availableDays, visibleCalendarRows, handleSelectDay } = useCalendar(start_time, end_time);
+  const { label, startMs } = selectedDay;
 
-  const availableDays = useMemo(() => {
-    const days: { dayStart: number; dayEnd: number; label: string }[] = [];
-    let currentDayStart = getDayStart(start_time);
+  const useEventsReturn = useEvents({ category, search, selectedDay });
+  const { events } = useEventsReturn;
 
-    while (currentDayStart < end_time) {
-      const dayEnd = currentDayStart + ONE_DAY;
-      const dayLabel = getDateFromMilliseconds(currentDayStart);
-      days.push({ dayStart: currentDayStart, dayEnd, label: dayLabel });
-      currentDayStart = dayEnd;
-    }
+  const useEventDialogReturn = useDialog<Event>(events);
 
-    return days;
-  }, [start_time, end_time]);
-
-  const defaultSelectedDay = useMemo(() => {
-    const now = new Date().getTime();
-    const todayStart = getDayStart(now);
-
-    const todayInRange = availableDays.some((day) => day.dayStart <= todayStart && day.dayEnd > todayStart);
-
-    if (todayInRange) {
-      return todayStart;
-    }
-
-    return availableDays[0]?.dayStart ?? start_time;
-  }, [availableDays, start_time]);
-
-  const [selectedDayStart, setSelectedDayStart] = useState<number>(() => defaultSelectedDay);
-
-  useEffect(() => {
-    setSelectedDayStart(defaultSelectedDay);
-  }, [defaultSelectedDay]);
-
-  const selectedDay = availableDays.find((day) => day.dayStart === selectedDayStart);
-  const dayStart = selectedDay?.dayStart ?? defaultSelectedDay;
-  const dayEnd = selectedDay?.dayEnd ?? defaultSelectedDay + ONE_DAY;
-
-  const filteredEvents = useMemo(() => filterEventsByDay(allEvents, dayStart, dayEnd), [allEvents, dayStart, dayEnd]);
-
-  const useEventDialogReturn = useDialog<Event>(filteredEvents);
-
-  const overlapGroups = createOverlapGroups(filteredEvents);
-
-  const visibleCalendarRows = getVisibleCalendarRows(filteredEvents, dayStart);
+  const overlapGroups = createOverlapGroups(events);
 
   return (
     <>
@@ -79,13 +40,13 @@ const Calendar = ({ start_time, end_time, userRole }: CalendarProps) => {
             {userRole === ADMIN && (
               <CreateEventDialog availableDays={availableDays} start_time={start_time} end_time={end_time} />
             )}
-            <Select value={selectedDayStart.toString()} onValueChange={(value) => setSelectedDayStart(Number(value))}>
+            <Select value={label} onValueChange={(value) => handleSelectDay(value)}>
               <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
                 <SelectValue placeholder="Select day" />
               </SelectTrigger>
               <SelectContent>
                 {availableDays.map((day) => (
-                  <SelectItem key={day.dayStart} value={day.dayStart.toString()}>
+                  <SelectItem key={day.label} value={day.label}>
                     {day.label}
                   </SelectItem>
                 ))}
@@ -123,9 +84,9 @@ const Calendar = ({ start_time, end_time, userRole }: CalendarProps) => {
           {visibleCalendarRows.slice(0, -1).map((calendarRow) => (
             <CalendarRow
               key={calendarRow.label}
-              events={filteredEvents}
+              events={events}
+              calendarDayStartMs={startMs}
               overlapGroups={overlapGroups}
-              dayStart={dayStart}
               {...calendarRow}
               {...useEventDialogReturn}
             />

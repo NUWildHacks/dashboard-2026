@@ -8,25 +8,26 @@ import { EVENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
 
 import { EVENT_FIELDS } from "../constants";
-import type { Event, EventCategory } from "../types";
+import type { CalendarDay, Event, EventCategory } from "../types";
 
 export type UseEventsSettings = {
   category?: UseFiltersReturn<EventCategory>["category"];
   search?: UseFiltersReturn<EventCategory>["search"];
+  selectedDay?: CalendarDay;
   limitCount?: number;
 };
 
 export type UseEventsReturn = {
-  allEvents: Event[];
+  events: Event[];
   upcomingEvents: Event[];
   isLoading: boolean;
 };
 
 export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { category, search, limitCount } = settings;
+  const { category, search, selectedDay, limitCount } = settings;
 
   useEffect(() => {
     let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start_time, "asc"));
@@ -46,7 +47,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
             }) as Event
         );
 
-        setEvents(docs);
+        setAllEvents(docs);
         setIsLoading(false);
       },
       (error) => {
@@ -58,8 +59,8 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return () => unsubscribe();
   }, [limitCount]);
 
-  const filteredEvents = useMemo(() => {
-    let result = events;
+  const events = useMemo(() => {
+    let result = allEvents;
 
     if (category && category !== "all") {
       result = result.filter((event) => event.category === category);
@@ -76,13 +77,17 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
       });
     }
 
+    if (selectedDay) {
+      result = result.filter((event) => event.start_time >= selectedDay.startMs && event.end_time <= selectedDay.endMs);
+    }
+
     return result;
-  }, [events, category, search]);
+  }, [allEvents, category, search, selectedDay]);
 
   const upcomingEvents = useMemo(() => {
     const now = new Date().getTime();
     return events.filter((event) => event.end_time > now);
   }, [events]);
 
-  return { allEvents: filteredEvents, upcomingEvents, isLoading };
+  return { events, upcomingEvents, isLoading };
 };

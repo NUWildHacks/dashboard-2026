@@ -22,9 +22,10 @@ import { WildHacksConfig } from "@/types";
 
 import { useCreateEventDialog } from "../_hooks/use-create-event-dialog";
 import { EVENT_CATEGORIES } from "../constants";
+import { CalendarDay } from "../types";
 
 type CreateEventDialogProps = {
-  availableDays: { dayStart: number; dayEnd: number; label: string }[];
+  availableDays: CalendarDay[];
 } & Pick<WildHacksConfig, "start_time" | "end_time">;
 
 const CreateEventDialog = ({ availableDays, start_time, end_time }: CreateEventDialogProps) => {

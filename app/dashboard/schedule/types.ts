@@ -17,7 +17,13 @@ export type Event = BaseModel & {
 };
 
 export type CalendarRowConfig = {
-  start: number;
-  end: number;
+  startMin: number;
+  endMin: number;
+  label: string;
+};
+
+export type CalendarDay = {
+  startMs: number;
+  endMs: number;
   label: string;
 };
