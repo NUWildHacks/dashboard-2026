@@ -15,25 +15,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UseDialogReturn } from "@/hooks";
-import { getEventTimeRange } from "@/lib";
+import { getDateFromMilliseconds } from "@/lib";
 
-import { UseEventsReturn } from "../_hooks";
-import type { Event } from "../types";
+import { UseAnnouncementsReturn } from "../_hooks";
+import type { Announcement } from "../types";
 
 /**
- * Get events table columns.
- * Returns columns for displaying events in a table format.
+ * Get announcements table columns.
+ * Returns columns for displaying announcements in a table format.
  *
- * @returns Array of column definitions for the events table
+ * @returns Array of column definitions for the announcements table
  * @example
  * ```ts
- * const columns = getEventsColumns();
+ * const columns = getAnnouncementsColumns();
  * ```
  */
-export const getEventsColumns = (
-  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
-  handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
-): ColumnDef<Event>[] => {
+export const getAnnouncementsColumns = (
+  handleSelectItem: UseDialogReturn<Announcement>["handleSelectItem"],
+  handleDeleteAnnouncements: UseAnnouncementsReturn["handleDeleteAnnouncements"]
+): ColumnDef<Announcement>[] => {
   return [
     {
       id: "select",
@@ -69,20 +69,18 @@ export const getEventsColumns = (
       },
     },
     {
-      accessorKey: "start_time",
+      accessorKey: "created_at",
       header: ({ column }) => {
         return (
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Time
+            Created At
             {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
           </Button>
         );
       },
       cell: ({ row }) => {
         return (
-          <div className="text-left text-muted-foreground">
-            {getEventTimeRange(row.original.start_time, row.original.end_time)}
-          </div>
+          <div className="text-left text-muted-foreground">{getDateFromMilliseconds(row.original.created_at)}</div>
         );
       },
     },
@@ -95,13 +93,6 @@ export const getEventsColumns = (
             <Badge variant="secondary">{row.original.category}</Badge>
           </div>
         );
-      },
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
-      cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.location}</div>;
       },
     },
     {
@@ -118,20 +109,17 @@ export const getEventsColumns = (
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View event</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View announcement</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                Copy event ID
+                Copy announcement ID
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.title)}>
-                Copy event title
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.location)}>
-                Copy event location
+                Copy announcement title
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteEvents([row.original.id])}>
-                Delete event
+              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteAnnouncements([row.original.id])}>
+                Delete announcement
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

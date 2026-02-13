@@ -2,11 +2,13 @@
 
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
 
+import { deleteAnnouncement } from "../_actions";
 import { ANNOUNCEMENT_FIELDS } from "../constants";
 import type { AnnouncementCategory, Announcement } from "../types";
 
@@ -19,6 +21,7 @@ export type UseAnnouncementsSettings = {
 export type UseAnnouncementsReturn = {
   announcements: Announcement[];
   isLoading: boolean;
+  handleDeleteAnnouncements: (announcementIds: Announcement["id"][]) => Promise<void>;
 };
 
 export const useAnnouncements = (settings: UseAnnouncementsSettings): UseAnnouncementsReturn => {
@@ -79,5 +82,27 @@ export const useAnnouncements = (settings: UseAnnouncementsSettings): UseAnnounc
     return result;
   }, [announcements, category, search]);
 
-  return { announcements: filteredAnnouncements, isLoading };
+  const handleDeleteAnnouncements = async (announcementIds: Announcement["id"][]) => {
+    try {
+      const result = await deleteAnnouncement(announcementIds);
+      const { success } = result;
+
+      if (!success) {
+        const { field, error } = result;
+
+        if (!field) {
+          throw new Error(error);
+        }
+
+        return;
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Delete announcements error:", errorMessage);
+
+      toast.error("Failed to delete announcements", { description: errorMessage });
+    }
+  };
+
+  return { announcements: filteredAnnouncements, isLoading, handleDeleteAnnouncements };
 };

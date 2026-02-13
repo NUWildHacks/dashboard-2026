@@ -10,7 +10,7 @@ import { Announcement } from "../types";
 
 export type DeleteAnnouncementResult = ActionResult;
 
-export const deleteAnnouncement = async (announcementId: Announcement["id"]): Promise<DeleteAnnouncementResult> => {
+export const deleteAnnouncement = async (announcementIds: Announcement["id"][]): Promise<DeleteAnnouncementResult> => {
   const db = getFirestore();
 
   try {
@@ -20,7 +20,14 @@ export const deleteAnnouncement = async (announcementId: Announcement["id"]): Pr
     const roleError = requireRole(user, ADMIN, "You are not authorized to delete announcements");
     if (roleError) return roleError;
 
-    await db.collection(ANNOUNCEMENTS_COLLECTION).doc(announcementId).delete();
+    const batch = db.batch();
+
+    for (const announcementId of announcementIds) {
+      const announcementDocRef = db.collection(ANNOUNCEMENTS_COLLECTION).doc(announcementId);
+      batch.delete(announcementDocRef);
+    }
+
+    await batch.commit();
 
     return { success: true };
   } catch (error) {
