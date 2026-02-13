@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import {
   PROJECTS_COLLECTION,
@@ -80,6 +81,8 @@ export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProje
         }
       }
     }
+
+    revalidatePath(DASHBOARD_PROJECT_PATH);
 
     return { success: true };
   } catch (error) {

@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { PROJECTS_COLLECTION, USERS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
@@ -67,6 +68,8 @@ export const createProject = async (data: CreateProjectFormSchema): Promise<Crea
         joined_project_at: now,
         updated_at: now,
       });
+
+      revalidatePath(DASHBOARD_PROJECT_PATH);
 
       return { success: true };
     } catch (updateError) {

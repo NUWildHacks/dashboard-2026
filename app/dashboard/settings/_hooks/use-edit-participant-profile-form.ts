@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -16,8 +15,6 @@ export type UseEditParticipantProfileFormReturn = {
 } & Pick<UseFormReturn<EditParticipantProfileFormSchema>, "control" | "handleSubmit">;
 
 export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditParticipantProfileFormReturn => {
-  const router = useRouter();
-
   const {
     control,
     handleSubmit,
@@ -47,8 +44,6 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
         });
         return;
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Edit profile error:", errorMessage);

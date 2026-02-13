@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import {
   ADMIN,
@@ -61,6 +62,8 @@ export const createPermissionCode = async (
         created_at: now,
         expires_at: now + ONE_DAY,
       });
+
+    revalidatePath(DASHBOARD_MANAGE_USERS_PATH);
 
     return { success: true };
   } catch (error) {

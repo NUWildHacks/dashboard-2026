@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
@@ -45,6 +46,8 @@ export const editProfile = async <
         ...data,
         updated_at: now,
       });
+
+    revalidatePath(DASHBOARD_SETTINGS_PATH);
 
     return { success: true };
   } catch (error) {

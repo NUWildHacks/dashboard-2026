@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import {
   PROJECTS_COLLECTION,
@@ -85,6 +86,8 @@ export const joinProject = async (data: JoinProjectFormSchema): Promise<JoinProj
       joined_project_at: now,
       updated_at: now,
     });
+
+    revalidatePath(DASHBOARD_PROJECT_PATH);
 
     return { success: true };
   } catch (error) {

@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { PROJECTS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
@@ -52,6 +53,8 @@ export const editProject = async (
       demo_url: demo_url || "",
       updated_at: now,
     });
+
+    revalidatePath(DASHBOARD_PROJECT_PATH);
 
     return { success: true };
   } catch (error) {

@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
@@ -17,8 +16,6 @@ export type UseJoinProjectDialogReturn = {
 } & Pick<UseFormReturn<JoinProjectFormSchema>, "control" | "handleSubmit">;
 
 export const useJoinProjectDialog = (): UseJoinProjectDialogReturn => {
-  const router = useRouter();
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -53,7 +50,6 @@ export const useJoinProjectDialog = (): UseJoinProjectDialogReturn => {
       }
 
       setIsOpen(false);
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Join project error:", errorMessage);

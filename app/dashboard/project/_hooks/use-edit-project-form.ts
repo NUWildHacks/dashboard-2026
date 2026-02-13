@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -18,8 +17,6 @@ export type UseEditProjectFormReturn = {
 
 export const useEditProjectForm = (project: Project): UseEditProjectFormReturn => {
   const { id, name, description, github_url, demo_url } = project;
-
-  const router = useRouter();
 
   const {
     control,
@@ -55,8 +52,6 @@ export const useEditProjectForm = (project: Project): UseEditProjectFormReturn =
         });
         return;
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Edit project error:", errorMessage);

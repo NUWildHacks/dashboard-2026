@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -32,6 +33,8 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
         max_participants: Number(max_participants),
         updated_at: now,
       });
+
+    revalidatePath(DASHBOARD_SETTINGS_PATH);
 
     return { success: true };
   } catch (error) {

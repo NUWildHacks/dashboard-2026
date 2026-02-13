@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { json2csv } from "json-2-csv";
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -36,8 +35,6 @@ export type UseUsersTableReturn = {
 };
 
 export const useUsersTable = (data: User[]): UseUsersTableReturn => {
-  const router = useRouter();
-
   const [role, setRole] = useState<User["role"]>(PARTICIPANT);
   const [search, setSearch] = useState<string>("");
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
@@ -88,8 +85,6 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
 
         return;
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Delete permission codes error:", errorMessage);

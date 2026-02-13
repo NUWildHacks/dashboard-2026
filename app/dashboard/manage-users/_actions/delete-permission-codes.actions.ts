@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { PERMISSION_CODES_COLLECTION, DASHBOARD_MANAGE_USERS_PATH, ADMIN, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -30,6 +31,8 @@ export const deletePermissionCodes = async (
     }
 
     await batch.commit();
+
+    revalidatePath(DASHBOARD_MANAGE_USERS_PATH);
 
     return { success: true };
   } catch (error) {

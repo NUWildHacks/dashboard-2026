@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { Control } from "react-hook-form";
 import { toast } from "sonner";
@@ -22,8 +21,6 @@ export type UseEditWildhacksConfigFormReturn = {
 
 export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
   const { max_team_size, max_participants, registration_deadline, start_time, end_time } = wildhacksConfig;
-
-  const router = useRouter();
 
   const {
     control,
@@ -60,8 +57,6 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
         });
         return;
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Edit wildhacks config error:", errorMessage);

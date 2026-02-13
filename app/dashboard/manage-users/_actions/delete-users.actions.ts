@@ -1,6 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { DASHBOARD_MANAGE_USERS_PATH, ADMIN, LOGIN_PATH, USERS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
@@ -30,6 +31,8 @@ export const deleteUsers = async (userIds: User["id"][]): Promise<DeleteUsersRes
     }
 
     await batch.commit();
+
+    revalidatePath(DASHBOARD_MANAGE_USERS_PATH);
 
     return { success: true };
   } catch (error) {

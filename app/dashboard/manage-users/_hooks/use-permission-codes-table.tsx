@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ChevronUp, ChevronDown, MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -41,8 +40,6 @@ export type UsePermissionCodesTableReturn = {
 };
 
 export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCodesTableReturn => {
-  const router = useRouter();
-
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -61,8 +58,6 @@ export const usePermissionCodesTable = (data: PermissionCode[]): UsePermissionCo
 
         return;
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Delete permission codes error:", errorMessage);
