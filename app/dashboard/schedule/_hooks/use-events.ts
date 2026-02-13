@@ -71,7 +71,8 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
         return (
           event.title.toLowerCase().includes(searchLower) ||
           event.body.toLowerCase().includes(searchLower) ||
-          event.category.toLowerCase().includes(searchLower)
+          event.category.toLowerCase().includes(searchLower) ||
+          event.location.toLowerCase().includes(searchLower)
         );
       });
     }

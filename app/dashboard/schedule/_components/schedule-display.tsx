@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Rows3, SearchIcon } from "lucide-react";
+import { CalendarDays, Table2, SearchIcon } from "lucide-react";
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,7 +13,7 @@ import { useEvents, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
-import { Calendar, CreateEventDialog, EventDialog, EventsList } from ".";
+import { Calendar, CreateEventDialog, EventDialog, EventsTable } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
@@ -63,15 +63,15 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
                 ))}
               </SelectContent>
             </Select>
-            <Tabs value={display} onValueChange={(value) => setDisplay(value as "calendar" | "list")}>
+            <Tabs value={display} onValueChange={(value) => setDisplay(value as "calendar" | "table")}>
               <TabsList className="w-full lg:w-fit">
                 <TabsTrigger value="calendar">
                   <CalendarDays />
                   Calendar
                 </TabsTrigger>
-                <TabsTrigger value="list">
-                  <Rows3 />
-                  List
+                <TabsTrigger value="table">
+                  <Table2 />
+                  Table
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -99,7 +99,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             {...useEventDialogReturn}
           />
         )}
-        {display === "list" && <EventsList {...useEventsReturn} {...useEventDialogReturn} />}
+        {display === "table" && <EventsTable {...useEventsReturn} {...useEventDialogReturn} />}
       </div>
       <EventDialog userRole={userRole} {...useEventDialogReturn} />
     </>

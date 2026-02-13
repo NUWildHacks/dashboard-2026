@@ -11,8 +11,8 @@ export type UseScheduleDisplayReturn = {
   selectedDay: CalendarDay;
   availableDays: CalendarDay[];
   handleSelectDay: (dayLabel: CalendarDay["label"]) => void;
-  display: "calendar" | "list";
-  setDisplay: (display: "calendar" | "list") => void;
+  display: "calendar" | "table";
+  setDisplay: (display: "calendar" | "table") => void;
 };
 
 export const useScheduleDisplay = (
@@ -41,7 +41,7 @@ export const useScheduleDisplay = (
 
     return currentDay ?? availableDays[0]!;
   });
-  const [display, setDisplay] = useState<"calendar" | "list">("calendar");
+  const [display, setDisplay] = useState<"calendar" | "table">("calendar");
 
   const handleSelectDay = (dayLabel: CalendarDay["label"]) => {
     const newSelectedDay = availableDays.find((day) => day.label === dayLabel);
