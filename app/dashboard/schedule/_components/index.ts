@@ -1,7 +1,8 @@
 export { default as Calendar } from "./_calendar/calendar";
 export { default as CalendarItem } from "./_calendar/calendar-item";
 export { default as CalendarRow } from "./_calendar/calendar-row";
-export { default as CreateEventDialog } from "./create-event-dialog";
-export { default as EventDialog } from "./event-dialog";
-export { default as EventItem } from "./event-item";
-export { default as EventsList } from "./events-list";
+export { default as CreateEventDialog } from "./_events/create-event-dialog";
+export { default as EventDialog } from "./_events/event-dialog";
+export { default as EventItem } from "./_events/event-item";
+export { default as EventsList } from "./_events/events-list";
+export { default as ScheduleDisplay } from "./schedule-display";

@@ -5,7 +5,7 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/co
 import type { UseDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import type { Event } from "../types";
+import type { Event } from "../../types";
 
 type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
   Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location">;

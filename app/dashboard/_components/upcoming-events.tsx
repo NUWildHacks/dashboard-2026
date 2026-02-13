@@ -17,11 +17,10 @@ type UpcomingEventsProps = {
 };
 
 const UpcomingEvents = ({ userRole }: UpcomingEventsProps) => {
-  const useEventsReturn = useEvents({
-    limitCount: 3,
-  });
+  const useEventsReturn = useEvents({ limitCount: 3 });
+  const { events, isLoading } = useEventsReturn;
 
-  const { upcomingEvents } = useEventsReturn;
+  const upcomingEvents = events.filter((event) => event.end_time > Date.now());
 
   const useEventDialogReturn = useDialog<Event>(upcomingEvents);
 
@@ -35,7 +34,7 @@ const UpcomingEvents = ({ userRole }: UpcomingEventsProps) => {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col justify-start items-center gap-4">
-          <EventsList {...useEventsReturn} {...useEventDialogReturn} />
+          <EventsList events={upcomingEvents} isLoading={isLoading} {...useEventDialogReturn} />
         </CardContent>
         <CardFooter className="flex-row-reverse">
           <Link href={DASHBOARD_SCHEDULE_PATH} aria-label="View all events">

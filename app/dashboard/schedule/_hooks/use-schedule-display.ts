@@ -4,20 +4,21 @@ import { ONE_DAY } from "@/constants";
 import { getDateFromMilliseconds } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
-import { getDayStartFromMilliseconds, getVisibleCalendarRows } from "../lib";
-import { CalendarDay, CalendarRowConfig } from "../types";
+import { getDayStartFromMilliseconds } from "../lib";
+import { CalendarDay } from "../types";
 
-export type UseCalendarReturn = {
+export type UseScheduleDisplayReturn = {
   selectedDay: CalendarDay;
   availableDays: CalendarDay[];
-  visibleCalendarRows: CalendarRowConfig[];
   handleSelectDay: (dayLabel: CalendarDay["label"]) => void;
+  display: "calendar" | "list";
+  setDisplay: (display: "calendar" | "list") => void;
 };
 
-export const useCalendar = (
+export const useScheduleDisplay = (
   start_time: WildHacksConfig["start_time"],
   end_time: WildHacksConfig["end_time"]
-): UseCalendarReturn => {
+): UseScheduleDisplayReturn => {
   const availableDays = useMemo(() => {
     const days: CalendarDay[] = [];
     let currentDayStartMs = getDayStartFromMilliseconds(start_time);
@@ -40,18 +41,18 @@ export const useCalendar = (
 
     return currentDay ?? availableDays[0]!;
   });
+  const [display, setDisplay] = useState<"calendar" | "list">("calendar");
 
   const handleSelectDay = (dayLabel: CalendarDay["label"]) => {
     const newSelectedDay = availableDays.find((day) => day.label === dayLabel);
     setSelectedDay(newSelectedDay ?? availableDays[0]!);
   };
 
-  const visibleCalendarRows = getVisibleCalendarRows(start_time, end_time, selectedDay.startMs, selectedDay.endMs);
-
   return {
     selectedDay,
     availableDays,
-    visibleCalendarRows,
     handleSelectDay,
+    display,
+    setDisplay,
   };
 };

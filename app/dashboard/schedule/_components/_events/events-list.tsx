@@ -6,12 +6,12 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { Skeleton } from "@/components/ui/skeleton";
 import type { UseDialogReturn } from "@/hooks";
 
-import type { Event } from "../types";
+import type { Event } from "../../types";
 
-type EventsListProps = Pick<UseEventsReturn, "upcomingEvents" | "isLoading"> &
+type EventsListProps = Pick<UseEventsReturn, "events" | "isLoading"> &
   Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
 
-const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
+const EventsList = ({ events, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
   if (isLoading) {
     return (
       <>
@@ -23,7 +23,7 @@ const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown
     );
   }
 
-  if (upcomingEvents.length === 0) {
+  if (events.length === 0) {
     return (
       <Empty role="status" aria-live="polite">
         <EmptyHeader>
@@ -38,10 +38,10 @@ const EventsList = ({ upcomingEvents, isLoading, handleSelectItem, handleKeyDown
   }
 
   return (
-    <ul className="flex flex-col gap-4 w-full" aria-label="Upcoming events list">
-      {upcomingEvents.map((upcomingEvent) => (
-        <li key={upcomingEvent.id}>
-          <EventItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...upcomingEvent} />
+    <ul className="flex flex-col gap-4 w-full" aria-label="Events list">
+      {events.map((event) => (
+        <li key={event.id}>
+          <EventItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...event} />
         </li>
       ))}
     </ul>

@@ -1,19 +1,10 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { ONE_DAY } from "@/constants";
 import { cn } from "@/lib";
 
-import { getVisibleCalendarRows } from "./lib";
+import { CALENDAR_ROWS } from "./constants";
 
 const ScheduleLoading = async () => {
-  const defaultStartTime = new Date().getTime();
-  const defaultEndTime = defaultStartTime + ONE_DAY;
-  const defaultDay = new Date().setHours(0, 0, 0, 0);
-  const visibleCalendarRows = getVisibleCalendarRows(
-    defaultStartTime,
-    defaultEndTime,
-    defaultDay,
-    defaultDay + ONE_DAY
-  );
+  const visibleCalendarRows = CALENDAR_ROWS.slice(9, 17);
 
   return (
     <div

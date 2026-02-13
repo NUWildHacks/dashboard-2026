@@ -20,9 +20,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { WildHacksConfig } from "@/types";
 
-import { useCreateEventDialog } from "../_hooks/use-create-event-dialog";
-import { EVENT_CATEGORIES } from "../constants";
-import { CalendarDay } from "../types";
+import { useCreateEventDialog } from "../../_hooks/use-create-event-dialog";
+import { EVENT_CATEGORIES } from "../../constants";
+import { CalendarDay } from "../../types";
 
 type CreateEventDialogProps = {
   availableDays: CalendarDay[];

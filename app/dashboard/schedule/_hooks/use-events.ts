@@ -19,7 +19,6 @@ export type UseEventsSettings = {
 
 export type UseEventsReturn = {
   events: Event[];
-  upcomingEvents: Event[];
   isLoading: boolean;
 };
 
@@ -84,10 +83,5 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return result;
   }, [allEvents, category, search, selectedDay]);
 
-  const upcomingEvents = useMemo(() => {
-    const now = new Date().getTime();
-    return events.filter((event) => event.end_time > now);
-  }, [events]);
-
-  return { events, upcomingEvents, isLoading };
+  return { events, isLoading };
 };
