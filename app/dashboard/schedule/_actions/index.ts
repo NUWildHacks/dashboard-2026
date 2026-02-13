@@ -1,2 +1,2 @@
 export { createEvent, type CreateEventResult } from "./create-event.actions";
-export { deleteEvent, type DeleteEventResult } from "./delete-event.actions";
+export { deleteEvents, type DeleteEventResult } from "./delete-events.actions";

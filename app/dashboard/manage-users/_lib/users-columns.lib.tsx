@@ -33,7 +33,6 @@ export const getUsersColumns = (
   role: User["role"],
   handleDeleteUsers: (userIds: User["id"][]) => Promise<void>
 ): ColumnDef<User>[] => {
-  // Most important: Identification columns
   const identificationColumns: ColumnDef<User>[] = [
     {
       id: "select",
@@ -91,7 +90,6 @@ export const getUsersColumns = (
     },
   ];
 
-  // Role-specific columns (important context)
   const roleSpecificColumns: ColumnDef<User>[] = [];
 
   if (role === "Participant") {
@@ -161,7 +159,6 @@ export const getUsersColumns = (
     );
   }
 
-  // Event planning columns (important for logistics)
   const eventPlanningColumns: ColumnDef<User>[] = [
     {
       accessorKey: "dietary_restrictions",
@@ -192,7 +189,6 @@ export const getUsersColumns = (
     },
   ];
 
-  // Metadata columns (less important)
   const metadataColumns: ColumnDef<User>[] = [
     {
       accessorKey: "created_at",
@@ -212,7 +208,6 @@ export const getUsersColumns = (
     },
   ];
 
-  // Actions column (always last)
   const actionsColumn: ColumnDef<User>[] = [
     {
       accessorKey: "actions",
@@ -245,7 +240,6 @@ export const getUsersColumns = (
     },
   ];
 
-  // Return columns in order of importance
   return [
     ...identificationColumns,
     ...roleSpecificColumns,

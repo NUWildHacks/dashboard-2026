@@ -29,7 +29,7 @@ const DashboardPage = async () => {
       </div>
       <LiveAnnouncements userRole={role} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <UpcomingEvents userRole={role} />
+        <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>
     </>

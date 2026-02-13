@@ -10,7 +10,7 @@ import type { Event } from "../types";
 
 export type DeleteEventResult = ActionResult;
 
-export const deleteEvent = async (eventId: Event["id"]): Promise<DeleteEventResult> => {
+export const deleteEvents = async (eventIds: Event["id"][]): Promise<DeleteEventResult> => {
   const db = getFirestore();
 
   try {
@@ -20,7 +20,14 @@ export const deleteEvent = async (eventId: Event["id"]): Promise<DeleteEventResu
     const roleError = requireRole(user, ADMIN, "You are not authorized to delete events");
     if (roleError) return roleError;
 
-    await db.collection(EVENTS_COLLECTION).doc(eventId).delete();
+    const batch = db.batch();
+
+    for (const eventId of eventIds) {
+      const eventDocRef = db.collection(EVENTS_COLLECTION).doc(eventId);
+      batch.delete(eventDocRef);
+    }
+
+    await batch.commit();
 
     return { success: true };
   } catch (error) {

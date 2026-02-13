@@ -2,6 +2,7 @@
 
 import { CalendarDays, Table2, SearchIcon } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +10,7 @@ import { ADMIN } from "@/constants";
 import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
 import { User, WildHacksConfig } from "@/types";
 
-import { useEvents, useScheduleDisplay } from "../_hooks";
+import { useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
@@ -26,9 +27,13 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const { label } = selectedDay;
 
   const useEventsReturn = useEvents({ category, search, selectedDay });
-  const { events } = useEventsReturn;
+  const { events, handleDeleteEvents } = useEventsReturn;
 
   const useEventDialogReturn = useDialog<Event>(events);
+  const { handleSelectItem } = useEventDialogReturn;
+
+  const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleDeleteEvents);
+  const { selectedEventIds } = useEventsTableReturn;
 
   return (
     <>
@@ -37,6 +42,15 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
           <div className="w-full flex flex-col lg:flex-row gap-4">
             {userRole === ADMIN && (
               <CreateEventDialog availableDays={availableDays} start_time={start_time} end_time={end_time} />
+            )}
+            {selectedEventIds.length > 0 && display === "table" && userRole === ADMIN && (
+              <Button
+                variant="destructive"
+                onClick={() => handleDeleteEvents(selectedEventIds)}
+                className="w-full md:w-auto"
+              >
+                Delete event(s)
+              </Button>
             )}
             <Select value={label} onValueChange={(value) => handleSelectDay(value)}>
               <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
@@ -63,18 +77,20 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
                 ))}
               </SelectContent>
             </Select>
-            <Tabs value={display} onValueChange={(value) => setDisplay(value as "calendar" | "table")}>
-              <TabsList className="w-full lg:w-fit">
-                <TabsTrigger value="calendar">
-                  <CalendarDays />
-                  Calendar
-                </TabsTrigger>
-                <TabsTrigger value="table">
-                  <Table2 />
-                  Table
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            {userRole === ADMIN && (
+              <Tabs value={display} onValueChange={(value) => setDisplay(value as "calendar" | "table")}>
+                <TabsList className="w-full lg:w-fit">
+                  <TabsTrigger value="calendar">
+                    <CalendarDays />
+                    Calendar
+                  </TabsTrigger>
+                  <TabsTrigger value="table">
+                    <Table2 />
+                    Table
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            )}
           </div>
           <InputGroup className="lg:max-w-[350px] w-full">
             <InputGroupInput
@@ -99,9 +115,11 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             {...useEventDialogReturn}
           />
         )}
-        {display === "table" && <EventsTable {...useEventsReturn} {...useEventDialogReturn} />}
+        {display === "table" && userRole === ADMIN && (
+          <EventsTable {...useEventsReturn} {...useEventDialogReturn} {...useEventsTableReturn} />
+        )}
       </div>
-      <EventDialog userRole={userRole} {...useEventDialogReturn} />
+      <EventDialog {...useEventDialogReturn} />
     </>
   );
 };

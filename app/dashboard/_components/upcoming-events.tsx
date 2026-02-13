@@ -10,13 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants";
 import { useDialog } from "@/hooks";
-import type { User } from "@/types";
 
-type UpcomingEventsProps = {
-  userRole: User["role"];
-};
-
-const UpcomingEvents = ({ userRole }: UpcomingEventsProps) => {
+const UpcomingEvents = () => {
   const useEventsReturn = useEvents({ limitCount: 3 });
   const { events, isLoading } = useEventsReturn;
 
@@ -45,7 +40,7 @@ const UpcomingEvents = ({ userRole }: UpcomingEventsProps) => {
           </Link>
         </CardFooter>
       </Card>
-      <EventDialog userRole={userRole} {...useEventDialogReturn} />
+      <EventDialog {...useEventDialogReturn} />
     </>
   );
 };

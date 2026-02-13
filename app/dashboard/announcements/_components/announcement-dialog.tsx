@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, Loader2Icon } from "lucide-react";
+import { Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,27 +13,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ADMIN } from "@/constants";
 import type { UseDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
-import { User } from "@/types";
 
-import { deleteAnnouncement } from "../_actions";
 import { Announcement } from "../types";
 
-type AnnouncementDialogProps = { userRole: User["role"] } & Pick<
-  UseDialogReturn<Announcement>,
-  "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
->;
+type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
 
-const AnnouncementDialog = ({
-  userRole,
-  isOpen,
-  setIsOpen,
-  selectedItem,
-  isDeleting,
-  handleDeleteItem,
-}: AnnouncementDialogProps) => {
+const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
   if (!selectedItem) return null;
 
   const { category, title, body, links, created_at } = selectedItem;
@@ -78,15 +65,8 @@ const AnnouncementDialog = ({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          {userRole === ADMIN && (
-            <Button variant="destructive" onClick={() => handleDeleteItem(deleteAnnouncement)} disabled={isDeleting}>
-              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
-            </Button>
-          )}
           <DialogClose asChild>
-            <Button variant="outline" disabled={isDeleting}>
-              Go back
-            </Button>
+            <Button variant="outline">Go back</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

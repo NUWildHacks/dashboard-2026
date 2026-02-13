@@ -1,12 +1,23 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, MoreHorizontal } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { UseDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
+import { UseEventsReturn } from "../_hooks";
 import type { Event } from "../types";
 
 /**
@@ -19,8 +30,30 @@ import type { Event } from "../types";
  * const columns = getEventsColumns();
  * ```
  */
-export const getEventsColumns = (): ColumnDef<Event>[] => {
+export const getEventsColumns = (
+  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
+  handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
+): ColumnDef<Event>[] => {
   return [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     {
       accessorKey: "title",
       header: ({ column }) => {
@@ -55,14 +88,7 @@ export const getEventsColumns = (): ColumnDef<Event>[] => {
     },
     {
       accessorKey: "category",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Category
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
+      header: "Category",
       cell: ({ row }) => {
         return (
           <div className="text-left">
@@ -73,16 +99,40 @@ export const getEventsColumns = (): ColumnDef<Event>[] => {
     },
     {
       accessorKey: "location",
-      header: ({ column }) => {
-        return (
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Location
-            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
-          </Button>
-        );
-      },
+      header: "Location",
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.location}</div>;
+      },
+    },
+    {
+      accessorKey: "actions",
+      header: () => null,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View event</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.title)}>
+                Copy event name
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.location)}>
+                Copy event location
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteEvents([row.original.id])}>
+                Delete event
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
       },
     },
   ];
