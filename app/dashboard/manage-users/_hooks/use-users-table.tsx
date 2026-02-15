@@ -3,6 +3,7 @@
 import {
   ColumnDef,
   ColumnFiltersState,
+  VisibilityState,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -40,6 +41,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const filteredUsers = useMemo(() => {
     let result = data;
@@ -105,6 +107,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
+    onColumnVisibilityChange: setColumnVisibility,
     initialState: {
       pagination: {
         pageSize: 20,
@@ -114,6 +117,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
       sorting,
       columnFilters,
       rowSelection,
+      columnVisibility,
     },
   });
 

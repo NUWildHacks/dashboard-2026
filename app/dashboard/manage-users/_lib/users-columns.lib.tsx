@@ -66,6 +66,7 @@ export const getUsersColumns = (
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.first_name}</div>;
       },
+      enableHiding: false,
     },
     {
       accessorKey: "last_name",
@@ -80,6 +81,7 @@ export const getUsersColumns = (
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.last_name}</div>;
       },
+      enableHiding: false,
     },
     {
       accessorKey: "email",
@@ -87,6 +89,7 @@ export const getUsersColumns = (
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.email}</div>;
       },
+      enableHiding: false,
     },
   ];
 
@@ -104,6 +107,7 @@ export const getUsersColumns = (
           }
           return null;
         },
+        enableHiding: false,
       },
       {
         accessorKey: "project_id",
@@ -115,6 +119,7 @@ export const getUsersColumns = (
           }
           return null;
         },
+        enableHiding: false,
       }
     );
   } else if (role === "Judge") {
@@ -129,6 +134,7 @@ export const getUsersColumns = (
           }
           return null;
         },
+        enableHiding: false,
       },
       {
         accessorKey: "modality",
@@ -140,6 +146,7 @@ export const getUsersColumns = (
           }
           return null;
         },
+        enableHiding: false,
       },
       {
         accessorKey: "assigned_project_ids",
@@ -155,6 +162,7 @@ export const getUsersColumns = (
           }
           return null;
         },
+        enableHiding: false,
       }
     );
   }
@@ -186,6 +194,7 @@ export const getUsersColumns = (
       cell: ({ row }) => {
         return <Badge variant="secondary">{row.original.tshirt_size}</Badge>;
       },
+      enableHiding: false,
     },
   ];
 
@@ -205,6 +214,7 @@ export const getUsersColumns = (
           <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.created_at)}, ${getTimeFromMilliseconds(row.original.created_at)}`}</div>
         );
       },
+      enableHiding: false,
     },
   ];
 
@@ -237,6 +247,7 @@ export const getUsersColumns = (
           </DropdownMenu>
         );
       },
+      enableHiding: false,
     },
   ];
 
