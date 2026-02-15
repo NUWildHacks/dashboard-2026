@@ -34,6 +34,7 @@ export const useEventsTable = (
 
   const eventsColumns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: events,
     columns: eventsColumns,
