@@ -5,14 +5,14 @@ import { memo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 import { cn, getEventTimeRange } from "@/lib";
 
 import { ROW_HEIGHT } from "../../constants";
 import type { Event } from "../../types";
 
 type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location"> &
-  Pick<UseDialogReturn<Event>, "handleSelectItem"> & {
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem"> & {
     left: number;
     top: number;
     width: number;

@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock } from "lucide-react";
+import { Clock, Loader2Icon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,14 +13,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { UseDialogReturn } from "@/hooks";
+import { ADMIN, PARTICIPANT } from "@/constants";
+import type { UseItemDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
+import { User } from "@/types";
 
+import { deleteAnnouncements } from "../_actions";
 import { Announcement } from "../types";
 
-type AnnouncementDialogProps = Pick<UseDialogReturn<Announcement>, "isOpen" | "setIsOpen" | "selectedItem">;
+type AnnouncementDialogProps = { userRole?: User["role"] } & Pick<
+  UseItemDialogReturn<Announcement>,
+  "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
+>;
 
-const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDialogProps) => {
+const AnnouncementDialog = ({
+  userRole = PARTICIPANT,
+  isOpen,
+  setIsOpen,
+  selectedItem,
+  isDeleting,
+  handleDeleteItem,
+}: AnnouncementDialogProps) => {
   if (!selectedItem) return null;
 
   const { category, title, body, links, created_at } = selectedItem;
@@ -65,8 +78,15 @@ const AnnouncementDialog = ({ isOpen, setIsOpen, selectedItem }: AnnouncementDia
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
+          {userRole === ADMIN && (
+            <Button variant="destructive" onClick={() => handleDeleteItem(deleteAnnouncements)} disabled={isDeleting}>
+              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete announcement"}
+            </Button>
+          )}
           <DialogClose asChild>
-            <Button variant="outline">Go back</Button>
+            <Button variant="outline" disabled={isDeleting}>
+              Go back
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

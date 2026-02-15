@@ -8,20 +8,15 @@ import { useAnnouncements } from "@/app/dashboard/announcements/_hooks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_ANNOUNCEMENTS_PATH } from "@/constants";
-import { useDialog } from "@/hooks";
-import type { User } from "@/types";
+import { useItemDialog } from "@/hooks";
 
 import type { Announcement } from "../announcements/types";
 
-type LiveAnnouncementsProps = {
-  userRole: User["role"];
-};
-
-const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
+const LiveAnnouncements = () => {
   const useAnnouncementsReturn = useAnnouncements({ limitCount: 3 });
   const { announcements } = useAnnouncementsReturn;
 
-  const useAnnouncementDialogReturn = useDialog<Announcement>(announcements);
+  const useAnnouncementDialogReturn = useItemDialog<Announcement>(announcements);
 
   return (
     <>
@@ -44,7 +39,7 @@ const LiveAnnouncements = ({ userRole }: LiveAnnouncementsProps) => {
           </Link>
         </CardFooter>
       </Card>
-      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} />
+      <AnnouncementDialog {...useAnnouncementDialogReturn} />
     </>
   );
 };

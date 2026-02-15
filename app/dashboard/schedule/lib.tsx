@@ -2,7 +2,7 @@ import { JSX } from "react";
 
 import { CalendarItem } from "@/app/dashboard/schedule/_components";
 import { ONE_MINUTE } from "@/constants";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 import { WildHacksConfig } from "@/types";
 
 import { BASE_Z_INDEX, CALENDAR_ROWS, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "./constants";
@@ -298,7 +298,7 @@ const getCalendarItems = (
   overlapGroups: Map<Event["id"], Set<Event["id"]>>,
   calendarRowStartMin: CalendarRowConfig["startMin"],
   calendarRowEndMin: CalendarRowConfig["endMin"],
-  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
+  handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   calendarDayStartMs: CalendarDay["startMs"]
 ): JSX.Element[] => {
   const calendarItems: JSX.Element[] = [];

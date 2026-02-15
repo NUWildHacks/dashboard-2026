@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, MapPin } from "lucide-react";
+import { Clock, Loader2Icon, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,14 +13,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { UseDialogReturn } from "@/hooks";
+import { ADMIN, PARTICIPANT } from "@/constants";
+import type { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
+import { User } from "@/types";
 
+import { deleteEvents } from "../../_actions";
 import type { Event } from "../../types";
 
-type EventDialogProps = Pick<UseDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
+type EventDialogProps = { userRole?: User["role"] } & Pick<
+  UseItemDialogReturn<Event>,
+  "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
+>;
 
-const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
+const EventDialog = ({
+  userRole = PARTICIPANT,
+  isOpen,
+  setIsOpen,
+  selectedItem,
+  isDeleting,
+  handleDeleteItem,
+}: EventDialogProps) => {
   if (!selectedItem) return null;
 
   const { category, title, body, location, start_time, end_time } = selectedItem;
@@ -50,6 +63,11 @@ const EventDialog = ({ isOpen, setIsOpen, selectedItem }: EventDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
+          {userRole === ADMIN && (
+            <Button variant="destructive" onClick={() => handleDeleteItem(deleteEvents)} disabled={isDeleting}>
+              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete event"}
+            </Button>
+          )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>
           </DialogClose>

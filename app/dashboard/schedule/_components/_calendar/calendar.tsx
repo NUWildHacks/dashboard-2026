@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarRow } from "@/app/dashboard/schedule/_components";
-import { UseDialogReturn } from "@/hooks";
+import { UseItemDialogReturn } from "@/hooks";
 import type { WildHacksConfig } from "@/types";
 
 import { UseEventsReturn } from "../../_hooks";
@@ -10,7 +10,7 @@ import { CalendarDay, Event } from "../../types";
 
 type CalendarProps = Pick<UseEventsReturn, "events"> &
   Pick<CalendarDay, "startMs" | "endMs"> &
-  Pick<UseDialogReturn<Event>, "handleSelectItem"> &
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem"> &
   Pick<WildHacksConfig, "start_time" | "end_time">;
 
 const Calendar = ({ events, startMs, endMs, handleSelectItem, start_time, end_time }: CalendarProps) => {

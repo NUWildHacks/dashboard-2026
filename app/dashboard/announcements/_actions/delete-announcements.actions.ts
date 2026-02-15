@@ -10,7 +10,7 @@ import { Announcement } from "../types";
 
 export type DeleteAnnouncementResult = ActionResult;
 
-export const deleteAnnouncement = async (announcementIds: Announcement["id"][]): Promise<DeleteAnnouncementResult> => {
+export const deleteAnnouncements = async (announcementIds: Announcement["id"][]): Promise<DeleteAnnouncementResult> => {
   const db = getFirestore();
 
   try {

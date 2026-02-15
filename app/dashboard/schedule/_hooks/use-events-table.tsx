@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { UseDialogReturn } from "@/hooks";
+import { UseItemDialogReturn } from "@/hooks";
 
 import { getEventsColumns } from "../_lib/events-columns.lib";
 import type { Event } from "../types";
@@ -24,7 +24,7 @@ export type UseEventsTableReturn = {
 
 export const useEventsTable = (
   events: Event[],
-  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
+  handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleDeleteEvents: (eventIds: Event["id"][]) => Promise<void>
 ): UseEventsTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "start_time", desc: false }]);

@@ -14,7 +14,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADMIN } from "@/constants";
-import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
+import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
 import type { User } from "@/types";
 
 import { ANNOUNCEMENT_CATEGORIES } from "../constants";
@@ -30,7 +30,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
   const useAnnouncementsReturn = useAnnouncements({ category, search });
   const { announcements, handleDeleteAnnouncements } = useAnnouncementsReturn;
 
-  const useAnnouncementDialogReturn = useDialog<Announcement>(announcements);
+  const useAnnouncementDialogReturn = useItemDialog<Announcement>(announcements);
   const { handleSelectItem } = useAnnouncementDialogReturn;
 
   const { display, setDisplay } = useAnnouncementsDisplay();
@@ -105,7 +105,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
         {display === "list" && <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />}
         {display === "table" && userRole === ADMIN && <DataTable columns={announcementsColumns} table={table} />}
       </div>
-      <AnnouncementDialog {...useAnnouncementDialogReturn} />
+      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} {...useAnnouncementDialogReturn} />
     </>
   );
 };

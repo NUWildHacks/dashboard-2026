@@ -8,7 +8,7 @@ import { db } from "@/config/firebase-client";
 import { ANNOUNCEMENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
 
-import { deleteAnnouncement } from "../_actions";
+import { deleteAnnouncements } from "../_actions";
 import { ANNOUNCEMENT_FIELDS } from "../constants";
 import type { AnnouncementCategory, Announcement } from "../types";
 
@@ -84,7 +84,7 @@ export const useAnnouncements = (settings: UseAnnouncementsSettings): UseAnnounc
 
   const handleDeleteAnnouncements = async (announcementIds: Announcement["id"][]) => {
     try {
-      const result = await deleteAnnouncement(announcementIds);
+      const result = await deleteAnnouncements(announcementIds);
       const { success } = result;
 
       if (!success) {

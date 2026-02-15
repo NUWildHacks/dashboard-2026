@@ -8,7 +8,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADMIN } from "@/constants";
-import { CategoryWithAll, useDialog, useFilters } from "@/hooks";
+import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
 import { User, WildHacksConfig } from "@/types";
 
 import { useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
@@ -30,7 +30,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const useEventsReturn = useEvents({ category, search, selectedDay });
   const { events, handleDeleteEvents } = useEventsReturn;
 
-  const useEventDialogReturn = useDialog<Event>(events);
+  const useEventDialogReturn = useItemDialog<Event>(events);
   const { handleSelectItem } = useEventDialogReturn;
 
   const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleDeleteEvents);
@@ -118,7 +118,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
         )}
         {display === "table" && userRole === ADMIN && <DataTable columns={eventsColumns} table={table} />}
       </div>
-      <EventDialog {...useEventDialogReturn} />
+      <EventDialog userRole={userRole} {...useEventDialogReturn} />
     </>
   );
 };

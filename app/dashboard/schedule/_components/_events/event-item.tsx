@@ -2,12 +2,12 @@ import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
 import type { Event } from "../../types";
 
-type EventItemProps = Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
+type EventItemProps = Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
   Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location">;
 
 const EventItem = ({

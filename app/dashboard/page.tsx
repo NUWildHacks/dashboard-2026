@@ -27,7 +27,7 @@ const DashboardPage = async () => {
         <QRCode userId={userId} />
         <VenueMap />
       </div>
-      <LiveAnnouncements userRole={role} />
+      <LiveAnnouncements />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}

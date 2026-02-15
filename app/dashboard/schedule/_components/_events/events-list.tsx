@@ -4,12 +4,12 @@ import { EventItem } from "@/app/dashboard/schedule/_components";
 import { UseEventsReturn } from "@/app/dashboard/schedule/_hooks";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 
 import type { Event } from "../../types";
 
 type EventsListProps = Pick<UseEventsReturn, "events" | "isLoading"> &
-  Pick<UseDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
 
 const EventsList = ({ events, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
   if (isLoading) {

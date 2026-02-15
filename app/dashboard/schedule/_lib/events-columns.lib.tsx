@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UseDialogReturn } from "@/hooks";
+import { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
 import { UseEventsReturn } from "../_hooks";
@@ -31,7 +31,7 @@ import type { Event } from "../types";
  * ```
  */
 export const getEventsColumns = (
-  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
+  handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
 ): ColumnDef<Event>[] => {
   return [

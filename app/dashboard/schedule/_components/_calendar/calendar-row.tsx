@@ -1,6 +1,6 @@
 "use client";
 
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 
 import { ROW_HEIGHT } from "../../constants";
 import { getCalendarItems } from "../../lib";
@@ -11,7 +11,7 @@ type CalendarRowProps = {
   overlapGroups: Map<Event["id"], Set<Event["id"]>>;
   calendarDayStartMs: CalendarDay["startMs"];
 } & CalendarRowConfig &
-  Pick<UseDialogReturn<Event>, "handleSelectItem">;
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem">;
 
 const CalendarRow = ({
   events,

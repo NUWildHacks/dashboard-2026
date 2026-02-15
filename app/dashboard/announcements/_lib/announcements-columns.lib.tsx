@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UseDialogReturn } from "@/hooks";
+import { UseItemDialogReturn } from "@/hooks";
 import { getDateFromMilliseconds } from "@/lib";
 
 import { UseAnnouncementsReturn } from "../_hooks";
@@ -31,7 +31,7 @@ import type { Announcement } from "../types";
  * ```
  */
 export const getAnnouncementsColumns = (
-  handleSelectItem: UseDialogReturn<Announcement>["handleSelectItem"],
+  handleSelectItem: UseItemDialogReturn<Announcement>["handleSelectItem"],
   handleDeleteAnnouncements: UseAnnouncementsReturn["handleDeleteAnnouncements"]
 ): ColumnDef<Announcement>[] => {
   return [
