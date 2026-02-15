@@ -7,14 +7,16 @@ import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole }
 import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
+import { Event } from "../types";
 
-export type CreateEventResult = ActionResult<EventFormDialogSchema>;
+export type SaveEventResult = ActionResult<EventFormDialogSchema>;
 
-export const createEvent = async (
+export const saveEvent = async (
   data: EventFormDialogSchema,
   wildHacksStartTime: WildHacksConfig["start_time"],
-  wildHacksEndTime: WildHacksConfig["end_time"]
-): Promise<CreateEventResult> => {
+  wildHacksEndTime: WildHacksConfig["end_time"],
+  eventId?: Event["id"]
+): Promise<SaveEventResult> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -22,7 +24,7 @@ export const createEvent = async (
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleError = requireRole(user, ADMIN, "You are not authorized to create events");
+    const roleError = requireRole(user, ADMIN, "You are not authorized to save events");
     if (roleError) return roleError;
 
     const { day, start_time, end_time } = data;
@@ -71,21 +73,33 @@ export const createEvent = async (
       };
     }
 
-    await db
-      .collection(EVENTS_COLLECTION)
-      .doc()
-      .set({
-        ...data,
-        start_time: startTimeMs,
-        end_time: endTimeMs,
-        created_at: now,
-        updated_at: now,
-      });
+    if (eventId) {
+      await db
+        .collection(EVENTS_COLLECTION)
+        .doc(eventId)
+        .update({
+          ...data,
+          start_time: startTimeMs,
+          end_time: endTimeMs,
+          updated_at: now,
+        });
+    } else {
+      await db
+        .collection(EVENTS_COLLECTION)
+        .doc()
+        .set({
+          ...data,
+          start_time: startTimeMs,
+          end_time: endTimeMs,
+          created_at: now,
+          updated_at: now,
+        });
+    }
 
     return { success: true };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Create event error:", detailedError);
+    console.error("Save event error:", detailedError);
 
     const isProduction = process.env.APP_ENV === "production";
     const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;

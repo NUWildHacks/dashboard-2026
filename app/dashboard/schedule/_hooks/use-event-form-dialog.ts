@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { findDayLabel, millisecondsToTime } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
-import { createEvent } from "../_actions/create-event.actions";
+import { saveEvent } from "../_actions/save-event.actions";
 import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
 import { CalendarDay, Event } from "../types";
 
@@ -50,7 +50,7 @@ export const useEventFormDialog = (
 
   const onSubmit = async (data: EventFormDialogSchema) => {
     try {
-      const result = await createEvent(data, start_time, end_time);
+      const result = await saveEvent(data, start_time, end_time, eventId);
       const { success } = result;
 
       if (!success) {
@@ -71,9 +71,9 @@ export const useEventFormDialog = (
       setIsOpen(false);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Create event error:", errorMessage);
+      console.error("Save event error:", errorMessage);
 
-      toast.error("Failed to create event", { description: errorMessage });
+      toast.error("Failed to save event", { description: errorMessage });
     }
   };
 

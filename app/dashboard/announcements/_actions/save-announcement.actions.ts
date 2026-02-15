@@ -7,10 +7,14 @@ import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
 import { type AnnouncementFormSchema } from "../_schemas/announcement-form.schemas";
+import { Announcement } from "../types";
 
-export type CreateAnnouncementResult = ActionResult<AnnouncementFormSchema>;
+export type SaveAnnouncementResult = ActionResult<AnnouncementFormSchema>;
 
-export const createAnnouncement = async (data: AnnouncementFormSchema): Promise<CreateAnnouncementResult> => {
+export const saveAnnouncement = async (
+  data: AnnouncementFormSchema,
+  announcementId?: Announcement["id"]
+): Promise<SaveAnnouncementResult> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -18,25 +22,36 @@ export const createAnnouncement = async (data: AnnouncementFormSchema): Promise<
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_ANNOUNCEMENTS_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleError = requireRole(user, ADMIN, "You are not authorized to create announcements");
+    const roleError = requireRole(user, ADMIN, "You are not authorized to save announcements");
     if (roleError) return roleError;
 
     const { links } = data;
 
-    await db
-      .collection(ANNOUNCEMENTS_COLLECTION)
-      .doc()
-      .set({
-        ...data,
-        links: links.map((link) => link.url.toString()),
-        created_at: now,
-        updated_at: now,
-      });
+    if (announcementId) {
+      await db
+        .collection(ANNOUNCEMENTS_COLLECTION)
+        .doc(announcementId)
+        .update({
+          ...data,
+          links: links.map((link) => link.url.toString()),
+          updated_at: now,
+        });
+    } else {
+      await db
+        .collection(ANNOUNCEMENTS_COLLECTION)
+        .doc()
+        .set({
+          ...data,
+          links: links.map((link) => link.url.toString()),
+          created_at: now,
+          updated_at: now,
+        });
+    }
 
     return { success: true };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Create announcement error:", detailedError);
+    console.error("Save announcement error:", detailedError);
 
     const isProduction = process.env.APP_ENV === "production";
     const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;

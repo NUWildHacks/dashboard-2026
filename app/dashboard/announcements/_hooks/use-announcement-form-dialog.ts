@@ -5,7 +5,7 @@ import { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm, UseFormReturn, UseFieldArrayReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { createAnnouncement } from "../_actions/create-announcement.actions";
+import { saveAnnouncement } from "../_actions/save-announcement.actions";
 import { announcementFormSchema, AnnouncementFormSchema } from "../_schemas/announcement-form.schemas";
 import { Announcement } from "../types";
 
@@ -46,7 +46,7 @@ export const useAnnouncementFormDialog = (): UseAnnouncementFormDialogReturn => 
 
   const onSubmit = async (data: AnnouncementFormSchema) => {
     try {
-      const result = await createAnnouncement(data);
+      const result = await saveAnnouncement(data, announcementId);
       const { success } = result;
 
       if (!success) {
@@ -67,9 +67,9 @@ export const useAnnouncementFormDialog = (): UseAnnouncementFormDialogReturn => 
       setIsOpen(false);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Create announcement error:", errorMessage);
+      console.error("Save announcement error:", errorMessage);
 
-      toast.error("Failed to create announcement", { description: errorMessage });
+      toast.error("Failed to save announcement", { description: errorMessage });
     }
   };
 
