@@ -21,11 +21,8 @@ service cloud.firestore {
     }
 
     function isProjectMember(projectId) {
-      if (!isAuthenticated()) {
-        return false;
-      }
       let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
-      return userDoc != null && userDoc.data != null && userDoc.data.project_id == projectId;
+      return isAuthenticated() && userDoc != null && userDoc.data != null && userDoc.data.project_id == projectId;
     }
 
     // Users collection
