@@ -110,6 +110,7 @@ export const getAnnouncementsColumns = (
             <DropdownMenuContent align="end">
               <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View announcement</DropdownMenuItem>
+              <DropdownMenuItem>Edit announcement</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
                 Copy announcement ID

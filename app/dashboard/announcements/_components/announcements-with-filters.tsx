@@ -5,11 +5,11 @@ import { List, Table2, SearchIcon } from "lucide-react";
 import {
   AnnouncementDialog,
   AnnouncementsList,
-  AnnouncementsTable,
   CreateAnnouncementDialog,
 } from "@/app/dashboard/announcements/_components";
 import { useAnnouncements, useAnnouncementsDisplay, useAnnouncementsTable } from "@/app/dashboard/announcements/_hooks";
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,7 +36,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
   const { display, setDisplay } = useAnnouncementsDisplay();
 
   const useAnnouncementsTableReturn = useAnnouncementsTable(announcements, handleSelectItem, handleDeleteAnnouncements);
-  const { selectedAnnouncementIds } = useAnnouncementsTableReturn;
+  const { selectedAnnouncementIds, announcementsColumns, table } = useAnnouncementsTableReturn;
 
   return (
     <>
@@ -103,13 +103,7 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
           </InputGroup>
         </div>
         {display === "list" && <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />}
-        {display === "table" && userRole === ADMIN && (
-          <AnnouncementsTable
-            {...useAnnouncementsReturn}
-            {...useAnnouncementDialogReturn}
-            {...useAnnouncementsTableReturn}
-          />
-        )}
+        {display === "table" && userRole === ADMIN && <DataTable columns={announcementsColumns} table={table} />}
       </div>
       <AnnouncementDialog {...useAnnouncementDialogReturn} />
     </>

@@ -3,6 +3,7 @@
 import { CalendarDays, Table2, SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,7 +15,7 @@ import { useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
-import { Calendar, CreateEventDialog, EventDialog, EventsTable } from ".";
+import { Calendar, CreateEventDialog, EventDialog } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
@@ -33,7 +34,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const { handleSelectItem } = useEventDialogReturn;
 
   const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleDeleteEvents);
-  const { selectedEventIds } = useEventsTableReturn;
+  const { selectedEventIds, eventsColumns, table } = useEventsTableReturn;
 
   return (
     <>
@@ -115,9 +116,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             {...useEventDialogReturn}
           />
         )}
-        {display === "table" && userRole === ADMIN && (
-          <EventsTable {...useEventsReturn} {...useEventDialogReturn} {...useEventsTableReturn} />
-        )}
+        {display === "table" && userRole === ADMIN && <DataTable columns={eventsColumns} table={table} />}
       </div>
       <EventDialog {...useEventDialogReturn} />
     </>

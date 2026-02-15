@@ -5,5 +5,4 @@ export { default as CreateEventDialog } from "./_events/create-event-dialog";
 export { default as EventDialog } from "./_events/event-dialog";
 export { default as EventItem } from "./_events/event-item";
 export { default as EventsList } from "./_events/events-list";
-export { default as EventsTable } from "./_events/events-table";
 export { default as ScheduleDisplay } from "./schedule-display";

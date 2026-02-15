@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, LOGIN_PATH } from "@/constants";
+import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, FIFTEEN_MINUTES, LOGIN_PATH } from "@/constants";
 import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
@@ -60,6 +60,14 @@ export const createEvent = async (
         success: false,
         error: "Event cannot end after WildHacks end time",
         field: "end_time" as const,
+      };
+    }
+
+    if (endTimeMs - startTimeMs < FIFTEEN_MINUTES) {
+      return {
+        success: false,
+        error: "Event must be at least 15 minutes long",
+        field: "start_time" as const,
       };
     }
 

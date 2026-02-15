@@ -24,7 +24,7 @@ export {
   WILDHACKS_HOME,
 } from "./routes.constants";
 
-export { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE, ONE_SECOND } from "./time.constants";
+export { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE, ONE_SECOND, FIFTEEN_MINUTES } from "./time.constants";
 
 export {
   ADMIN,
