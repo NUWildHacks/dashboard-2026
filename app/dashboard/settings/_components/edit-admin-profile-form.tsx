@@ -103,6 +103,7 @@ const EditAdminProfileForm = ({ adminUser }: EditAdminProfileFormProps) => {
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -157,6 +158,7 @@ const EditAdminProfileForm = ({ adminUser }: EditAdminProfileFormProps) => {
                         aria-invalid={fieldState.invalid}
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>

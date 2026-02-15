@@ -104,6 +104,7 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
