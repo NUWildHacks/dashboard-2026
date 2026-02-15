@@ -2,6 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
+import admin from "@/config/firebase-admin";
 import {
   PROJECTS_COLLECTION,
   USERS_COLLECTION,
@@ -67,6 +68,8 @@ export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
     }
 
     await db.collection(USERS_COLLECTION).doc(userId).delete();
+
+    await admin.auth().deleteUser(userId);
 
     return { success: true };
   } catch (error) {

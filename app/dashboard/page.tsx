@@ -7,7 +7,7 @@ import {
   VenueMap,
 } from "@/app/dashboard/_components";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH } from "@/constants";
-import { calculateStatistics, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
 const DashboardPage = async () => {
@@ -28,7 +28,7 @@ const DashboardPage = async () => {
         <VenueMap />
       </div>
       <LiveAnnouncements />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
       </div>
