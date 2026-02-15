@@ -4,12 +4,12 @@ import { Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 import { getSendTime } from "@/lib";
 
 import type { Announcement } from "../types";
 
-type AnnouncementItemProps = Pick<UseDialogReturn<Announcement>, "handleSelectItem" | "handleKeyDown"> &
+type AnnouncementItemProps = Pick<UseItemDialogReturn<Announcement>, "handleSelectItem" | "handleKeyDown"> &
   Pick<Announcement, "id" | "category" | "title" | "created_at">;
 
 const AnnouncementItem = ({

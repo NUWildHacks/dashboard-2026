@@ -3,14 +3,14 @@ import { MegaphoneOff } from "lucide-react";
 import { AnnouncementItem } from "@/app/dashboard/announcements/_components";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { UseDialogReturn } from "@/hooks";
+import type { UseItemDialogReturn } from "@/hooks";
 
 import type { Announcement } from "../types";
 
 type AnnouncementsListProps = {
   announcements: Announcement[];
   isLoading: boolean;
-} & Pick<UseDialogReturn<Announcement>, "handleSelectItem" | "handleKeyDown">;
+} & Pick<UseItemDialogReturn<Announcement>, "handleSelectItem" | "handleKeyDown">;
 
 const AnnouncementsList = ({ announcements, isLoading, handleSelectItem, handleKeyDown }: AnnouncementsListProps) => {
   if (isLoading) {
