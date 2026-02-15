@@ -26,8 +26,10 @@ export const registerUser = async (
   max_participants: WildHacksConfig["max_participants"],
   registration_deadline: WildHacksConfig["registration_deadline"]
 ): Promise<RegisterUserResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
+  const userInfo = await verifySession();
+  if (!userInfo) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
+
+  const { id: userId } = userInfo;
 
   const db = getFirestore();
   const now = Date.now();

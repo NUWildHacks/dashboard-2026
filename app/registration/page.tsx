@@ -8,12 +8,13 @@ import type { WildHacksConfig } from "@/types";
 import RegistrationForm from "./_components/registration-form";
 
 const RegistrationPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(LOGIN_PATH);
+  const userInfo = await verifySession();
+  if (!userInfo) redirect(LOGIN_PATH);
+
+  const { id, email } = userInfo;
 
   const db = getFirestore();
-
-  const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userId).get();
+  const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
   if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
 
   const configDocSnapshot = await getConfigDocSnapshot();
@@ -28,7 +29,7 @@ const RegistrationPage = async () => {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm {...wildhacksConfig} />
+          <RegistrationForm userEmail={email} {...wildhacksConfig} />
         </div>
       </div>
     </main>

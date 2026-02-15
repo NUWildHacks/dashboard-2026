@@ -15,6 +15,7 @@ export type UseRegistrationFormReturn = {
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
 export const useRegistrationForm = (
+  userEmail: string,
   start_time: WildHacksConfig["start_time"],
   end_time: WildHacksConfig["end_time"],
   max_participants: WildHacksConfig["max_participants"],
@@ -32,7 +33,7 @@ export const useRegistrationForm = (
     defaultValues: {
       first_name: "",
       last_name: "",
-      email: "",
+      email: userEmail,
       phone: "",
       age: "",
       country: "",

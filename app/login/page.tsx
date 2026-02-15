@@ -9,8 +9,8 @@ import { verifySession } from "@/lib";
 import { GithubLoginButton, GoogleLoginButton } from "./_components";
 
 const LoginPage = async () => {
-  const userId = await verifySession();
-  if (userId) redirect(DASHBOARD_PATH);
+  const userInfo = await verifySession();
+  if (userInfo) redirect(DASHBOARD_PATH);
 
   return (
     <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">

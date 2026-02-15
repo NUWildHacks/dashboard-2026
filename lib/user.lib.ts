@@ -24,18 +24,20 @@ import { verifySession } from ".";
  * ```
  */
 const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
-  const userId = await verifySession();
-  if (!userId) {
+  const userInfo = await verifySession();
+  if (!userInfo) {
     const path = redirectPath || LOGIN_PATH;
     redirect(path);
   }
 
+  const { id } = userInfo;
+
   const db = getFirestore();
 
-  const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userId).get();
+  const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userInfo.id).get();
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  return { ...userDocSnapshot.data(), id: userId } as User;
+  return { ...userDocSnapshot.data(), id } as User;
 };
 
 /**

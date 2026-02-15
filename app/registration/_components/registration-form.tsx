@@ -40,17 +40,24 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
-import { WildHacksConfig } from "@/types";
+import { User, WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = Pick<
+type RegistrationFormProps = { userEmail: User["email"] } & Pick<
   WildHacksConfig,
   "start_time" | "end_time" | "max_participants" | "registration_deadline"
 >;
 
-const RegistrationForm = ({ start_time, end_time, max_participants, registration_deadline }: RegistrationFormProps) => {
+const RegistrationForm = ({
+  userEmail,
+  start_time,
+  end_time,
+  max_participants,
+  registration_deadline,
+}: RegistrationFormProps) => {
   const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(
+    userEmail,
     start_time,
     end_time,
     max_participants,
@@ -130,6 +137,7 @@ const RegistrationForm = ({ start_time, end_time, max_participants, registration
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
