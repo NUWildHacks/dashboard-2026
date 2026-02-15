@@ -5,22 +5,28 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import { findDayLabel, millisecondsToTime } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
 import { createEvent } from "../_actions/create-event.actions";
-import { createEventDialogSchema, CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
+import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
+import { CalendarDay, Event } from "../types";
 
-export type UseCreateEventDialogReturn = {
+export type UseEventFormDialogReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onSubmit: SubmitHandler<CreateEventDialogSchema>;
+  eventId: Event["id"] | undefined;
+  handleOpenEventFormDialog: (event?: Event) => void;
+  onSubmit: SubmitHandler<EventFormDialogSchema>;
   isSubmitting: boolean;
-} & Pick<UseFormReturn<CreateEventDialogSchema>, "control" | "handleSubmit">;
+} & Pick<UseFormReturn<EventFormDialogSchema>, "control" | "handleSubmit">;
 
-export const useCreateEventDialog = (
+export const useEventFormDialog = (
   start_time: WildHacksConfig["start_time"],
-  end_time: WildHacksConfig["end_time"]
-): UseCreateEventDialogReturn => {
+  end_time: WildHacksConfig["end_time"],
+  availableDays: CalendarDay[]
+): UseEventFormDialogReturn => {
+  const [eventId, setEventId] = useState<Event["id"] | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -29,8 +35,8 @@ export const useCreateEventDialog = (
     setError,
     reset,
     formState: { isSubmitting },
-  } = useForm<CreateEventDialogSchema>({
-    resolver: zodResolver(createEventDialogSchema),
+  } = useForm<EventFormDialogSchema>({
+    resolver: zodResolver(eventFormDialogSchema),
     defaultValues: {
       category: undefined,
       day: "",
@@ -42,7 +48,7 @@ export const useCreateEventDialog = (
     },
   });
 
-  const onSubmit = async (data: CreateEventDialogSchema) => {
+  const onSubmit = async (data: EventFormDialogSchema) => {
     try {
       const result = await createEvent(data, start_time, end_time);
       const { success } = result;
@@ -71,9 +77,26 @@ export const useCreateEventDialog = (
     }
   };
 
+  const handleOpenEventFormDialog = (event?: Event) => {
+    setEventId(event?.id);
+    setIsOpen(true);
+
+    reset({
+      category: event?.category,
+      day: findDayLabel(event?.start_time, availableDays),
+      title: event?.title,
+      body: event?.body,
+      location: event?.location,
+      start_time: event?.start_time ? millisecondsToTime(event.start_time) : undefined,
+      end_time: event?.end_time ? millisecondsToTime(event.end_time) : undefined,
+    });
+  };
+
   return {
     isOpen,
     setIsOpen,
+    eventId,
+    handleOpenEventFormDialog,
     onSubmit,
     isSubmitting,
     control,

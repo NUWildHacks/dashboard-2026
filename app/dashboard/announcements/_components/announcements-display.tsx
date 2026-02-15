@@ -30,6 +30,8 @@ type AnnouncementsDisplayProps = {
 };
 
 const AnnouncementsDisplay = ({ userRole }: AnnouncementsDisplayProps) => {
+  const { display, setDisplay } = useAnnouncementsDisplay();
+
   const { category, setCategory, search, setSearch } = useFilters<AnnouncementCategory>();
 
   const useAnnouncementsReturn = useAnnouncements({ category, search });
@@ -37,8 +39,6 @@ const AnnouncementsDisplay = ({ userRole }: AnnouncementsDisplayProps) => {
 
   const useAnnouncementDialogReturn = useItemDialog<Announcement>(announcements);
   const { handleSelectItem } = useAnnouncementDialogReturn;
-
-  const { display, setDisplay } = useAnnouncementsDisplay();
 
   const useAnnouncementFormDialogReturn = useAnnouncementFormDialog();
   const { handleOpenAnnouncementFormDialog } = useAnnouncementFormDialogReturn;

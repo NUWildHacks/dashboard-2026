@@ -11,21 +11,23 @@ import { ADMIN } from "@/constants";
 import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
 import { User, WildHacksConfig } from "@/types";
 
-import { useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
+import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
-import { Calendar, CreateEventDialog, EventDialog } from ".";
+import EventFormDialog from "./_events/event-form-dialog";
+
+import { Calendar, EventDialog } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
 } & Pick<WildHacksConfig, "start_time" | "end_time">;
 
 const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProps) => {
-  const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
-
   const { selectedDay, availableDays, handleSelectDay, display, setDisplay } = useScheduleDisplay(start_time, end_time);
   const { label } = selectedDay;
+
+  const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
   const useEventsReturn = useEvents({ category, search, selectedDay });
   const { events, handleDeleteEvents } = useEventsReturn;
@@ -33,7 +35,10 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const useEventDialogReturn = useItemDialog<Event>(events);
   const { handleSelectItem } = useEventDialogReturn;
 
-  const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleDeleteEvents);
+  const useEventFormDialogReturn = useEventFormDialog(start_time, end_time, availableDays);
+  const { handleOpenEventFormDialog } = useEventFormDialogReturn;
+
+  const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
   const { selectedEventIds, eventsColumns, table } = useEventsTableReturn;
 
   return (
@@ -42,7 +47,9 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="w-full flex flex-col lg:flex-row gap-4">
             {userRole === ADMIN && (
-              <CreateEventDialog availableDays={availableDays} start_time={start_time} end_time={end_time} />
+              <Button className="w-full md:w-auto" onClick={() => handleOpenEventFormDialog()}>
+                Create event
+              </Button>
             )}
             {selectedEventIds.length > 0 && display === "table" && userRole === ADMIN && (
               <Button
@@ -119,6 +126,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
         {display === "table" && userRole === ADMIN && <DataTable columns={eventsColumns} table={table} />}
       </div>
       <EventDialog userRole={userRole} {...useEventDialogReturn} />
+      {userRole === ADMIN && <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />}
     </>
   );
 };

@@ -6,12 +6,12 @@ import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, FIFTEEN_MINUTES, LOG
 import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
-import { type CreateEventDialogSchema } from "../_schemas/create-event-dialog.schemas";
+import { type EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
 
-export type CreateEventResult = ActionResult<CreateEventDialogSchema>;
+export type CreateEventResult = ActionResult<EventFormDialogSchema>;
 
 export const createEvent = async (
-  data: CreateEventDialogSchema,
+  data: EventFormDialogSchema,
   wildHacksStartTime: WildHacksConfig["start_time"],
   wildHacksEndTime: WildHacksConfig["end_time"]
 ): Promise<CreateEventResult> => {

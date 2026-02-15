@@ -4,7 +4,7 @@ import { plainTextMultiLineSchema, plainTextSingleLineSchema } from "@/lib";
 
 import { EVENT_CATEGORIES } from "../constants";
 
-export const createEventDialogSchema = z
+export const eventFormDialogSchema = z
   .object({
     category: z.enum(EVENT_CATEGORIES, { message: "Category is required" }),
     title: plainTextSingleLineSchema
@@ -31,4 +31,4 @@ export const createEventDialogSchema = z
     path: ["end_time"],
   });
 
-export type CreateEventDialogSchema = z.infer<typeof createEventDialogSchema>;
+export type EventFormDialogSchema = z.infer<typeof eventFormDialogSchema>;

@@ -215,8 +215,35 @@ const parseDateLabel = (dateLabel: string): Date | undefined => {
   return date;
 };
 
+/**
+ * Find the day label for a given timestamp from a list of available days.
+ * Returns the label of the day that contains the timestamp.
+ *
+ * @param timestamp - Timestamp in milliseconds since epoch
+ * @param availableDays - Array of day objects with startMs, endMs, and label properties
+ * @returns Day label string or undefined if not found
+ * @example
+ * ```ts
+ * const days = [
+ *   { startMs: 1712793600000, endMs: 1712880000000, label: "Apr 11, 2026" },
+ *   { startMs: 1712880000000, endMs: 1712966400000, label: "Apr 12, 2026" }
+ * ];
+ * const label = findDayLabel(1712800000000, days);
+ * // Returns: "Apr 11, 2026"
+ * ```
+ */
+const findDayLabel = (
+  timestamp: number | undefined,
+  availableDays: Array<{ startMs: number; endMs: number; label: string }>
+): string | undefined => {
+  if (timestamp === undefined) return undefined;
+  const matchingDay = availableDays.find((day) => timestamp >= day.startMs && timestamp < day.endMs);
+  return matchingDay?.label;
+};
+
 export {
   combineDateAndTime,
+  findDayLabel,
   getDateFromMilliseconds,
   getTimeFromMilliseconds,
   getEventTimeRange,

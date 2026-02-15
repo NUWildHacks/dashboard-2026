@@ -16,6 +16,8 @@ import { UseItemDialogReturn } from "@/hooks";
 import { getEventsColumns } from "../_lib/events-columns.lib";
 import type { Event } from "../types";
 
+import { UseEventFormDialogReturn } from "./use-event-form-dialog";
+
 export type UseEventsTableReturn = {
   table: Table<Event>;
   eventsColumns: ColumnDef<Event>[];
@@ -25,11 +27,12 @@ export type UseEventsTableReturn = {
 export const useEventsTable = (
   events: Event[],
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
+  handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
   handleDeleteEvents: (eventIds: Event["id"][]) => Promise<void>
 ): UseEventsTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "start_time", desc: false }]);
 
-  const eventsColumns = getEventsColumns(handleSelectItem, handleDeleteEvents);
+  const eventsColumns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
 
   const table = useReactTable({
     data: events,

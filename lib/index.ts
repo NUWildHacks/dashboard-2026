@@ -1,6 +1,7 @@
 export { createSession, deleteSession, updateSession, verifySession } from "./session.lib";
 export {
   combineDateAndTime,
+  findDayLabel,
   getDateFromMilliseconds,
   getEventTimeRange,
   getSendTime,

@@ -17,7 +17,7 @@ import {
 import { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import { UseEventsReturn } from "../_hooks";
+import { UseEventFormDialogReturn, UseEventsReturn } from "../_hooks";
 import type { Event } from "../types";
 
 /**
@@ -32,6 +32,7 @@ import type { Event } from "../types";
  */
 export const getEventsColumns = (
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
+  handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
   handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
 ): ColumnDef<Event>[] => {
   return [
@@ -119,6 +120,7 @@ export const getEventsColumns = (
             <DropdownMenuContent align="end">
               <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View event</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleOpenEventFormDialog(row.original)}>Edit event</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
                 Copy event ID

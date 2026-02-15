@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogTrigger,
   DialogHeader,
   DialogDescription,
   DialogClose,
@@ -18,33 +17,36 @@ import { FieldError, Field, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { WildHacksConfig } from "@/types";
 
-import { useCreateEventDialog } from "../../_hooks/use-create-event-dialog";
+import { UseEventFormDialogReturn } from "../../_hooks/use-event-form-dialog";
 import { EVENT_CATEGORIES } from "../../constants";
 import { CalendarDay } from "../../types";
 
-type CreateEventDialogProps = {
+type EventFormDialogProps = {
   availableDays: CalendarDay[];
-} & Pick<WildHacksConfig, "start_time" | "end_time">;
+} & Pick<
+  UseEventFormDialogReturn,
+  "isOpen" | "setIsOpen" | "eventId" | "handleSubmit" | "onSubmit" | "isSubmitting" | "control"
+>;
 
-const CreateEventDialog = ({ availableDays, start_time, end_time }: CreateEventDialogProps) => {
-  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen } = useCreateEventDialog(
-    start_time,
-    end_time
-  );
-
+const EventFormDialog = ({
+  availableDays,
+  isOpen,
+  setIsOpen,
+  eventId,
+  handleSubmit,
+  onSubmit,
+  isSubmitting,
+  control,
+}: EventFormDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-full md:w-auto">Create event</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Create event</DialogTitle>
+          <DialogTitle>{eventId ? "Edit event" : "Create event"}</DialogTitle>
           <DialogDescription>Please enter event details to continue.</DialogDescription>
         </DialogHeader>
-        <form id="create-event-form" onSubmit={handleSubmit(onSubmit)}>
+        <form id="event-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-6">
             <div className="flex-3">
               <FieldGroup>
@@ -242,8 +244,8 @@ const CreateEventDialog = ({ availableDays, start_time, end_time }: CreateEventD
               Go back
             </Button>
           </DialogClose>
-          <Button type="submit" form="create-event-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Create event"}
+          <Button type="submit" form="event-form" disabled={isSubmitting}>
+            {isSubmitting ? <Loader2 className="animate-spin" /> : eventId ? "Update event" : "Create event"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -251,4 +253,4 @@ const CreateEventDialog = ({ availableDays, start_time, end_time }: CreateEventD
   );
 };
 
-export default CreateEventDialog;
+export default EventFormDialog;
