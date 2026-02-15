@@ -14,7 +14,6 @@ import {
   useAnnouncementsTable,
 } from "@/app/dashboard/announcements/_hooks";
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,6 +23,8 @@ import type { User } from "@/types";
 
 import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 import { AnnouncementCategory, Announcement } from "../types";
+
+import AnnouncementsTable from "./announcements-table";
 
 type AnnouncementsDisplayProps = {
   userRole: User["role"];
@@ -120,7 +121,9 @@ const AnnouncementsDisplay = ({ userRole }: AnnouncementsDisplayProps) => {
           </InputGroup>
         </div>
         {display === "list" && <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />}
-        {display === "table" && userRole === ADMIN && <DataTable columns={announcementsColumns} table={table} />}
+        {display === "table" && userRole === ADMIN && (
+          <AnnouncementsTable columns={announcementsColumns} table={table} />
+        )}
       </div>
       <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} />
       {userRole === ADMIN && <AnnouncementFormDialog {...useAnnouncementFormDialogReturn} />}

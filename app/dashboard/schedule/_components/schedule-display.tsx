@@ -3,7 +3,6 @@
 import { CalendarDays, Table2, SearchIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +13,8 @@ import { User, WildHacksConfig } from "@/types";
 import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
+
+import EventsTable from "./_events/events-table";
 
 import { Calendar, EventDialog, EventFormDialog } from ".";
 
@@ -121,7 +122,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             {...useEventDialogReturn}
           />
         )}
-        {display === "table" && userRole === ADMIN && <DataTable columns={eventsColumns} table={table} />}
+        {display === "table" && userRole === ADMIN && <EventsTable columns={eventsColumns} table={table} />}
       </div>
       <EventDialog userRole={userRole} {...useEventDialogReturn} />
       {userRole === ADMIN && <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />}
