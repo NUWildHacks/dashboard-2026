@@ -5,9 +5,14 @@ import { List, Table2, SearchIcon } from "lucide-react";
 import {
   AnnouncementDialog,
   AnnouncementsList,
-  CreateAnnouncementDialog,
+  AnnouncementFormDialog,
 } from "@/app/dashboard/announcements/_components";
-import { useAnnouncements, useAnnouncementsDisplay, useAnnouncementsTable } from "@/app/dashboard/announcements/_hooks";
+import {
+  useAnnouncementFormDialog,
+  useAnnouncements,
+  useAnnouncementsDisplay,
+  useAnnouncementsTable,
+} from "@/app/dashboard/announcements/_hooks";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
@@ -20,11 +25,11 @@ import type { User } from "@/types";
 import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 import { AnnouncementCategory, Announcement } from "../types";
 
-type AnnouncementsWithFiltersProps = {
+type AnnouncementsDisplayProps = {
   userRole: User["role"];
 };
 
-const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) => {
+const AnnouncementsDisplay = ({ userRole }: AnnouncementsDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<AnnouncementCategory>();
 
   const useAnnouncementsReturn = useAnnouncements({ category, search });
@@ -35,7 +40,15 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
 
   const { display, setDisplay } = useAnnouncementsDisplay();
 
-  const useAnnouncementsTableReturn = useAnnouncementsTable(announcements, handleSelectItem, handleDeleteAnnouncements);
+  const useAnnouncementFormDialogReturn = useAnnouncementFormDialog();
+  const { handleOpenAnnouncementFormDialog } = useAnnouncementFormDialogReturn;
+
+  const useAnnouncementsTableReturn = useAnnouncementsTable(
+    announcements,
+    handleSelectItem,
+    handleOpenAnnouncementFormDialog,
+    handleDeleteAnnouncements
+  );
   const { selectedAnnouncementIds, announcementsColumns, table } = useAnnouncementsTableReturn;
 
   return (
@@ -43,7 +56,11 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="w-full flex flex-col lg:flex-row gap-4">
-            {userRole === ADMIN && <CreateAnnouncementDialog />}
+            {userRole === ADMIN && (
+              <Button className="w-full md:w-auto" onClick={() => handleOpenAnnouncementFormDialog()}>
+                Create announcement
+              </Button>
+            )}
             {selectedAnnouncementIds.length > 0 && display === "table" && userRole === ADMIN && (
               <Button
                 variant="destructive"
@@ -105,9 +122,10 @@ const AnnouncementsWithFilters = ({ userRole }: AnnouncementsWithFiltersProps) =
         {display === "list" && <AnnouncementsList {...useAnnouncementsReturn} {...useAnnouncementDialogReturn} />}
         {display === "table" && userRole === ADMIN && <DataTable columns={announcementsColumns} table={table} />}
       </div>
-      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} {...useAnnouncementDialogReturn} />
+      <AnnouncementDialog userRole={userRole} {...useAnnouncementDialogReturn} />
+      {userRole === ADMIN && <AnnouncementFormDialog {...useAnnouncementFormDialogReturn} />}
     </>
   );
 };
 
-export default AnnouncementsWithFilters;
+export default AnnouncementsDisplay;

@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogTrigger,
   DialogHeader,
   DialogDescription,
   DialogClose,
@@ -19,24 +18,43 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useCreateAnnouncementDialog } from "../_hooks/use-create-announcement-dialog";
+import { UseAnnouncementFormDialogReturn } from "../_hooks";
 import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 
-const CreateAnnouncementDialog = () => {
-  const { control, handleSubmit, isSubmitting, onSubmit, isOpen, setIsOpen, fields, append, remove } =
-    useCreateAnnouncementDialog();
+type AnnouncementFormDialogProps = Pick<
+  UseAnnouncementFormDialogReturn,
+  | "isOpen"
+  | "setIsOpen"
+  | "announcementId"
+  | "handleSubmit"
+  | "onSubmit"
+  | "isSubmitting"
+  | "control"
+  | "fields"
+  | "append"
+  | "remove"
+>;
 
+const AnnouncementFormDialog = ({
+  isOpen,
+  setIsOpen,
+  announcementId,
+  handleSubmit,
+  onSubmit,
+  isSubmitting,
+  control,
+  fields,
+  append,
+  remove,
+}: AnnouncementFormDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="w-full md:w-auto">Create announcement</Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Create announcement</DialogTitle>
-          <DialogDescription>Please enter your announcement details to continue.</DialogDescription>
+          <DialogTitle>{announcementId ? "Edit announcement" : "Create announcement"}</DialogTitle>
+          <DialogDescription>Please enter announcement details to continue.</DialogDescription>
         </DialogHeader>
-        <form id="create-announcement-form" onSubmit={handleSubmit(onSubmit)}>
+        <form id="announcement-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-6">
             <div className="flex-3">
               <FieldGroup>
@@ -183,8 +201,14 @@ const CreateAnnouncementDialog = () => {
               Go back
             </Button>
           </DialogClose>
-          <Button type="submit" form="create-announcement-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Create announcement"}
+          <Button type="submit" form="announcement-form" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : announcementId ? (
+              "Update announcement"
+            ) : (
+              "Create announcement"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -192,4 +216,4 @@ const CreateAnnouncementDialog = () => {
   );
 };
 
-export default CreateAnnouncementDialog;
+export default AnnouncementFormDialog;

@@ -17,7 +17,7 @@ import {
 import { UseItemDialogReturn } from "@/hooks";
 import { getDateFromMilliseconds } from "@/lib";
 
-import { UseAnnouncementsReturn } from "../_hooks";
+import { UseAnnouncementFormDialogReturn, UseAnnouncementsReturn } from "../_hooks";
 import type { Announcement } from "../types";
 
 /**
@@ -32,6 +32,7 @@ import type { Announcement } from "../types";
  */
 export const getAnnouncementsColumns = (
   handleSelectItem: UseItemDialogReturn<Announcement>["handleSelectItem"],
+  handleOpenAnnouncementFormDialog: UseAnnouncementFormDialogReturn["handleOpenAnnouncementFormDialog"],
   handleDeleteAnnouncements: UseAnnouncementsReturn["handleDeleteAnnouncements"]
 ): ColumnDef<Announcement>[] => {
   return [
@@ -110,7 +111,9 @@ export const getAnnouncementsColumns = (
             <DropdownMenuContent align="end">
               <DropdownMenuLabel className="text-sm font-bold">Actions</DropdownMenuLabel>
               <DropdownMenuItem onClick={() => handleSelectItem(row.original.id)}>View announcement</DropdownMenuItem>
-              <DropdownMenuItem>Edit announcement</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleOpenAnnouncementFormDialog(row.original)}>
+                Edit announcement
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
                 Copy announcement ID

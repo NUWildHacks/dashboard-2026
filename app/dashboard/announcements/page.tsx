@@ -1,4 +1,4 @@
-import { AnnouncementsWithFilters } from "@/app/dashboard/announcements/_components";
+import { AnnouncementsDisplay } from "@/app/dashboard/announcements/_components";
 import { DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
@@ -7,7 +7,7 @@ const AnnouncementsPage = async () => {
 
   const { role } = await getAuthenticatedUser(redirectPath);
 
-  return <AnnouncementsWithFilters userRole={role} />;
+  return <AnnouncementsDisplay userRole={role} />;
 };
 
 export default AnnouncementsPage;

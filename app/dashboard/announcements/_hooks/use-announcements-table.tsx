@@ -11,10 +11,12 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { UseDialogReturn } from "@/hooks";
+import { UseItemDialogReturn } from "@/hooks";
 
 import { getAnnouncementsColumns } from "../_lib/announcements-columns.lib";
 import type { Announcement } from "../types";
+
+import { UseAnnouncementFormDialogReturn } from "./use-announcement-form-dialog";
 
 export type UseAnnouncementsTableReturn = {
   table: Table<Announcement>;
@@ -24,12 +26,17 @@ export type UseAnnouncementsTableReturn = {
 
 export const useAnnouncementsTable = (
   announcements: Announcement[],
-  handleSelectItem: UseDialogReturn<Announcement>["handleSelectItem"],
+  handleSelectItem: UseItemDialogReturn<Announcement>["handleSelectItem"],
+  handleOpenAnnouncementFormDialog: UseAnnouncementFormDialogReturn["handleOpenAnnouncementFormDialog"],
   handleDeleteAnnouncements: (announcementIds: Announcement["id"][]) => Promise<void>
 ): UseAnnouncementsTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
 
-  const announcementsColumns = getAnnouncementsColumns(handleSelectItem, handleDeleteAnnouncements);
+  const announcementsColumns = getAnnouncementsColumns(
+    handleSelectItem,
+    handleOpenAnnouncementFormDialog,
+    handleDeleteAnnouncements
+  );
 
   const table = useReactTable({
     data: announcements,

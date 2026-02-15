@@ -6,11 +6,11 @@ import { ADMIN, ANNOUNCEMENTS_COLLECTION, DASHBOARD_ANNOUNCEMENTS_PATH, LOGIN_PA
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
-import { type CreateAnnouncementDialogSchema } from "../_schemas/create-announcement-dialog.schemas";
+import { type AnnouncementFormSchema } from "../_schemas/announcement-form.schemas";
 
-export type CreateAnnouncementResult = ActionResult<CreateAnnouncementDialogSchema>;
+export type CreateAnnouncementResult = ActionResult<AnnouncementFormSchema>;
 
-export const createAnnouncement = async (data: CreateAnnouncementDialogSchema): Promise<CreateAnnouncementResult> => {
+export const createAnnouncement = async (data: AnnouncementFormSchema): Promise<CreateAnnouncementResult> => {
   const db = getFirestore();
   const now = Date.now();
 

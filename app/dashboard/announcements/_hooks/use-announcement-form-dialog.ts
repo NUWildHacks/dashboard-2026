@@ -6,20 +6,21 @@ import { SubmitHandler, useFieldArray, useForm, UseFormReturn, UseFieldArrayRetu
 import { toast } from "sonner";
 
 import { createAnnouncement } from "../_actions/create-announcement.actions";
-import {
-  createAnnouncementDialogSchema,
-  CreateAnnouncementDialogSchema,
-} from "../_schemas/create-announcement-dialog.schemas";
+import { announcementFormSchema, AnnouncementFormSchema } from "../_schemas/announcement-form.schemas";
+import { Announcement } from "../types";
 
-export type UseCreateAnnouncementDialogReturn = {
+export type UseAnnouncementFormDialogReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onSubmit: SubmitHandler<CreateAnnouncementDialogSchema>;
+  announcementId: Announcement["id"] | undefined;
+  handleOpenAnnouncementFormDialog: (announcement?: Announcement) => void;
+  onSubmit: SubmitHandler<AnnouncementFormSchema>;
   isSubmitting: boolean;
-} & Pick<UseFormReturn<CreateAnnouncementDialogSchema>, "control" | "handleSubmit"> &
-  Pick<UseFieldArrayReturn<CreateAnnouncementDialogSchema, "links">, "fields" | "append" | "remove">;
+} & Pick<UseFormReturn<AnnouncementFormSchema>, "control" | "handleSubmit"> &
+  Pick<UseFieldArrayReturn<AnnouncementFormSchema, "links">, "fields" | "append" | "remove">;
 
-export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn => {
+export const useAnnouncementFormDialog = (): UseAnnouncementFormDialogReturn => {
+  const [announcementId, setAnnouncementId] = useState<Announcement["id"] | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -28,8 +29,8 @@ export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn
     setError,
     reset,
     formState: { isSubmitting },
-  } = useForm<CreateAnnouncementDialogSchema>({
-    resolver: zodResolver(createAnnouncementDialogSchema),
+  } = useForm<AnnouncementFormSchema>({
+    resolver: zodResolver(announcementFormSchema),
     defaultValues: {
       title: "",
       body: "",
@@ -43,7 +44,7 @@ export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn
     name: "links",
   });
 
-  const onSubmit = async (data: CreateAnnouncementDialogSchema) => {
+  const onSubmit = async (data: AnnouncementFormSchema) => {
     try {
       const result = await createAnnouncement(data);
       const { success } = result;
@@ -72,9 +73,23 @@ export const useCreateAnnouncementDialog = (): UseCreateAnnouncementDialogReturn
     }
   };
 
+  const handleOpenAnnouncementFormDialog = (announcement?: Announcement) => {
+    setAnnouncementId(announcement?.id);
+    setIsOpen(true);
+
+    reset({
+      title: announcement?.title || "",
+      body: announcement?.body || "",
+      category: announcement?.category || undefined,
+      links: announcement?.links.map((link) => ({ url: link })) || [],
+    });
+  };
+
   return {
     isOpen,
     setIsOpen,
+    announcementId,
+    handleOpenAnnouncementFormDialog,
     onSubmit,
     isSubmitting,
     control,

@@ -4,7 +4,7 @@ import { plainTextMultiLineSchema, plainTextSingleLineSchema, secureUrlSchema } 
 
 import { ANNOUNCEMENT_CATEGORIES } from "../constants";
 
-export const createAnnouncementDialogSchema = z.object({
+export const announcementFormSchema = z.object({
   title: plainTextSingleLineSchema
     .min(1, { message: "Title is required" })
     .max(100, { message: "Title must be 100 characters or less" }),
@@ -15,4 +15,4 @@ export const createAnnouncementDialogSchema = z.object({
   links: z.array(z.object({ url: secureUrlSchema })).max(4, { message: "Maximum of 4 links allowed" }),
 });
 
-export type CreateAnnouncementDialogSchema = z.infer<typeof createAnnouncementDialogSchema>;
+export type AnnouncementFormSchema = z.infer<typeof announcementFormSchema>;
