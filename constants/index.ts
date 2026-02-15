@@ -44,3 +44,5 @@ export {
   JUDGE_USER_FIELDS,
   PARTICIPANT_USER_FIELDS,
 } from "./user.constants";
+
+export { USER_NOT_FOUND, ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL } from "./firebase.constants";
