@@ -1,7 +1,6 @@
-import { Calendar, FolderGit2, Home, Megaphone, Users } from "lucide-react";
+import { Calendar, FolderGit2, Home, Users } from "lucide-react";
 
 import {
-  DASHBOARD_ANNOUNCEMENTS_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
@@ -16,12 +15,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
-  },
-  {
-    title: "Announcements",
-    url: DASHBOARD_ANNOUNCEMENTS_PATH,
-    icon: Megaphone,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE],
   },
   {
@@ -45,7 +38,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
-  announcements: "Announcements",
   schedule: "Schedule",
   project: "Project",
   support: "Support",

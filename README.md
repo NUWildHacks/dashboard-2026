@@ -1,6 +1,6 @@
 # WildHacks Dashboard 2026
 
-The WildHacks Dashboard is the comprehensive management system for WildHacks 2026. It provides participants, administrators, and organizers with a platform to make the most of their hackathon experience, including project collaboration, event scheduling, announcements, user management, and more.
+The WildHacks Dashboard is the comprehensive management system for WildHacks 2026. It provides participants, administrators, and organizers with a platform to make the most of their hackathon experience, including project collaboration, event scheduling, user management, and more.
 
 **Live Site**: https://dashboard.wildhacks.net
 
@@ -45,15 +45,7 @@ The WildHacks Dashboard is the comprehensive management system for WildHacks 202
 - **Personal QR Code** - Quick check-in code for participants
 - **Countdown Timer** - Real-time countdown showing time remaining in the hackathon
 - **Interactive Venue Map** - Visual guide to hackathon locations
-- **Live Announcements** - Real-time feed of important updates and information
 - **Upcoming Events** - Calendar view of scheduled events and activities
-
-### Announcements
-
-- View all hackathon announcements in chronological order
-- Real-time updates for important information
-- Filter announcements by category or date
-- Admin functionality to create, edit, and delete announcements
 
 ### Schedule
 

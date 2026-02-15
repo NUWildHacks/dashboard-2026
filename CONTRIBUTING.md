@@ -157,7 +157,7 @@ app/
 │   ├── constants.ts     # Dashboard-specific constants
 │   ├── lib.ts           # Dashboard-specific utilities
 │   ├── types.ts         # Dashboard-specific types
-│   ├── announcements/   # Announcements feature
+│   ├── schedule/        # Schedule feature
 │   │   ├── _actions/
 │   │   ├── _components/
 │   │   ├── _hooks/

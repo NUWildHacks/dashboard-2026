@@ -3,7 +3,6 @@ export const ROOT_PATH = "/" as const;
 export const REGISTRATION_PATH = "/registration" as const;
 
 export const DASHBOARD_PATH = "/dashboard" as const;
-export const DASHBOARD_ANNOUNCEMENTS_PATH = "/dashboard/announcements" as const;
 export const DASHBOARD_SCHEDULE_PATH = "/dashboard/schedule" as const;
 export const DASHBOARD_PROJECT_PATH = "/dashboard/project" as const;
 export const DASHBOARD_MANAGE_USERS_PATH = "/dashboard/manage-users" as const;

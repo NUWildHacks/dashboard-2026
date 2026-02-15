@@ -62,17 +62,6 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Announcements collection
-    match /announcements/{announcementId} {
-      // All authenticated users can read announcements
-      // Filtering by audience/role is handled client-side
-      allow read: if isAuthenticated();
-
-      // Only admins can create, update, or delete announcements
-      // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow write: if isAdmin();
-    }
-
     // Events collection
     match /events/{eventId} {
       // All authenticated users can read events

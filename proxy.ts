@@ -2,7 +2,6 @@ import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  DASHBOARD_ANNOUNCEMENTS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -44,7 +43,6 @@ export async function proxy(req: NextRequest) {
   const isProtectedRoute =
     currentPath === REGISTRATION_PATH ||
     currentPath === DASHBOARD_PATH ||
-    currentPath === DASHBOARD_ANNOUNCEMENTS_PATH ||
     currentPath === DASHBOARD_PROJECT_PATH ||
     currentPath === DASHBOARD_SCHEDULE_PATH ||
     currentPath === DASHBOARD_SUPPORT_PATH ||
