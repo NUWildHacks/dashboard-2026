@@ -68,7 +68,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
                       placeholder={description}
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
-                      className="max-h-40"
+                      className="min-h-32 max-h-64 break-all"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>

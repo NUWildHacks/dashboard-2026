@@ -27,7 +27,7 @@ const CreateProjectDialog = () => {
       <DialogTrigger asChild>
         <Button>Create new project</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[400px] md:max-w-[600px] lg:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Create new project</DialogTitle>
           <DialogDescription>
@@ -72,7 +72,7 @@ const CreateProjectDialog = () => {
                       placeholder="Enter your project description"
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
-                      className="max-h-40"
+                      className="min-h-32 max-h-64 break-all"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
