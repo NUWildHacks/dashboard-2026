@@ -89,26 +89,19 @@ const EditAdminProfileForm = ({ adminUser }: EditAdminProfileFormProps) => {
                   />
                 </div>
 
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Email
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter your email"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="email"
-                        disabled
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
+                <Field>
+                  <FieldLabel htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Email
+                  </FieldLabel>
+                  <Input id="email" value={adminUser.email} disabled />
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="role" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Role
+                  </FieldLabel>
+                  <Input id="role" value={adminUser.role} disabled />
+                </Field>
               </FieldGroup>
             </FieldSet>
 
@@ -158,7 +151,6 @@ const EditAdminProfileForm = ({ adminUser }: EditAdminProfileFormProps) => {
                         aria-invalid={fieldState.invalid}
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
-                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>

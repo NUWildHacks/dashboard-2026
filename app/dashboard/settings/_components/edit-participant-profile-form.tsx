@@ -90,26 +90,19 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                   />
                 </div>
 
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Email
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter your email"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="email"
-                        disabled
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
+                <Field>
+                  <FieldLabel htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Email
+                  </FieldLabel>
+                  <Input id="email" value={participantUser.email} disabled />
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="role" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Role
+                  </FieldLabel>
+                  <Input id="role" value={participantUser.role} disabled />
+                </Field>
 
                 <Controller
                   name="phone"

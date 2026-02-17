@@ -8,7 +8,6 @@ export const editAdminProfileFormSchema = registrationFormSchema
   .pick({
     first_name: true,
     last_name: true,
-    email: true,
     dietary_restrictions: true,
     other_dietary_restrictions: true,
   })
@@ -17,11 +16,10 @@ export const editAdminProfileFormSchema = registrationFormSchema
     path: ["other_dietary_restrictions"],
   });
 
-export const editJudgeProfileFormSchema = registrationFormSchema
+export const editJudgeMentorProfileFormSchema = registrationFormSchema
   .pick({
     first_name: true,
     last_name: true,
-    email: true,
     dietary_restrictions: true,
     other_dietary_restrictions: true,
   })
@@ -47,7 +45,6 @@ export const editParticipantProfileFormSchema = registrationFormSchema
   .pick({
     first_name: true,
     last_name: true,
-    email: true,
     phone: true,
     github_username: true,
     dietary_restrictions: true,
@@ -59,5 +56,5 @@ export const editParticipantProfileFormSchema = registrationFormSchema
   });
 
 export type EditAdminProfileFormSchema = z.infer<typeof editAdminProfileFormSchema>;
-export type EditJudgeProfileFormSchema = z.infer<typeof editJudgeProfileFormSchema>;
+export type EditJudgeMentorProfileFormSchema = z.infer<typeof editJudgeMentorProfileFormSchema>;
 export type EditParticipantProfileFormSchema = z.infer<typeof editParticipantProfileFormSchema>;

@@ -1,11 +1,11 @@
 export {
   editAdminProfileFormSchema,
-  editJudgeProfileFormSchema,
+  editJudgeMentorProfileFormSchema,
   editParticipantProfileFormSchema,
 } from "./edit-profile-form.schemas";
 export type {
   EditAdminProfileFormSchema,
-  EditJudgeProfileFormSchema,
+  EditJudgeMentorProfileFormSchema,
   EditParticipantProfileFormSchema,
 } from "./edit-profile-form.schemas";
 export { editWildhacksConfigFormSchema } from "./edit-wildhacks-config-form.schemas";

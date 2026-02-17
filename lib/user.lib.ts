@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH } from "@/constants";
+import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH, MENTOR } from "@/constants";
 import type { ActionResult, User } from "@/types";
 
 import { verifySession } from ".";
@@ -68,6 +68,7 @@ const requireRole = <T extends User["role"]>(
       [PARTICIPANT]: "You must be a participant to perform this action",
       [ADMIN]: "You must be an administrator to perform this action",
       [JUDGE]: "You must be a judge to perform this action",
+      [MENTOR]: "You must be a mentor to perform this action",
     };
 
     return {

@@ -3,7 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
-import { useEditJudgeProfileForm } from "@/app/dashboard/settings/_hooks";
+import { useEditJudgeMentorProfileForm } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -27,14 +27,14 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DIETARY_RESTRICTIONS } from "@/constants";
 import { MODALITIES } from "@/constants/user.constants";
-import type { JudgeUser } from "@/types";
+import type { JudgeUser, MentorUser } from "@/types";
 
-type EditJudgeProfileFormProps = {
-  judgeUser: JudgeUser;
+type EditJudgeMentorProfileFormProps = {
+  user: JudgeUser | MentorUser;
 };
 
-const EditJudgeProfileForm = ({ judgeUser }: EditJudgeProfileFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } = useEditJudgeProfileForm(judgeUser);
+const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } = useEditJudgeMentorProfileForm(user);
 
   return (
     <Card className="shadow-sm">
@@ -91,25 +91,19 @@ const EditJudgeProfileForm = ({ judgeUser }: EditJudgeProfileFormProps) => {
                   />
                 </div>
 
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
-                        Email
-                      </FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        placeholder="Enter your email"
-                        aria-invalid={fieldState.invalid}
-                        autoComplete="email"
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
+                <Field>
+                  <FieldLabel htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Email
+                  </FieldLabel>
+                  <Input id="email" value={user.email} disabled />
+                </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="role" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    Role
+                  </FieldLabel>
+                  <Input id="role" value={user.role} disabled />
+                </Field>
 
                 <FieldSeparator />
 
@@ -255,4 +249,4 @@ const EditJudgeProfileForm = ({ judgeUser }: EditJudgeProfileFormProps) => {
   );
 };
 
-export default EditJudgeProfileForm;
+export default EditJudgeMentorProfileForm;

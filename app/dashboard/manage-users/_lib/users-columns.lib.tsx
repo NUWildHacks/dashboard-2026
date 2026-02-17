@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { JUDGE, MENTOR, PARTICIPANT } from "@/constants";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 import type { User } from "@/types";
 
@@ -95,14 +96,14 @@ export const getUsersColumns = (
 
   const roleSpecificColumns: ColumnDef<User>[] = [];
 
-  if (role === "Participant") {
+  if (role === PARTICIPANT) {
     roleSpecificColumns.push(
       {
         accessorKey: "github_username",
         header: "GitHub Username",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === "Participant") {
+          if (user.role === PARTICIPANT) {
             return <div className="text-left text-muted-foreground">{user.github_username || "None"}</div>;
           }
           return null;
@@ -114,7 +115,7 @@ export const getUsersColumns = (
         header: "Project ID",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === "Participant") {
+          if (user.role === PARTICIPANT) {
             return <div className="text-left text-muted-foreground">{user.project_id || "None"}</div>;
           }
           return null;
@@ -122,14 +123,14 @@ export const getUsersColumns = (
         enableHiding: false,
       }
     );
-  } else if (role === "Judge") {
+  } else if (role === JUDGE || role === MENTOR) {
     roleSpecificColumns.push(
       {
         accessorKey: "affiliated_company",
         header: "Affiliated Company",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === "Judge") {
+          if (user.role === JUDGE || user.role === MENTOR) {
             return <div className="text-left text-muted-foreground">{user.affiliated_company}</div>;
           }
           return null;
@@ -141,24 +142,8 @@ export const getUsersColumns = (
         header: "Modality",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === "Judge") {
+          if (user.role === JUDGE || user.role === MENTOR) {
             return <Badge variant="secondary">{user.modality}</Badge>;
-          }
-          return null;
-        },
-        enableHiding: false,
-      },
-      {
-        accessorKey: "assigned_project_ids",
-        header: "Assigned Project IDs",
-        cell: ({ row }) => {
-          const user = row.original;
-          if (user.role === "Judge") {
-            return (
-              <div className="text-left text-muted-foreground">
-                {user.assigned_project_ids.length > 0 ? user.assigned_project_ids.join(", ") : "None"}
-              </div>
-            );
           }
           return null;
         },

@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
+import admin from "@/config/firebase-admin";
 import { DASHBOARD_MANAGE_USERS_PATH, ADMIN, LOGIN_PATH, USERS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, User } from "@/types";
@@ -31,6 +32,8 @@ export const deleteUsers = async (userIds: User["id"][]): Promise<DeleteUsersRes
     }
 
     await batch.commit();
+
+    await admin.auth().deleteUsers(userIds);
 
     revalidatePath(DASHBOARD_MANAGE_USERS_PATH);
 

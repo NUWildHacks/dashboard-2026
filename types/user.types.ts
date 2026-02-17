@@ -9,8 +9,12 @@ import {
   ROLES,
   SCHOOLS,
   TSHIRT_SIZES,
+  ADMIN,
+  JUDGE,
+  MENTOR,
+  MODALITIES,
+  PARTICIPANT,
 } from "@/constants";
-import { ADMIN, JUDGE, MODALITIES, PARTICIPANT } from "@/constants/user.constants";
 
 import type { BaseModel } from "./base-model.types";
 
@@ -69,8 +73,14 @@ export type JudgeUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
-
-  assigned_project_ids: Project["id"][];
 };
 
-export type User = ParticipantUser | AdminUser | JudgeUser;
+export type MentorUser = BaseUser & {
+  role: typeof MENTOR;
+
+  affiliated_company: string;
+  modality: Modality;
+  other_modality: string;
+};
+
+export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser;

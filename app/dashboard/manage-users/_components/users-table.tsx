@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JUDGE, PARTICIPANT, ROLES } from "@/constants";
+import { JUDGE, MENTOR, PARTICIPANT, ROLES } from "@/constants";
 import { User } from "@/types";
 
 import { useUsersTable } from "../_hooks/use-users-table";
@@ -55,7 +55,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
                 ))}
               </SelectContent>
             </Select>
-            {(role === PARTICIPANT || role === JUDGE) && (
+            {(role === PARTICIPANT || role === JUDGE || role === MENTOR) && (
               <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
                 Download CSV
               </Button>

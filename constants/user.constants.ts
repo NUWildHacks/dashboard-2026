@@ -21,8 +21,9 @@ export const MODALITIES = ["In-Person", "Remote", "Other"] as const;
 
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
+export const MENTOR = "Mentor" as const;
 export const ADMIN = "Admin" as const;
-export const ROLES = [PARTICIPANT, JUDGE, ADMIN] as const;
+export const ROLES = [PARTICIPANT, JUDGE, MENTOR, ADMIN] as const;
 
 export const USER_FIELDS = {
   email: "email",
@@ -63,5 +64,4 @@ export const JUDGE_USER_FIELDS = {
   affiliated_company: "affiliated_company",
   modality: "modality",
   other_modality: "other_modality",
-  assigned_project_ids: "assigned_project_ids",
 } as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;
