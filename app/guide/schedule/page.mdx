@@ -1,0 +1,97 @@
+import { Callout } from "@/app/guide/_components/Callout";
+import { InlineSegments } from "@/app/guide/_components/InlineSegments";
+import CalendarExport from "@/app/guide/_components/CalendarExport";
+import { scheduleEvents } from "@/app/guide/_data/schedule-data";
+import { saturdayScheduleRows, sundayScheduleRows, workshopWeekRows } from "@/app/guide/_data/schedule-table-data";
+
+# WildHacks 2026 Schedule
+
+<CalendarExport events={scheduleEvents} />
+
+See the [event map](/guide/map) for location details. All WildHackers are provided work spaces in [Mudd Library](https://www.library.northwestern.edu/libraries-collections/mudd-library/) and the [Technological Institute](https://maps.northwestern.edu/txt/facility/132). If you are an out-of-town WildHacker, we recommend you _do not_ leave these designated areas.
+
+## (Optional) Workshop Week
+
+<Callout emoji="👾">
+  Workshop Week is a hybrid, *optional* collaboration to introduce newer WildHackers to software development topics. We
+  are grateful to Northwestern's computing student organizations for hosting these sessions! 💓
+</Callout>
+
+All times are in Central Time. Virtual options will be provided for all sessions to all registered WildHackers.
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Event</th>
+      <th>In-Person Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {workshopWeekRows.map((row) => (
+      <tr key={`${row.date}-${row.time}`}>
+        <td>{row.date}</td>
+        <td>{row.time}</td>
+        <td>
+          <InlineSegments segments={row.event} />
+        </td>
+        <td>{row.location}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Saturday, April 5, 2026
+
+**Hackathon Day 1**
+
+All times are in Central Time.
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Event</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {saturdayScheduleRows.map((row) => (
+      <tr key={`sat-${row.time}-${row.location ?? "na"}`}>
+        <td>{row.time}</td>
+        <td>
+          <InlineSegments segments={row.event} />
+        </td>
+        <td>{row.location ?? ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Sunday, April 6, 2026
+
+**Hackathon Day 2**
+
+All times are in Central Time.
+
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Event</th>
+      <th>Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundayScheduleRows.map((row) => (
+      <tr key={`sun-${row.time}-${row.location ?? "na"}`}>
+        <td>{row.time}</td>
+        <td>
+          <InlineSegments segments={row.event} />
+        </td>
+        <td>{row.location ?? ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

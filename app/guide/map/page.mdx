@@ -1,0 +1,86 @@
+import { Callout } from "@/app/guide/_components/Callout";
+import { InlineSegments } from "@/app/guide/_components/InlineSegments";
+import { saturdaySpaces, sundaySpaces } from "@/app/guide/_data/map-data";
+
+# WildHacks Event Map
+
+## Event Spaces
+
+WildHacks programming will take place across two buildings connected to each other by an indoor bridge.
+
+[Learn about leaving and re-entering event spaces during the event.](/guide/logistics/leaving-the-venue)
+
+<Callout type="error" emoji="🔥">
+  Do NOT use rooms in Tech outside of the ones listed below. Failure to abide by our space restrictions will result in
+  immediate dismissal from the hackathon.
+</Callout>
+
+### Tech
+
+Check-in, workshops, and opening/closing ceremony will take place in Tech. The building is accessible via the main entrance on the west side of the building, which faces Sheridan Road.
+
+**Northwestern University Techological Institute**<br />2145 Sheridan Road<br />Evanston, IL 60208<br />[View on Apple Maps](https://maps.apple.com/?address=2145%20Sheridan%20Rd,%20Evanston,%20IL%2060208,%20United%20States&auid=9021466912054288827&ll=42.057769,-87.675877&lsp=9902&q=Technological%20Institute)<br />[View on Google Maps](https://maps.app.goo.gl/KvQNxa82V3LPenuh8)
+
+### Mudd
+
+The [WildHacks Help Desk](/guide/help-desk) and [WildSnacks Station](/guide/logistics/food-and-drinks) will be located on the second floor of Mudd.
+
+The area will be open 24/7 and will include [overnight spaces](/guide/logistics/sleeping-and-showering).
+
+**Seeley G. Mudd Library**<br />2233 Tech Drive<br />Evanston, IL 60208<br />[View on Apple Maps](https://maps.apple.com/?address=2233%20Tech%20Dr,%20Evanston,%20IL%20%2060208,%20United%20States&auid=875104193315716512&ll=42.058282,-87.674389&lsp=9902&q=Mudd%20Library)<br />[View on Google Maps](https://maps.app.goo.gl/oxMTM9ysAxL3zPUW7)
+
+### Saturday, April 5 Spaces
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {saturdaySpaces.map((space, index) => (
+      <tr key={`sat-space-${index}`}>
+        <td>
+          <InlineSegments segments={space.name} />
+        </td>
+        <td>
+          <InlineSegments segments={space.location} />
+        </td>
+        <td>{space.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Sunday, April 6 Spaces
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundaySpaces.map((space, index) => (
+      <tr key={`sun-space-${index}`}>
+        <td>
+          <InlineSegments segments={space.name} />
+        </td>
+        <td>
+          <InlineSegments segments={space.location} />
+        </td>
+        <td>{space.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Map
+
+[View a full size version of the map →](/guide/map.png)
+
+![WildHacks Event Map](/guide/map.png)

@@ -1,0 +1,26 @@
+{
+  "meals": {
+    "intro": "Meals will be distributed at the times and locations listed on the",
+    "scheduleLink": "/guide/schedule",
+    "location": "1st Floor Mudd",
+    "optionsLink": "/guide/logistics/meal-options",
+    "optionsText": "meal options",
+    "callout": {
+      "type": "warning",
+      "emoji": "⚠️",
+      "text": "You must have your WildHacker Code ready and have submitted a project on Dev Post to receive meals. You can edit your project after submission."
+    },
+    "wildhackerLink": "https://dashboard.wildhacks.net/code"
+  },
+  "snacks": {
+    "intro": "Snacks and drinks will be available throughout the event. They will be located at the WildSnacks Station.",
+    "mapLink": "/guide/map",
+    "callout": {
+      "emoji": "❤️",
+      "text": "Thank you to the Red Bull team for providing our WildHackers with wiiings to complete their applications!"
+    }
+  },
+  "additional": {
+    "intro": "If you want different food or drinks than what we have available, there are vending machines located throughout the buildings. You can also order or pick up food from local restaurants. Note that all additional food and drink options must be purchased."
+  }
+}

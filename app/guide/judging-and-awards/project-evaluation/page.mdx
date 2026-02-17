@@ -1,0 +1,39 @@
+import rubric from "@/app/guide/_data/judging-rubric.json";
+
+# Project Evaluation
+
+## Areas of Evaluation
+
+{rubric.areas.map((area) => (
+
+  <section key={area.name}>
+    <h3>
+      {area.name} ({area.weight}%)
+    </h3>
+    <p>{area.description}</p>
+  </section>
+))}
+
+## Score Criteria
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>0 (No Credit)</th>
+      <th>1 (Developing)</th>
+      <th>2 (Effective)</th>
+      <th>3 (Outstanding)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rubric.criteria.map((row) => (
+      <tr key={row.category}>
+        <td>{row.category}</td>
+        {row.levels.map((level, index) => (
+          <td key={`${row.category}-${index}`}>{level}</td>
+        ))}
+      </tr>
+    ))}
+  </tbody>
+</table>

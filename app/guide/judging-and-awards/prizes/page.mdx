@@ -1,0 +1,44 @@
+import { Callout } from "@/app/guide/_components/Callout";
+import prizes from "@/app/guide/_data/prizes.json";
+
+# Prizes
+
+<Callout type="info">{prizes.notices.info}</Callout>
+
+<Callout type="warning">{prizes.notices.warning}</Callout>
+
+## Grand Prizes
+
+{prizes.grandPrizes.map((prize) => (
+
+  <section key={prize.title}>
+    <h3>{prize.title}</h3>
+    <p>{prize.description}</p>
+    <Callout type="highlight" emoji={prize.emoji}>{prize.award}</Callout>
+  </section>
+))}
+
+## Track Prizes
+
+{prizes.trackPrizes.map((prize) => (
+
+  <section key={prize.title}>
+    <h3>{prize.title}</h3>
+    <Callout type="highlight" emoji={prize.emoji}>{prize.award}</Callout>
+  </section>
+))}
+
+## MLH Challenge Prizes
+
+{prizes.mlhPrizes.map((prize) => (
+
+  <Callout key={prize.title} type="highlight" emoji={prize.emoji}>
+    The prize for <strong>{prize.title}</strong> is <em>{prize.award}</em>.
+  </Callout>
+))}
+
+## Crowd Favorite
+
+<Callout type="highlight" emoji={prizes.crowdFavorite.emoji}>
+  {prizes.crowdFavorite.award}
+</Callout>

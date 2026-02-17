@@ -1,0 +1,37 @@
+import { Callout } from "@/app/guide/_components/Callout";
+import logistics from "@/app/guide/_data/logistics.json";
+
+# Meals, Snacks, and Drinks
+
+A hackathon is all about development. We want you to focus on that, so we'll provide you with meals, snacks, and drinks you need to keep you going. 😉
+
+## Meal Distribution
+
+<p>
+  {logistics.meals.intro} <a href={logistics.meals.scheduleLink}>schedule</a>. Meals will generally be distributed on{" "}
+  {logistics.meals.location}.
+</p>
+
+<p>
+  You can view our <a href={logistics.meals.optionsLink}>{logistics.meals.optionsText}</a> to see what we have at each
+  meal throughout the event.
+</p>
+
+<Callout type={logistics.meals.callout.type} emoji={logistics.meals.callout.emoji}>
+  <strong>
+    You must have your <a href={logistics.meals.wildhackerLink}>WildHacker Code</a> ready and have submitted a project
+    on Dev Post to receive meals. You can edit your project after submission.
+  </strong>
+</Callout>
+
+## Snacks and Drinks
+
+<p>
+  {logistics.snacks.intro} <a href={logistics.snacks.mapLink}>WildSnacks Station</a>.
+</p>
+
+<Callout emoji={logistics.snacks.callout.emoji}>{logistics.snacks.callout.text}</Callout>
+
+## Additional Food and Drinks
+
+<p>{logistics.additional.intro}</p>

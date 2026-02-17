@@ -1,0 +1,52 @@
+{
+  "tracks": [
+    {
+      "name": "Agriculture",
+      "description": "Agriculture empowers hackers to reimagine the future of food, farming, and sustainability. From smart farming solutions and precision agriculture to tools that support food accessibility and environmental resilience, this track invites you to cultivate tech that strengthens communities and ecosystems—urban or rural."
+    },
+    {
+      "name": "Productivity / Wellness",
+      "description": "Productivity / Wellness is your playground for creating technologies that help people live and work better. Whether you’re building focus-enhancing apps, wellness tracking tools, mental health resources, or new ways to optimize learning and collaboration, this track is all about helping individuals and teams thrive in their everyday lives."
+    },
+    {
+      "name": "Finance",
+      "description": "Finance challenges participants to rethink how we manage, move, and make money. Dive into the future of fintech by developing tools for budgeting, investing, financial literacy, secure transactions, or decentralized finance—anything that makes financial systems smarter, safer, and more inclusive."
+    }
+  ],
+  "mlhChallenges": [
+    {
+      "name": "Best Use of Gemini API",
+      "prize": "Google Branded Backpacks",
+      "description": "Push the boundaries of AI with Google Gemini. Build AI-powered apps that can understand language, analyze complex information, or generate creative content.",
+      "linkLabel": "Build with Gemini →",
+      "linkUrl": "https://mlh.link/gemini-quickstart"
+    },
+    {
+      "name": "Best Use of MongoDB Atlas",
+      "prize": "M5GO IoT Starter Kit",
+      "description": "Use MongoDB Atlas to build a modern, cloud-ready data platform for your hack. Get started with the student credit or free tier.",
+      "linkLabel": "Build with MongoDB →",
+      "linkUrl": "https://mlh.link/mongodb"
+    },
+    {
+      "name": "Best .Tech Domain Name",
+      "prize": "Blue Snowball Microphone & a Free .Tech Domain Name for up to 10 years",
+      "description": "Showcase your project with a custom .Tech domain and win microphones to level up your collaboration setup.",
+      "linkLabel": "Build with .Tech →",
+      "linkUrl": "https://get.tech/mlh"
+    },
+    {
+      "name": "Best Use of Auth0",
+      "prize": "Wireless Headphones",
+      "description": "Secure your apps with Auth0’s authentication features. Enable social sign-in, MFA, and passwordless login quickly.",
+      "linkLabel": "Build with Auth0 →",
+      "linkUrl": "https://mlh.link/auth0-MLH-guides"
+    },
+    {
+      "name": "Crowd Favorite",
+      "prize": "Presented by WildHacks",
+      "description": "Awarded to the team with the most votes from other hackers during Crowd Favorite presentations.",
+      "linkLabel": ""
+    }
+  ]
+}

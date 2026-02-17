@@ -1,0 +1,41 @@
+import tracksData from "@/app/guide/_data/tracks.json";
+
+# Project Tracks and Challenges
+
+## Tracks
+
+Your project must be submitted to one track.
+
+{tracksData.tracks.map((track) => (
+
+  <section key={track.name}>
+    <h3>{track.name}</h3>
+    <p>{track.description}</p>
+  </section>
+))}
+
+## Track and Challenge Rules
+
+Your project can only be submitted to one track. Check out this year's [prizes](/guide/judging-and-awards/prizes) to see what you can win!
+
+However, you can enter your project into any number of MLH's challenges for a chance to win more prizes in addition to the one track!
+
+## MLH Challenges
+
+You can choose to enter your project into any number of challenges.
+
+_MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://hackp.ac/WildHacks) website._
+
+{tracksData.mlhChallenges.map((challenge) => (
+
+  <section key={challenge.name}>
+    <h3>{challenge.name}</h3>
+    {challenge.prize && <p><em>{challenge.prize}</em></p>}
+    <p>{challenge.description}</p>
+    {challenge.linkUrl && challenge.linkLabel && (
+      <p>
+        <a href={challenge.linkUrl}>{challenge.linkLabel}</a>
+      </p>
+    )}
+  </section>
+))}

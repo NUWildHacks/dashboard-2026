@@ -1,0 +1,70 @@
+{
+  "notices": {
+    "info": "Prizes may be distributed in-person or shipped post-hackathon. Each member of each winning team will get the prize. Prizes will be distributed during closing ceremony.",
+    "warning": "A team may not win more than one prize total from the Grand Prizes and Track Prizes. They may win multiple prizes from Challenge Prizes, even in addition to a grand or track prize."
+  },
+  "grandPrizes": [
+    {
+      "title": "1st Place Overall",
+      "description": "This prize is awarded to the first-place project across all tracks.",
+      "award": "1st Prize Overall is a pair of Apple Airpods 4 for all team members!",
+      "emoji": "🥇"
+    },
+    {
+      "title": "2nd Place Overall",
+      "description": "This prize is awarded to the second-place project across all tracks.",
+      "award": "2nd Prize Overall is a Fuji Film Instax Mini 11 Instant Film Camera for all team members!",
+      "emoji": "🥈"
+    },
+    {
+      "title": "3rd Place Overall",
+      "description": "This prize is awarded to the third-place project across all tracks.",
+      "award": "3rd Prize Overall is an Anker Magnetic portable battery for all team members!",
+      "emoji": "🥉"
+    }
+  ],
+  "trackPrizes": [
+    {
+      "title": "Agriculture",
+      "award": "The Agriculture track's prize is an Uber Eats gift card for all team members!",
+      "emoji": "🥦"
+    },
+    {
+      "title": "Productivity / Wellness",
+      "award": "The Productivity / Wellness track's prize is a comfy for all team members!",
+      "emoji": "🧠"
+    },
+    {
+      "title": "Finance",
+      "award": "The Finance track's prize is a pickleball set for all team members!",
+      "emoji": "💲"
+    }
+  ],
+  "mlhPrizes": [
+    {
+      "title": "Best Use of Gemini API",
+      "award": "Google Branded Backpacks",
+      "emoji": "☁️"
+    },
+    {
+      "title": "Best Use of MongoDB Atlas",
+      "award": "M5GO IoT Starter Kit",
+      "emoji": "📊"
+    },
+    {
+      "title": "Best .Tech Domain Name",
+      "award": "Blue Snowball Microphone & a Free .Tech Domain Name for up to 10 years",
+      "emoji": "💻"
+    },
+    {
+      "title": "Best Use of Auth0",
+      "award": "Wireless Headphones",
+      "emoji": "🔒"
+    }
+  ],
+  "crowdFavorite": {
+    "title": "Crowd Favorite",
+    "award": "The prize for Crowd Favorite is a multi-color dinosaur light (it's cute, we promise 😉)!",
+    "emoji": "🦖"
+  }
+}
