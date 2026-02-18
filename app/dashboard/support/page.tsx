@@ -23,7 +23,10 @@ const SupportPage = async () => {
           <EmptyTitle>Support coming soon</EmptyTitle>
           <EmptyDescription>
             Check back soon for updates. If you have any urgent questions, please contact us at{" "}
-            <Link href="mailto:wildhacks@northwestern.edu?subject=[SUPPORT TICKET] Dashboard" className="underline underline-offset-4">
+            <Link
+              href="mailto:wildhacks@northwestern.edu?subject=[SUPPORT TICKET] Dashboard"
+              className="underline underline-offset-4"
+            >
               wildhacks@northwestern.edu
             </Link>
             .

@@ -17,7 +17,10 @@ const GuideContentFooter = ({ entries }: GuideContentFooterProps) => {
   const normalizedPath = pathname === "/guide" || pathname === "/guide/" ? "/guide" : pathname.replace(/\/$/, "");
 
   const index = entries.findIndex(
-    (e) => e.href === normalizedPath || e.href === pathname || (e.href === "/guide" && (pathname === "/guide" || pathname === "/guide/"))
+    (e) =>
+      e.href === normalizedPath ||
+      e.href === pathname ||
+      (e.href === "/guide" && (pathname === "/guide" || pathname === "/guide/"))
   );
   const prev = index > 0 ? entries[index - 1] : null;
   const next = index >= 0 && index < entries.length - 1 ? entries[index + 1] : null;

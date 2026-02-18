@@ -6,7 +6,7 @@ export type GuideSearchEntry = {
   readonly href: string;
 };
 
-function flattenNavItems(items: GuideNavItem[], basePath = ""): GuideSearchEntry[] {
+function flattenNavItems(items: GuideNavItem[], _basePath = ""): GuideSearchEntry[] {
   const entries: GuideSearchEntry[] = [];
 
   for (const item of items) {

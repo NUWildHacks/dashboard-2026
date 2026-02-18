@@ -58,21 +58,14 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button
-          type="button"
-          className="guide-search-trigger"
-          aria-label="Search guide pages (⌘K)"
-        >
+        <button type="button" className="guide-search-trigger" aria-label="Search guide pages (⌘K)">
           <SearchIcon className="guide-search-icon" aria-hidden />
           <span className="guide-search-trigger-text">Search guide...</span>
           <kbd className="guide-search-kbd">⌘K</kbd>
         </button>
       </PopoverTrigger>
       <PopoverContent className="guide-search-popover" align="end" sideOffset={8}>
-        <Command
-          className="guide-search-command"
-          shouldFilter={false}
-        >
+        <Command className="guide-search-command" shouldFilter={false}>
           <CommandInput
             placeholder="Search pages..."
             value={query}

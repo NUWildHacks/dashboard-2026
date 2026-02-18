@@ -119,7 +119,8 @@ const GuideNavigation = () => {
   }, [pathname]);
 
   useEffect(() => {
-    openSectionForPath();
+    const t = setTimeout(openSectionForPath, 0);
+    return () => clearTimeout(t);
   }, [openSectionForPath]);
 
   const onToggleSection = useCallback((title: string) => {

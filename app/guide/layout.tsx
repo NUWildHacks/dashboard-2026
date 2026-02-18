@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { Figtree } from "next/font/google";
 import type { ReactNode } from "react";
 
-import { Figtree } from "next/font/google";
 import { GuideContentFooter } from "./_components/GuideContentFooter";
 import { GuideNavigation } from "./_components/GuideNavigation";
 import { GuideTopbar } from "./_components/GuideTopbar";

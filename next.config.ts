@@ -1,7 +1,7 @@
-import createMDX from "@next/mdx";
 import { createRequire } from "module";
+
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
-import type { PluggableList } from "unified";
 
 import { WILDHACKS_HOME } from "./constants/routes.constants";
 
@@ -10,9 +10,7 @@ const require = createRequire(import.meta.url);
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    mdxOptions: {
-      remarkPlugins: [require.resolve("remark-gfm")] as unknown as PluggableList,
-    },
+    remarkPlugins: [require.resolve("remark-gfm")],
   },
 });
 
