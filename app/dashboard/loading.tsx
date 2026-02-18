@@ -10,7 +10,7 @@ const DashboardLoading = async () => {
       aria-label="Loading dashboard"
     >
       <div className="flex flex-col lg:flex-row gap-4">
-        <Skeleton className="lg:flex-1 h-[134x]" />
+        <Skeleton className="lg:flex-1 h-[134px]" />
         <div className="flex-1 flex flex-col lg:flex-row gap-4">
           <Skeleton className="lg:flex-1 h-[134px]" />
           <Skeleton className="lg:flex-1 h-[134px]" />
