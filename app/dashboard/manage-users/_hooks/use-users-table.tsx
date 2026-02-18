@@ -89,9 +89,9 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Delete permission codes error:", errorMessage);
+      console.error("Delete users error:", errorMessage);
 
-      toast.error("Failed to delete permission codes", { description: errorMessage });
+      toast.error("Failed to delete users", { description: errorMessage });
     }
   };
 
