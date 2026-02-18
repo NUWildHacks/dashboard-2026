@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { ONE_DAY } from "@/constants";
 

@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { registrationFormSchema } from "@/app/registration/_schemas/registration-form.schemas";
 import { MODALITIES } from "@/constants/user.constants";
