@@ -16,7 +16,7 @@ import type { PermissionCode } from "../types";
  * const permissionCodes = await getPermissionCodes();
  * console.log(`Found ${permissionCodes.length} permission codes`);
  * permissionCodes.forEach(code => {
- *   console.log(code.code, code.role);
+ *   console.log(code.id, code.email, code.created_at, code.expires_at);
  * });
  * ```
  */
