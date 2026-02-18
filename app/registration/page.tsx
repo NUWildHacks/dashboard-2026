@@ -20,12 +20,13 @@ const RegistrationPage = async () => {
   if (userDocSnapshotById.exists) redirect(DASHBOARD_PATH);
 
   const userDocSnapshotByEmail = await db.collection(USERS_COLLECTION).where("email", "==", email).limit(1).get();
-  if (userDocSnapshotByEmail.docs[0].exists) {
+  if (!userDocSnapshotByEmail.empty) {
+    
     const newJudgeDocRef = db.collection(USERS_COLLECTION).doc(id);
 
     const data = userDocSnapshotByEmail.docs[0].data();
 
-    if (data?.role == JUDGE || data?.role == MENTOR) {
+    if (data?.role === JUDGE || data?.role === MENTOR) {
       const timestamp = getCurrentTimestamp();
 
       await db.runTransaction(async (transaction) => {
