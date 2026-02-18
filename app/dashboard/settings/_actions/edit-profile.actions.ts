@@ -9,7 +9,7 @@ import type { ActionResult, WildHacksConfig } from "@/types";
 
 import {
   EditAdminProfileFormSchema,
-  EditJudgeProfileFormSchema,
+  EditJudgeMentorProfileFormSchema,
   EditParticipantProfileFormSchema,
 } from "../_schemas/edit-profile-form.schemas";
 
