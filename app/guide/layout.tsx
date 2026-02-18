@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { Figtree } from "next/font/google";
 import { GuideNavigation } from "./_components/GuideNavigation";
-import { GuideSearch } from "./_components/GuideSearch";
+import { GuideTopbar } from "./_components/GuideTopbar";
 import { GUIDE_SEARCH_ENTRIES } from "./_data/guide-search-data";
 import "./guide.css";
 
@@ -24,15 +24,13 @@ const figtree = Figtree({
 const GuideLayout = ({ children }: GuideLayoutProps) => {
   return (
     <div className={`guide-theme ${figtree.className}`}>
-      <header className="guide-header">
-        <div className="guide-header-inner">
-          <GuideSearch entries={GUIDE_SEARCH_ENTRIES} />
-        </div>
-      </header>
-      <div className="guide-shell">
-        <GuideNavigation />
-        <main className="guide-content" role="main">
-          {children}
+      <GuideTopbar entries={GUIDE_SEARCH_ENTRIES} />
+      <div className="guide-body">
+        <aside className="guide-sidebar" aria-label="Guide navigation">
+          <GuideNavigation />
+        </aside>
+        <main className="guide-main" role="main">
+          <div className="guide-content">{children}</div>
         </main>
       </div>
     </div>

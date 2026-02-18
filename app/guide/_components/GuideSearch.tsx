@@ -3,7 +3,7 @@
 import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -44,16 +44,28 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
     [router]
   );
 
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((o) => !o);
+      }
+    };
+    window.addEventListener("keydown", down);
+    return () => window.removeEventListener("keydown", down);
+  }, []);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <button
           type="button"
           className="guide-search-trigger"
-          aria-label="Search guide pages"
+          aria-label="Search guide pages (⌘K)"
         >
           <SearchIcon className="guide-search-icon" aria-hidden />
-          <span className="guide-search-trigger-text">Search guide</span>
+          <span className="guide-search-trigger-text">Search guide...</span>
+          <kbd className="guide-search-kbd">⌘K</kbd>
         </button>
       </PopoverTrigger>
       <PopoverContent className="guide-search-popover" align="end" sideOffset={8}>

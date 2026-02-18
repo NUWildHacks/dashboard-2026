@@ -1,4 +1,4 @@
-"use client";
+re"use client";
 
 import { FirebaseError } from "firebase/app";
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
