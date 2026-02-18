@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
-import { PROJECTS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT } from "@/constants";
+import { PROJECTS_COLLECTION, DASHBOARD_PROJECT_PATH, PARTICIPANT, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
 import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
 
@@ -30,7 +30,8 @@ export const editProject = async (
       };
     }
 
-    const user = await getAuthenticatedUser(`${DASHBOARD_PROJECT_PATH}`);
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
+    const user = await getAuthenticatedUser(`${redirectPath}`);
     const roleError = requireRole(user, PARTICIPANT, "You are not authorized to edit this project");
     if (roleError) return roleError;
 
