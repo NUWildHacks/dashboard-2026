@@ -15,7 +15,7 @@ export type UseItemDialogReturn<T extends { id: string }> = {
   handleDeleteItem: (deleteFn: (ids: string[]) => Promise<ActionResult<T>>) => Promise<void>;
 };
 
-export const useItemDialog = <T extends { id: string }>(items: T[]): UseItemDialogReturn<T> => {
+export const useItemDialog = <T extends { id: string }>(items: T[], itemName: string): UseItemDialogReturn<T> => {
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -57,9 +57,9 @@ export const useItemDialog = <T extends { id: string }>(items: T[]): UseItemDial
       setIsOpen(false);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Error deleting event:", errorMessage);
+      console.error(`Error deleting ${itemName}:`, errorMessage);
 
-      toast.error("Failed to delete event", { description: errorMessage });
+      toast.error(`Failed to delete ${itemName}`, { description: errorMessage });
     } finally {
       setIsDeleting(false);
     }

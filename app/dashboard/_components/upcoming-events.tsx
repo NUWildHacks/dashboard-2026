@@ -17,7 +17,7 @@ const UpcomingEvents = () => {
 
   const upcomingEvents = events.filter((event) => event.end_time > Date.now());
 
-  const useEventDialogReturn = useItemDialog<Event>(upcomingEvents);
+  const useEventDialogReturn = useItemDialog<Event>(upcomingEvents, "event");
 
   return (
     <>
