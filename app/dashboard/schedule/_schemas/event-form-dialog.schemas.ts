@@ -16,11 +16,11 @@ export const eventFormDialogSchema = z
     day: z.string().min(1, { message: "Day is required" }),
     start_time: z
       .string()
-      .min(0, { message: "Start time is required" })
+      .min(1, { message: "Start time is required" })
       .regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { message: "Start time must be in HH:mm format" }),
     end_time: z
       .string()
-      .min(0, { message: "End time is required" })
+      .min(1, { message: "End time is required" })
       .regex(/^([0-1][0-9]|2[0-3]):[0-5][0-9]$/, { message: "End time must be in HH:mm format" }),
     location: plainTextSingleLineSchema
       .min(1, { message: "Location is required" })
