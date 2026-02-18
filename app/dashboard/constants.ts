@@ -1,12 +1,10 @@
 import { Calendar, FolderGit2, Home, Users } from "lucide-react";
 
-import {
-  DASHBOARD_MANAGE_USERS_PATH,
+import { ADMIN, JUDGE, MENTOR, PARTICIPANT,   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
-} from "@/constants/routes.constants";
-import { ADMIN, JUDGE, PARTICIPANT } from "@/constants/user.constants";
+} from "@/constants";
 
 import type { SidebarItem } from "./types";
 
@@ -15,13 +13,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
   },
   {
     title: "Schedule",
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
   },
   {
     title: "Project",
