@@ -11,7 +11,7 @@ const cspHeader = `
   img-src 'self' blob: data:;
   font-src 'self' data:;
   connect-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://github.com;
-  frame-src 'self' https://*.firebaseapp.com;
+  frame-src 'self' ${isDev ? "https://vercel.live" : ""} https://*.firebaseapp.com;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
