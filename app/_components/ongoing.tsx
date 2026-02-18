@@ -2,8 +2,7 @@ import { LogIn } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { REGISTRATION_PATH } from "@/constants";
-import { JUDGE_REGISTRATION_PATH } from "@/constants/routes.constants";
+import { REGISTRATION_PATH, JUDGE_REGISTRATION_PATH } from "@/constants";
 
 const Registration = async () => {
   return (

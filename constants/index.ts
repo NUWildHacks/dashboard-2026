@@ -19,6 +19,7 @@ export {
   LOGIN_PATH,
   REGISTRATION_PATH,
   ROOT_PATH,
+  JUDGE_REGISTRATION_PATH,
   WILDHACKS_HOME,
 } from "./routes.constants";
 

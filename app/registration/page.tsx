@@ -21,7 +21,6 @@ const RegistrationPage = async () => {
 
   const userDocSnapshotByEmail = await db.collection(USERS_COLLECTION).where("email", "==", email).limit(1).get();
   if (!userDocSnapshotByEmail.empty) {
-    
     const newJudgeDocRef = db.collection(USERS_COLLECTION).doc(id);
 
     const data = userDocSnapshotByEmail.docs[0].data();
