@@ -73,7 +73,7 @@ const requireRole = <T extends User["role"]>(
 
     return {
       success: false,
-      error: errorMessage || defaultMessages[user.role],
+      error: errorMessage || defaultMessages[requiredRole],
     };
   }
 
