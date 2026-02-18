@@ -7,10 +7,10 @@ const isDev = process.env.APP_ENV !== "production";
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} ${isDev ? "https://vercel.live" : ""} https://*.firebaseapp.com https://apis.google.com;
-  style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data:;
-  font-src 'self' data:;
-  connect-src 'self' https://*.firebaseapp.com https://*.googleapis.com https://github.com;
+  style-src 'self' ${isDev ? "https://vercel.live" : ""} 'unsafe-inline';
+  img-src 'self' ${isDev ? "https://vercel.live https://vercel.com" : ""} blob: data:;
+  font-src 'self' ${isDev ? "https://vercel.live https://assets.vercel.com" : ""} data:;
+  connect-src 'self' ${isDev ? "https://vercel.live wss://ws-us3.pusher.com" : ""} https://*.firebaseapp.com https://*.googleapis.com https://github.com;
   frame-src 'self' ${isDev ? "https://vercel.live" : ""} https://*.firebaseapp.com;
   object-src 'none';
   base-uri 'self';
