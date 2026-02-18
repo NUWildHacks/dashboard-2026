@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { Figtree } from "next/font/google";
+import { GuideContentFooter } from "./_components/GuideContentFooter";
 import { GuideNavigation } from "./_components/GuideNavigation";
 import { GuideTopbar } from "./_components/GuideTopbar";
 import { GUIDE_SEARCH_ENTRIES } from "./_data/guide-search-data";
@@ -30,7 +31,10 @@ const GuideLayout = ({ children }: GuideLayoutProps) => {
           <GuideNavigation />
         </aside>
         <main className="guide-main" role="main">
-          <div className="guide-content">{children}</div>
+          <div className="guide-content">
+            {children}
+            <GuideContentFooter entries={GUIDE_SEARCH_ENTRIES} />
+          </div>
         </main>
       </div>
     </div>

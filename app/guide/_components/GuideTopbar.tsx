@@ -3,8 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { GuideSearch } from "./GuideSearch";
 import type { GuideSearchEntry } from "../_data/guide-search-data";
+
+import { GuideSearch } from "./GuideSearch";
+import { GuideThemeToggle } from "./GuideThemeToggle";
 
 type GuideTopbarProps = {
   entries: GuideSearchEntry[];
@@ -26,6 +28,7 @@ const GuideTopbar = ({ entries }: GuideTopbarProps) => {
           <span className="guide-topbar-title">WildHacks Guide</span>
         </Link>
         <div className="guide-topbar-actions">
+          <GuideThemeToggle />
           <GuideSearch entries={entries} />
         </div>
       </div>
