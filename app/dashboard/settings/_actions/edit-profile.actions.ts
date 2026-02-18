@@ -14,11 +14,11 @@ import {
 } from "../_schemas/edit-profile-form.schemas";
 
 export type EditProfileResult<
-  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema,
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeMentorProfileFormSchema,
 > = ActionResult<T>;
 
 export const editProfile = async <
-  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeProfileFormSchema,
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeMentorProfileFormSchema,
 >(
   data: T
 ): Promise<EditProfileResult<T>> => {
