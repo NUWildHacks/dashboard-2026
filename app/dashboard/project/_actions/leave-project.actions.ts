@@ -1,19 +1,24 @@
 "use server";
 
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PROJECT_PATH, USER_FIELDS } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import {
+  PROJECTS_COLLECTION,
+  USERS_COLLECTION,
+  DASHBOARD_PROJECT_PATH,
+  PARTICIPANT_USER_FIELDS,
+  PARTICIPANT,
+  LOGIN_PATH,
+} from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
+import type { ActionResult, ParticipantUser, WildHacksConfig } from "@/types";
+
+import type { Project } from "../types";
 
 export type LeaveProjectResult = ActionResult;
 
-export const leaveProject = async (projectId: string): Promise<LeaveProjectResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
-
+export const leaveProject = async (projectId: Project["id"]): Promise<LeaveProjectResult> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -28,16 +33,13 @@ export const leaveProject = async (projectId: string): Promise<LeaveProjectResul
       };
     }
 
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
 
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to leave this project");
+    if (roleError) return roleError;
+
+    const { project_id, id: userId } = user as ParticipantUser;
 
     if (!project_id || project_id !== projectId) {
       return {
@@ -46,52 +48,50 @@ export const leaveProject = async (projectId: string): Promise<LeaveProjectResul
       };
     }
 
-    const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
-    const projectDocSnapshot = await projectDocRef.get();
-
-    if (!projectDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "Project not found",
-      };
-    }
-
-    const projectData = projectDocSnapshot.data();
-    const isOwner = projectData?.owner_id === userId;
-
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-
-    await userDocRef.update({
+    await db.collection(USERS_COLLECTION).doc(userId).update({
       project_id: FieldValue.delete(),
       joined_project_at: FieldValue.delete(),
       updated_at: now,
     });
 
-    const remainingTeamMembersQuery = await db
-      .collection(USERS_COLLECTION)
-      .where(USER_FIELDS.project_id, "==", projectId)
-      .orderBy(USER_FIELDS.joined_project_at, "asc")
-      .get();
+    const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(projectId);
+    const projectDocSnapshot = await projectDocRef.get();
 
-    if (remainingTeamMembersQuery.empty) {
-      await projectDocRef.delete();
-    } else if (isOwner) {
-      const newOwnerId = remainingTeamMembersQuery.docs[0].id;
+    if (projectDocSnapshot.exists) {
+      const { owner_id } = projectDocSnapshot.data() as Omit<Project, "id">;
 
-      await projectDocRef.update({
-        owner_id: newOwnerId,
-        updated_at: now,
-      });
+      const remainingTeamMembersQuery = await db
+        .collection(USERS_COLLECTION)
+        .where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId)
+        .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
+        .get();
+
+      const otherMembers = remainingTeamMembersQuery.docs.filter((doc) => doc.id !== userId);
+
+      if (otherMembers.length === 0) {
+        await projectDocRef.delete();
+      } else if (owner_id === userId) {
+        const newOwnerId = otherMembers[0]?.id;
+
+        if (newOwnerId) {
+          await projectDocRef.update({
+            owner_id: newOwnerId,
+            updated_at: now,
+          });
+        }
+      }
     }
+
+    revalidatePath(DASHBOARD_PROJECT_PATH);
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Leave project error:", errorMessage);
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Leave project error:", detailedError);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+
+    return { success: false, error: errorMessage };
   }
 };

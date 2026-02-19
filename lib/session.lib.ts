@@ -67,7 +67,7 @@ export async function verifySession() {
       throw new Error("Could not verify session cookie");
     }
 
-    return payload.uid as User["id"];
+    return { id: payload.uid, email: payload.email } as Pick<User, "id" | "email">;
   } catch (e) {
     const errorMessage = e instanceof FirebaseAppError || e instanceof Error ? e.message : "An unknown error occurred";
     console.error(errorMessage);

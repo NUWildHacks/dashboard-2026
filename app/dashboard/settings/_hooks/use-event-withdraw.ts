@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 import { ROOT_PATH } from "@/constants";
 
-import { withdrawEvent } from "../_actions/withdraw-event.actions";
+import { withdrawEvent } from "../_actions";
 
 export type UseEventWithdrawReturn = {
   isWithdrawing: boolean;
@@ -26,8 +26,8 @@ export const useEventWithdraw = (): UseEventWithdrawReturn => {
       const { success } = result;
 
       if (!success) {
-        toast.error("Failed to withdraw from event", { description: result.error });
-        return;
+        const { error } = result;
+        throw new Error(error);
       }
 
       router.replace(ROOT_PATH);

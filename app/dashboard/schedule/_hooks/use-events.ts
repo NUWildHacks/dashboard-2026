@@ -2,30 +2,34 @@
 
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
-import { EVENT_FIELDS } from "@/app/dashboard/schedule/_constants";
-import type { Event, EventCategory } from "@/app/dashboard/schedule/_types";
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants";
 import type { UseFiltersReturn } from "@/hooks";
 
+import { deleteEvents } from "../_actions";
+import { EVENT_FIELDS } from "../constants";
+import type { CalendarDay, Event, EventCategory } from "../types";
+
 export type UseEventsSettings = {
   category?: UseFiltersReturn<EventCategory>["category"];
   search?: UseFiltersReturn<EventCategory>["search"];
+  selectedDay?: CalendarDay;
   limitCount?: number;
 };
 
 export type UseEventsReturn = {
-  allEvents: Event[];
-  upcomingEvents: Event[];
+  events: Event[];
   isLoading: boolean;
+  handleDeleteEvents: (eventIds: Event["id"][]) => Promise<void>;
 };
 
 export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { category, search, limitCount } = settings;
+  const { category, search, selectedDay, limitCount } = settings;
 
   useEffect(() => {
     let q = query(collection(db, EVENTS_COLLECTION), orderBy(EVENT_FIELDS.start_time, "asc"));
@@ -45,7 +49,7 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
             }) as Event
         );
 
-        setEvents(docs);
+        setAllEvents(docs);
         setIsLoading(false);
       },
       (error) => {
@@ -57,8 +61,8 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return () => unsubscribe();
   }, [limitCount]);
 
-  const filteredEvents = useMemo(() => {
-    let result = events;
+  const events = useMemo(() => {
+    let result = allEvents;
 
     if (category && category !== "all") {
       result = result.filter((event) => event.category === category);
@@ -70,18 +74,40 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
         return (
           event.title.toLowerCase().includes(searchLower) ||
           event.body.toLowerCase().includes(searchLower) ||
-          event.category.toLowerCase().includes(searchLower)
+          event.category.toLowerCase().includes(searchLower) ||
+          event.location.toLowerCase().includes(searchLower)
         );
       });
     }
 
+    if (selectedDay) {
+      result = result.filter((event) => event.start_time >= selectedDay.startMs && event.end_time <= selectedDay.endMs);
+    }
+
     return result;
-  }, [events, category, search]);
+  }, [allEvents, category, search, selectedDay]);
 
-  const upcomingEvents = useMemo(() => {
-    const now = new Date().getTime();
-    return events.filter((event) => event.end_time > now);
-  }, [events]);
+  const handleDeleteEvents = async (eventIds: Event["id"][]) => {
+    try {
+      const result = await deleteEvents(eventIds);
+      const { success } = result;
 
-  return { allEvents: filteredEvents, upcomingEvents, isLoading };
+      if (!success) {
+        const { field, error } = result;
+
+        if (!field) {
+          throw new Error(error);
+        }
+
+        return;
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Delete events error:", errorMessage);
+
+      toast.error("Failed to delete events", { description: errorMessage });
+    }
+  };
+
+  return { events, isLoading, handleDeleteEvents };
 };

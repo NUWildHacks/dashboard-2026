@@ -15,8 +15,11 @@ export type UseRegistrationFormReturn = {
 } & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
 
 export const useRegistrationForm = (
+  userEmail: string,
   start_time: WildHacksConfig["start_time"],
-  end_time: WildHacksConfig["end_time"]
+  end_time: WildHacksConfig["end_time"],
+  max_participants: WildHacksConfig["max_participants"],
+  registration_deadline: WildHacksConfig["registration_deadline"]
 ): UseRegistrationFormReturn => {
   const router = useRouter();
 
@@ -30,7 +33,7 @@ export const useRegistrationForm = (
     defaultValues: {
       first_name: "",
       last_name: "",
-      email: "",
+      email: userEmail,
       phone: "",
       age: "",
       country: "",
@@ -57,20 +60,20 @@ export const useRegistrationForm = (
 
   const onSubmit = async (data: RegistrationFormSchema) => {
     try {
-      const result = await registerUser(data, start_time, end_time);
+      const result = await registerUser(data, start_time, end_time, max_participants, registration_deadline);
       const { success } = result;
 
       if (!success) {
         const { field, error } = result;
 
-        if (field) {
-          setError(field, {
-            type: "server",
-            message: error,
-          });
-        } else {
-          toast.error("Registration failed", { description: error });
+        if (!field) {
+          throw new Error(error);
         }
+
+        setError(field, {
+          type: "server",
+          message: error,
+        });
         return;
       }
 

@@ -1,12 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { Project } from "@/app/dashboard/project/_types";
-
-import { leaveProject } from "../_actions/leave-project.actions";
+import { leaveProject } from "../_actions";
+import type { Project } from "../types";
 
 export type UseLeaveProjectDialogReturn = {
   handleLeaveProject: (projectId: Project["id"]) => Promise<void>;
@@ -14,8 +12,6 @@ export type UseLeaveProjectDialogReturn = {
 };
 
 export const useLeaveProjectDialog = (): UseLeaveProjectDialogReturn => {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLeaveProject = async (projectId: Project["id"]) => {
@@ -26,11 +22,9 @@ export const useLeaveProjectDialog = (): UseLeaveProjectDialogReturn => {
       const { success } = result;
 
       if (!success) {
-        toast.error("Failed to leave project", { description: result.error });
-        return;
+        const { error } = result;
+        throw new Error(error);
       }
-
-      router.refresh();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Leave project error:", errorMessage);

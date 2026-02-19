@@ -8,7 +8,8 @@ service cloud.firestore {
     }
 
     function getUserRole() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      return userDoc != null && userDoc.data != null ? userDoc.data.role : null;
     }
 
     function isAdmin() {
@@ -20,7 +21,8 @@ service cloud.firestore {
     }
 
     function isProjectMember(projectId) {
-      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.project_id == projectId;
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      return isAuthenticated() && userDoc != null && userDoc.data != null && userDoc.data.project_id == projectId;
     }
 
     // Users collection
@@ -30,7 +32,11 @@ service cloud.firestore {
 
       // Users can create their own document (during registration via server action)
       // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow create: if isAuthenticated() && userOwnsDocument(userId);
+      // Security: Prevent users from setting Admin role on create - only PARTICIPANT, JUDGE, or MENTOR allowed
+      // Admin role can only be set via Admin SDK (server actions)
+      allow create: if isAuthenticated()
+        && userOwnsDocument(userId)
+        && (!('role' in request.resource.data) || request.resource.data.role != 'Admin');
 
       // Users can update their own document (except role field)
       // Role can only be modified by admins
@@ -55,17 +61,6 @@ service cloud.firestore {
       // Only admins can delete projects (or via server action when last member leaves)
       // Note: Server actions use Admin SDK, but we keep this for defense in depth
       allow delete: if isAdmin();
-    }
-
-    // Announcements collection
-    match /announcements/{announcementId} {
-      // All authenticated users can read announcements
-      // Filtering by audience/role is handled client-side
-      allow read: if isAuthenticated();
-
-      // Only admins can create, update, or delete announcements
-      // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow write: if isAdmin();
     }
 
     // Events collection

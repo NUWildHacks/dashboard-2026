@@ -2,7 +2,7 @@ import { LogIn } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { DASHBOARD_PATH, REGISTRATION_PATH } from "@/constants";
+import { REGISTRATION_PATH, JUDGE_REGISTRATION_PATH } from "@/constants";
 
 const Registration = async () => {
   return (
@@ -16,12 +16,12 @@ const Registration = async () => {
         <Link href={REGISTRATION_PATH}>
           <Button variant="outline">
             <LogIn />
-            Register for WildHacks 2026
+            Register as a participant
           </Button>
         </Link>
-        <Link href={DASHBOARD_PATH}>
-          <Button variant="link">Continue to Dashboard</Button>
-        </Link>
+        <a target="_blank" rel="noreferrer" href={JUDGE_REGISTRATION_PATH}>
+          <Button variant="link">Register as a judge or mentor</Button>
+        </a>
       </div>
     </>
   );

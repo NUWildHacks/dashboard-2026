@@ -1,17 +1,14 @@
 import { HelpCircle } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { DASHBOARD_SUPPORT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getUserDocSnapshot, verifySession } from "@/lib";
+import { DASHBOARD_SUPPORT_PATH, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser } from "@/lib";
 
 const SupportPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SUPPORT_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SUPPORT_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
+  await getAuthenticatedUser(redirectPath);
 
   return (
     <div className="flex-1 flex justify-center items-center">

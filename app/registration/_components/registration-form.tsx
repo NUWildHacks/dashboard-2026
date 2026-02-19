@@ -40,14 +40,29 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
-import type { WildHacksConfig } from "@/types";
+import { User, WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = Pick<WildHacksConfig, "start_time" | "end_time">;
+type RegistrationFormProps = { userEmail: User["email"] } & Pick<
+  WildHacksConfig,
+  "start_time" | "end_time" | "max_participants" | "registration_deadline"
+>;
 
-const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(start_time, end_time);
+const RegistrationForm = ({
+  userEmail,
+  start_time,
+  end_time,
+  max_participants,
+  registration_deadline,
+}: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(
+    userEmail,
+    start_time,
+    end_time,
+    max_participants,
+    registration_deadline
+  );
 
   const now = new Date().getTime();
 
@@ -122,6 +137,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -456,7 +472,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
 
             <FieldSeparator />
 
-            {now >= start_time && now < end_time && (
+            {now >= registration_deadline && now < start_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>

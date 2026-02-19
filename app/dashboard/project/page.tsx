@@ -1,34 +1,50 @@
+import { FolderGit2 } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { EditProjectForm, EmptyProject, TeamMembersList } from "@/app/dashboard/project/_components";
-import { getProjectDocSnapshot } from "@/app/dashboard/project/_lib";
-import type { Project } from "@/app/dashboard/project/_types";
-import { DASHBOARD_PROJECT_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getUserDocSnapshot, verifySession } from "@/lib";
-import type { User } from "@/types";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { DASHBOARD_PATH, DASHBOARD_PROJECT_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
+import { getAuthenticatedUser } from "@/lib";
 
 const ProjectPage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`);
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PROJECT_PATH)}`;
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
-  const { project_id } = userDocSnapshot.data() as Omit<User, "id">;
-
-  const projectDocSnapshot = await getProjectDocSnapshot(project_id);
-
-  if (!projectDocSnapshot || !projectDocSnapshot.exists) {
-    return <EmptyProject />;
-  }
-
-  const project: Project = { id: project_id!, ...(projectDocSnapshot.data() as Omit<Project, "id">) };
+  const user = await getAuthenticatedUser(redirectPath);
+  if (user.role !== PARTICIPANT) redirect(DASHBOARD_PATH);
 
   return (
-    <div className="flex-1 flex flex-col lg:flex-row lg:items-start gap-4">
-      <EditProjectForm project={project} />
-      <TeamMembersList userId={userId} {...project} />
+    <div className="flex-1 flex justify-center items-center">
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <FolderGit2 />
+          </EmptyMedia>
+          <EmptyTitle>Project management coming soon</EmptyTitle>
+          <EmptyDescription>
+            Check back soon for updates. If you have any questions, please contact us at{" "}
+            <Link href="mailto:wildhacks@northwestern.edu" className="underline underline-offset-4">
+              wildhacks@northwestern.edu
+            </Link>
+            .
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     </div>
   );
+
+  // const { id: userId, project_id } = user as ParticipantUser;
+  // const project = await getProject(project_id);
+
+  // if (!project) {
+  //   return <EmptyProject />;
+  // }
+
+  // return (
+  //   <div className="flex-1 flex flex-col lg:flex-row lg:items-start gap-4">
+  //     <EditProjectForm project={project} />
+  //     <TeamMembersList userId={userId} {...project} />
+  //   </div>
+  // );
 };
 
 export default ProjectPage;

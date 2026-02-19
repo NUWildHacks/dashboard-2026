@@ -1,2 +1,2 @@
-export { useTimeRemaining } from "./use-time-remaining";
-export type { UseTimeRemainingReturn } from "./use-time-remaining";
+export { useCountdown } from "./use-countdown";
+export type { UseCountdownReturn } from "./use-countdown";

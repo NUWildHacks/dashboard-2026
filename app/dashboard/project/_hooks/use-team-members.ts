@@ -3,9 +3,10 @@
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
-import type { Project, TeamMember } from "@/app/dashboard/project/_types";
 import { db } from "@/config/firebase-client";
-import { USERS_COLLECTION, USER_FIELDS } from "@/constants";
+import { USERS_COLLECTION, PARTICIPANT_USER_FIELDS } from "@/constants";
+
+import type { Project, TeamMember } from "../types";
 
 export type UseTeamMembersListReturn = {
   teamMembers: TeamMember[];
@@ -19,8 +20,8 @@ export const useTeamMembersList = (projectId: Project["id"]): UseTeamMembersList
   useEffect(() => {
     const q = query(
       collection(db, USERS_COLLECTION),
-      where(USER_FIELDS.project_id, "==", projectId),
-      orderBy(USER_FIELDS.last_name, "desc")
+      where(PARTICIPANT_USER_FIELDS.project_id, "==", projectId),
+      orderBy(PARTICIPANT_USER_FIELDS.last_name, "desc")
     );
 
     const unsubscribe = onSnapshot(

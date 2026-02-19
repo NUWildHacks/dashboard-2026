@@ -2,7 +2,6 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Loader2 } from "lucide-react";
 
 import { useLeaveProjectDialog } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
+import type { Project } from "../../types";
 
 type LeaveProjectDialogProps = {
   projectId: Project["id"];
@@ -30,8 +31,8 @@ const LeaveProjectDialog = ({ projectId }: LeaveProjectDialogProps) => {
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            You will need to be reinvited if you still wish to collaborate on this project. Or you can create your own
-            project.
+            You will need the invitation code from the project owner to join the project again. Or you can create your
+            own project.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
