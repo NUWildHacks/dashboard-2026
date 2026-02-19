@@ -3,16 +3,21 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import { ADMIN, DASHBOARD_SCHEDULE_PATH, EVENTS_COLLECTION, FIFTEEN_MINUTES, LOGIN_PATH } from "@/constants";
-import { combineDateAndTime, getAuthenticatedUser, parseDateLabel, requireRole } from "@/lib";
+import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
 import { type EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
 import { Event } from "../types";
 
-export type SaveEventResult = ActionResult<EventFormDialogSchema>;
+export type SaveEventData = Omit<EventFormDialogSchema, "day" | "start_time" | "end_time"> & {
+  start_time: number;
+  end_time: number;
+};
+
+export type SaveEventResult = ActionResult<SaveEventData>;
 
 export const saveEvent = async (
-  data: EventFormDialogSchema,
+  data: SaveEventData,
   wildHacksStartTime: WildHacksConfig["start_time"],
   wildHacksEndTime: WildHacksConfig["end_time"],
   eventId?: Event["id"]
@@ -27,25 +32,13 @@ export const saveEvent = async (
     const roleError = requireRole(user, ADMIN, "You are not authorized to save events");
     if (roleError) return roleError;
 
-    const { day, start_time, end_time } = data;
+    const { start_time: startTimeMs, end_time: endTimeMs } = data;
 
-    const dayDate = parseDateLabel(day);
-    if (!dayDate) {
+    if (!startTimeMs || !endTimeMs || startTimeMs <= 0 || endTimeMs <= 0) {
       return {
         success: false,
-        error: "Invalid day selected",
-        field: "day" as const,
-      };
-    }
-
-    const startTimeMs = combineDateAndTime(dayDate, start_time);
-    const endTimeMs = combineDateAndTime(dayDate, end_time);
-
-    if (startTimeMs === 0 || endTimeMs === 0) {
-      return {
-        success: false,
-        error: "Invalid time format",
-        field: startTimeMs === 0 ? ("start_time" as const) : ("end_time" as const),
+        error: "Invalid time values",
+        field: !startTimeMs || startTimeMs <= 0 ? ("start_time" as const) : ("end_time" as const),
       };
     }
 
@@ -79,8 +72,6 @@ export const saveEvent = async (
         .doc(eventId)
         .update({
           ...data,
-          start_time: startTimeMs,
-          end_time: endTimeMs,
           updated_at: now,
         });
     } else {
@@ -89,8 +80,6 @@ export const saveEvent = async (
         .doc()
         .set({
           ...data,
-          start_time: startTimeMs,
-          end_time: endTimeMs,
           created_at: now,
           updated_at: now,
         });

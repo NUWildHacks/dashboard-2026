@@ -5,10 +5,10 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import { findDayLabel, millisecondsToTime } from "@/lib";
+import { combineDateAndTime, findDayLabel, millisecondsToTime, parseDateLabel } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
-import { saveEvent } from "../_actions/save-event.actions";
+import { saveEvent, type SaveEventData } from "../_actions/save-event.actions";
 import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
 import { CalendarDay, Event } from "../types";
 
@@ -50,7 +50,33 @@ export const useEventFormDialog = (
 
   const onSubmit = async (data: EventFormDialogSchema) => {
     try {
-      const result = await saveEvent(data, start_time, end_time, eventId);
+      const dayDate = parseDateLabel(data.day);
+      if (!dayDate) {
+        setError("day", {
+          type: "manual",
+          message: "Invalid day selected",
+        });
+        return;
+      }
+
+      const startTimeMs = combineDateAndTime(dayDate, data.start_time);
+      const endTimeMs = combineDateAndTime(dayDate, data.end_time);
+
+      if (startTimeMs === 0 || endTimeMs === 0) {
+        setError(startTimeMs === 0 ? "start_time" : "end_time", {
+          type: "manual",
+          message: "Invalid time format",
+        });
+        return;
+      }
+
+      const transformedData: SaveEventData = {
+        ...data,
+        start_time: startTimeMs,
+        end_time: endTimeMs,
+      };
+
+      const result = await saveEvent(transformedData, start_time, end_time, eventId);
       const { success } = result;
 
       if (!success) {
@@ -83,12 +109,12 @@ export const useEventFormDialog = (
 
     reset({
       category: event?.category,
-      day: findDayLabel(event?.start_time, availableDays),
-      title: event?.title,
-      body: event?.body,
-      location: event?.location,
-      start_time: event?.start_time ? millisecondsToTime(event.start_time) : undefined,
-      end_time: event?.end_time ? millisecondsToTime(event.end_time) : undefined,
+      day: findDayLabel(event?.start_time, availableDays) ?? "",
+      title: event?.title ?? "",
+      body: event?.body ?? "",
+      location: event?.location ?? "",
+      start_time: event?.start_time ? millisecondsToTime(event.start_time) : "",
+      end_time: event?.end_time ? millisecondsToTime(event.end_time) : "",
     });
   };
 
