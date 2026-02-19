@@ -8,8 +8,8 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
-import { ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL, DASHBOARD_PATH } from "@/constants";
-import { createSession } from "@/lib";
+import { ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL } from "@/constants";
+import { createSession, validateRedirectPath } from "@/lib";
 
 import { getCustomTokenForExistingAccount } from "../_actions/link-account.actions";
 
@@ -29,9 +29,9 @@ const GithubLoginButton = () => {
       await createSession(idToken);
 
       const searchParams = new URLSearchParams(window.location.search);
-      const redirect = searchParams.get("redirect") || DASHBOARD_PATH;
+      const redirectTo = validateRedirectPath(searchParams.get("redirect"));
 
-      router.replace(redirect);
+      router.replace(redirectTo);
     } catch (e) {
       let errorMessage = "An unknown error occurred";
 
@@ -65,7 +65,7 @@ const GithubLoginButton = () => {
             await createSession(idToken);
 
             const searchParams = new URLSearchParams(window.location.search);
-            const redirect = searchParams.get("redirect") || DASHBOARD_PATH;
+            const redirect = validateRedirectPath(searchParams.get("redirect"));
 
             router.replace(redirect);
           } catch (linkError) {

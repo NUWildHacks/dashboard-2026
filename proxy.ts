@@ -11,6 +11,7 @@ import {
   REGISTRATION_PATH,
   SESSION_COOKIE_NAME,
 } from "@/constants";
+import { validateRedirectPath } from "@/lib";
 
 /**
  * Decodes a JWT token and checks if it's expired.
@@ -53,7 +54,8 @@ export async function proxy(req: NextRequest) {
 
     if (!sessionCookie || isTokenExpired(sessionCookie)) {
       const loginUrl = new URL(LOGIN_PATH, req.url);
-      loginUrl.searchParams.set("redirect", req.nextUrl.pathname);
+      const redirectPath = validateRedirectPath(req.nextUrl.pathname);
+      loginUrl.searchParams.set("redirect", redirectPath);
 
       return NextResponse.redirect(loginUrl);
     }

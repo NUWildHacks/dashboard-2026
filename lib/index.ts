@@ -22,3 +22,4 @@ export {
 } from "./validation.lib";
 export { getConfigDocSnapshot } from "./wildhacks.lib";
 export { calculateStatistics } from "./statistics.lib";
+export { validateRedirectPath } from "./path.lib";
