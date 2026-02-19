@@ -13,7 +13,10 @@ const Footer = async () => {
           WildHacks Home
         </Link>
         {"•"}
-        <Link href="mailto:wildhacks@northwestern.edu?subject=[GENERAL INQUIRY] Dashboard" className="hover:underline underline-offset-4">
+        <Link
+          href="mailto:wildhacks@northwestern.edu?subject=[GENERAL INQUIRY] Dashboard"
+          className="hover:underline underline-offset-4"
+        >
           Contact Us
         </Link>
       </div>
