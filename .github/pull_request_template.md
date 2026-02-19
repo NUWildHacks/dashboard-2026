@@ -1,6 +1,7 @@
-## Link to ticket (if any) 
+## Link to ticket (if any)
 
 ## What types of changes does your code introduce?
+
 _Put an `x` in the boxes that apply_
 
 - [ ] Bugfix (non-breaking change which fixes an issue)
@@ -16,9 +17,11 @@ _Put an `x` in the boxes that apply_
 - [ ] Reverts (reverting a previous commit)
 
 _Is it a breaking change?_
+
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 
 ## Description
+
 _Add task details you would complete with this merge_
 
 - [x] todo 1
