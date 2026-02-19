@@ -19,7 +19,7 @@ const SupportPage = async () => {
           </EmptyMedia>
           <EmptyTitle>Support coming soon</EmptyTitle>
           <EmptyDescription>
-            If you have any urgent questions, please contact us at{" "}
+            Check back soon for updates. If you have any urgent questions, please contact us at{" "}
             <Link
               href="mailto:wildhacks@northwestern.edu?subject=[SUPPORT TICKET] Dashboard"
               className="underline underline-offset-4"
