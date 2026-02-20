@@ -1,3 +1,5 @@
+"use server";
+
 import { getFirestore } from "firebase-admin/firestore";
 
 import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
