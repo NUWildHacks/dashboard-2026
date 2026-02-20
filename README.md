@@ -19,6 +19,7 @@ The WildHacks Dashboard is the comprehensive management system for WildHacks 202
 - **Firebase Authentication** - User authentication and session management
 - **Cloud Firestore** - NoSQL database for real-time data
 - **Firebase Admin SDK** - Server-side database operations with elevated privileges
+- **jose** - JSON Web Token (JWT) handling and verification
 - **Vercel** - Deployment and hosting platform
 
 ### Validation & Forms
@@ -26,16 +27,24 @@ The WildHacks Dashboard is the comprehensive management system for WildHacks 202
 - **Zod 4** - Schema validation and type inference
 - **React Hook Form** - Performant form state management
 - **@hookform/resolvers** - Zod integration for React Hook Form
+- **validator** - Additional validation utilities
 
 ### UI & Utilities
 
 - **Radix UI** - Accessible component primitives
+- **@tanstack/react-table** - Powerful table and data grid component
 - **lucide-react** - Icon library
 - **recharts** - Chart and data visualization library
 - **next-themes** - Theme management (light/dark mode)
 - **date-fns** - Date manipulation and formatting
+- **react-day-picker** - Date picker component
 - **sonner** - Toast notification system
 - **cmdk** - Command menu component
+- **react-qr-code** - QR code generation component
+- **class-variance-authority** - Component variant management
+- **clsx** - Utility for constructing className strings conditionally
+- **tailwind-merge** - Merge Tailwind CSS classes without conflicts
+- **json-2-csv** - Convert JSON data to CSV format
 
 ## 🛠️ Getting Started
 
