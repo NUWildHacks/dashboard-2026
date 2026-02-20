@@ -566,9 +566,8 @@ const RegistrationForm = ({
                           MLH Privacy Policy
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize you to share my application/registration information with Major 
-                          League Hacking for event administration, ranking, and MLH administration 
-                          in-line with the{" "}
+                          I authorize you to share my application/registration information with Major League Hacking for
+                          event administration, ranking, and MLH administration in-line with the{" "}
                           <a
                             href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                             target="_blank"
@@ -576,8 +575,8 @@ const RegistrationForm = ({
                             className="underline hover:text-primary"
                           >
                             MLH Privacy Policy.
-                          </a>
-                          {" "}I further agree to the terms of both the{" "}
+                          </a>{" "}
+                          I further agree to the terms of both the{" "}
                           <a
                             href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
                             target="_blank"
@@ -585,7 +584,8 @@ const RegistrationForm = ({
                             className="underline hover:text-primary"
                           >
                             MLH Contest Terms and Conditions
-                          </a> and the{" "}
+                          </a>{" "}
+                          and the{" "}
                           <a
                             href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                             target="_blank"
@@ -616,7 +616,8 @@ const RegistrationForm = ({
                       <FieldContent>
                         <FieldLabel htmlFor={field.name}>MLH Email Communications</FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.
+                          I authorize MLH to send me occasional emails about relevant events, career opportunities, and
+                          community announcements.
                         </FieldDescription>
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>
