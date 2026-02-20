@@ -530,9 +530,9 @@ const RegistrationForm = ({
                           MLH Code of Conduct
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I agree to the{" "}
+                          I have read and agree to the{" "}
                           <a
-                            href="https://mlh.io/code-of-conduct"
+                            href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-primary"
@@ -566,14 +566,33 @@ const RegistrationForm = ({
                           MLH Privacy Policy
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I have read and agree to the{" "}
+                          I authorize you to share my application/registration information with Major 
+                          League Hacking for event administration, ranking, and MLH administration 
+                          in-line with the{" "}
                           <a
-                            href="https://mlh.io/privacy"
+                            href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-primary"
                           >
-                            MLH Privacy Policy
+                            MLH Privacy Policy.
+                          </a>
+                          {" "}I further agree to the terms of both the{" "}
+                          <a
+                            href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-primary"
+                          >
+                            MLH Contest Terms and Conditions
+                          </a> and the{" "}
+                          <a
+                            href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-primary"
+                          >
+                            MLH Privacy Policy.
                           </a>
                         </FieldDescription>
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
@@ -597,7 +616,7 @@ const RegistrationForm = ({
                       <FieldContent>
                         <FieldLabel htmlFor={field.name}>MLH Email Communications</FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize MLH to send me occasional emails about relevant events and opportunities
+                          I authorize MLH to send me occasional emails about relevant events, career opportunities, and community announcements.
                         </FieldDescription>
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>
