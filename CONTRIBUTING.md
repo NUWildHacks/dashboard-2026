@@ -585,6 +585,7 @@ app/dashboard/project/
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { LOGIN_PATH, DASHBOARD_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
@@ -605,6 +606,9 @@ export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
 
     // Perform database operations
     // ...
+
+    // Revalidate the path to refresh server components
+    revalidatePath(DASHBOARD_PATH);
 
     return { success: true };
   } catch (error) {
@@ -688,8 +692,7 @@ const onSubmit = async (data: FormSchema) => {
       return;
     }
 
-    // Success - refresh or redirect
-    router.refresh();
+    // Success - server action handles revalidation via revalidatePath
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
     toast.error("Operation failed", { description: errorMessage });
@@ -806,8 +809,8 @@ export const useMyForm = (): UseMyFormReturn => {
         return;
       }
 
-      // Success - navigate or refresh
-      router.refresh(); // or router.replace(DASHBOARD_PATH)
+      // Success - server action handles revalidation via revalidatePath
+      // Use router.replace() or router.push() only if you need to navigate to a different route
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Action error:", errorMessage);
@@ -824,7 +827,8 @@ export const useMyForm = (): UseMyFormReturn => {
 
 - **Field-specific errors**: If `field` exists in the result, use `setError` and return early
 - **General errors**: If `field` doesn't exist, throw an error which gets caught and displayed as a toast
-- **Navigation**: Use `router.refresh()` to refresh server components, or `router.replace()` for navigation to a different route
+- **Revalidation**: Server actions should use `revalidatePath()` from `next/cache` to invalidate the cache for the affected route.
+- **Navigation**: Use `router.replace()` or `router.push()` only if you need to navigate to a different route
 - **Error logging**: Always log errors to console for debugging
 
 ### Best Practices
@@ -839,6 +843,7 @@ export const useMyForm = (): UseMyFormReturn => {
 8. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
 9. **Keep actions focused** - one action per operation
 10. **Export result types** for type safety
+11. **Revalidate paths** after successful database operations using `revalidatePath()` from `next/cache` to ensure server components reflect the latest data
 
 ## Type Definitions
 
