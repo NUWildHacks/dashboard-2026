@@ -942,16 +942,69 @@ Validation schemas use Zod and are located in `_schemas` folders:
 ```typescript
 import { z } from "zod";
 
-export const createProjectFormSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  description: z.string().min(1, "Project description is required"),
-  github_url: z.url().optional().or(z.literal("")),
+import { githubUsernameSchema, plainTextMultiLineSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
+
+export const sampleFormSchema = z.object({
+  single_line: plainTextSingleLineSchema.min(1, "Single line field is required"),
+  multi_line: plainTextMultiLineSchema.min(1, "Multi line field is required"),
+  url: secureUrlSchema.optional().or(z.literal("")),
+  github_username: githubUsernameSchema.optional(),
 });
 
-export type CreateProjectFormSchema = z.infer<typeof createProjectFormSchema>;
+export type SampleFormSchema = z.infer<typeof sampleFormSchema>;
 ```
 
 **Pattern**: Export both the schema and the inferred type.
+
+### Validation Utilities
+
+The project provides reusable validation schemas in `lib/validation.lib.ts` for common security and validation needs:
+
+- **`secureUrlSchema`**: Validates URLs and only allows `http://` and `https://` protocols. Prevents XSS attacks from dangerous protocols like `javascript:`, `data:`, `file:`, etc.
+
+  ```typescript
+  import { secureUrlSchema } from "@/lib";
+
+  const schema = z.object({
+    url: secureUrlSchema,
+  });
+  ```
+
+- **`plainTextSingleLineSchema`**: Validates plain text for single-line fields (no newlines). Rejects HTML tags and control characters. Use for names, titles, and other single-line text fields.
+
+  ```typescript
+  import { plainTextSingleLineSchema } from "@/lib";
+
+  const schema = z.object({
+    title: plainTextSingleLineSchema.min(1, "Title is required"),
+  });
+  ```
+
+- **`plainTextMultiLineSchema`**: Validates plain text for multi-line fields (allows newlines). Rejects HTML tags and control characters. Use for descriptions, bodies, and other multi-line content.
+
+  ```typescript
+  import { plainTextMultiLineSchema } from "@/lib";
+
+  const schema = z.object({
+    description: plainTextMultiLineSchema.min(1, "Description is required"),
+  });
+  ```
+
+- **`githubUsernameSchema`**: Validates GitHub usernames according to GitHub's rules:
+  - Alphanumeric characters (a-z, 0-9) and hyphens (-)
+  - 1-39 characters in length
+  - Cannot begin or end with a hyphen
+  - Cannot have consecutive hyphens
+
+  ```typescript
+  import { githubUsernameSchema } from "@/lib";
+
+  const schema = z.object({
+    github_username: githubUsernameSchema,
+  });
+  ```
+
+**Security Note**: Always use these validation utilities for user input to prevent XSS attacks and ensure data integrity. Prefer `secureUrlSchema` over `z.url()` for URL validation, and use `plainTextSingleLineSchema` or `plainTextMultiLineSchema` instead of plain `z.string()` for text fields.
 
 **Barrel exports**: Schemas should be exported from `_schemas/index.ts`:
 
