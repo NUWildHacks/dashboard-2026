@@ -46,7 +46,6 @@ const CreatePermissionCodeDialog = () => {
                     <Input
                       {...field}
                       id={field.name}
-                      type="email"
                       placeholder="Enter email address"
                       aria-invalid={fieldState.invalid}
                       autoComplete="email"
