@@ -612,8 +612,12 @@ export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Action error:", errorMessage);
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("My action error:", detailedError);
+
+    // In production, return a generic error message to avoid exposing sensitive details
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return {
       success: false,
@@ -664,6 +668,16 @@ if (!exists) {
     error: "Resource not found",
   };
 }
+
+// Catch block error handling (see Server Action Structure template for full example)
+// Always sanitize error messages in production:
+const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+console.error("Action error:", detailedError);
+
+const isProduction = process.env.APP_ENV === "production";
+const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+
+return { success: false, error: errorMessage };
 ```
 
 **In Hooks (Client-Side):**
@@ -838,12 +852,13 @@ export const useMyForm = (): UseMyFormReturn => {
 3. **Return structured errors** using `ActionResult` type
 4. **Handle redirects** for unauthenticated users
 5. **Use try-catch** for error handling
-6. **Log errors** to console for debugging
-7. **Validate permissions** before performing operations
-8. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
-9. **Keep actions focused** - one action per operation
-10. **Export result types** for type safety
-11. **Revalidate paths** after successful database operations using `revalidatePath()` from `next/cache` to ensure server components reflect the latest data
+6. **Log errors** to console for debugging with descriptive context (e.g., `console.error("Edit project error:", detailedError)`)
+7. **Sanitize error messages in production**: Always check `process.env.APP_ENV === "production"` and return generic error messages to users in production while logging detailed errors for debugging. This prevents exposing sensitive information.
+8. **Validate permissions** before performing operations
+9. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
+10. **Keep actions focused** - one action per operation
+11. **Export result types** for type safety
+12. **Revalidate paths** after successful database operations using `revalidatePath()` from `next/cache` to ensure server components reflect the latest data
 
 ## Type Definitions
 
