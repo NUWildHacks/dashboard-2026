@@ -2,8 +2,8 @@
 
 import type { UseItemDialogReturn } from "@/hooks";
 
+import { getCalendarItems } from "../../_lib";
 import { ROW_HEIGHT } from "../../constants";
-import { getCalendarItems } from "../../lib";
 import type { CalendarDay, CalendarRowConfig, Event } from "../../types";
 
 type CalendarRowProps = {

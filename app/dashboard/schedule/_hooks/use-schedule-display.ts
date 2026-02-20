@@ -4,7 +4,7 @@ import { ONE_DAY } from "@/constants";
 import { getDateFromMilliseconds } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
-import { getDayStartFromMilliseconds } from "../lib";
+import { getDayStartFromMilliseconds } from "../_lib";
 import { CalendarDay } from "../types";
 
 export type UseScheduleDisplayReturn = {

@@ -13,7 +13,7 @@ import { useState } from "react";
 
 import { UseItemDialogReturn } from "@/hooks";
 
-import { getEventsColumns } from "../_lib/events-columns.lib";
+import { getEventsColumns } from "../_lib";
 import type { Event } from "../types";
 
 import { UseEventFormDialogReturn } from "./use-event-form-dialog";

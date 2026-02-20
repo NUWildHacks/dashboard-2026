@@ -161,6 +161,7 @@ app/
 │   │   ├── _actions/
 │   │   ├── _components/
 │   │   ├── _hooks/
+│   │   ├── _lib/        # All library files (calendar utilities, table columns, etc.)
 │   │   ├── _schemas/
 │   │   ├── constants.ts
 │   │   ├── types.ts
@@ -172,7 +173,16 @@ app/
 │   │   ├── _hooks/
 │   │   ├── _schemas/
 │   │   ├── constants.ts
-│   │   ├── lib.ts
+│   │   ├── lib.ts       # Simple utility functions
+│   │   ├── types.ts
+│   │   ├── page.tsx
+│   │   └── loading.tsx
+│   ├── manage-users/    # Manage users feature
+│   │   ├── _actions/
+│   │   ├── _components/
+│   │   ├── _hooks/
+│   │   ├── _lib/        # Table column definitions and complex utilities
+│   │   ├── _schemas/
 │   │   ├── types.ts
 │   │   ├── page.tsx
 │   │   └── loading.tsx
@@ -189,9 +199,10 @@ Each feature (route segment) follows this structure:
 - `_actions/` - Server actions for database operations (if applicable)
 - `_components/` - React components specific to this feature
 - `_hooks/` - Custom React hooks for this feature
+- `_lib/` - Feature-specific library files (table columns, complex utilities, etc.) (optional)
 - `_schemas/` - Zod validation schemas (if applicable)
 - `constants.ts` - Constants specific to this feature (optional)
-- `lib.ts` or `lib.tsx` - Utility functions for this feature (optional)
+- `lib.ts` or `lib.tsx` - Simple utility functions for this feature (optional, use `_lib/` if you have multiple library files)
 - `types.ts` - TypeScript type definitions for this feature (optional)
 - `page.tsx` - Next.js page component
 - `loading.tsx` - Loading UI (optional)
@@ -202,6 +213,9 @@ Each feature (route segment) follows this structure:
 - Folders prefixed with `_` are private and not part of the URL routing
 - `constants.ts`, `types.ts`, and `lib.ts` are single files (not folders) and are optional
 - Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
+- Use `_lib/` folder when you have multiple library files (e.g., table column definitions, calendar utilities, multiple related functions)
+- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx`
+- Use top-level `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
 
 ### Dashboard-Level Organization
 
@@ -332,7 +346,7 @@ export type { UseEditProjectFormReturn } from "./use-edit-project-form";
 
 ✅ **Use barrel imports for:**
 
-- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`)
+- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`, `_lib`)
 - Root-level shared folders (`components`, `hooks`, `lib`, `types`, `constants`)
 
 ❌ **Do NOT use barrel imports for:**
@@ -1122,15 +1136,21 @@ pnpm run build
    │   └── index.ts
    ├── _hooks/
    │   └── index.ts
+   ├── _lib/              # Library files (optional)
+   │   ├── my-table-columns.lib.tsx
+   │   ├── my-utilities.lib.tsx
+   │   └── index.ts       # Optional barrel export
    ├── _schemas/          # Zod schemas (if needed)
    │   └── index.ts
    ├── constants.ts       # Optional
-   ├── lib.ts            # Optional (use lib.tsx if contains JSX)
+   ├── lib.ts            # Optional (use lib.tsx if contains JSX, or use _lib/ exclusively)
    ├── types.ts          # Optional
    ├── page.tsx
    ├── loading.tsx        # Optional
    └── error.tsx          # Optional
    ```
+
+   **Note**: You can use `_lib/` exclusively for all library files (like the schedule feature), or use a top-level `lib.ts/lib.tsx` for simple cases. Files in `_lib/` should be named `kebab-case.lib.ts` or `kebab-case.lib.tsx`.
 
 3. **Create barrel exports** in each `index.ts` file
 
@@ -1223,6 +1243,8 @@ pnpm run build
 
 ### Adding Utility Functions
 
+**For simple utility functions**, add to `lib.ts` or `lib.tsx` file:
+
 1. **Add to `lib.ts` or `lib.tsx` file**:
 
    ```typescript
@@ -1237,6 +1259,80 @@ pnpm run build
    ```typescript
    import { myUtility } from "@/app/dashboard/my-feature/lib";
    ```
+
+**For complex library files** (table columns, multiple related utilities), use `_lib/` folder:
+
+1. **Create files in `_lib/` folder**:
+
+   ```typescript
+   // _lib/my-table-columns.lib.tsx (client-side)
+   "use client";
+
+   import { ColumnDef } from "@tanstack/react-table";
+   import type { MyType } from "../types";
+
+   export const getMyTableColumns = (): ColumnDef<MyType>[] => {
+     // column definitions
+   };
+   ```
+
+   ```typescript
+   // _lib/lib.ts (server-side)
+   "use server";
+
+   import { getFirestore } from "firebase-admin/firestore";
+
+   export const getMyData = async () => {
+     // server-side data fetching
+   };
+   ```
+
+2. **Export from `_lib/` folder** (if using barrel exports):
+
+   ```typescript
+   // _lib/index.ts
+   export { getMyTableColumns } from "./my-table-columns.lib";
+   export { getMyData } from "./lib";
+   ```
+
+3. **Import where needed**:
+   ```typescript
+   import { getMyTableColumns } from "@/app/dashboard/my-feature/_lib";
+   import { getMyData } from "@/app/dashboard/my-feature/_lib";
+   // or directly:
+   import { getMyTableColumns } from "@/app/dashboard/my-feature/_lib/my-table-columns.lib";
+   ```
+
+**When to use `_lib/` vs `lib.ts`:**
+
+- Use `_lib/` folder when you have multiple related library files (e.g., table column definitions, calendar utilities, multiple server functions)
+- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx` (see schedule feature as an example)
+- Use `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
+- Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
+- `_lib/` can contain both client-side (`.tsx` with `"use client"`) and server-side (`.ts` with `"use server"`) files
+- Files in `_lib/` should follow the naming pattern: `kebab-case.lib.ts` or `kebab-case.lib.tsx` (e.g., `calendar.lib.tsx`, `events-columns.lib.tsx`)
+
+**Example: Schedule feature using `_lib/` exclusively:**
+
+The schedule feature uses `_lib/` for all library files:
+
+```
+app/dashboard/schedule/
+├── _lib/
+│   ├── calendar.lib.tsx      # Calendar-related utilities (client-side)
+│   ├── events-columns.lib.tsx  # Table column definitions (client-side)
+│   └── index.ts             # Barrel export
+├── constants.ts
+├── types.ts
+└── ...
+```
+
+All library functions are imported from `_lib/`:
+
+```typescript
+import { getCalendarItems, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib";
+import { getEventsColumns } from "@/app/dashboard/schedule/_lib";
+```
 
 ### Updating Barrel Imports
 

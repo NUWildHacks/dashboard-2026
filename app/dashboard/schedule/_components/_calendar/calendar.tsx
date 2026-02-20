@@ -5,7 +5,7 @@ import { UseItemDialogReturn } from "@/hooks";
 import type { WildHacksConfig } from "@/types";
 
 import { UseEventsReturn } from "../../_hooks";
-import { createOverlapGroups, getVisibleCalendarRows } from "../../lib";
+import { createOverlapGroups, getVisibleCalendarRows } from "../../_lib";
 import { CalendarDay, Event } from "../../types";
 
 type CalendarProps = Pick<UseEventsReturn, "events"> &
