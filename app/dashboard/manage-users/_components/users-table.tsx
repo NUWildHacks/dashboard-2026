@@ -15,7 +15,7 @@ import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@
 import { JUDGE, MENTOR, PARTICIPANT, ROLES } from "@/constants";
 import { User } from "@/types";
 
-import { useUsersTable } from "../_hooks/use-users-table";
+import { useUsersTable } from "../_hooks";
 
 type UsersTableProps = {
   users: User[];

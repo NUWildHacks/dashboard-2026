@@ -16,7 +16,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { deletePermissionCodes } from "../_actions";
-import { getPermissionCodesColumns } from "../_lib/permission-codes-columns.lib";
+import { getPermissionCodesColumns } from "../_lib";
 import { PermissionCode } from "../types";
 
 export type UsePermissionCodesTableReturn = {

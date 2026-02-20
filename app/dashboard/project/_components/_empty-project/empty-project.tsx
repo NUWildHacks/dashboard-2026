@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { DASHBOARD_SUPPORT_PATH } from "@/constants";
 
-import CreateProjectDialog from "./create-project-dialog";
-import JoinProjectDialog from "./join-project-dialog";
+import { CreateProjectDialog, JoinProjectDialog } from "..";
 
 const EmptyProject = () => {
   return (

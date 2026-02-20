@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { combineDateAndTime, findDayLabel, millisecondsToTime, parseDateLabel } from "@/lib";
 import { WildHacksConfig } from "@/types";
 
-import { saveEvent, type SaveEventData } from "../_actions/save-event.actions";
-import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas/event-form-dialog.schemas";
+import { saveEvent, SaveEventData } from "../_actions";
+import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas";
 import { CalendarDay, Event } from "../types";
 
 export type UseEventFormDialogReturn = {
