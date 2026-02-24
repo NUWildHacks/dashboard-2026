@@ -19,6 +19,7 @@ The WildHacks Dashboard is the comprehensive management system for WildHacks 202
 - **Firebase Authentication** - User authentication and session management
 - **Cloud Firestore** - NoSQL database for real-time data
 - **Firebase Admin SDK** - Server-side database operations with elevated privileges
+- **jose** - JSON Web Token (JWT) handling and verification
 - **Vercel** - Deployment and hosting platform
 
 ### Validation & Forms
@@ -26,100 +27,24 @@ The WildHacks Dashboard is the comprehensive management system for WildHacks 202
 - **Zod 4** - Schema validation and type inference
 - **React Hook Form** - Performant form state management
 - **@hookform/resolvers** - Zod integration for React Hook Form
+- **validator** - Additional validation utilities
 
 ### UI & Utilities
 
 - **Radix UI** - Accessible component primitives
+- **@tanstack/react-table** - Powerful table and data grid component
 - **lucide-react** - Icon library
 - **recharts** - Chart and data visualization library
 - **next-themes** - Theme management (light/dark mode)
 - **date-fns** - Date manipulation and formatting
+- **react-day-picker** - Date picker component
 - **sonner** - Toast notification system
 - **cmdk** - Command menu component
-
-## ✨ Features
-
-### Dashboard Home
-
-- **Real-time Statistics** - Live hackathon metrics and participant data (admin only)
-- **Personal QR Code** - Quick check-in code for participants
-- **Countdown Timer** - Real-time countdown showing time remaining in the hackathon
-- **Interactive Venue Map** - Visual guide to hackathon locations
-- **Upcoming Events** - Calendar view of scheduled events and activities
-
-### Schedule
-
-- Interactive calendar view of all hackathon events
-- Detailed event information including time, location, and description
-- Filter and navigate through the schedule
-- Admin functionality to create, edit, and delete events
-
-### Project Management
-
-- **Create Projects** - Start new hackathon projects with team codes
-- **Join Projects** - Join existing projects using team codes
-- **Team Management** - View and manage team members and roles
-- **Project Details** - Edit project information (name, description, GitHub links)
-- **Leave Projects** - Remove yourself from projects
-
-### User Management (Admin)
-
-- View and manage all user accounts
-- Edit user roles and permissions
-- Manage user profiles and information
-- Permission code management system
-
-### Settings
-
-- **Profile Management** - Edit personal information and preferences
-- **Theme Selection** - Toggle between light and dark mode
-- **Event Withdrawal** - Option to withdraw from the hackathon
-- **Account Management** - Update account settings
-
-### Support
-
-- Access to support resources and help documentation
-- Contact information for assistance
-
-### Authentication & Registration
-
-- Secure login with Firebase Authentication
-- User registration with comprehensive profile setup
-- Session management with secure cookies
-- Role-based access control (Participant, Admin, etc.)
-
-## 🛡️ Security
-
-### CSRF Protection
-
-This application uses **Next.js App Router Server Actions**, which provide built-in CSRF (Cross-Site Request Forgery) protection by default. The protection mechanism includes:
-
-- **Origin Header Validation**: Server actions automatically verify that requests originate from the same origin
-- **SameSite Cookie Attributes**: Session cookies use secure, SameSite attributes to prevent cross-site attacks
-- **Automatic Token Validation**: Next.js validates the request origin and headers for all server actions
-
-**Note**: All server actions in this application benefit from this automatic protection. No additional CSRF tokens are required when using Next.js Server Actions.
-
-### Content Security Policy (CSP)
-
-The application implements a strict Content Security Policy to mitigate XSS attacks and other injection vulnerabilities. The CSP is configured in `next.config.ts` and restricts:
-
-- Script execution to trusted sources only
-- External resource loading (images, fonts, styles)
-- Network connections to approved domains (Firebase, GitHub OAuth)
-
-### Input Validation
-
-- All user inputs are validated using **Zod schemas** on both client and server
-- URL inputs are restricted to `http://` and `https://` protocols only
-- Text inputs are validated to prevent HTML injection
-- Input length limits are enforced to prevent DoS attacks
-
-### Authentication & Authorization
-
-- **Firebase Authentication** handles secure user authentication
-- Session cookies are verified server-side using Firebase Admin SDK
-- User roles and permissions are enforced in both Firestore security rules and server actions
+- **react-qr-code** - QR code generation component
+- **class-variance-authority** - Component variant management
+- **clsx** - Utility for constructing className strings conditionally
+- **tailwind-merge** - Merge Tailwind CSS classes without conflicts
+- **json-2-csv** - Convert JSON data to CSV format
 
 ## 🛠️ Getting Started
 
@@ -240,9 +165,9 @@ We welcome contributions to the WildHacks Dashboard! Please read our [Contributi
 - Code style and conventions
 - Development workflow and best practices
 - Git workflow and commit message format
-- Testing and quality standards
 - Server actions and database operations
 - Component and hook development patterns
+- Validation utilities and security best practices
 
 ### Quick Start for Contributors
 

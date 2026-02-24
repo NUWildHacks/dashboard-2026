@@ -10,7 +10,7 @@ import { auth } from "@/config/firebase-client";
 import { ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL } from "@/constants";
 import { createSession, validateRedirectPath } from "@/lib";
 
-import { getCustomTokenForExistingAccount } from "../_actions/link-account.actions";
+import { getCustomTokenForExistingAccount } from "../_actions";
 
 const Google = (props: React.SVGProps<SVGSVGElement>) => {
   return (

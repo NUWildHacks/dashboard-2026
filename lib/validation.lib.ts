@@ -24,19 +24,6 @@ export const secureUrlSchema = z.url("Invalid URL format").refine(
 );
 
 /**
- * Checks if a string contains HTML tags.
- * Used to prevent XSS attacks by rejecting HTML content.
- *
- * @param text - The text to check for HTML tags
- * @returns true if HTML tags are detected, false otherwise
- */
-export function containsHtml(text: string): boolean {
-  // Match HTML tags (including self-closing tags and comments)
-  const htmlTagPattern = /<[^>]+>/;
-  return htmlTagPattern.test(text);
-}
-
-/**
  * Plain text schema that rejects HTML content.
  * Prevents XSS attacks by ensuring only plain text is accepted.
  * Allows newlines for multi-line content.

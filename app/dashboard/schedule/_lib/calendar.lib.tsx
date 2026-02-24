@@ -5,8 +5,8 @@ import { ONE_MINUTE } from "@/constants";
 import type { UseItemDialogReturn } from "@/hooks";
 import { WildHacksConfig } from "@/types";
 
-import { BASE_Z_INDEX, CALENDAR_ROWS, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "./constants";
-import type { CalendarDay, CalendarRowConfig, Event } from "./types";
+import { BASE_Z_INDEX, CALENDAR_ROWS, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "../constants";
+import type { CalendarDay, CalendarRowConfig, Event } from "../types";
 
 /**
  * Get the start of a day (midnight) in milliseconds for a given timestamp.

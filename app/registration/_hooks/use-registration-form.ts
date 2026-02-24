@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { DASHBOARD_PATH } from "@/constants";
 import { WildHacksConfig } from "@/types";
 
-import { registerUser } from "../_actions/register-user.actions";
-import { type RegistrationFormSchema, registrationFormSchema } from "../_schemas/registration-form.schemas";
+import { registerUser } from "../_actions";
+import { registrationFormSchema, RegistrationFormSchema } from "../_schemas";
 
 export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;

@@ -161,6 +161,7 @@ app/
 │   │   ├── _actions/
 │   │   ├── _components/
 │   │   ├── _hooks/
+│   │   ├── _lib/        # All library files (calendar utilities, table columns, etc.)
 │   │   ├── _schemas/
 │   │   ├── constants.ts
 │   │   ├── types.ts
@@ -172,7 +173,16 @@ app/
 │   │   ├── _hooks/
 │   │   ├── _schemas/
 │   │   ├── constants.ts
-│   │   ├── lib.ts
+│   │   ├── lib.ts       # Simple utility functions
+│   │   ├── types.ts
+│   │   ├── page.tsx
+│   │   └── loading.tsx
+│   ├── manage-users/    # Manage users feature
+│   │   ├── _actions/
+│   │   ├── _components/
+│   │   ├── _hooks/
+│   │   ├── _lib/        # Table column definitions and complex utilities
+│   │   ├── _schemas/
 │   │   ├── types.ts
 │   │   ├── page.tsx
 │   │   └── loading.tsx
@@ -189,9 +199,10 @@ Each feature (route segment) follows this structure:
 - `_actions/` - Server actions for database operations (if applicable)
 - `_components/` - React components specific to this feature
 - `_hooks/` - Custom React hooks for this feature
+- `_lib/` - Feature-specific library files (table columns, complex utilities, etc.) (optional)
 - `_schemas/` - Zod validation schemas (if applicable)
 - `constants.ts` - Constants specific to this feature (optional)
-- `lib.ts` or `lib.tsx` - Utility functions for this feature (optional)
+- `lib.ts` or `lib.tsx` - Simple utility functions for this feature (optional, use `_lib/` if you have multiple library files)
 - `types.ts` - TypeScript type definitions for this feature (optional)
 - `page.tsx` - Next.js page component
 - `loading.tsx` - Loading UI (optional)
@@ -202,6 +213,9 @@ Each feature (route segment) follows this structure:
 - Folders prefixed with `_` are private and not part of the URL routing
 - `constants.ts`, `types.ts`, and `lib.ts` are single files (not folders) and are optional
 - Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
+- Use `_lib/` folder when you have multiple library files (e.g., table column definitions, calendar utilities, multiple related functions)
+- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx`
+- Use top-level `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
 
 ### Dashboard-Level Organization
 
@@ -332,7 +346,7 @@ export type { UseEditProjectFormReturn } from "./use-edit-project-form";
 
 ✅ **Use barrel imports for:**
 
-- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`)
+- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`, `_lib`)
 - Root-level shared folders (`components`, `hooks`, `lib`, `types`, `constants`)
 
 ❌ **Do NOT use barrel imports for:**
@@ -571,6 +585,7 @@ app/dashboard/project/
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
+import { revalidatePath } from "next/cache";
 
 import { LOGIN_PATH, DASHBOARD_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
@@ -592,10 +607,17 @@ export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
     // Perform database operations
     // ...
 
+    // Revalidate the path to refresh server components
+    revalidatePath(DASHBOARD_PATH);
+
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Action error:", errorMessage);
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("My action error:", detailedError);
+
+    // In production, return a generic error message to avoid exposing sensitive details
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
 
     return {
       success: false,
@@ -646,6 +668,16 @@ if (!exists) {
     error: "Resource not found",
   };
 }
+
+// Catch block error handling (see Server Action Structure template for full example)
+// Always sanitize error messages in production:
+const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+console.error("Action error:", detailedError);
+
+const isProduction = process.env.APP_ENV === "production";
+const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+
+return { success: false, error: errorMessage };
 ```
 
 **In Hooks (Client-Side):**
@@ -674,8 +706,7 @@ const onSubmit = async (data: FormSchema) => {
       return;
     }
 
-    // Success - refresh or redirect
-    router.refresh();
+    // Success - server action handles revalidation via revalidatePath
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
     toast.error("Operation failed", { description: errorMessage });
@@ -792,8 +823,8 @@ export const useMyForm = (): UseMyFormReturn => {
         return;
       }
 
-      // Success - navigate or refresh
-      router.refresh(); // or router.replace(DASHBOARD_PATH)
+      // Success - server action handles revalidation via revalidatePath
+      // Use router.replace() or router.push() only if you need to navigate to a different route
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Action error:", errorMessage);
@@ -810,7 +841,8 @@ export const useMyForm = (): UseMyFormReturn => {
 
 - **Field-specific errors**: If `field` exists in the result, use `setError` and return early
 - **General errors**: If `field` doesn't exist, throw an error which gets caught and displayed as a toast
-- **Navigation**: Use `router.refresh()` to refresh server components, or `router.replace()` for navigation to a different route
+- **Revalidation**: Server actions should use `revalidatePath()` from `next/cache` to invalidate the cache for the affected route.
+- **Navigation**: Use `router.replace()` or `router.push()` only if you need to navigate to a different route
 - **Error logging**: Always log errors to console for debugging
 
 ### Best Practices
@@ -820,11 +852,13 @@ export const useMyForm = (): UseMyFormReturn => {
 3. **Return structured errors** using `ActionResult` type
 4. **Handle redirects** for unauthenticated users
 5. **Use try-catch** for error handling
-6. **Log errors** to console for debugging
-7. **Validate permissions** before performing operations
-8. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
-9. **Keep actions focused** - one action per operation
-10. **Export result types** for type safety
+6. **Log errors** to console for debugging with descriptive context (e.g., `console.error("Edit project error:", detailedError)`)
+7. **Sanitize error messages in production**: Always check `process.env.APP_ENV === "production"` and return generic error messages to users in production while logging detailed errors for debugging. This prevents exposing sensitive information.
+8. **Validate permissions** before performing operations
+9. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
+10. **Keep actions focused** - one action per operation
+11. **Export result types** for type safety
+12. **Revalidate paths** after successful database operations using `revalidatePath()` from `next/cache` to ensure server components reflect the latest data
 
 ## Type Definitions
 
@@ -923,16 +957,69 @@ Validation schemas use Zod and are located in `_schemas` folders:
 ```typescript
 import { z } from "zod";
 
-export const createProjectFormSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  description: z.string().min(1, "Project description is required"),
-  github_url: z.url().optional().or(z.literal("")),
+import { githubUsernameSchema, plainTextMultiLineSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
+
+export const sampleFormSchema = z.object({
+  single_line: plainTextSingleLineSchema.min(1, "Single line field is required"),
+  multi_line: plainTextMultiLineSchema.min(1, "Multi line field is required"),
+  url: secureUrlSchema.optional().or(z.literal("")),
+  github_username: githubUsernameSchema.optional(),
 });
 
-export type CreateProjectFormSchema = z.infer<typeof createProjectFormSchema>;
+export type SampleFormSchema = z.infer<typeof sampleFormSchema>;
 ```
 
 **Pattern**: Export both the schema and the inferred type.
+
+### Validation Utilities
+
+The project provides reusable validation schemas in `lib/validation.lib.ts` for common security and validation needs:
+
+- **`secureUrlSchema`**: Validates URLs and only allows `http://` and `https://` protocols. Prevents XSS attacks from dangerous protocols like `javascript:`, `data:`, `file:`, etc.
+
+  ```typescript
+  import { secureUrlSchema } from "@/lib";
+
+  const schema = z.object({
+    url: secureUrlSchema,
+  });
+  ```
+
+- **`plainTextSingleLineSchema`**: Validates plain text for single-line fields (no newlines). Rejects HTML tags and control characters. Use for names, titles, and other single-line text fields.
+
+  ```typescript
+  import { plainTextSingleLineSchema } from "@/lib";
+
+  const schema = z.object({
+    title: plainTextSingleLineSchema.min(1, "Title is required"),
+  });
+  ```
+
+- **`plainTextMultiLineSchema`**: Validates plain text for multi-line fields (allows newlines). Rejects HTML tags and control characters. Use for descriptions, bodies, and other multi-line content.
+
+  ```typescript
+  import { plainTextMultiLineSchema } from "@/lib";
+
+  const schema = z.object({
+    description: plainTextMultiLineSchema.min(1, "Description is required"),
+  });
+  ```
+
+- **`githubUsernameSchema`**: Validates GitHub usernames according to GitHub's rules:
+  - Alphanumeric characters (a-z, 0-9) and hyphens (-)
+  - 1-39 characters in length
+  - Cannot begin or end with a hyphen
+  - Cannot have consecutive hyphens
+
+  ```typescript
+  import { githubUsernameSchema } from "@/lib";
+
+  const schema = z.object({
+    github_username: githubUsernameSchema,
+  });
+  ```
+
+**Security Note**: Always use these validation utilities for user input to prevent XSS attacks and ensure data integrity. Prefer `secureUrlSchema` over `z.url()` for URL validation, and use `plainTextSingleLineSchema` or `plainTextMultiLineSchema` instead of plain `z.string()` for text fields.
 
 **Barrel exports**: Schemas should be exported from `_schemas/index.ts`:
 
@@ -1122,15 +1209,21 @@ pnpm run build
    │   └── index.ts
    ├── _hooks/
    │   └── index.ts
+   ├── _lib/              # Library files (optional)
+   │   ├── my-table-columns.lib.tsx
+   │   ├── my-utilities.lib.tsx
+   │   └── index.ts       # Optional barrel export
    ├── _schemas/          # Zod schemas (if needed)
    │   └── index.ts
    ├── constants.ts       # Optional
-   ├── lib.ts            # Optional (use lib.tsx if contains JSX)
+   ├── lib.ts            # Optional (use lib.tsx if contains JSX, or use _lib/ exclusively)
    ├── types.ts          # Optional
    ├── page.tsx
    ├── loading.tsx        # Optional
    └── error.tsx          # Optional
    ```
+
+   **Note**: You can use `_lib/` exclusively for all library files (like the schedule feature), or use a top-level `lib.ts/lib.tsx` for simple cases. Files in `_lib/` should be named `kebab-case.lib.ts` or `kebab-case.lib.tsx`.
 
 3. **Create barrel exports** in each `index.ts` file
 
@@ -1223,6 +1316,8 @@ pnpm run build
 
 ### Adding Utility Functions
 
+**For simple utility functions**, add to `lib.ts` or `lib.tsx` file:
+
 1. **Add to `lib.ts` or `lib.tsx` file**:
 
    ```typescript
@@ -1237,6 +1332,80 @@ pnpm run build
    ```typescript
    import { myUtility } from "@/app/dashboard/my-feature/lib";
    ```
+
+**For complex library files** (table columns, multiple related utilities), use `_lib/` folder:
+
+1. **Create files in `_lib/` folder**:
+
+   ```typescript
+   // _lib/my-table-columns.lib.tsx (client-side)
+   "use client";
+
+   import { ColumnDef } from "@tanstack/react-table";
+   import type { MyType } from "../types";
+
+   export const getMyTableColumns = (): ColumnDef<MyType>[] => {
+     // column definitions
+   };
+   ```
+
+   ```typescript
+   // _lib/lib.ts (server-side)
+   "use server";
+
+   import { getFirestore } from "firebase-admin/firestore";
+
+   export const getMyData = async () => {
+     // server-side data fetching
+   };
+   ```
+
+2. **Export from `_lib/` folder** (if using barrel exports):
+
+   ```typescript
+   // _lib/index.ts
+   export { getMyTableColumns } from "./my-table-columns.lib";
+   export { getMyData } from "./lib";
+   ```
+
+3. **Import where needed**:
+   ```typescript
+   import { getMyTableColumns } from "@/app/dashboard/my-feature/_lib";
+   import { getMyData } from "@/app/dashboard/my-feature/_lib";
+   // or directly:
+   import { getMyTableColumns } from "@/app/dashboard/my-feature/_lib/my-table-columns.lib";
+   ```
+
+**When to use `_lib/` vs `lib.ts`:**
+
+- Use `_lib/` folder when you have multiple related library files (e.g., table column definitions, calendar utilities, multiple server functions)
+- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx` (see schedule feature as an example)
+- Use `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
+- Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
+- `_lib/` can contain both client-side (`.tsx` with `"use client"`) and server-side (`.ts` with `"use server"`) files
+- Files in `_lib/` should follow the naming pattern: `kebab-case.lib.ts` or `kebab-case.lib.tsx` (e.g., `calendar.lib.tsx`, `events-columns.lib.tsx`)
+
+**Example: Schedule feature using `_lib/` exclusively:**
+
+The schedule feature uses `_lib/` for all library files:
+
+```
+app/dashboard/schedule/
+├── _lib/
+│   ├── calendar.lib.tsx      # Calendar-related utilities (client-side)
+│   ├── events-columns.lib.tsx  # Table column definitions (client-side)
+│   └── index.ts             # Barrel export
+├── constants.ts
+├── types.ts
+└── ...
+```
+
+All library functions are imported from `_lib/`:
+
+```typescript
+import { getCalendarItems, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib";
+import { getEventsColumns } from "@/app/dashboard/schedule/_lib";
+```
 
 ### Updating Barrel Imports
 

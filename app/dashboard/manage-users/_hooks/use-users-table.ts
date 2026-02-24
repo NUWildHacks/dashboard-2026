@@ -21,7 +21,7 @@ import { PARTICIPANT } from "@/constants";
 import { User } from "@/types";
 
 import { deleteUsers } from "../_actions";
-import { getUsersColumns } from "../_lib/users-columns.lib";
+import { getUsersColumns } from "../_lib/client";
 
 export type UseUsersTableReturn = {
   role: User["role"];
