@@ -1,4 +1,4 @@
-import { Calendar, FolderGit2, Home, Users } from "lucide-react";
+import { BookOpenCheck, Calendar, FolderGit2, Home, Users } from "lucide-react";
 
 import {
   ADMIN,
@@ -9,6 +9,7 @@ import {
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
+  DASHBAORD_JUDGING_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -38,6 +39,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Users,
     visibleTo: [ADMIN],
   },
+  {
+    title: "Judging",
+    url: DASHBAORD_JUDGING_PATH,
+    icon: BookOpenCheck,
+    visibleTo: [JUDGE],
+  },
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
@@ -46,4 +53,5 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",
+  judging: "Judging",
 };
