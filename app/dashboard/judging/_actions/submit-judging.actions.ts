@@ -8,12 +8,16 @@ import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
 import { type JudgingFormSchema } from "../_schemas";
+import { Project } from "../../project/types";
 import { JUDGING_FORM_FIELDS } from "../constants";
 import { JudgingForm } from "../types";
 
 export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
-export const submitJudging = async (data: JudgingFormSchema): Promise<SubmitJudgingResult> => {
+export const submitJudging = async (
+  data: JudgingFormSchema,
+  projectData: Pick<Project, "id" | "name">
+): Promise<SubmitJudgingResult> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -24,26 +28,24 @@ export const submitJudging = async (data: JudgingFormSchema): Promise<SubmitJudg
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
     if (roleError) return roleError;
 
-    const { project_id } = data;
+    const { id: projectId, name: projectName } = projectData;
 
-    const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(project_id).get();
+    const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
     if (!projectDocSnapshot.exists) {
       return {
         success: false,
         error: "Project not found",
-        field: JUDGING_FORM_FIELDS.project_name,
       };
     }
 
     const judgingFormSnapshots = await db
       .collection(JUDGING_FORMS_COLLECTION)
-      .where(JUDGING_FORM_FIELDS.project_id, "==", project_id)
+      .where(JUDGING_FORM_FIELDS.project_id, "==", projectId)
       .get();
     if (judgingFormSnapshots.docs.length > 0) {
       return {
         success: false,
         error: "Judging form already submitted for this project",
-        field: JUDGING_FORM_FIELDS.project_name,
       };
     }
 
@@ -52,6 +54,8 @@ export const submitJudging = async (data: JudgingFormSchema): Promise<SubmitJudg
       .doc()
       .set({
         ...data,
+        project_id: projectId,
+        project_name: projectName,
         created_at: now,
         updated_at: now,
       } as Omit<JudgingForm, "id">);

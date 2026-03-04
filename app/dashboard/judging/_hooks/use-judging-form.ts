@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Control, SubmitHandler, useForm, UseFormHandleSubmit, UseFormSetValue } from "react-hook-form";
+import { useState } from "react";
+import { Control, SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { toast } from "sonner";
 
 import { submitJudging } from "../_actions";
 import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
+import { Project } from "../../project/types";
 
 export type UseJudgingFormReturn = {
   isSubmitting: boolean;
@@ -11,22 +13,22 @@ export type UseJudgingFormReturn = {
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
   handleReset: () => void;
-  setValue: UseFormSetValue<JudgingFormSchema>;
+  handleSelectProject: (projectId: Project["id"]) => void;
+  selectedProjectData: Pick<Project, "id" | "name"> | undefined;
 };
 
-export const useJudgingForm = (): UseJudgingFormReturn => {
+export const useJudgingForm = (assignedProjects: Project[]): UseJudgingFormReturn => {
+  const [selectedProjectData, setSelectedProjectData] = useState<Pick<Project, "id" | "name"> | undefined>(undefined);
+
   const {
     control,
     handleSubmit,
     reset,
     setError,
-    setValue,
     formState: { isSubmitting },
   } = useForm<JudgingFormSchema>({
     resolver: zodResolver(judgingFormSchema),
     defaultValues: {
-      project_id: "",
-      project_name: "",
       technical_complexity: 0,
       usefulness: 0,
       originality: 0,
@@ -37,10 +39,10 @@ export const useJudgingForm = (): UseJudgingFormReturn => {
   });
 
   const onSubmit = async (data: JudgingFormSchema) => {
-    console.log(data);
+    if (!selectedProjectData) return;
 
     try {
-      const result = await submitJudging(data);
+      const result = await submitJudging(data, selectedProjectData);
       const { success } = result;
 
       if (!success) {
@@ -64,10 +66,14 @@ export const useJudgingForm = (): UseJudgingFormReturn => {
     }
   };
 
+  const handleSelectProject = (projectId: Project["id"]) => {
+    const selectedProject = assignedProjects.find((project) => project.id === projectId);
+    if (!selectedProject) return;
+    setSelectedProjectData({ id: selectedProject.id, name: selectedProject.name });
+  };
+
   const handleReset = () => {
     reset({
-      project_id: "",
-      project_name: "",
       technical_complexity: 0,
       usefulness: 0,
       originality: 0,
@@ -80,9 +86,10 @@ export const useJudgingForm = (): UseJudgingFormReturn => {
   return {
     control,
     handleSubmit,
-    setValue,
     onSubmit,
     isSubmitting,
+    handleSelectProject,
     handleReset,
+    selectedProjectData,
   };
 };
