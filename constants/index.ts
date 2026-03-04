@@ -7,6 +7,7 @@ export {
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
   WILDHACKS_CONFIG_DOC,
+  JUDGING_FORMS_COLLECTION,
 } from "./db.constants";
 
 export {

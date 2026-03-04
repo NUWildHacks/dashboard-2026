@@ -1,6 +1,6 @@
 "use client";
 
-import { StarIcon } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState } from "react";
 import { FieldValues, UseControllerReturn } from "react-hook-form";
 
@@ -13,17 +13,19 @@ type RatingProps<T extends FieldValues = FieldValues> = {
 } & Pick<UseControllerReturn<T>, "field" | "fieldState">;
 
 const Rating = <T extends FieldValues>({ label, fieldName, field, fieldState }: RatingProps<T>) => {
-  const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const rating = field.value || 0;
 
   const handleSelectRating = (rating: number) => {
-    setRating(rating);
     field.onChange(rating);
   };
 
   return (
-    <Field data-invalid={fieldState.invalid}>
-      <FieldLabel htmlFor={`${fieldName}-rating`} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+    <Field data-invalid={fieldState.invalid} className="w-auto">
+      <FieldLabel
+        htmlFor={`${fieldName}-rating`}
+        className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+      >
         {label}
       </FieldLabel>
       <div className="flex gap-1">
@@ -36,9 +38,9 @@ const Rating = <T extends FieldValues>({ label, fieldName, field, fieldState }: 
             onMouseLeave={() => setHoverRating(0)}
             type="button"
           >
-            <StarIcon
+            <Heart
               className={cn(
-                "h-8 w-8 transition-colors",
+                "h-6 w-6 transition-colors",
                 (hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
               )}
             />
