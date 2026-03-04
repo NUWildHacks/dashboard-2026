@@ -7,19 +7,21 @@ import Rating from "@/components/form/rating";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { JudgeUser } from "@/types";
 
 import { useJudgingForm } from "../_hooks";
 import { Project } from "../../project/types";
 
 type JudgingFormProps = {
   assignedProjects: Project[];
-};
+} & Pick<JudgeUser, "id" | "first_name" | "last_name">;
 
-const JudgingForm = ({ assignedProjects }: JudgingFormProps) => {
+const JudgingForm = ({ assignedProjects, id, first_name, last_name }: JudgingFormProps) => {
   const { control, handleSubmit, onSubmit, isSubmitting, handleReset, handleSelectProject, selectedProjectData } =
-    useJudgingForm(assignedProjects);
+    useJudgingForm(assignedProjects, { id, first_name, last_name });
 
   return (
     <Card>
@@ -59,6 +61,36 @@ const JudgingForm = ({ assignedProjects }: JudgingFormProps) => {
         {selectedProjectData && (
           <form id="judging-form" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Controller
+                  name="judge_first_name"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                        First Name
+                      </FieldLabel>
+                      <Input {...field} id={field.name} disabled />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                    </Field>
+                  )}
+                />
+
+                <Controller
+                  name="judge_last_name"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                        Last Name
+                      </FieldLabel>
+                      <Input {...field} id={field.name} disabled />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                    </Field>
+                  )}
+                />
+              </div>
+
               <FieldSet disabled={isSubmitting}>
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                   <Controller

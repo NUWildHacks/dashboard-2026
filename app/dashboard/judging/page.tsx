@@ -19,7 +19,7 @@ const JudgingPage = async () => {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Judging Form</h2>
-        <JudgingForm assignedProjects={[]} />
+        <JudgingForm {...user} assignedProjects={[]} />
       </div>
     </div>
   );

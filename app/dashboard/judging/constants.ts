@@ -1,6 +1,9 @@
 import type { JudgingForm } from "./types";
 
 export const JUDGING_FORM_FIELDS = {
+  judge_id: "judge_id",
+  judge_first_name: "judge_first_name",
+  judge_last_name: "judge_last_name",
   project_id: "project_id",
   project_name: "project_name",
   project_link: "project_link",
