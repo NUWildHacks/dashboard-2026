@@ -23,8 +23,6 @@ export const useJudgingForm = (
   assignedProjects: Project[],
   judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name">
 ): UseJudgingFormReturn => {
-  const { id: judgeId, first_name: judgeFirstName, last_name: judgeLastName } = judgeData;
-
   const [selectedProjectData, setSelectedProjectData] = useState<
     Pick<Project, "id" | "name" | "github_url"> | undefined
   >(undefined);
@@ -38,8 +36,6 @@ export const useJudgingForm = (
   } = useForm<JudgingFormSchema>({
     resolver: zodResolver(judgingFormSchema),
     defaultValues: {
-      judge_first_name: judgeFirstName,
-      judge_last_name: judgeLastName,
       technical_complexity: 0,
       usefulness: 0,
       originality: 0,
@@ -53,7 +49,7 @@ export const useJudgingForm = (
     if (!selectedProjectData) return;
 
     try {
-      const result = await submitJudging(data, selectedProjectData, judgeId);
+      const result = await submitJudging(data, selectedProjectData, judgeData);
       const { success } = result;
 
       if (!success) {
