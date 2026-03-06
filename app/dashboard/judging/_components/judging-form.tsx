@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { JudgeUser } from "@/types";
 
 import { useJudgingForm } from "../_hooks";
-import { Project } from "../../project/types";
+import type { Project } from "../types";
 
 type JudgingFormProps = {
   assignedProjects: Project[];

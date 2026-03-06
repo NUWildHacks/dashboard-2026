@@ -1,4 +1,4 @@
-import { BookOpenCheck, Calendar, FolderGit2, Home, Users } from "lucide-react";
+import { BookOpenCheck, Calendar, Home, Users } from "lucide-react";
 
 import {
   ADMIN,
@@ -7,7 +7,6 @@ import {
   PARTICIPANT,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
-  DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBAORD_JUDGING_PATH,
 } from "@/constants";
@@ -28,12 +27,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
   },
   {
-    title: "Project",
-    url: DASHBOARD_PROJECT_PATH,
-    icon: FolderGit2,
-    visibleTo: [PARTICIPANT],
-  },
-  {
     title: "Manage users",
     url: DASHBOARD_MANAGE_USERS_PATH,
     icon: Users,
@@ -49,7 +42,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
   schedule: "Schedule",
-  project: "Project",
   support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",

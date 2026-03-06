@@ -1,4 +1,4 @@
-import type { JudgingForm } from "./types";
+import type { JudgingForm, Project } from "./types";
 
 export const JUDGING_FORM_FIELDS = {
   judge_id: "judge_id",
@@ -16,3 +16,15 @@ export const JUDGING_FORM_FIELDS = {
   created_at: "created_at",
   updated_at: "updated_at",
 } as const satisfies Record<keyof Omit<JudgingForm, "id">, string>;
+
+export const PROJECT_FIELDS = {
+  name: "name",
+  description: "description",
+  owner_id: "owner_id",
+  invitation_code: "invitation_code",
+  github_url: "github_url",
+  demo_url: "demo_url",
+  created_at: "created_at",
+  updated_at: "updated_at",
+  submitted_at: "submitted_at",
+} as const satisfies Record<keyof Omit<Project, "id">, string>;
