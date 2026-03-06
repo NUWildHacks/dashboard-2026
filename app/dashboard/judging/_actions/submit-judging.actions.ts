@@ -8,15 +8,15 @@ import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
 
 import { type JudgingFormSchema } from "../_schemas";
-import { Project } from "../../project/types";
 import { JUDGING_FORM_FIELDS } from "../constants";
+import type { Project } from "../types";
 import { JudgingForm } from "../types";
 
 export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
 export const submitJudging = async (
   data: JudgingFormSchema,
-  projectData: Pick<Project, "id" | "name" | "github_url">,
+  projectData: Pick<Project, "id" | "name">,
   judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name">
 ): Promise<SubmitJudgingResult> => {
   const db = getFirestore();
@@ -29,7 +29,7 @@ export const submitJudging = async (
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
     if (roleError) return roleError;
 
-    const { id: projectId, name: projectName, github_url: projectLink } = projectData;
+    const { id: projectId, name: projectName } = projectData;
     const { id: judgeId, first_name: judgeFirstName, last_name: judgeLastName } = judgeData;
 
     const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
@@ -61,7 +61,6 @@ export const submitJudging = async (
         judge_last_name: judgeLastName,
         project_id: projectId,
         project_name: projectName,
-        project_link: projectLink,
         created_at: now,
         updated_at: now,
       } as Omit<JudgingForm, "id">);

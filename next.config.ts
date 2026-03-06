@@ -55,7 +55,7 @@ const nextConfig: NextConfig = {
         destination: "https://www.mccormick.northwestern.edu/contact/tech-room-finder.html",
         basePath: false,
         permanent: false,
-      }
+      },
     ];
   },
 };

@@ -33,9 +33,7 @@ const EventWithdraw = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                You will leave your current project and must re-register to the event if you want to participate.
-              </DialogDescription>
+              <DialogDescription>You must re-register to the event if you want to participate.</DialogDescription>
             </DialogHeader>
             <DialogFooter>
               <DialogClose asChild>

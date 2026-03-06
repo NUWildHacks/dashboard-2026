@@ -7,7 +7,7 @@ import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
 import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
-import { Project } from "../../project/types";
+import type { Project } from "../types";
 
 export type UseJudgingFormReturn = {
   isSubmitting: boolean;
@@ -23,9 +23,7 @@ export const useJudgingForm = (
   assignedProjects: Project[],
   judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name">
 ): UseJudgingFormReturn => {
-  const [selectedProjectData, setSelectedProjectData] = useState<
-    Pick<Project, "id" | "name" | "github_url"> | undefined
-  >(undefined);
+  const [selectedProjectData, setSelectedProjectData] = useState<Pick<Project, "id" | "name"> | undefined>(undefined);
 
   const {
     control,
@@ -76,11 +74,7 @@ export const useJudgingForm = (
   const handleSelectProject = (projectId: Project["id"]) => {
     const selectedProject = assignedProjects.find((project) => project.id === projectId);
     if (!selectedProject) return;
-    setSelectedProjectData({
-      id: selectedProject.id,
-      name: selectedProject.name,
-      github_url: selectedProject.github_url,
-    });
+    setSelectedProjectData(selectedProject);
   };
 
   const handleReset = () => {

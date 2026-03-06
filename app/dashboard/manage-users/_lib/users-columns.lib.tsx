@@ -97,32 +97,18 @@ export const getUsersColumns = (
   const roleSpecificColumns: ColumnDef<User>[] = [];
 
   if (role === PARTICIPANT) {
-    roleSpecificColumns.push(
-      {
-        accessorKey: "github_username",
-        header: "GitHub Username",
-        cell: ({ row }) => {
-          const user = row.original;
-          if (user.role === PARTICIPANT) {
-            return <div className="text-left text-muted-foreground">{user.github_username || "None"}</div>;
-          }
-          return null;
-        },
-        enableHiding: false,
+    roleSpecificColumns.push({
+      accessorKey: "github_username",
+      header: "GitHub Username",
+      cell: ({ row }) => {
+        const user = row.original;
+        if (user.role === PARTICIPANT) {
+          return <div className="text-left text-muted-foreground">{user.github_username || "None"}</div>;
+        }
+        return null;
       },
-      {
-        accessorKey: "project_id",
-        header: "Project ID",
-        cell: ({ row }) => {
-          const user = row.original;
-          if (user.role === PARTICIPANT) {
-            return <div className="text-left text-muted-foreground">{user.project_id || "None"}</div>;
-          }
-          return null;
-        },
-        enableHiding: false,
-      }
-    );
+      enableHiding: false,
+    });
   } else if (role === JUDGE || role === MENTOR) {
     roleSpecificColumns.push(
       {

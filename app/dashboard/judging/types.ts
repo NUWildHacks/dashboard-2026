@@ -1,4 +1,4 @@
-import { BaseModel, JudgeUser, User } from "@/types";
+import { BaseModel, JudgeUser } from "@/types";
 
 export type JudgingForm = BaseModel & {
   judge_id: JudgeUser["id"];
@@ -7,7 +7,6 @@ export type JudgingForm = BaseModel & {
 
   project_id: Project["id"];
   project_name: Project["name"];
-  project_link: Project["github_url"];
 
   technical_complexity: number;
   usefulness: number;
@@ -17,15 +16,17 @@ export type JudgingForm = BaseModel & {
   comments: string;
 };
 
-export type Project = BaseModel & {
+export type Project = {
+  id: string;
   name: string;
-  description: string;
+  description?: string;
 
-  owner_id: User["id"];
-  invitation_code: string;
+  track?: string;
 
-  github_url: string;
-  demo_url: string;
+  try_it_out_url?: string;
+  video_demo_url?: string;
+  submittion_url?: string;
 
   submitted_at?: number;
+  created_at?: number;
 };

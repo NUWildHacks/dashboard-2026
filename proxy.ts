@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import {
   DASHBOARD_PATH,
-  DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
   DASHBOARD_SUPPORT_PATH,
@@ -44,7 +43,6 @@ export async function proxy(req: NextRequest) {
   const isProtectedRoute =
     currentPath === REGISTRATION_PATH ||
     currentPath === DASHBOARD_PATH ||
-    currentPath === DASHBOARD_PROJECT_PATH ||
     currentPath === DASHBOARD_SCHEDULE_PATH ||
     currentPath === DASHBOARD_SUPPORT_PATH ||
     currentPath === DASHBOARD_SETTINGS_PATH;

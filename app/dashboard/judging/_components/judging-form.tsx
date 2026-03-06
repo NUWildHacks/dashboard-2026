@@ -57,7 +57,7 @@ const JudgingForm = ({ assignedProjects, id, first_name, last_name }: JudgingFor
           </Select>
         </div>
 
-        {/* {selectedProjectData && ( */}
+        {selectedProjectData && (
           <form id="judging-form" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <FieldSet disabled={isSubmitting}>
@@ -129,7 +129,7 @@ const JudgingForm = ({ assignedProjects, id, first_name, last_name }: JudgingFor
               </FieldSet>
             </FieldGroup>
           </form>
-        {/* )} */}
+        )}
       </CardContent>
       {selectedProjectData && (
         <CardFooter>

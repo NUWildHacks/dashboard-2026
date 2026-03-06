@@ -1,7 +1,6 @@
 import {
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
-  DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
   DASHBOARD_SUPPORT_PATH,
@@ -17,7 +16,6 @@ import {
 export const validateRedirectPath = (path: string | null): string => {
   const whitelistedPaths: string[] = [
     DASHBOARD_PATH,
-    DASHBOARD_PROJECT_PATH,
     DASHBOARD_SCHEDULE_PATH,
     DASHBOARD_SETTINGS_PATH,
     DASHBOARD_SUPPORT_PATH,
