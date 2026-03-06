@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-import { JUDGE_REGISTRATION_PATH, WILDHACKS_HOME } from "./constants/routes.constants";
+import { JUDGE_REGISTRATION_PATH, WILDHACKS_HOME, TECH_ROOM_FINDER_PATH } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
 
@@ -50,6 +50,12 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: false,
       },
+      {
+        source: TECH_ROOM_FINDER_PATH,
+        destination: "https://www.mccormick.northwestern.edu/contact/tech-room-finder.html",
+        basePath: false,
+        permanent: false,
+      }
     ];
   },
 };

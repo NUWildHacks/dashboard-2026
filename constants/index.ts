@@ -23,6 +23,7 @@ export {
   ROOT_PATH,
   JUDGE_REGISTRATION_PATH,
   WILDHACKS_HOME,
+  TECH_ROOM_FINDER_PATH,
 } from "./routes.constants";
 
 export {
