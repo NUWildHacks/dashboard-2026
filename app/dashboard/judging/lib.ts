@@ -3,7 +3,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import { PROJECTS_COLLECTION } from "@/constants";
-import type { ParticipantUser } from "@/types";
 
 import type { Project } from "./types";
 
@@ -25,9 +24,7 @@ import type { Project } from "./types";
  * }
  * ```
  */
-const getProject = async (projectId: ParticipantUser["project_id"]) => {
-  if (!projectId) return null;
-
+const getProject = async (projectId: Project["id"]) => {
   const db = getFirestore();
 
   const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
