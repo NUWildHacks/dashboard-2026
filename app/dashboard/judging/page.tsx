@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { DASHBOARD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
-import { JudgingForm } from "./_components";
+import { AssignedProjectsDisplay } from "./_components";
 import { getAssignedProjects } from "./lib";
 
 const JudgingPage = async () => {
@@ -15,16 +15,7 @@ const JudgingPage = async () => {
   const assignedProjects = await getAssignedProjects(user.id);
 
   return (
-    <div className="flex-1 flex flex-col gap-6">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-md font-semibold">Assigned Projects</h2>
-        <p>¯\_(ツ)_/¯</p>
-      </div>
-      <div className="flex flex-col gap-4">
-        <h2 className="text-md font-semibold">Judging Form</h2>
-        <JudgingForm {...user} assignedProjects={assignedProjects} />
-      </div>
-    </div>
+    <AssignedProjectsDisplay assignedProjects={assignedProjects} />
   );
 };
 
