@@ -28,6 +28,11 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
     const roleError = requireRole(user, ADMIN, "You are not authorized to upload judging assignments");
     if (roleError) return roleError;
 
+    const projectsCollectionRef = db.collection(PROJECTS_COLLECTION);
+    const judgingAssignmentsCollectionRef = db.collection(JUDGING_ASSIGNMENTS_COLLECTION);
+
+    await Promise.all([db.recursiveDelete(projectsCollectionRef), db.recursiveDelete(judgingAssignmentsCollectionRef)]);
+
     const judgingAssignmentBatch = db.batch();
     const projectBatch = db.batch();
 
@@ -39,7 +44,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
       if (!seenProjectIds.has(project_id)) {
         seenProjectIds.add(project_id);
 
-        const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(project_id);
+        const projectDocRef = projectsCollectionRef.doc(project_id);
         projectBatch.set(projectDocRef, {
           id: project_id,
           name: project_name,
@@ -48,7 +53,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
         } as Omit<Project, "id">);
       }
 
-      const assignmentDocRef = db.collection(JUDGING_ASSIGNMENTS_COLLECTION).doc(`${judge_id}_${project_id}`);
+      const assignmentDocRef = judgingAssignmentsCollectionRef.doc(`${judge_id}_${project_id}`);
       judgingAssignmentBatch.set(assignmentDocRef, {
         judge_id,
         project_id,
