@@ -4,12 +4,15 @@ import { DASHBAORD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/con
 import { getAuthenticatedUser } from "@/lib";
 
 import { JudgingForm } from "./_components";
+import { getAssignedProjects } from "./lib";
 
 const JudgingPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBAORD_JUDGING_PATH)}`;
 
   const user = await getAuthenticatedUser(redirectPath);
   if (user.role !== JUDGE) redirect(DASHBOARD_PATH);
+
+  const assignedProjects = await getAssignedProjects(user.id);
 
   return (
     <div className="flex-1 flex flex-col gap-6">
@@ -19,7 +22,7 @@ const JudgingPage = async () => {
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Judging Form</h2>
-        <JudgingForm {...user} assignedProjects={[]} />
+        <JudgingForm {...user} assignedProjects={assignedProjects} />
       </div>
     </div>
   );
