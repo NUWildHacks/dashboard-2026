@@ -1,11 +1,11 @@
 import { z } from "zod";
 
-import { firestoreAutoIdSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
+import { firestoreUserIdSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
 
 import { TRACKS } from "../../judging/constants";
 
 export const judgingAssignmentsCsvSchema = z.object({
-  judge_id: firestoreAutoIdSchema,
+  judge_id: firestoreUserIdSchema,
   judge_email: z.email("Invalid email address"),
   judge_first_name: plainTextSingleLineSchema
     .min(1, "First name is required")

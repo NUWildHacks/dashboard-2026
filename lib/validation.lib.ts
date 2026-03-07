@@ -82,7 +82,7 @@ export const githubUsernameSchema = z
   .refine((username) => !username.includes("--"), { message: "GitHub username cannot have consecutive hyphens" });
 
 /**
- * Firestore auto-generated document ID schema.
+ * Firestore user ID schema.
  * Validates that a string matches the format of Firestore auto-generated document IDs:
  * - Exactly 20 characters long
  * - Contains only alphanumeric characters (a-z, A-Z, 0-9)
@@ -90,10 +90,10 @@ export const githubUsernameSchema = z
  * @example
  * ```ts
  * const schema = z.object({
- *   documentId: firestoreAutoIdSchema,
+ *   userId: firestoreUserIdSchema,
  * });
  * ```
  */
-export const firestoreAutoIdSchema = z.string().regex(/^[a-zA-Z0-9]{20}$/, {
-  message: "Invalid Firestore document ID",
+export const firestoreUserIdSchema = z.string().regex(/^[a-zA-Z0-9]{28}$/, {
+  message: "Invalid Firestore user ID",
 });
