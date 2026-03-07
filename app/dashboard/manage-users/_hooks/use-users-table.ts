@@ -13,7 +13,7 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
-import { json2csv } from "json-2-csv";
+import Papa from 'papaparse';
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -63,7 +63,7 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
   }, [data, role, search]);
 
   const handleDownloadCSV = () => {
-    const csv = json2csv(filteredUsers);
+    const csv = Papa.unparse(filteredUsers);
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
