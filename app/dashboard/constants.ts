@@ -8,7 +8,7 @@ import {
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
-  DASHBAORD_JUDGING_PATH,
+  DASHBOARD_JUDGING_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -34,7 +34,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     title: "Judging",
-    url: DASHBAORD_JUDGING_PATH,
+    url: DASHBOARD_JUDGING_PATH,
     icon: BookOpenCheck,
     visibleTo: [JUDGE],
   },

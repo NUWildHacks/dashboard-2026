@@ -13,7 +13,7 @@ import {
   Table,
   useReactTable,
 } from "@tanstack/react-table";
-import Papa from 'papaparse';
+import Papa from "papaparse";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 

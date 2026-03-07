@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
-import { LOGIN_PATH, DASHBAORD_JUDGING_PATH, JUDGE, JUDGING_FORMS_COLLECTION, PROJECTS_COLLECTION } from "@/constants";
+import { LOGIN_PATH, DASHBOARD_JUDGING_PATH, JUDGE, JUDGING_FORMS_COLLECTION, PROJECTS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
 
@@ -23,7 +23,7 @@ export const submitJudging = async (
   const now = Date.now();
 
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBAORD_JUDGING_PATH)}`;
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_JUDGING_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
@@ -65,7 +65,7 @@ export const submitJudging = async (
         updated_at: now,
       } as Omit<JudgingForm, "id">);
 
-    revalidatePath(DASHBAORD_JUDGING_PATH);
+    revalidatePath(DASHBOARD_JUDGING_PATH);
 
     return { success: true };
   } catch (error) {

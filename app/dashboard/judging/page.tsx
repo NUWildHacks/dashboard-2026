@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 
-import { DASHBAORD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/constants";
+import { DASHBOARD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
 import { JudgingForm } from "./_components";
 import { getAssignedProjects } from "./lib";
 
 const JudgingPage = async () => {
-  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBAORD_JUDGING_PATH)}`;
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_JUDGING_PATH)}`;
 
   const user = await getAuthenticatedUser(redirectPath);
   if (user.role !== JUDGE) redirect(DASHBOARD_PATH);

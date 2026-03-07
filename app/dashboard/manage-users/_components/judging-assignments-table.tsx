@@ -1,7 +1,9 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
-import { useState, useRef } from "react";
+import Papa from "papaparse";
+import { useState, useRef, ChangeEvent } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +17,8 @@ import {
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { JudgeUser } from "@/types";
 
+import { uploadAssignments } from "../_actions";
+import { judgingAssignmentsCsvArraySchema } from "../_schemas";
 import { JudgingAssignment, Project } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
@@ -33,11 +37,56 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      console.log("Selected file:", file.name);
-      // Handle file upload logic here
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: async (results) => {
+          const parseResult = judgingAssignmentsCsvArraySchema.safeParse(results.data);
+
+          if (!parseResult.success) {
+            toast.error("Invalid CSV file. Please check the columns and try again.", {
+              description: parseResult.error.message,
+            });
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+            return;
+          }
+
+          try {
+            const result = await uploadAssignments(parseResult.data);
+            const { success } = result;
+
+            if (!success) {
+              const { error } = result;
+              throw new Error(error);
+            }
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+            console.error("Failed to upload assignments", errorMessage);
+
+            toast.error("Failed to upload assignments", { description: errorMessage });
+          } finally {
+            if (fileInputRef.current) {
+              fileInputRef.current.value = "";
+            }
+          }
+        },
+        error: (error) => {
+          console.error("Failed to parse CSV file", error.message);
+
+          toast.error("Failed to parse CSV file", {
+            description: error.message,
+          });
+
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+        },
+      });
     }
   };
 
