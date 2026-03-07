@@ -29,4 +29,4 @@ export type JudgingAssignment = {
   id: string;
   judge_id: JudgeUser["id"];
   project_id: Project["id"];
-}
+};

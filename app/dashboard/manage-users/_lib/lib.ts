@@ -2,9 +2,15 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
+import {
+  JUDGING_ASSIGNMENTS_COLLECTION,
+  PERMISSION_CODES_COLLECTION,
+  PROJECTS_COLLECTION,
+  USERS_COLLECTION,
+} from "@/constants";
 import type { User } from "@/types";
 
+import { JudgingAssignment, Project } from "../../judging/types";
 import type { PermissionCode } from "../types";
 
 /**
@@ -69,4 +75,24 @@ const getUsers = async (): Promise<User[]> => {
   );
 };
 
-export { getPermissionCodes, getUsers };
+const getProjects = async (): Promise<Project[]> => {
+  const db = getFirestore();
+
+  const projectDocRef = db.collection(PROJECTS_COLLECTION);
+
+  const projectDocSnapshots = await projectDocRef.get();
+
+  return projectDocSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Project);
+};
+
+const getJudgingAssignments = async (): Promise<JudgingAssignment[]> => {
+  const db = getFirestore();
+
+  const judgingAssignmentDocRef = db.collection(JUDGING_ASSIGNMENTS_COLLECTION);
+
+  const judgingAssignmentDocSnapshots = await judgingAssignmentDocRef.get();
+
+  return judgingAssignmentDocSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as JudgingAssignment);
+};
+
+export { getPermissionCodes, getUsers, getProjects, getJudgingAssignments };

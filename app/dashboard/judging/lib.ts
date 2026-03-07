@@ -26,7 +26,10 @@ import type { Project } from "./types";
 const getAssignedProjects = async (judgeId: JudgeUser["id"]) => {
   const db = getFirestore();
 
-  const judgingAssignmentDocSnapshots = await db.collection(JUDGING_ASSIGNMENTS_COLLECTION).where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId).get();
+  const judgingAssignmentDocSnapshots = await db
+    .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+    .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
+    .get();
   const projectIds: Project["id"][] = judgingAssignmentDocSnapshots.docs.map((doc) => doc.data().project_id);
 
   if (projectIds.length === 0) return [];
