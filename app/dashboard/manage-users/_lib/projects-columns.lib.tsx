@@ -21,13 +21,6 @@ import { Project } from "../../judging/types";
 export const getProjectsColumns = (): ColumnDef<Project>[] => {
   return [
     {
-      accessorKey: "id",
-      header: "ID",
-      cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.id}</div>;
-      },
-    },
-    {
       accessorKey: "name",
       header: ({ column }) => {
         return (

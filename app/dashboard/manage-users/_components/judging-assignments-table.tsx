@@ -11,6 +11,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox";
+import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { JudgeUser } from "@/types";
 
@@ -83,6 +84,25 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
+      </div>
+      <DataTable columns={projectsColumns} table={table} />
+      <div className="flex justify-between items-center">
+        <div className="text-muted-foreground text-sm">
+          {table.getFilteredRowModel().rows.length} row(s)
+        </div>
+        <div className="flex items-center justify-end space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );
