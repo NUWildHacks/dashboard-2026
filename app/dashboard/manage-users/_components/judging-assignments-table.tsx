@@ -41,6 +41,17 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
     <div className="flex-1 space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
+          <Button onClick={handleUploadAssignments} className="w-full md:w-auto">
+            Upload CSV
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            className="hidden"
+            aria-label="Upload CSV file"
+          />
           <Combobox
             items={judges}
             value={selectedJudge}
@@ -59,17 +70,6 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
               </ComboboxList>
             </ComboboxContent>
           </Combobox>
-          <Button onClick={handleUploadAssignments} className="w-full md:w-auto">
-            Upload assignments
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".csv"
-            onChange={handleFileChange}
-            className="hidden"
-            aria-label="Upload CSV file"
-          />
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
