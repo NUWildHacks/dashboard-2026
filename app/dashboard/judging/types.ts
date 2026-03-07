@@ -1,5 +1,7 @@
 import { BaseModel, JudgeUser } from "@/types";
 
+import { TRACKS } from "./constants";
+
 export type JudgingForm = BaseModel & {
   judge_id: JudgeUser["id"];
   judge_first_name: JudgeUser["first_name"];
@@ -19,14 +21,12 @@ export type JudgingForm = BaseModel & {
 export type Project = {
   id: string;
   name: string;
-  description?: string;
-
-  track?: string;
-
-  try_it_out_url?: string;
-  video_demo_url?: string;
-  submittion_url?: string;
-
-  submitted_at?: number;
-  created_at?: number;
+  track: (typeof TRACKS)[number];
+  project_url: string;
 };
+
+export type JudgingAssignment = {
+  id: string;
+  judge_id: JudgeUser["id"];
+  project_id: Project["id"];
+}
