@@ -19,12 +19,14 @@ import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
 import { deleteEvents } from "../../_actions";
+import { UseEventFormDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
 type EventDialogProps = { userRole?: User["role"] } & Pick<
   UseItemDialogReturn<Event>,
   "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
->;
+> &
+  Partial<Pick<UseEventFormDialogReturn, "handleOpenEventFormDialog">>;
 
 const EventDialog = ({
   userRole = PARTICIPANT,
@@ -33,6 +35,7 @@ const EventDialog = ({
   selectedItem,
   isDeleting,
   handleDeleteItem,
+  handleOpenEventFormDialog,
 }: EventDialogProps) => {
   if (!selectedItem) return null;
 
@@ -64,9 +67,23 @@ const EventDialog = ({
         </DialogHeader>
         <DialogFooter>
           {userRole === ADMIN && (
-            <Button variant="destructive" onClick={() => handleDeleteItem(deleteEvents)} disabled={isDeleting}>
-              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete event"}
-            </Button>
+            <>
+              {handleOpenEventFormDialog && (
+                <Button
+                  variant="default"
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleOpenEventFormDialog(selectedItem);
+                  }}
+                  disabled={isDeleting}
+                >
+                  Edit event
+                </Button>
+              )}
+              <Button variant="destructive" onClick={() => handleDeleteItem(deleteEvents)} disabled={isDeleting}>
+                {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete event"}
+              </Button>
+            </>
           )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>

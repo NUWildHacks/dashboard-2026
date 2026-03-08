@@ -124,7 +124,11 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
         )}
         {display === "table" && userRole === ADMIN && <EventsTable columns={eventsColumns} table={table} />}
       </div>
-      <EventDialog userRole={userRole} {...useEventDialogReturn} />
+      <EventDialog
+        userRole={userRole}
+        {...useEventDialogReturn}
+        handleOpenEventFormDialog={handleOpenEventFormDialog}
+      />
       {userRole === ADMIN && <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />}
     </>
   );
