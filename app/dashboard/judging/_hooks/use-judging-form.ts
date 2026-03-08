@@ -1,8 +1,10 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { Control, SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { toast } from "sonner";
 
+import { UseItemDialogReturn } from "@/hooks";
 import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
@@ -14,21 +16,15 @@ export type UseJudgingFormReturn = {
   control: Control<JudgingFormSchema>;
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
-  handleReset: () => void;
-  handleSelectProject: (projectId: Project["id"]) => void;
-  selectedProjectData: Pick<Project, "id" | "name"> | undefined;
 };
 
 export const useJudgingForm = (
-  assignedProjects: Project[],
+  selectedItem: UseItemDialogReturn<Project>["selectedItem"],
   judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name">
 ): UseJudgingFormReturn => {
-  const [selectedProjectData, setSelectedProjectData] = useState<Pick<Project, "id" | "name"> | undefined>(undefined);
-
   const {
     control,
     handleSubmit,
-    reset,
     setError,
     formState: { isSubmitting },
   } = useForm<JudgingFormSchema>({
@@ -44,10 +40,10 @@ export const useJudgingForm = (
   });
 
   const onSubmit = async (data: JudgingFormSchema) => {
-    if (!selectedProjectData) return;
+    if (!selectedItem) return;
 
     try {
-      const result = await submitJudging(data, selectedProjectData, judgeData);
+      const result = await submitJudging(data, selectedItem, judgeData);
       const { success } = result;
 
       if (!success) {
@@ -71,30 +67,10 @@ export const useJudgingForm = (
     }
   };
 
-  const handleSelectProject = (projectId: Project["id"]) => {
-    const selectedProject = assignedProjects.find((project) => project.id === projectId);
-    if (!selectedProject) return;
-    setSelectedProjectData(selectedProject);
-  };
-
-  const handleReset = () => {
-    reset({
-      technical_complexity: 0,
-      usefulness: 0,
-      originality: 0,
-      design: 0,
-      presentation: 0,
-      comments: "",
-    });
-  };
-
   return {
     control,
     handleSubmit,
     onSubmit,
     isSubmitting,
-    handleSelectProject,
-    handleReset,
-    selectedProjectData,
   };
 };

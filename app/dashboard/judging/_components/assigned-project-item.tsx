@@ -1,18 +1,29 @@
+"use client";
+
 import { ExternalLink } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { UseItemDialogReturn } from "@/hooks";
 
 import { Project } from "../types";
 
-type AssignedProjectItemProps = Pick<Project, "id" | "name" | "track" | "project_url">;
+type AssignedProjectItemProps = Pick<UseItemDialogReturn<Project>, "handleSelectItem" | "handleKeyDown"> &
+  Pick<Project, "id" | "name" | "track" | "project_url">;
 
-const AssignedProjectItem = ({ id, name, track, project_url }: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({
+  handleSelectItem,
+  handleKeyDown,
+  id,
+  name,
+  track,
+  project_url,
+}: AssignedProjectItemProps) => {
   return (
-<Item
+    <Item
       variant="outline"
-      // onClick={() => handleSelectItem(id)}
-      // onKeyDown={(event) => handleKeyDown(event, id)}
+      onClick={() => handleSelectItem(id)}
+      onKeyDown={(event) => handleKeyDown(event, id)}
       tabIndex={0}
       role="button"
       aria-label={`View event: ${name}`}

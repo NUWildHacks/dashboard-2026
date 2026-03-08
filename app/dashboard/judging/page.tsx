@@ -14,9 +14,7 @@ const JudgingPage = async () => {
 
   const assignedProjects = await getAssignedProjects(user.id);
 
-  return (
-    <AssignedProjectsDisplay assignedProjects={assignedProjects} />
-  );
+  return <AssignedProjectsDisplay assignedProjects={assignedProjects} judgeData={user} />;
 };
 
 export default JudgingPage;

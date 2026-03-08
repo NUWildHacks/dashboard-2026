@@ -87,9 +87,7 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
       </div>
       <DataTable columns={projectsColumns} table={table} />
       <div className="flex justify-between items-center">
-        <div className="text-muted-foreground text-sm">
-          {table.getFilteredRowModel().rows.length} row(s)
-        </div>
+        <div className="text-muted-foreground text-sm">{table.getFilteredRowModel().rows.length} row(s)</div>
         <div className="flex items-center justify-end space-x-2">
           <Button
             variant="outline"

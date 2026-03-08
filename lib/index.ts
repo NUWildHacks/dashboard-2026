@@ -15,7 +15,7 @@ export {
 export { getAuthenticatedUser, requireRole } from "./user.lib";
 export { cn } from "./utils.lib";
 export {
-  firestoreUserIdSchema,  
+  firestoreUserIdSchema,
   githubUsernameSchema,
   plainTextMultiLineSchema,
   plainTextSingleLineSchema,
