@@ -22,7 +22,7 @@ const EventItem = ({
   location,
 }: EventItemProps) => {
   return (
-    <Item variant="outline">
+    <Item variant="muted">
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{title}</span>
