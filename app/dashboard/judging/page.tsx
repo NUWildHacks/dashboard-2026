@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { DASHBOARD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
-import { AssignedProjectsDisplay } from "./_components";
+import { JudgingDisplay } from "./_components";
 import { getAssignedProjectsWithJudgingForms } from "./lib";
 
 const JudgingPage = async () => {
@@ -14,7 +14,7 @@ const JudgingPage = async () => {
 
   const projectsWithJudgingForm = await getAssignedProjectsWithJudgingForms(user.id);
 
-  return <AssignedProjectsDisplay judgeId={user.id} projectsWithJudgingForm={projectsWithJudgingForm} />;
+  return <JudgingDisplay judgeId={user.id} projectsWithJudgingForm={projectsWithJudgingForm} />;
 };
 
 export default JudgingPage;

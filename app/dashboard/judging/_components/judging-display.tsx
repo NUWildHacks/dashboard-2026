@@ -7,31 +7,31 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { CategoryWithAll, useFilters } from "@/hooks";
 import { JudgeUser } from "@/types";
 
-import { useJudgingFormSheet } from "../_hooks";
-import { useAssignedProjects } from "../_hooks/use-assigned-projects";
+import { useJudgingFormSheet, useAssignedProjects } from "../_hooks";
 import { TRACKS } from "../constants";
 import type { ProjectWithJudgingForm, Track } from "../types";
 
-import { AssignedProjectItem, JudgingFormSheet } from ".";
+import { AssignedProjectGrid, JudgingFormSheet } from ".";
 
-type AssignedProjectsDisplayProps = {
+type JudgingDisplayProps = {
   judgeId: JudgeUser["id"];
   projectsWithJudgingForm: ProjectWithJudgingForm[];
 };
 
-const AssignedProjectsDisplay = ({ judgeId, projectsWithJudgingForm }: AssignedProjectsDisplayProps) => {
+const JudgingDisplay = ({ judgeId, projectsWithJudgingForm }: JudgingDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<Track>();
 
   const { filteredProjectsWithJudgingForm } = useAssignedProjects(projectsWithJudgingForm, { category, search });
 
   const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId);
+  const { handleOpenJudgingForm } = useJudgingFormSheetReturn;
 
   return (
     <>
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<Track>)}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
               <SelectValue placeholder="Select track" />
             </SelectTrigger>
             <SelectContent>
@@ -59,19 +59,14 @@ const AssignedProjectsDisplay = ({ judgeId, projectsWithJudgingForm }: AssignedP
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filteredProjectsWithJudgingForm.map((projectWithJudgingForm) => (
-            <AssignedProjectItem
-              key={projectWithJudgingForm.id}
-              {...useJudgingFormSheetReturn}
-              projectWithJudgingForm={projectWithJudgingForm}
-            />
-          ))}
-        </div>
+        <AssignedProjectGrid
+          handleOpenJudgingForm={handleOpenJudgingForm}
+          projectsWithJudgingForm={filteredProjectsWithJudgingForm}
+        />
       </div>
       <JudgingFormSheet {...useJudgingFormSheetReturn} />
     </>
   );
 };
 
-export default AssignedProjectsDisplay;
+export default JudgingDisplay;
