@@ -98,7 +98,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
-            id="search"
+            id="search-users"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search users..."

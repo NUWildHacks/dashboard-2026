@@ -44,9 +44,14 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
               <p>
                 <span className="font-medium">Track:</span> {selectedItem?.track}
               </p>
-              <p>
-                <span className="font-medium">Devpost URL:</span> {selectedItem?.project_url}
-              </p>
+              <a
+                href={selectedItem?.project_url}
+                target="_blank"
+                rel="noreferrer"
+                className="underline-offset-4 hover:underline"
+              >
+                View Devpost
+              </a>
             </div>
           </SheetDescription>
         </SheetHeader>
@@ -106,7 +111,7 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
                       placeholder="Enter any additional comments"
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
-                      className="min-h-32 max-h-64 break-all"
+                      className="min-h-24 max-h-64 break-all"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>

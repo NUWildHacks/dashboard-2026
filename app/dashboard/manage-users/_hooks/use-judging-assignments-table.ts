@@ -40,7 +40,7 @@ export const useJudgingAssignments = (
 ): UseJudgingAssignmentsReturn => {
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
   const [search, setSearch] = useState<string>("");
-  const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -59,9 +59,7 @@ export const useJudgingAssignments = (
           const parseResult = judgingAssignmentsCsvArraySchema.safeParse(results.data);
 
           if (!parseResult.success) {
-            toast.error("Invalid CSV file. Please check the columns and try again.", {
-              description: parseResult.error.message,
-            });
+            toast.error("Invalid CSV file. Please check the columns and try again.");
             if (fileInputRef.current) {
               fileInputRef.current.value = "";
             }
@@ -76,6 +74,8 @@ export const useJudgingAssignments = (
               const { error } = result;
               throw new Error(error);
             }
+
+            toast.success("Assignments uploaded successfully");
           } catch (error) {
             const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
             console.error("Failed to upload assignments", errorMessage);

@@ -73,7 +73,7 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
-            id="search"
+            id="search-projects"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search projects..."
