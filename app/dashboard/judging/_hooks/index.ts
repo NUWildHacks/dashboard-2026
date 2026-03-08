@@ -1,2 +1,2 @@
-export { useJudgingForm } from "./use-judging-form";
-export type { UseJudgingFormReturn } from "./use-judging-form";
+export { useJudgingFormSheet } from "./use-judging-form-sheet";
+export type { UseJudgingFormSheetReturn } from "./use-judging-form-sheet";

@@ -17,19 +17,26 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { UseItemDialogReturn } from "@/hooks";
-import { JudgeUser } from "@/types";
 
-import { useJudgingForm } from "../_hooks";
-import { Project } from "../types";
+import { UseJudgingFormSheetReturn } from "../_hooks";
 
-type JudgingFormProps = { judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name"> } & Pick<
-  UseItemDialogReturn<Project>,
-  "isOpen" | "setIsOpen" | "selectedItem"
+type JudgingFormSheetProps = Pick<
+  UseJudgingFormSheetReturn,
+  "isOpen" | "setIsOpen" | "selectedProjectWithJudgingForm" | "control" | "handleSubmit" | "onSubmit" | "isSubmitting"
 >;
 
-const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useJudgingForm(selectedItem, judgeData);
+const JudgingFormSheet = ({
+  isOpen,
+  setIsOpen,
+  selectedProjectWithJudgingForm,
+  control,
+  handleSubmit,
+  onSubmit,
+  isSubmitting,
+}: JudgingFormSheetProps) => {
+  if (!selectedProjectWithJudgingForm) return null;
+
+  const { name, track, project_url } = selectedProjectWithJudgingForm;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -39,17 +46,12 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
           <SheetDescription asChild className="space-y-1">
             <div className="space-y-1">
               <p>
-                <span className="font-medium">Project name:</span> {selectedItem?.name}
+                <span className="font-medium">Project name:</span> {name}
               </p>
               <p>
-                <span className="font-medium">Track:</span> {selectedItem?.track}
+                <span className="font-medium">Track:</span> {track}
               </p>
-              <a
-                href={selectedItem?.project_url}
-                target="_blank"
-                rel="noreferrer"
-                className="underline-offset-4 hover:underline"
-              >
+              <a href={project_url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
                 View Devpost
               </a>
             </div>
@@ -136,4 +138,4 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
   );
 };
 
-export default JudgingForm;
+export default JudgingFormSheet;

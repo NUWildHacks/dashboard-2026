@@ -1,25 +1,21 @@
 "use client";
 
-import { ExternalLink, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { UseItemDialogReturn } from "@/hooks";
 
-import { Project } from "../types";
+import { UseJudgingFormSheetReturn } from "../_hooks";
+import { ProjectWithJudgingForm } from "../types";
 
-type AssignedProjectItemProps = Pick<UseItemDialogReturn<Project>, "handleSelectItem" | "handleKeyDown"> &
-  Pick<Project, "id" | "name" | "track" | "project_url">;
+type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm"> & {
+  projectWithJudgingForm: ProjectWithJudgingForm;
+};
 
-const AssignedProjectItem = ({
-  handleSelectItem,
-  handleKeyDown,
-  id,
-  name,
-  track,
-  project_url,
-}: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithJudgingForm }: AssignedProjectItemProps) => {
+  const { name, track } = projectWithJudgingForm;
+
   return (
     <Item variant="outline">
       <ItemContent className="gap-2 min-w-0">
@@ -34,9 +30,7 @@ const AssignedProjectItem = ({
         <Button
           variant="outline"
           size="icon-sm"
-          onClick={() => handleSelectItem(id)}
-          onKeyDown={(event) => handleKeyDown(event, id)}
-          tabIndex={0}
+          onClick={() => handleOpenJudgingForm(projectWithJudgingForm)}
           aria-label="Edit judging form"
         >
           <Pencil aria-hidden="true" />

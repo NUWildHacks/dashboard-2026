@@ -20,8 +20,8 @@ export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
 export const submitJudging = async (
   data: JudgingFormSchema,
-  projectData: Pick<Project, "id" | "name">,
-  judgeData: Pick<JudgeUser, "id" | "first_name" | "last_name">
+  projectId: Project["id"],
+  judgeId: JudgeUser["id"]
 ): Promise<SubmitJudgingResult> => {
   const db = getFirestore();
   const now = Date.now();
@@ -32,9 +32,6 @@ export const submitJudging = async (
 
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
     if (roleError) return roleError;
-
-    const { id: projectId } = projectData;
-    const { id: judgeId } = judgeData;
 
     const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
     if (!projectDocSnapshot.exists) {
