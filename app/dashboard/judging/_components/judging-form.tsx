@@ -32,7 +32,7 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
   const { control, handleSubmit, onSubmit, isSubmitting } = useJudgingForm(selectedItem, judgeData);
 
   return (
-    <Sheet open>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent>
         <SheetHeader className="pb-0">
           <SheetTitle>Judging Form</SheetTitle>

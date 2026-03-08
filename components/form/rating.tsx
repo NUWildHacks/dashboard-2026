@@ -28,7 +28,7 @@ const Rating = <T extends FieldValues>({ label, fieldName, field, fieldState }: 
       >
         {label}
       </FieldLabel>
-      <div className="flex gap-1">
+      <div id={`${fieldName}-rating`} className="flex gap-1">
         {[1, 2, 3, 4].map((star) => (
           <button
             className="transition-transform hover:scale-110"
