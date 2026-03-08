@@ -46,18 +46,17 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
 
         const projectDocRef = projectsCollectionRef.doc(project_id);
         projectBatch.set(projectDocRef, {
-          id: project_id,
           name: project_name,
           track,
           project_url,
-        } as Omit<Project, "id">);
+        } as Partial<Project>);
       }
 
       const assignmentDocRef = judgingAssignmentsCollectionRef.doc(`${judge_id}_${project_id}`);
       judgingAssignmentBatch.set(assignmentDocRef, {
         judge_id,
         project_id,
-      } as Omit<JudgingAssignment, "id">);
+      } as Partial<JudgingAssignment>);
     }
 
     await Promise.all([judgingAssignmentBatch.commit(), projectBatch.commit()]);

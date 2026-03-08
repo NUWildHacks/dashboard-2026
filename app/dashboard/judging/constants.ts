@@ -8,11 +8,6 @@ export const PRODUCTIVITY_TRACK = "Productivity";
 export const TRACKS = [AI_TRACK, WEB_TRACK, FINTECH_TRACK, PRODUCTIVITY_TRACK];
 
 export const JUDGING_FORM_FIELDS = {
-  judge_id: "judge_id",
-  judge_first_name: "judge_first_name",
-  judge_last_name: "judge_last_name",
-  project_id: "project_id",
-  project_name: "project_name",
   technical_complexity: "technical_complexity",
   usefulness: "usefulness",
   originality: "originality",
@@ -32,4 +27,5 @@ export const PROJECT_FIELDS = {
 export const JUDGING_ASSIGNMENT_FIELDS = {
   judge_id: "judge_id",
   project_id: "project_id",
+  judging_form: "judging_form",
 } as const satisfies Record<keyof Omit<JudgingAssignment, "id">, string>;

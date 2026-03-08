@@ -3,14 +3,18 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
-import { LOGIN_PATH, DASHBOARD_JUDGING_PATH, JUDGE, JUDGING_FORMS_COLLECTION, PROJECTS_COLLECTION } from "@/constants";
+import {
+  LOGIN_PATH,
+  DASHBOARD_JUDGING_PATH,
+  JUDGE,
+  PROJECTS_COLLECTION,
+  JUDGING_ASSIGNMENTS_COLLECTION,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
 
 import { type JudgingFormSchema } from "../_schemas";
-import { JUDGING_FORM_FIELDS } from "../constants";
-import type { Project } from "../types";
-import { JudgingForm } from "../types";
+import type { JudgingAssignment, JudgingForm, Project } from "../types";
 
 export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
@@ -29,8 +33,8 @@ export const submitJudging = async (
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
     if (roleError) return roleError;
 
-    const { id: projectId, name: projectName } = projectData;
-    const { id: judgeId, first_name: judgeFirstName, last_name: judgeLastName } = judgeData;
+    const { id: projectId } = projectData;
+    const { id: judgeId } = judgeData;
 
     const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
     if (!projectDocSnapshot.exists) {
@@ -40,30 +44,30 @@ export const submitJudging = async (
       };
     }
 
-    const judgingFormSnapshots = await db
-      .collection(JUDGING_FORMS_COLLECTION)
-      .where(JUDGING_FORM_FIELDS.project_id, "==", projectId)
+    const judgingAssignmentDocSnapshot = await db
+      .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+      .doc(`${judgeId}_${projectId}`)
       .get();
-    if (judgingFormSnapshots.docs.length > 0) {
+    if (!judgingAssignmentDocSnapshot.exists) {
       return {
         success: false,
-        error: "Judging form already submitted for this project",
+        error: "Judging assignment not found",
       };
     }
 
+    const judgingAssignment = judgingAssignmentDocSnapshot.data() as Omit<JudgingAssignment, "id">;
+    const existingForm = judgingAssignment.judging_form;
+
     await db
-      .collection(JUDGING_FORMS_COLLECTION)
-      .doc()
-      .set({
-        ...data,
-        judge_id: judgeId,
-        judge_first_name: judgeFirstName,
-        judge_last_name: judgeLastName,
-        project_id: projectId,
-        project_name: projectName,
-        created_at: now,
-        updated_at: now,
-      } as Omit<JudgingForm, "id">);
+      .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+      .doc(`${judgeId}_${projectId}`)
+      .update({
+        judging_form: {
+          ...data,
+          created_at: existingForm?.created_at ?? now,
+          updated_at: now,
+        } as Partial<JudgingForm>,
+      } as Partial<JudgingAssignment>);
 
     revalidatePath(DASHBOARD_JUDGING_PATH);
 

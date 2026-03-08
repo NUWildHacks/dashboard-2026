@@ -38,9 +38,15 @@ const JudgingForm = ({ judgeData, selectedItem, isOpen, setIsOpen }: JudgingForm
           <SheetTitle>Judging Form</SheetTitle>
           <SheetDescription asChild className="space-y-1">
             <div className="space-y-1">
-              <p><span className="font-medium">Project name:</span> {selectedItem?.name}</p>
-              <p><span className="font-medium">Track:</span> {selectedItem?.track}</p>
-              <p><span className="font-medium">Devpost URL:</span> {selectedItem?.project_url}</p>
+              <p>
+                <span className="font-medium">Project name:</span> {selectedItem?.name}
+              </p>
+              <p>
+                <span className="font-medium">Track:</span> {selectedItem?.track}
+              </p>
+              <p>
+                <span className="font-medium">Devpost URL:</span> {selectedItem?.project_url}
+              </p>
             </div>
           </SheetDescription>
         </SheetHeader>
