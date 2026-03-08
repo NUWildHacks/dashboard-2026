@@ -27,7 +27,7 @@ const EventItem = ({
       onKeyDown={(event) => handleKeyDown(event, id)}
       tabIndex={0}
       aria-label={`View event: ${title}`}
-      className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
+      className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
     >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">

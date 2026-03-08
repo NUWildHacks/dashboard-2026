@@ -10,10 +10,10 @@ import { CalendarDay, Event } from "../../types";
 
 type CalendarProps = Pick<UseEventsReturn, "events"> &
   Pick<CalendarDay, "startMs" | "endMs"> &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem"> &
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
   Pick<WildHacksConfig, "start_time" | "end_time">;
 
-const Calendar = ({ events, startMs, endMs, handleSelectItem, start_time, end_time }: CalendarProps) => {
+const Calendar = ({ events, startMs, endMs, handleSelectItem, handleKeyDown, start_time, end_time }: CalendarProps) => {
   const visibleCalendarRows = getVisibleCalendarRows(start_time, end_time, startMs, endMs);
 
   const overlapGroups = createOverlapGroups(events);
@@ -27,6 +27,7 @@ const Calendar = ({ events, startMs, endMs, handleSelectItem, start_time, end_ti
           calendarDayStartMs={startMs}
           overlapGroups={overlapGroups}
           handleSelectItem={handleSelectItem}
+          handleKeyDown={handleKeyDown}
           {...calendarRow}
         />
       ))}

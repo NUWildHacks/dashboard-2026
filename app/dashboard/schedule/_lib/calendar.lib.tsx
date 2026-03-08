@@ -299,6 +299,7 @@ const getCalendarItems = (
   calendarRowStartMin: CalendarRowConfig["startMin"],
   calendarRowEndMin: CalendarRowConfig["endMin"],
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
+  handleKeyDown: UseItemDialogReturn<Event>["handleKeyDown"],
   calendarDayStartMs: CalendarDay["startMs"]
 ): JSX.Element[] => {
   const calendarItems: JSX.Element[] = [];
@@ -339,6 +340,7 @@ const getCalendarItems = (
           height={height}
           zIndex={zIndex}
           handleSelectItem={handleSelectItem}
+          handleKeyDown={handleKeyDown}
           {...event}
         />
       );
@@ -356,6 +358,7 @@ const getCalendarItems = (
           height={height}
           zIndex={zIndex}
           handleSelectItem={handleSelectItem}
+          handleKeyDown={handleKeyDown}
           {...event}
         />
       );
@@ -380,6 +383,7 @@ const getCalendarItems = (
         height={height}
         zIndex={zIndex}
         handleSelectItem={handleSelectItem}
+        handleKeyDown={handleKeyDown}
         {...event}
       />
     );

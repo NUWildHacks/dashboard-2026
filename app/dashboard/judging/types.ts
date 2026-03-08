@@ -3,6 +3,8 @@ import { JudgeUser } from "@/types";
 import { JudgingFormSchema } from "./_schemas";
 import { TRACKS } from "./constants";
 
+export type Track = (typeof TRACKS)[number];
+
 export type JudgingForm = JudgingFormSchema & {
   created_at: number;
   updated_at: number;
@@ -11,7 +13,7 @@ export type JudgingForm = JudgingFormSchema & {
 export type Project = {
   id: string;
   name: string;
-  track: (typeof TRACKS)[number];
+  track: Track;
   project_url: string;
 };
 

@@ -12,7 +12,7 @@ import { ROW_HEIGHT } from "../../constants";
 import type { Event } from "../../types";
 
 type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location"> &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem"> & {
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> & {
     left: number;
     top: number;
     width: number;
@@ -28,6 +28,7 @@ const CalendarItem = ({
   end_time,
   location,
   handleSelectItem,
+  handleKeyDown,
   left,
   top,
   width,
@@ -40,7 +41,7 @@ const CalendarItem = ({
     <Item
       variant="outline"
       className={cn(
-        "absolute px-3 shadow-xs bg-background transition-colors hover:bg-accent hover:cursor-pointer overflow-hidden",
+        "absolute px-3 shadow-xs bg-background transition-colors hover:bg-secondary hover:cursor-pointer overflow-hidden",
         isCompact ? "items-center py-0" : "items-start py-2"
       )}
       style={{
@@ -50,7 +51,10 @@ const CalendarItem = ({
         height: `${height - 2}px`,
         zIndex,
       }}
+      tabIndex={0}
+      aria-label={`View event: ${title}`}
       onClick={() => handleSelectItem(id)}
+      onKeyDown={(event) => handleKeyDown(event, id)}
     >
       <ItemContent className={`gap-2 min-w-0 ${isCompact ? "flex-row justify-start items-center" : "flex-col"}`}>
         <ItemTitle className={`${isCompact ? "" : "w-full"}`}>
