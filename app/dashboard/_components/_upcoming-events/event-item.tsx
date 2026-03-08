@@ -1,8 +1,7 @@
-import { Clock, Expand, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import type { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
@@ -22,7 +21,14 @@ const EventItem = ({
   location,
 }: EventItemProps) => {
   return (
-    <Item variant="muted">
+    <Item
+      variant="outline"
+      onClick={() => handleSelectItem(id)}
+      onKeyDown={(event) => handleKeyDown(event, id)}
+      tabIndex={0}
+      aria-label={`View event: ${title}`}
+      className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
+    >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{title}</span>
@@ -39,18 +45,6 @@ const EventItem = ({
           </span>
         </ItemDescription>
       </ItemContent>
-      <ItemActions>
-        <Button
-          variant="outline"
-          size="icon-sm"
-          onClick={() => handleSelectItem(id)}
-          onKeyDown={(event) => handleKeyDown(event, id)}
-          tabIndex={0}
-          aria-label={`View event: ${title}`}
-        >
-          <Expand />
-        </Button>
-      </ItemActions>
     </Item>
   );
 };
