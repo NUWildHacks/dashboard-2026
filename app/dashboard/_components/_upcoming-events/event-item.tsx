@@ -1,11 +1,12 @@
-import { Clock, MapPin } from "lucide-react";
+import { Clock, Expand, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import type { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import type { Event } from "../../types";
+import type { Event } from "../../schedule/types";
 
 type EventItemProps = Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
   Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location">;
@@ -21,20 +22,13 @@ const EventItem = ({
   location,
 }: EventItemProps) => {
   return (
-    <Item
-      variant="outline"
-      onClick={() => handleSelectItem(id)}
-      onKeyDown={(event) => handleKeyDown(event, id)}
-      tabIndex={0}
-      role="button"
-      aria-label={`View event: ${title}`}
-      className="w-full shadow-xs transition-colors hover:bg-accent hover:cursor-pointer"
-    >
+    <Item variant="outline">
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{title}</span>
         </ItemTitle>
         <ItemDescription className="flex flex-row items-center gap-2">
+          <Badge variant="secondary">{category}</Badge>
           <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
             <Clock className="size-3 shrink-0" aria-hidden="true" />
             {getEventTimeRange(start_time, end_time)}
@@ -46,7 +40,16 @@ const EventItem = ({
         </ItemDescription>
       </ItemContent>
       <ItemActions>
-        <Badge variant="secondary">{category}</Badge>
+        <Button
+          variant="outline"
+          size="icon-sm"
+          onClick={() => handleSelectItem(id)}
+          onKeyDown={(event) => handleKeyDown(event, id)}
+          tabIndex={0}
+          aria-label={`View event: ${title}`}
+        >
+          <Expand />
+        </Button>
       </ItemActions>
     </Item>
   );

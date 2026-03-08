@@ -14,9 +14,7 @@ import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } fro
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
-import EventsTable from "./_events/events-table";
-
-import { Calendar, EventDialog, EventFormDialog } from ".";
+import { Calendar, EventDialog, EventFormDialog, EventsTable } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
