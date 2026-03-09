@@ -9,13 +9,13 @@ import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
 import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
-import type { ProjectWithJudgingForm } from "../types";
+import type { ProjectWithMetadata } from "../types";
 
 export type UseJudgingFormSheetReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  selectedProjectWithJudgingForm: ProjectWithJudgingForm | undefined;
-  handleOpenJudgingForm: (projectWithJudgingForm?: ProjectWithJudgingForm) => void;
+  selectedProjectWithMetadata: ProjectWithMetadata | undefined;
+  handleOpenJudgingForm: (projectWithMetadata?: ProjectWithMetadata) => void;
   control: Control<JudgingFormSchema>;
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
@@ -23,9 +23,9 @@ export type UseJudgingFormSheetReturn = {
 };
 
 export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormSheetReturn => {
-  const [selectedProjectWithJudgingForm, setSelectedProjectWithJudgingForm] = useState<
-    ProjectWithJudgingForm | undefined
-  >(undefined);
+  const [selectedProjectWithMetadata, setSelectedProjectWithMetadata] = useState<ProjectWithMetadata | undefined>(
+    undefined
+  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -47,10 +47,10 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormShe
   });
 
   const onSubmit = async (data: JudgingFormSchema) => {
-    if (!selectedProjectWithJudgingForm) return;
+    if (!selectedProjectWithMetadata) return;
 
     try {
-      const result = await submitJudging(data, selectedProjectWithJudgingForm.id, judgeId);
+      const result = await submitJudging(data, selectedProjectWithMetadata.id, judgeId);
       const { success } = result;
 
       if (!success) {
@@ -77,24 +77,24 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormShe
     }
   };
 
-  const handleOpenJudgingForm = (projectWithJudgingForm?: ProjectWithJudgingForm) => {
-    setSelectedProjectWithJudgingForm(projectWithJudgingForm);
+  const handleOpenJudgingForm = (projectWithMetadata?: ProjectWithMetadata) => {
+    setSelectedProjectWithMetadata(projectWithMetadata);
     setIsOpen(true);
 
     reset({
-      technical_complexity: projectWithJudgingForm?.judging_form?.technical_complexity ?? 0,
-      usefulness: projectWithJudgingForm?.judging_form?.usefulness ?? 0,
-      originality: projectWithJudgingForm?.judging_form?.originality ?? 0,
-      design: projectWithJudgingForm?.judging_form?.design ?? 0,
-      presentation: projectWithJudgingForm?.judging_form?.presentation ?? 0,
-      comments: projectWithJudgingForm?.judging_form?.comments ?? "",
+      technical_complexity: projectWithMetadata?.judging_form?.technical_complexity ?? 0,
+      usefulness: projectWithMetadata?.judging_form?.usefulness ?? 0,
+      originality: projectWithMetadata?.judging_form?.originality ?? 0,
+      design: projectWithMetadata?.judging_form?.design ?? 0,
+      presentation: projectWithMetadata?.judging_form?.presentation ?? 0,
+      comments: projectWithMetadata?.judging_form?.comments ?? "",
     });
   };
 
   return {
     isOpen,
     setIsOpen,
-    selectedProjectWithJudgingForm,
+    selectedProjectWithMetadata,
     handleOpenJudgingForm,
     control,
     handleSubmit,

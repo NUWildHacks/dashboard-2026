@@ -20,24 +20,24 @@ import { JudgeUser } from "@/types";
 import { uploadAssignments } from "../_actions";
 import { getProjectsColumns } from "../_lib/client";
 import { judgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, Project } from "../../judging/types";
+import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
 
-export type UseJudgingAssignmentsReturn = {
+export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | null;
   setSelectedJudge: (judgeUser: JudgeUser | null) => void;
   search: string;
   setSearch: (search: string) => void;
-  table: Table<Project>;
-  projectsColumns: ColumnDef<Project>[];
+  table: Table<ProjectWithMetadata>;
+  projectsColumns: ColumnDef<ProjectWithMetadata>[];
   fileInputRef: RefObject<HTMLInputElement | null>;
   handleUploadAssignments: () => void;
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const useJudgingAssignments = (
+export const useJudgingAssignmentsTable = (
   judgingAssignments: JudgingAssignment[],
-  projects: Project[]
-): UseJudgingAssignmentsReturn => {
+  projectsWithMetadata: ProjectWithMetadata[]
+): UseJudgingAssignmentsTableReturn => {
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
   const [search, setSearch] = useState<string>("");
   const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }]);
@@ -109,22 +109,24 @@ export const useJudgingAssignments = (
       .filter((assignment) => assignment.judge_id === selectedJudge?.id)
       .map((assignment) => assignment.project_id);
 
-    let result = projects;
-    result = result.filter((project) => assignedProjectIdsForSelectedJudge.includes(project.id));
+    let result = projectsWithMetadata;
+    result = result.filter((projectWithMetadata) =>
+      assignedProjectIdsForSelectedJudge.includes(projectWithMetadata.id)
+    );
 
     if (search && search !== "") {
       const searchLower = search.toLowerCase();
-      result = result.filter((project) => {
+      result = result.filter((projectWithMetadata) => {
         return (
-          project.name.toLowerCase().includes(searchLower) ||
-          project.track.toLowerCase().includes(searchLower) ||
-          project.project_url.toLowerCase().includes(searchLower)
+          projectWithMetadata.name.toLowerCase().includes(searchLower) ||
+          projectWithMetadata.track.toLowerCase().includes(searchLower) ||
+          projectWithMetadata.project_url.toLowerCase().includes(searchLower)
         );
       });
     }
 
     return result;
-  }, [judgingAssignments, projects, selectedJudge, search]);
+  }, [selectedJudge, judgingAssignments, projectsWithMetadata, search]);
 
   const projectsColumns = getProjectsColumns();
 

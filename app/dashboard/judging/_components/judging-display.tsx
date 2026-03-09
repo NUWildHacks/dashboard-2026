@@ -9,19 +9,19 @@ import { JudgeUser } from "@/types";
 
 import { useJudgingFormSheet, useAssignedProjects } from "../_hooks";
 import { TRACKS } from "../constants";
-import type { ProjectWithJudgingForm, Track } from "../types";
+import type { ProjectWithMetadata, Track } from "../types";
 
 import { AssignedProjectGrid, JudgingFormSheet } from ".";
 
 type JudgingDisplayProps = {
   judgeId: JudgeUser["id"];
-  projectsWithJudgingForm: ProjectWithJudgingForm[];
+  projectsWithMetadata: ProjectWithMetadata[];
 };
 
-const JudgingDisplay = ({ judgeId, projectsWithJudgingForm }: JudgingDisplayProps) => {
+const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<Track>();
 
-  const { filteredProjectsWithJudgingForm } = useAssignedProjects(projectsWithJudgingForm, { category, search });
+  const { filteredProjectsWithMetadata } = useAssignedProjects(projectsWithMetadata, { category, search });
 
   const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId);
   const { handleOpenJudgingForm } = useJudgingFormSheetReturn;
@@ -61,7 +61,7 @@ const JudgingDisplay = ({ judgeId, projectsWithJudgingForm }: JudgingDisplayProp
         </div>
         <AssignedProjectGrid
           handleOpenJudgingForm={handleOpenJudgingForm}
-          projectsWithJudgingForm={filteredProjectsWithJudgingForm}
+          projectsWithMetadata={filteredProjectsWithMetadata}
         />
       </div>
       <JudgingFormSheet {...useJudgingFormSheetReturn} />

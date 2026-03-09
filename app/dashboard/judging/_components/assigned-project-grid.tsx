@@ -3,17 +3,17 @@ import { BookX } from "lucide-react";
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
-import { ProjectWithJudgingForm } from "../types";
+import { ProjectWithMetadata } from "../types";
 
 import { AssignedProjectItem } from ".";
 
 type AssignedProjectGridProps = {
   handleOpenJudgingForm: UseJudgingFormSheetReturn["handleOpenJudgingForm"];
-  projectsWithJudgingForm: ProjectWithJudgingForm[];
+  projectsWithMetadata: ProjectWithMetadata[];
 };
 
-const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithJudgingForm }: AssignedProjectGridProps) => {
-  if (projectsWithJudgingForm.length === 0) {
+const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithMetadata }: AssignedProjectGridProps) => {
+  if (projectsWithMetadata.length === 0) {
     return (
       <Empty role="status" aria-live="polite">
         <EmptyHeader>
@@ -29,11 +29,11 @@ const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithJudgingForm }:
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {projectsWithJudgingForm.map((projectWithJudgingForm) => (
+      {projectsWithMetadata.map((projectWithMetadata) => (
         <AssignedProjectItem
-          key={projectWithJudgingForm.id}
+          key={projectWithMetadata.id}
           handleOpenJudgingForm={handleOpenJudgingForm}
-          projectWithJudgingForm={projectWithJudgingForm}
+          projectWithMetadata={projectWithMetadata}
         />
       ))}
     </div>

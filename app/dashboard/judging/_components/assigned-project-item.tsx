@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
-import { ProjectWithJudgingForm } from "../types";
+import { ProjectWithMetadata } from "../types";
 
 type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm"> & {
-  projectWithJudgingForm: ProjectWithJudgingForm;
+  projectWithMetadata: ProjectWithMetadata;
 };
 
-const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithJudgingForm }: AssignedProjectItemProps) => {
-  const { name, track, judging_form } = projectWithJudgingForm;
+const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: AssignedProjectItemProps) => {
+  const { name, track, judging_form } = projectWithMetadata;
 
   return (
     <Item variant="outline">
@@ -38,7 +38,7 @@ const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithJudgingForm }: 
         <Button
           variant="outline"
           size="icon-sm"
-          onClick={() => handleOpenJudgingForm(projectWithJudgingForm)}
+          onClick={() => handleOpenJudgingForm(projectWithMetadata)}
           aria-label="Edit judging form"
         >
           <Pencil aria-hidden="true" />

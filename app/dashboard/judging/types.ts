@@ -25,6 +25,6 @@ export type JudgingAssignment = {
   judging_form?: JudgingForm;
 };
 
-export type ProjectWithJudgingForm = Project & {
+export type ProjectWithMetadata = Project & {
   judging_form?: JudgingAssignment["judging_form"];
 };

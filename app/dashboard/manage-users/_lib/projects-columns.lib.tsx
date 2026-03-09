@@ -6,7 +6,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Project } from "../../judging/types";
+import { ProjectWithMetadata } from "../../judging/types";
 
 /**
  * Get projects table columns.
@@ -18,7 +18,7 @@ import { Project } from "../../judging/types";
  * const columns = getProjectsColumns();
  * ```
  */
-export const getProjectsColumns = (): ColumnDef<Project>[] => {
+export const getProjectsColumns = (): ColumnDef<ProjectWithMetadata>[] => {
   return [
     {
       accessorKey: "name",
@@ -54,6 +54,30 @@ export const getProjectsColumns = (): ColumnDef<Project>[] => {
           >
             {row.original.project_url}
           </a>
+        );
+      },
+    },
+    {
+      accessorKey: "Status",
+      header: "Status",
+      cell: ({ row }) => {
+        if (!row.original.judging_form) {
+          return (
+            <Badge
+              variant="outline"
+              className="bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive border-none focus-visible:outline-none"
+            >
+              Not Submitted
+            </Badge>
+          );
+        }
+        return (
+          <Badge
+            variant="outline"
+            className="border-none bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 focus-visible:outline-none dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5"
+          >
+            Submitted
+          </Badge>
         );
       },
     },

@@ -15,16 +15,20 @@ import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { JudgeUser } from "@/types";
 
-import { useJudgingAssignments } from "../_hooks";
-import { JudgingAssignment, Project } from "../../judging/types";
+import { useJudgingAssignmentsTable } from "../_hooks";
+import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
+  projectsWithMetadata: ProjectWithMetadata[];
   judgingAssignments: JudgingAssignment[];
-  projects: Project[];
   judges: JudgeUser[];
 };
 
-const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: JudgingAssignmentsTableProps) => {
+const JudgingAssignmentsTable = ({
+  projectsWithMetadata,
+  judgingAssignments,
+  judges,
+}: JudgingAssignmentsTableProps) => {
   const {
     selectedJudge,
     setSelectedJudge,
@@ -35,7 +39,9 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
     fileInputRef,
     handleUploadAssignments,
     handleFileChange,
-  } = useJudgingAssignments(judgingAssignments, projects);
+  } = useJudgingAssignmentsTable(judgingAssignments, projectsWithMetadata);
+
+  console.log(projectsWithMetadata);
 
   return (
     <div className="flex-1 space-y-4">

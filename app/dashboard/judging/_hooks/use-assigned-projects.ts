@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 import { UseFiltersReturn } from "@/hooks";
 
-import { ProjectWithJudgingForm, Track } from "../types";
+import { ProjectWithMetadata, Track } from "../types";
 
 export type UseAssignedProjectsSettings = {
   category?: UseFiltersReturn<Track>["category"];
@@ -10,36 +10,36 @@ export type UseAssignedProjectsSettings = {
 };
 
 export type UseAssignedProjectsReturn = {
-  filteredProjectsWithJudgingForm: ProjectWithJudgingForm[];
+  filteredProjectsWithMetadata: ProjectWithMetadata[];
 };
 
 export const useAssignedProjects = (
-  projectsWithJudgingForm: ProjectWithJudgingForm[],
+  projectsWithMetadata: ProjectWithMetadata[],
   settings: UseAssignedProjectsSettings
 ): UseAssignedProjectsReturn => {
   const { category, search } = settings;
 
-  const filteredProjectsWithJudgingForm = useMemo(() => {
-    let result = projectsWithJudgingForm;
+  const filteredProjectsWithMetadata = useMemo(() => {
+    let result = projectsWithMetadata;
 
     if (category && category !== "all") {
-      result = result.filter((projectWithJudgingForm) => projectWithJudgingForm.track === category);
+      result = result.filter((projectWithMetadata) => projectWithMetadata.track === category);
     }
 
     if (search && search !== "") {
       const searchLower = search.toLowerCase();
-      result = result.filter((projectWithJudgingForm) => {
+      result = result.filter((projectWithMetadata) => {
         return (
-          projectWithJudgingForm.name.toLowerCase().includes(searchLower) ||
-          projectWithJudgingForm.track.toLowerCase().includes(searchLower)
+          projectWithMetadata.name.toLowerCase().includes(searchLower) ||
+          projectWithMetadata.track.toLowerCase().includes(searchLower)
         );
       });
     }
 
     return result;
-  }, [projectsWithJudgingForm, category, search]);
+  }, [projectsWithMetadata, category, search]);
 
   return {
-    filteredProjectsWithJudgingForm,
+    filteredProjectsWithMetadata,
   };
 };
