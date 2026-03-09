@@ -2,15 +2,10 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import {
-  JUDGING_ASSIGNMENTS_COLLECTION,
-  PERMISSION_CODES_COLLECTION,
-  PROJECTS_COLLECTION,
-  USERS_COLLECTION,
-} from "@/constants";
+import { JUDGING_ASSIGNMENTS_COLLECTION, PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
 import type { User } from "@/types";
 
-import { JudgingAssignment, Project } from "../../judging/types";
+import { JudgingAssignment } from "../../judging/types";
 import type { PermissionCode } from "../types";
 
 /**

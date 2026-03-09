@@ -33,6 +33,6 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
       redirect(DASHBOARD_PATH);
     }
   }
-}
+};
 
 export { registerJudgeMentorWithEmail };
