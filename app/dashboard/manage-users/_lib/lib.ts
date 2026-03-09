@@ -75,16 +75,6 @@ const getUsers = async (): Promise<User[]> => {
   );
 };
 
-const getProjects = async (): Promise<Project[]> => {
-  const db = getFirestore();
-
-  const projectDocRef = db.collection(PROJECTS_COLLECTION);
-
-  const projectDocSnapshots = await projectDocRef.get();
-
-  return projectDocSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Project);
-};
-
 const getJudgingAssignments = async (): Promise<JudgingAssignment[]> => {
   const db = getFirestore();
 
@@ -95,4 +85,4 @@ const getJudgingAssignments = async (): Promise<JudgingAssignment[]> => {
   return judgingAssignmentDocSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as JudgingAssignment);
 };
 
-export { getPermissionCodes, getUsers, getProjects, getJudgingAssignments };
+export { getPermissionCodes, getUsers, getJudgingAssignments };

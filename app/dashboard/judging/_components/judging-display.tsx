@@ -31,7 +31,7 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
       <div className="flex-1 flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<Track>)}>
-            <SelectTrigger className="min-w-[165px] lg:w-[165px] w-full">
+            <SelectTrigger className="min-w-[190px] lg:w-[190px] w-full">
               <SelectValue placeholder="Select track" />
             </SelectTrigger>
             <SelectContent>
