@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { REGISTRATION_PATH, JUDGE_REGISTRATION_PATH } from "@/constants";
 
-const Registration = async () => {
+const Registration = () => {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">Welcome to WildHacks 2026! 🚀</h2>
