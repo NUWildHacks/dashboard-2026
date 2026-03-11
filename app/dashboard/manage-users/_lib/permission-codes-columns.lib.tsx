@@ -23,11 +23,11 @@ import { PermissionCode } from "../types";
  * Get permission codes table columns.
  * Returns columns for displaying permission codes in a table format.
  *
- * @param handleDeletePermissionCodes - Callback function to handle permission code deletion
+ * @param handleOpenConfirmDeleteDialog - Callback function to handle permission code deletion
  * @returns Array of column definitions for the permission codes table
  * @example
  * ```ts
- * const columns = getPermissionCodesColumns(handleDeletePermissionCodes);
+ * const columns = getPermissionCodesColumns(handleOpenConfirmDeleteDialog);
  * ```
  */
 export const getPermissionCodesColumns = (

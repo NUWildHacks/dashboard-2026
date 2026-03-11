@@ -24,10 +24,13 @@ import type { Event } from "../types";
  * Get events table columns.
  * Returns columns for displaying events in a table format.
  *
+ * @param handleSelectItem - Callback function to handle item selection
+ * @param handleOpenEventFormDialog - Callback function to handle event form dialog
+ * @param handleOpenConfirmDeleteDialog - Callback function to handle event deletion
  * @returns Array of column definitions for the events table
  * @example
  * ```ts
- * const columns = getEventsColumns();
+ * const columns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleOpenConfirmDeleteDialog);
  * ```
  */
 export const getEventsColumns = (
