@@ -10,6 +10,7 @@ export type UseConfirmDeleteDialogReturn<T extends { id: string }> = {
   setIsOpen: (isOpen: boolean) => void;
   hasMultipleItems: boolean;
   isDeleting: boolean;
+  selectedItemIds: T["id"][];
   handleOpenConfirmDeleteDialog: (itemIds: T["id"][]) => void;
   handleDeleteItems: () => Promise<void>;
 };
@@ -62,6 +63,7 @@ export const useConfirmDeleteDialog = <T extends { id: string }>(
     isOpen,
     setIsOpen,
     isDeleting,
+    selectedItemIds,
     hasMultipleItems,
     handleOpenConfirmDeleteDialog,
     handleDeleteItems,

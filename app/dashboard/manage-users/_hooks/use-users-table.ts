@@ -15,13 +15,11 @@ import {
 } from "@tanstack/react-table";
 import { json2csv } from "json-2-csv";
 import { useMemo, useState } from "react";
-import { toast } from "sonner";
 
 import { PARTICIPANT } from "@/constants";
-import { useFilters } from "@/hooks";
+import { UseConfirmDeleteDialogReturn, useFilters } from "@/hooks";
 import { User } from "@/types";
 
-import { deleteUsers } from "../_actions";
 import { getUsersColumns } from "../_lib/client";
 
 export type UseUsersTableReturn = {
@@ -31,12 +29,14 @@ export type UseUsersTableReturn = {
   setSearch: (search: string) => void;
   table: Table<User>;
   selectedUserIds: User["id"][];
-  handleDeleteUsers: (userIds: User["id"][]) => Promise<void>;
   usersColumns: ColumnDef<User>[];
   handleDownloadCSV: () => void;
 };
 
-export const useUsersTable = (data: User[]): UseUsersTableReturn => {
+export const useUsersTable = (
+  data: User[],
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<User>["handleOpenConfirmDeleteDialog"]
+): UseUsersTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -79,30 +79,9 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
     URL.revokeObjectURL(url);
   };
 
-  const handleDeleteUsers = async (userIds: User["id"][]) => {
-    try {
-      const result = await deleteUsers(userIds);
-      const { success } = result;
+  const usersColumns = getUsersColumns(role, handleOpenConfirmDeleteDialog);
 
-      if (!success) {
-        const { field, error } = result;
-
-        if (!field) {
-          throw new Error(error);
-        }
-
-        return;
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Delete users error:", errorMessage);
-
-      toast.error("Failed to delete users", { description: errorMessage });
-    }
-  };
-
-  const usersColumns = getUsersColumns(role, handleDeleteUsers);
-
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: filteredUsers,
     columns: usersColumns,
@@ -136,7 +115,6 @@ export const useUsersTable = (data: User[]): UseUsersTableReturn => {
     setSearch,
     table,
     selectedUserIds,
-    handleDeleteUsers,
     usersColumns,
     handleDownloadCSV,
   };
