@@ -1,5 +1,3 @@
-"use server";
-
 import Image from "next/image";
 
 // moved "Continue to Dashboard" button as the main CTA for closed

@@ -12,15 +12,15 @@ const Completed = () => {
         extraordinary. From first-time hackers to returning champions, you all brought your best.
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
-        <Link href="#">
-          <Button variant="outline">
+        <Button variant="outline" asChild>
+          <Link href="#">
             <CodeXml />
             Browse Projects
-          </Button>
-        </Link>
-        <Link href="#">
-          <Button variant="link">Get notified for WildHacks 2027</Button>
-        </Link>
+          </Link>
+        </Button>
+        <Button asChild>
+          <Link href="#">Get notified for WildHacks 2027</Link>
+        </Button>
       </div>
     </>
   );

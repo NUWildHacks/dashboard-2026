@@ -3,12 +3,9 @@
 import Image from "next/image";
 
 import "@/config/firebase-admin";
-import { Footer, Navbar } from "@/app/_components";
+import { Completed, Footer, Navbar, Closed } from "@/app/_components";
 import { getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
-
-import Closed from "./_components/closed";
-import Completed from "./_components/completed";
 
 const RootPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
