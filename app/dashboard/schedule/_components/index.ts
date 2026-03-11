@@ -6,3 +6,4 @@ export { default as EventDialog } from "./_events/event-dialog";
 export { default as EventItem } from "./_events/event-item";
 export { default as EventsList } from "./_events/events-list";
 export { default as ScheduleDisplay } from "./schedule-display";
+export { default as ConfirmDeleteDialog } from "./_events/confirm-delete-dialog";

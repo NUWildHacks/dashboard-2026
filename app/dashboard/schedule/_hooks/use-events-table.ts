@@ -16,6 +16,7 @@ import { UseItemDialogReturn } from "@/hooks";
 import { getEventsColumns } from "../_lib";
 import type { Event } from "../types";
 
+import { UseConfirmDeleteDialogReturn } from "./use-confirm-delete-dialog";
 import { UseEventFormDialogReturn } from "./use-event-form-dialog";
 
 export type UseEventsTableReturn = {
@@ -28,11 +29,11 @@ export const useEventsTable = (
   events: Event[],
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
-  handleDeleteEvents: (eventIds: Event["id"][]) => Promise<void>
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"]
 ): UseEventsTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "start_time", desc: false }]);
 
-  const eventsColumns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
+  const eventsColumns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleOpenConfirmDeleteDialog);
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({

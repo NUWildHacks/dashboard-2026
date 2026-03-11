@@ -17,7 +17,7 @@ import {
 import { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import { UseEventFormDialogReturn, UseEventsReturn } from "../_hooks";
+import { UseConfirmDeleteDialogReturn, UseEventFormDialogReturn } from "../_hooks";
 import type { Event } from "../types";
 
 /**
@@ -33,7 +33,7 @@ import type { Event } from "../types";
 export const getEventsColumns = (
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
-  handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"]
 ): ColumnDef<Event>[] => {
   return [
     {
@@ -132,7 +132,7 @@ export const getEventsColumns = (
                 Copy event location
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteEvents([row.original.id])}>
+              <DropdownMenuItem variant="destructive" onClick={() => handleOpenConfirmDeleteDialog([row.original.id])}>
                 Delete event
               </DropdownMenuItem>
             </DropdownMenuContent>

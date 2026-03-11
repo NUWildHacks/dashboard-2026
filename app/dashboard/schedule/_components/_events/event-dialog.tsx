@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, Loader2Icon, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,21 +18,20 @@ import type { UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
-import { deleteEvents } from "../../_actions";
+import { UseConfirmDeleteDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
-type EventDialogProps = { userRole?: User["role"] } & Pick<
-  UseItemDialogReturn<Event>,
-  "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem"
->;
+type EventDialogProps = {
+  userRole?: User["role"];
+  handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"];
+} & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
 
 const EventDialog = ({
   userRole = PARTICIPANT,
   isOpen,
   setIsOpen,
   selectedItem,
-  isDeleting,
-  handleDeleteItem,
+  handleOpenConfirmDeleteDialog,
 }: EventDialogProps) => {
   if (!selectedItem) return null;
 
@@ -64,9 +63,19 @@ const EventDialog = ({
         </DialogHeader>
         <DialogFooter>
           {userRole === ADMIN && (
-            <Button variant="destructive" onClick={() => handleDeleteItem(deleteEvents)} disabled={isDeleting}>
-              {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete event"}
-            </Button>
+            <>
+              {handleOpenConfirmDeleteDialog && (
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleOpenConfirmDeleteDialog([selectedItem.id]);
+                  }}
+                >
+                  Delete event
+                </Button>
+              )}
+            </>
           )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>

@@ -10,13 +10,13 @@ import { ADMIN } from "@/constants";
 import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
 import { User, WildHacksConfig } from "@/types";
 
-import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
+import { useConfirmDeleteDialog, useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
 import EventsTable from "./_events/events-table";
 
-import { Calendar, EventDialog, EventFormDialog } from ".";
+import { Calendar, ConfirmDeleteDialog, EventDialog, EventFormDialog } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
@@ -29,15 +29,23 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
 
   const useEventsReturn = useEvents({ category, search, selectedDay });
-  const { events, handleDeleteEvents } = useEventsReturn;
+  const { events } = useEventsReturn;
 
-  const useEventDialogReturn = useItemDialog<Event>(events, "event");
+  const useEventDialogReturn = useItemDialog<Event>(events);
   const { handleSelectItem } = useEventDialogReturn;
 
   const useEventFormDialogReturn = useEventFormDialog(start_time, end_time, availableDays);
   const { handleOpenEventFormDialog } = useEventFormDialogReturn;
 
-  const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
+  const useConfirmDeleteDialogReturn = useConfirmDeleteDialog();
+  const { handleOpenConfirmDeleteDialog } = useConfirmDeleteDialogReturn;
+
+  const useEventsTableReturn = useEventsTable(
+    events,
+    handleSelectItem,
+    handleOpenEventFormDialog,
+    handleOpenConfirmDeleteDialog
+  );
   const { selectedEventIds, eventsColumns, table } = useEventsTableReturn;
 
   return (
@@ -53,7 +61,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             {selectedEventIds.length > 0 && display === "table" && userRole === ADMIN && (
               <Button
                 variant="destructive"
-                onClick={() => handleDeleteEvents(selectedEventIds)}
+                onClick={() => handleOpenConfirmDeleteDialog(selectedEventIds)}
                 className="w-full md:w-auto"
               >
                 Delete event(s)
@@ -124,8 +132,17 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
         )}
         {display === "table" && userRole === ADMIN && <EventsTable columns={eventsColumns} table={table} />}
       </div>
-      <EventDialog userRole={userRole} {...useEventDialogReturn} />
-      {userRole === ADMIN && <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />}
+      <EventDialog
+        userRole={userRole}
+        handleOpenConfirmDeleteDialog={handleOpenConfirmDeleteDialog}
+        {...useEventDialogReturn}
+      />
+      {userRole === ADMIN && (
+        <>
+          <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />
+          <ConfirmDeleteDialog {...useConfirmDeleteDialogReturn} />
+        </>
+      )}
     </>
   );
 };
