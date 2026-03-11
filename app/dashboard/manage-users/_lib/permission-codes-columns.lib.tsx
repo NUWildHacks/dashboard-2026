@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UseConfirmDeleteDialogReturn } from "@/hooks";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 
 import { PermissionCode } from "../types";
@@ -30,7 +31,7 @@ import { PermissionCode } from "../types";
  * ```
  */
 export const getPermissionCodesColumns = (
-  handleDeletePermissionCodes: (permissionCodeIds: PermissionCode["id"][]) => Promise<void>
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<PermissionCode>["handleOpenConfirmDeleteDialog"]
 ): ColumnDef<PermissionCode>[] => {
   return [
     {
@@ -143,7 +144,7 @@ export const getPermissionCodesColumns = (
                 Copy email
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeletePermissionCodes([row.original.id])}>
+              <DropdownMenuItem variant="destructive" onClick={() => handleOpenConfirmDeleteDialog([row.original.id])}>
                 Delete permission code
               </DropdownMenuItem>
             </DropdownMenuContent>

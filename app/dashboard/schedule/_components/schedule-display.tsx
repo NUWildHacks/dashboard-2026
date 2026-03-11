@@ -18,7 +18,7 @@ import { EventCategory, Event } from "../types";
 
 import EventsTable from "./_events/events-table";
 
-import { Calendar, ConfirmDeleteEventDialog, EventDialog, EventFormDialog } from ".";
+import { Calendar, ConfirmDeleteEventsDialog, EventDialog, EventFormDialog } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
@@ -142,7 +142,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
       {userRole === ADMIN && (
         <>
           <EventFormDialog availableDays={availableDays} {...useEventFormDialogReturn} />
-          <ConfirmDeleteEventDialog {...useConfirmDeleteDialogReturn} />
+          <ConfirmDeleteEventsDialog {...useConfirmDeleteDialogReturn} />
         </>
       )}
     </>

@@ -14,25 +14,25 @@ import {
 } from "@/components/ui/dialog";
 import { UseConfirmDeleteDialogReturn } from "@/hooks";
 
-import type { Event } from "../../types";
+import type { PermissionCode } from "../../types";
 
-type ConfirmDeleteEventsDialogProps = Pick<
-  UseConfirmDeleteDialogReturn<Event>,
+type ConfirmDeletePermissionCodesDialogProps = Pick<
+  UseConfirmDeleteDialogReturn<PermissionCode>,
   "isDeleting" | "handleDeleteItems" | "isOpen" | "setIsOpen" | "hasMultipleItems"
 >;
 
-const ConfirmDeleteEventsDialog = ({
+const ConfirmDeletePermissionCodesDialog = ({
   isDeleting,
   handleDeleteItems,
   isOpen,
   setIsOpen,
   hasMultipleItems,
-}: ConfirmDeleteEventsDialogProps) => {
-  const titleText = hasMultipleItems ? "Confirm delete events" : "Confirm delete event";
+}: ConfirmDeletePermissionCodesDialogProps) => {
+  const titleText = hasMultipleItems ? "Confirm delete permission codes" : "Confirm delete permission code";
   const descriptionText = hasMultipleItems
-    ? "Are you sure you want to delete these events? This action cannot be undone."
-    : "Are you sure you want to delete this event? This action cannot be undone.";
-  const buttonText = hasMultipleItems ? "Delete events" : "Delete event";
+    ? "Are you sure you want to delete these permission codes? This action cannot be undone."
+    : "Are you sure you want to delete this permission code? This action cannot be undone.";
+  const buttonText = hasMultipleItems ? "Delete permission codes" : "Delete permission code";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -56,4 +56,4 @@ const ConfirmDeleteEventsDialog = ({
   );
 };
 
-export default ConfirmDeleteEventsDialog;
+export default ConfirmDeletePermissionCodesDialog;
