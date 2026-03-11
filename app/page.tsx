@@ -3,12 +3,9 @@
 import Image from "next/image";
 
 import "@/config/firebase-admin";
-import { Footer, Navbar } from "@/app/_components";
+import { Completed, Footer, Navbar, Closed } from "@/app/_components";
 import { getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
-
-import Completed from "./_components/completed";
-import Ongoing from "./_components/ongoing";
 
 const RootPage = async () => {
   const configDocSnapshot = await getConfigDocSnapshot();
@@ -22,7 +19,8 @@ const RootPage = async () => {
       <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
         <div className="max-w-[700px] text-center space-y-5">
           <Image src="/wildhacks-splash.svg" alt="Main Logo" width={700} height={260} loading="eager" />
-          {now < end_time && <Ongoing />}
+          {/* patch: close registration completely */}
+          {now < end_time && <Closed />}
           {now >= end_time && <Completed />}
         </div>
       </main>
