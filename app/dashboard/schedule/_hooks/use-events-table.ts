@@ -11,13 +11,12 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { UseItemDialogReturn } from "@/hooks";
+import { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
 
 import { getEventsColumns } from "../_lib";
 import type { Event } from "../types";
 
-import { UseConfirmDeleteDialogReturn } from "./use-confirm-delete-dialog";
-import { UseEventFormDialogReturn } from "./use-event-form-dialog";
+import { UseEventFormDialogReturn } from ".";
 
 export type UseEventsTableReturn = {
   table: Table<Event>;
@@ -29,7 +28,7 @@ export const useEventsTable = (
   events: Event[],
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
-  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"]
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"]
 ): UseEventsTableReturn => {
   const [sorting, setSorting] = useState<SortingState>([{ id: "start_time", desc: false }]);
 

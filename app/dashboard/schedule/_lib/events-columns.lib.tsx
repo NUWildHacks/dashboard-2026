@@ -14,10 +14,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UseItemDialogReturn } from "@/hooks";
+import { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import { UseConfirmDeleteDialogReturn, UseEventFormDialogReturn } from "../_hooks";
+import { UseEventFormDialogReturn } from "../_hooks";
 import type { Event } from "../types";
 
 /**
@@ -33,7 +33,7 @@ import type { Event } from "../types";
 export const getEventsColumns = (
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
-  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"]
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"]
 ): ColumnDef<Event>[] => {
   return [
     {

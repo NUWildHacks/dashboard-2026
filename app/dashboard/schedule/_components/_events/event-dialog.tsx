@@ -14,16 +14,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ADMIN, PARTICIPANT } from "@/constants";
-import type { UseItemDialogReturn } from "@/hooks";
+import type { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
-import { UseConfirmDeleteDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
 type EventDialogProps = {
   userRole?: User["role"];
-  handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn["handleOpenConfirmDeleteDialog"];
+  handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"];
 } & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
 
 const EventDialog = ({

@@ -12,26 +12,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { UseConfirmDeleteDialogReturn } from "@/hooks";
 
-import { UseConfirmDeleteDialogReturn } from "../../_hooks";
+import type { Event } from "../../types";
 
-type ConfirmDeleteDialogProps = Pick<
-  UseConfirmDeleteDialogReturn,
-  "isDeleting" | "handleDeleteEvents" | "isOpen" | "setIsOpen" | "hasMultipleEvents"
+type ConfirmDeleteEventDialogProps = Pick<
+  UseConfirmDeleteDialogReturn<Event>,
+  "isDeleting" | "handleDeleteItems" | "isOpen" | "setIsOpen" | "hasMultipleItems"
 >;
 
 const ConfirmDeleteDialog = ({
   isDeleting,
-  handleDeleteEvents,
+  handleDeleteItems,
   isOpen,
   setIsOpen,
-  hasMultipleEvents,
-}: ConfirmDeleteDialogProps) => {
-  const titleText = hasMultipleEvents ? "Confirm delete events" : "Confirm delete event";
-  const descriptionText = hasMultipleEvents
+  hasMultipleItems,
+}: ConfirmDeleteEventDialogProps) => {
+  const titleText = hasMultipleItems ? "Confirm delete events" : "Confirm delete event";
+  const descriptionText = hasMultipleItems
     ? "Are you sure you want to delete these events? This action cannot be undone."
     : "Are you sure you want to delete this event? This action cannot be undone.";
-  const buttonText = hasMultipleEvents ? "Delete events" : "Delete event";
+  const buttonText = hasMultipleItems ? "Delete events" : "Delete event";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -46,7 +47,7 @@ const ConfirmDeleteDialog = ({
               Go Back
             </Button>
           </DialogClose>
-          <Button variant="destructive" disabled={isDeleting} onClick={handleDeleteEvents}>
+          <Button variant="destructive" disabled={isDeleting} onClick={handleDeleteItems}>
             {isDeleting ? <Loader2 className="size-4 animate-spin" /> : buttonText}
           </Button>
         </DialogFooter>

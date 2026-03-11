@@ -6,5 +6,3 @@ export { useEventsTable } from "./use-events-table";
 export type { UseEventsTableReturn } from "./use-events-table";
 export { useScheduleDisplay } from "./use-schedule-display";
 export type { UseScheduleDisplayReturn } from "./use-schedule-display";
-export { useConfirmDeleteDialog } from "./use-confirm-delete-dialog";
-export type { UseConfirmDeleteDialogReturn } from "./use-confirm-delete-dialog";
