@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 export type UseItemDialogReturn<T extends { id: string }> = {
   selectedItem: T | null;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   handleSelectItem: (itemId: T["id"]) => void;
-  handleKeyDown: (event: React.KeyboardEvent, id: T["id"]) => void;
+  handleKeyDown: (event: KeyboardEvent, id: T["id"]) => void;
 };
 
 export const useItemDialog = <T extends { id: string }>(items: T[]): UseItemDialogReturn<T> => {
@@ -25,7 +25,7 @@ export const useItemDialog = <T extends { id: string }>(items: T[]): UseItemDial
     setIsOpen(true);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent, id: T["id"]) => {
+  const handleKeyDown = (event: KeyboardEvent, id: T["id"]) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleSelectItem(id);

@@ -7,7 +7,8 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADMIN } from "@/constants";
-import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
+import { useItemDialog, useFilters } from "@/hooks";
+import type { CategoryWithAll } from "@/hooks";
 import { User, WildHacksConfig } from "@/types";
 
 import { useConfirmDeleteDialog, useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
@@ -26,7 +27,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const { selectedDay, availableDays, handleSelectDay, display, setDisplay } = useScheduleDisplay(start_time, end_time);
   const { label } = selectedDay;
 
-  const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
+  const { category, setCategory, search, setSearch } = useFilters<EventCategory>({ includeAll: true });
 
   const useEventsReturn = useEvents({ category, search, selectedDay });
   const { events } = useEventsReturn;

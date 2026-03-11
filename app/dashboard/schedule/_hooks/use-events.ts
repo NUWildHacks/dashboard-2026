@@ -5,14 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants";
-import type { UseFiltersReturn } from "@/hooks";
+import type { UseFiltersReturnWithAll } from "@/hooks";
 
 import { EVENT_FIELDS } from "../constants";
 import type { CalendarDay, Event, EventCategory } from "../types";
 
 export type UseEventsSettings = {
-  category?: UseFiltersReturn<EventCategory>["category"];
-  search?: UseFiltersReturn<EventCategory>["search"];
+  category?: UseFiltersReturnWithAll<EventCategory>["category"];
+  search?: UseFiltersReturnWithAll<EventCategory>["search"];
   selectedDay?: CalendarDay;
   limitCount?: number;
 };

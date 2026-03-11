@@ -18,6 +18,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { PARTICIPANT } from "@/constants";
+import { useFilters } from "@/hooks";
 import { User } from "@/types";
 
 import { deleteUsers } from "../_actions";
@@ -36,12 +37,17 @@ export type UseUsersTableReturn = {
 };
 
 export const useUsersTable = (data: User[]): UseUsersTableReturn => {
-  const [role, setRole] = useState<User["role"]>(PARTICIPANT);
-  const [search, setSearch] = useState<string>("");
   const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  const {
+    category: role,
+    setCategory: setRole,
+    search,
+    setSearch,
+  } = useFilters<User["role"]>({ includeAll: false, defaultCategory: PARTICIPANT });
 
   const filteredUsers = useMemo(() => {
     let result = data;
