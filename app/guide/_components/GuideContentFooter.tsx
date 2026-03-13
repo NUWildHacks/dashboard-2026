@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -31,14 +32,16 @@ const GuideContentFooter = ({ entries }: GuideContentFooterProps) => {
         <div className="guide-content-footer-nav-inner">
           {prev ? (
             <Link href={prev.href} className="guide-content-footer-link guide-content-footer-prev">
-              ← {prev.title}
+              <ArrowLeft className="guide-content-footer-arrow" aria-hidden />
+              <span>{prev.title}</span>
             </Link>
           ) : (
             <span aria-hidden className="guide-content-footer-spacer" />
           )}
           {next ? (
             <Link href={next.href} className="guide-content-footer-link guide-content-footer-next">
-              {next.title} →
+              <span>{next.title}</span>
+              <ArrowRight className="guide-content-footer-arrow" aria-hidden />
             </Link>
           ) : (
             <span aria-hidden className="guide-content-footer-spacer" />
