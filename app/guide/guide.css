@@ -181,6 +181,10 @@
   flex-shrink: 0;
   width: 280px;
   min-height: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
   background: var(--surface-bg);
   border-right: 1px solid var(--surface-border);
   overflow-y: auto;
@@ -273,6 +277,9 @@
 
   .guide-sidebar {
     width: 100%;
+    position: static;
+    top: auto;
+    align-self: auto;
     border-right: none;
     border-bottom: 0 solid transparent;
     max-height: 0;
@@ -611,8 +618,8 @@
 
 .guide-nav-heading {
   font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  text-transform: none;
+  letter-spacing: 0.02em;
   color: var(--muted-color);
   margin-bottom: 0.4rem;
 }
@@ -627,8 +634,8 @@
   margin-bottom: 0.4rem;
   font: inherit;
   font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  text-transform: none;
+  letter-spacing: 0.02em;
   color: var(--muted-color);
   background: none;
   border: none;
@@ -690,6 +697,33 @@
   transition:
     color 0.2s ease,
     transform 0.2s ease;
+}
+
+.guide-nav-link-level-1,
+.guide-nav-label-level-1 {
+  font-size: 0.96rem;
+  font-weight: 600;
+}
+
+.guide-nav-link-level-2,
+.guide-nav-label-level-2 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding-left: 0.65rem;
+}
+
+.guide-nav-link-level-3,
+.guide-nav-label-level-3 {
+  font-size: 0.86rem;
+  font-weight: 500;
+  padding-left: 1.2rem;
+}
+
+.guide-nav-heading-level-2,
+.guide-nav-heading-level-3 {
+  font-size: 0.8rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
 .guide-nav-link:hover {
@@ -1034,7 +1068,6 @@
 .guide-content-footer {
   margin-top: 3rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--surface-border);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -1042,8 +1075,10 @@
 
 .guide-content-footer-updated {
   margin: 0;
-  font-size: 0.9rem;
-  color: var(--muted-color);
+  font-size: 0.74rem;
+  color: rgba(var(--foreground-rgb), 0.52);
+  letter-spacing: 0.02em;
+  text-align: center;
 }
 
 .guide-content-footer-nav-inner {
@@ -1079,6 +1114,8 @@
   margin: 0;
   padding-top: 1rem;
   border-top: 1px solid var(--surface-border);
+  display: grid;
+  gap: 0.35rem;
 }
 
 .guide-content-footer-copyright p {

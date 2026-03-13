@@ -27,7 +27,6 @@ const GuideContentFooter = ({ entries }: GuideContentFooterProps) => {
 
   return (
     <footer className="guide-content-footer" role="contentinfo">
-      <p className="guide-content-footer-updated">Last updated on {GUIDE_LAST_UPDATED}</p>
       <nav className="guide-content-footer-nav" aria-label="Guide page navigation">
         <div className="guide-content-footer-nav-inner">
           {prev ? (
@@ -47,6 +46,7 @@ const GuideContentFooter = ({ entries }: GuideContentFooterProps) => {
         </div>
       </nav>
       <div className="guide-content-footer-copyright">
+        <p className="guide-content-footer-updated">Last updated on {GUIDE_LAST_UPDATED}</p>
         <p>Copyright © 2026 WildHacks.</p>
       </div>
     </footer>

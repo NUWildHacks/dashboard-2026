@@ -27,17 +27,20 @@ const getSectionContainingPath = (pathname: string): string | null => {
   return item?.title ?? null;
 };
 
-const renderLeaf = (item: GuideNavItem, pathname: string, onNavigate?: () => void) => {
+const getLevel = (depth: number) => Math.min(Math.max(depth, 1), 3);
+
+const renderLeaf = (item: GuideNavItem, pathname: string, depth: number, onNavigate?: () => void) => {
   if (!item.href) {
-    return <span className="guide-nav-label">{item.title}</span>;
+    return <span className={`guide-nav-label guide-nav-label-level-${getLevel(depth)}`}>{item.title}</span>;
   }
 
   const active = isActiveHref(pathname, item.href);
+  const levelClass = `guide-nav-link-level-${getLevel(depth)}`;
 
   if (item.external) {
     return (
       <a
-        className={`guide-nav-link${active ? " guide-nav-link-active" : ""}`}
+        className={`guide-nav-link ${levelClass}${active ? " guide-nav-link-active" : ""}`}
         href={item.href}
         onClick={onNavigate}
         rel="noreferrer"
@@ -53,7 +56,7 @@ const renderLeaf = (item: GuideNavItem, pathname: string, onNavigate?: () => voi
 
   return (
     <Link
-      className={`guide-nav-link${active ? " guide-nav-link-active" : ""}`}
+      className={`guide-nav-link ${levelClass}${active ? " guide-nav-link-active" : ""}`}
       href={item.href}
       onClick={onNavigate}
       prefetch
@@ -66,12 +69,13 @@ const renderLeaf = (item: GuideNavItem, pathname: string, onNavigate?: () => voi
 type NavItemProps = {
   item: GuideNavItem;
   pathname: string;
+  depth: number;
   openSections: Set<string>;
   onToggleSection: (title: string) => void;
   onNavigate?: () => void;
 };
 
-const NavItem = ({ item, pathname, openSections, onToggleSection, onNavigate }: NavItemProps) => {
+const NavItem = ({ item, pathname, depth, openSections, onToggleSection, onNavigate }: NavItemProps) => {
   if (item.hidden) {
     return null;
   }
@@ -84,7 +88,7 @@ const NavItem = ({ item, pathname, openSections, onToggleSection, onNavigate }: 
       <li key={item.title} className="guide-nav-group">
         <button
           type="button"
-          className={`guide-nav-heading guide-nav-heading-button${childActive ? " guide-nav-heading-active" : ""}`}
+          className={`guide-nav-heading guide-nav-heading-button guide-nav-heading-level-${getLevel(depth)}${childActive ? " guide-nav-heading-active" : ""}`}
           onClick={() => onToggleSection(item.title)}
           aria-expanded={isOpen}
           aria-controls={`guide-nav-section-${item.title.replace(/\s+/g, "-").toLowerCase()}`}
@@ -100,7 +104,7 @@ const NavItem = ({ item, pathname, openSections, onToggleSection, onNavigate }: 
           aria-labelledby={`guide-nav-heading-${item.title.replace(/\s+/g, "-").toLowerCase()}`}
         >
           {item.children.map((child) => (
-            <li key={child.title}>{renderLeaf(child, pathname, onNavigate)}</li>
+            <li key={child.title}>{renderLeaf(child, pathname, depth + 1, onNavigate)}</li>
           ))}
         </ul>
       </li>
@@ -109,7 +113,7 @@ const NavItem = ({ item, pathname, openSections, onToggleSection, onNavigate }: 
 
   return (
     <li key={item.title} className="guide-nav-item">
-      {renderLeaf(item, pathname, onNavigate)}
+      {renderLeaf(item, pathname, depth, onNavigate)}
     </li>
   );
 };
@@ -154,6 +158,7 @@ const GuideNavigation = ({ onNavigate }: GuideNavigationProps) => {
             key={item.title}
             item={item}
             pathname={pathname}
+            depth={1}
             openSections={openSections}
             onToggleSection={onToggleSection}
             onNavigate={onNavigate}
