@@ -48,13 +48,13 @@ const CalendarExport = ({ events, calendarName = "WildHacks 2026" }: CalendarExp
         </button>
         <button type="button" className="guide-button guide-button-secondary" onClick={handleOpenGoogleCalendar}>
           <span aria-hidden>📆</span>
-          <span>Add to Google Calendar</span>
+          <span>Import into Google Calendar</span>
         </button>
       </div>
       <p className="guide-calendar-footnote">
         {events.length > 1
-          ? `The .ics file contains ${events.length} events and works with Google Calendar, Apple Calendar, Outlook, and more. When adding to Google Calendar we automatically download the file and open the import page for you.`
-          : "We will open Google Calendar with the event details pre-filled so you can save it immediately."}
+          ? `The .ics file contains ${events.length} events and works with Google Calendar, Apple Calendar, Outlook, and more. We download the file and open Google's import page so events are added to your personal calendar without subscribing to an organizer calendar.`
+          : "We open Google Calendar with event details pre-filled so you can save it to your personal calendar (no organizer subscription)."}
       </p>
     </section>
   );

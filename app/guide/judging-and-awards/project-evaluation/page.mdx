@@ -16,10 +16,10 @@ import rubric from "@/app/guide/_data/judging-rubric.json";
 
 ## Score Criteria
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
-      <th></th>
+      <th>Criteria</th>
       <th>0 (No Credit)</th>
       <th>1 (Developing)</th>
       <th>2 (Effective)</th>
@@ -29,9 +29,14 @@ import rubric from "@/app/guide/_data/judging-rubric.json";
   <tbody>
     {rubric.criteria.map((row) => (
       <tr key={row.category}>
-        <td>{row.category}</td>
+        <td data-label="Criteria">{row.category}</td>
         {row.levels.map((level, index) => (
-          <td key={`${row.category}-${index}`}>{level}</td>
+          <td
+            key={`${row.category}-${index}`}
+            data-label={["0 (No Credit)", "1 (Developing)", "2 (Effective)", "3 (Outstanding)"][index] ?? "Score"}
+          >
+            {level}
+          </td>
         ))}
       </tr>
     ))}

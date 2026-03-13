@@ -676,7 +676,7 @@
 
 .guide-nav-list {
   display: grid;
-  gap: 1.25rem;
+  gap: 0.6rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1096,60 +1096,184 @@
 
 .guide-content table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 16px;
-  margin: 1.75rem 0;
-  font-size: 0.95rem;
-  background: #f5f5f5;
-  padding: 16px;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+  margin: 1.4rem 0;
+  background: rgba(var(--secondary-rgb), 0.04);
+  border: 1px solid var(--surface-border);
 }
 
 .dark .guide-content table {
-  background: rgba(32, 34, 36, 0.85);
-  box-shadow: none;
+  background: rgba(32, 34, 36, 0.24);
 }
 
-/* Purple reserved for table headers only */
-.guide-content thead th {
-  background: var(--primary-color);
-  color: #ffffff;
-  font-weight: 600;
-  padding: 0.95rem 1.1rem;
-  border: none;
+.guide-content th,
+.guide-content td {
+  padding: 0.72rem 0.92rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--surface-border);
 }
 
-.guide-content tbody tr td {
-  background: #ffffff;
-  border: none;
-  padding: 0.95rem 1.1rem;
-  vertical-align: middle;
-  box-shadow: none;
+.guide-content th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted-color);
+  background: rgba(var(--secondary-rgb), 0.09);
 }
 
-.guide-content tbody tr td:first-child {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.guide-content tr > * + * {
+  border-left: 1px solid var(--surface-border);
 }
 
-.guide-content tbody tr td:last-child {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+.guide-content tbody tr:last-child td {
+  border-bottom: none;
 }
 
-.guide-content tbody tr:hover td {
-  background: rgba(86, 160, 215, 0.1);
+.dark .guide-content th {
+  background: rgba(var(--secondary-rgb), 0.2);
 }
 
-.dark .guide-content tbody tr td {
-  background: rgba(24, 26, 28, 0.95);
-  box-shadow: none;
+.guide-content .guide-schedule-table {
+  width: 100%;
+  background: transparent;
+  overflow: hidden;
 }
 
-.dark .guide-content tbody tr:hover td {
-  background: rgba(86, 160, 215, 0.18);
+.guide-content .guide-schedule-table .guide-schedule-col-date,
+.guide-content .guide-schedule-table .guide-schedule-cell-date {
+  width: 26%;
+}
+
+.guide-content .guide-schedule-table .guide-schedule-col-time,
+.guide-content .guide-schedule-table .guide-schedule-cell-time {
+  width: 22%;
+}
+
+.guide-content .guide-schedule-table .guide-schedule-col-location,
+.guide-content .guide-schedule-table .guide-schedule-cell-location {
+  width: 24%;
+}
+
+.guide-content .guide-schedule-table .guide-schedule-cell-date,
+.guide-content .guide-schedule-table .guide-schedule-cell-time {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guide-content .guide-schedule-table .guide-schedule-row-deadline td {
+  background: rgba(var(--error-rgb), 0.16);
+  border-top: 1px solid rgba(var(--error-rgb), 0.38);
+  border-bottom: 1px solid rgba(var(--error-rgb), 0.38);
+}
+
+.dark .guide-content .guide-schedule-table {
+  background: rgba(32, 34, 36, 0.25);
+}
+
+.dark .guide-content .guide-schedule-table th {
+  background: rgba(var(--secondary-rgb), 0.2);
+}
+
+.dark .guide-content .guide-schedule-table .guide-schedule-row-deadline td {
+  background: rgba(var(--error-rgb), 0.24);
+  border-top-color: rgba(var(--error-rgb), 0.5);
+  border-bottom-color: rgba(var(--error-rgb), 0.5);
+}
+
+@media (max-width: 760px) {
+  .guide-content table {
+    border: none;
+    background: transparent;
+    table-layout: auto;
+    margin: 1.1rem 0;
+  }
+
+  .guide-content table thead {
+    display: none;
+  }
+
+  .guide-content table tbody {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .guide-content table tr {
+    display: block;
+    border: 1px solid var(--surface-border);
+    background: rgba(var(--secondary-rgb), 0.07);
+    padding: 0.72rem 0.95rem;
+  }
+
+  .dark .guide-content table tr {
+    background: rgba(var(--secondary-rgb), 0.16);
+  }
+
+  .guide-content table tr > * + * {
+    border-left: none;
+  }
+
+  .guide-content table td {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    width: 100%;
+    border-bottom: none;
+    padding: 0.38rem 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .guide-content table td::before {
+    content: attr(data-label);
+    min-width: 6.4rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted-color);
+    line-height: 1.5;
+    flex-shrink: 0;
+  }
+
+  .guide-content table td:not([data-label])::before,
+  .guide-content table td[data-label=""]::before {
+    display: none;
+    content: none;
+  }
+
+  .guide-content .guide-schedule-table {
+    border: none;
+    background: transparent;
+  }
+
+  .guide-content .guide-schedule-table .guide-schedule-cell-event {
+    display: block;
+    width: 100%;
+  }
+
+  .guide-content .guide-schedule-table .guide-schedule-cell-event::before {
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .guide-content .guide-schedule-table .guide-schedule-cell-date,
+  .guide-content .guide-schedule-table .guide-schedule-cell-time {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .guide-content .guide-schedule-table .guide-schedule-col-date,
+  .guide-content .guide-schedule-table .guide-schedule-col-time,
+  .guide-content .guide-schedule-table .guide-schedule-col-location,
+  .guide-content .guide-schedule-table .guide-schedule-cell-date,
+  .guide-content .guide-schedule-table .guide-schedule-cell-time,
+  .guide-content .guide-schedule-table .guide-schedule-cell-location {
+    width: 100%;
+  }
 }
 
 .guide-content blockquote {

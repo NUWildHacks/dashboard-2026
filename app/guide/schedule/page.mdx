@@ -3,6 +3,7 @@ import { InlineSegments } from "@/app/guide/_components/InlineSegments";
 import CalendarExport from "@/app/guide/_components/CalendarExport";
 import { scheduleEvents } from "@/app/guide/_data/schedule-data";
 import { saturdayScheduleRows, sundayScheduleRows, workshopWeekRows } from "@/app/guide/_data/schedule-table-data";
+import { formatDateWithWeekday, getScheduleRowClass } from "@/app/guide/schedule/schedule-table-utils";
 
 # WildHacks 2026 Schedule
 
@@ -19,78 +20,92 @@ See the [event map](/guide/map) for location details. All WildHackers are provid
 
 All times are in Central Time. Virtual options will be provided for all sessions to all registered WildHackers.
 
-<table>
+<table className="guide-schedule-table">
   <thead>
     <tr>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Event</th>
-      <th>In-Person Location</th>
+      <th className="guide-schedule-col-date">Date</th>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
     </tr>
   </thead>
   <tbody>
     {workshopWeekRows.map((row) => (
       <tr key={`${row.date}-${row.time}`}>
-        <td>{row.date}</td>
-        <td>{row.time}</td>
-        <td>
+        <td className="guide-schedule-cell-date" data-label="Date">
+          {formatDateWithWeekday(row.date)}
+        </td>
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
           <InlineSegments segments={row.event} />
         </td>
-        <td>{row.location}</td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location}
+        </td>
       </tr>
     ))}
   </tbody>
 </table>
 
-## Saturday, April 5, 2026
+## Saturday, April 11, 2026
 
 **Hackathon Day 1**
 
 All times are in Central Time.
 
-<table>
+<table className="guide-schedule-table">
   <thead>
     <tr>
-      <th>Time</th>
-      <th>Event</th>
-      <th>Location</th>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
     </tr>
   </thead>
   <tbody>
     {saturdayScheduleRows.map((row) => (
-      <tr key={`sat-${row.time}-${row.location ?? "na"}`}>
-        <td>{row.time}</td>
-        <td>
+      <tr key={`sat-${row.time}-${row.location ?? "na"}`} className={getScheduleRowClass(row.highlight)}>
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
           <InlineSegments segments={row.event} />
         </td>
-        <td>{row.location ?? ""}</td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location ?? ""}
+        </td>
       </tr>
     ))}
   </tbody>
 </table>
 
-## Sunday, April 6, 2026
+## Sunday, April 12, 2026
 
 **Hackathon Day 2**
 
 All times are in Central Time.
 
-<table>
+<table className="guide-schedule-table">
   <thead>
     <tr>
-      <th>Time</th>
-      <th>Event</th>
-      <th>Location</th>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
     </tr>
   </thead>
   <tbody>
     {sundayScheduleRows.map((row) => (
-      <tr key={`sun-${row.time}-${row.location ?? "na"}`}>
-        <td>{row.time}</td>
-        <td>
+      <tr key={`sun-${row.time}-${row.location ?? "na"}`} className={getScheduleRowClass(row.highlight)}>
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
           <InlineSegments segments={row.event} />
         </td>
-        <td>{row.location ?? ""}</td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location ?? ""}
+        </td>
       </tr>
     ))}
   </tbody>

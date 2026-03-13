@@ -15,7 +15,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
 
 ## Saturday Lunch from [Tomate](https://www.tomatefreshkitchen.com/)
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
       <th>Option</th>
@@ -25,10 +25,10 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
   <tbody>
     {saturdayLunchOptions.map((item, index) => (
       <tr key={`sat-lunch-${index}`}>
-        <td>
+        <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
-        <td>{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
       </tr>
     ))}
   </tbody>
@@ -38,7 +38,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
 
 ## Saturday Dinner from [Papa John's Pizza](https://www.papajohns.com/)
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
       <th>Option</th>
@@ -48,10 +48,10 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
   <tbody>
     {saturdayDinnerOptions.map((item, index) => (
       <tr key={`sat-dinner-${index}`}>
-        <td>
+        <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
-        <td>{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
       </tr>
     ))}
   </tbody>
@@ -63,7 +63,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
 
 ### Bagels
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
       <th>Option</th>
@@ -72,7 +72,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
   <tbody>
     {sundayBreakfastBagels.map((item, index) => (
       <tr key={`bagel-${index}`}>
-        <td>
+        <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
       </tr>
@@ -82,7 +82,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
 
 ### Shmears
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
       <th>Option</th>
@@ -91,7 +91,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
   <tbody>
     {sundayBreakfastShmears.map((item, index) => (
       <tr key={`shmear-${index}`}>
-        <td>
+        <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
       </tr>
@@ -103,7 +103,7 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
 
 ## Sunday Lunch from [10Q Chicken](https://www.10qchicken.com/)
 
-<table>
+<table className="guide-rich-table">
   <thead>
     <tr>
       <th>Option</th>
@@ -113,10 +113,10 @@ These are all of the meal options at WildHacks. For food outside of meals, the W
   <tbody>
     {sundayLunchOptions.map((item, index) => (
       <tr key={`sun-lunch-${index}`}>
-        <td>
+        <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
-        <td>{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
       </tr>
     ))}
   </tbody>

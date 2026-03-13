@@ -11,6 +11,7 @@ export type DayScheduleRow = {
   time: string;
   event: InlineSegment[];
   location?: string;
+  highlight?: "deadline";
 };
 
 export const workshopWeekRows: WorkshopWeekRow[] = [
@@ -21,7 +22,7 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
       { content: "Emerging Coders", href: "/guide/workshops#emerging-coders-web-development" },
       { content: ": Web Development" },
     ],
-    location: "TCH LR5",
+    location: "Tech LR5",
   },
   {
     date: "April 2, 2026",
@@ -36,13 +37,13 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     date: "April 3, 2026",
     time: "6:00 PM - 7:00 PM",
     event: [{ content: "DISC", href: "/guide/workshops#disc-react" }, { content: ": React" }],
-    location: "TCH L168",
+    location: "Tech L168",
   },
   {
     date: "April 3, 2026",
     time: "7:00 PM - 8:00 PM",
     event: [{ content: "IEEE", href: "/guide/workshops#ieee-github" }, { content: ": GitHub" }],
-    location: "TCH M177",
+    location: "Tech M177",
   },
   {
     date: "April 4, 2026",
@@ -54,7 +55,7 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
       },
       { content: ": Introduction to Cybersecurity" },
     ],
-    location: "TCH L221",
+    location: "Tech L221",
   },
   {
     date: "April 4, 2026",
@@ -63,10 +64,10 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
       { content: "Women in Computing", href: "/guide/workshops#women-in-computing-github" },
       { content: ": GitHub" },
     ],
-    location: "TCH M152",
+    location: "Tech M152",
   },
   {
-    date: "April 5, 2026",
+    date: "April 11, 2026",
     time: "12:45 PM - 1:30 PM",
     event: [
       {
@@ -75,16 +76,16 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
       },
       { content: ": Full Stack with Python" },
     ],
-    location: "TCH M164",
+    location: "Tech M164",
   },
   {
-    date: "April 5, 2026",
+    date: "April 11, 2026",
     time: "2:30 PM - 3:30 PM",
     event: [
       { content: "MLH", href: "/guide/workshops#making-better-hacks-faster-using-github-copilot" },
       { content: ": Making Better Hacks, Faster, Using GitHub Copilot!" },
     ],
-    location: "TCH L160",
+    location: "Tech L160",
   },
 ];
 
@@ -97,7 +98,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "9:00 AM - 10:00 AM",
     event: [{ content: "Sponsor Expo" }],
-    location: "TCH L170",
+    location: "Tech L170",
   },
   {
     time: "10:00 AM - 10:45 AM",
@@ -111,7 +112,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "10:45 AM - 11:15 AM",
     event: [{ content: "Team Formation Event" }],
-    location: "TCH L160",
+    location: "Tech L160",
   },
   {
     time: "12:30 PM",
@@ -130,7 +131,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         href: "/guide/workshops#women-in-computing-full-stack-with-python-mlh-techtogether-event",
       },
     ],
-    location: "TCH M164",
+    location: "Tech M164",
   },
   {
     time: "2:30 PM",
@@ -141,7 +142,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         href: "/guide/workshops#making-better-hacks-faster-using-github-copilot",
       },
     ],
-    location: "TCH L160",
+    location: "Tech L160",
   },
   {
     time: "6:30 PM",
@@ -160,12 +161,12 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         href: "https://guide.mlh.io/organizer-resources/host-exciting-mini-events/mlh-mini-events/light",
       },
     ],
-    location: "TCH L3",
+    location: "Tech L3",
   },
   {
     time: "10:00 PM - 12:00 AM",
     event: [{ content: "(Social Event) Movie Night!" }],
-    location: "TCH L3",
+    location: "Tech L3",
   },
 ];
 
@@ -201,6 +202,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
       { content: "Submissions", href: "/guide/project-guidelines/submission" },
       { content: " Due and Hacking Ends", bold: true },
     ],
+    highlight: "deadline",
   },
   {
     time: "1:45 PM - 2:30 PM",
