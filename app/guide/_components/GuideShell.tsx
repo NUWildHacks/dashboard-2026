@@ -8,6 +8,7 @@ import type { GuideSearchEntry } from "../_data/guide-search-data";
 import { GuideBreadcrumbs } from "./GuideBreadcrumbs";
 import { GuideContentFooter } from "./GuideContentFooter";
 import { GuideNavigation } from "./GuideNavigation";
+import { GuideOnThisPage } from "./GuideOnThisPage";
 import { GuideTopbar } from "./GuideTopbar";
 
 type GuideShellProps = {
@@ -50,7 +51,10 @@ const GuideShell = ({ children, entries }: GuideShellProps) => {
           <div className="guide-content">
             <div className="guide-content-body">
               <GuideBreadcrumbs entries={entries} />
-              {children}
+              <GuideOnThisPage />
+              <div id="guide-content-article" className="guide-content-article">
+                {children}
+              </div>
             </div>
             <GuideContentFooter entries={entries} />
           </div>
