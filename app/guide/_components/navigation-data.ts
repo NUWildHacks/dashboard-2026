@@ -9,8 +9,7 @@ export type GuideNavItem = {
 export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
   {
     title: "Dashboard",
-    href: "https://dashboard.wildhacks.net",
-    external: true,
+    href: "/dashboard",
   },
   {
     title: "Overview",

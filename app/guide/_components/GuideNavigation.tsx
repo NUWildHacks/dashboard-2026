@@ -27,7 +27,7 @@ const getSectionContainingPath = (pathname: string): string | null => {
   return item?.title ?? null;
 };
 
-const renderLeaf = (item: GuideNavItem, pathname: string) => {
+const renderLeaf = (item: GuideNavItem, pathname: string, onNavigate?: () => void) => {
   if (!item.href) {
     return <span className="guide-nav-label">{item.title}</span>;
   }
@@ -39,6 +39,7 @@ const renderLeaf = (item: GuideNavItem, pathname: string) => {
       <a
         className={`guide-nav-link${active ? " guide-nav-link-active" : ""}`}
         href={item.href}
+        onClick={onNavigate}
         rel="noreferrer"
         target="_blank"
       >
@@ -51,7 +52,12 @@ const renderLeaf = (item: GuideNavItem, pathname: string) => {
   }
 
   return (
-    <Link className={`guide-nav-link${active ? " guide-nav-link-active" : ""}`} href={item.href} prefetch>
+    <Link
+      className={`guide-nav-link${active ? " guide-nav-link-active" : ""}`}
+      href={item.href}
+      onClick={onNavigate}
+      prefetch
+    >
       {item.title}
     </Link>
   );
@@ -62,9 +68,10 @@ type NavItemProps = {
   pathname: string;
   openSections: Set<string>;
   onToggleSection: (title: string) => void;
+  onNavigate?: () => void;
 };
 
-const NavItem = ({ item, pathname, openSections, onToggleSection }: NavItemProps) => {
+const NavItem = ({ item, pathname, openSections, onToggleSection, onNavigate }: NavItemProps) => {
   if (item.hidden) {
     return null;
   }
@@ -93,7 +100,7 @@ const NavItem = ({ item, pathname, openSections, onToggleSection }: NavItemProps
           aria-labelledby={`guide-nav-heading-${item.title.replace(/\s+/g, "-").toLowerCase()}`}
         >
           {item.children.map((child) => (
-            <li key={child.title}>{renderLeaf(child, pathname)}</li>
+            <li key={child.title}>{renderLeaf(child, pathname, onNavigate)}</li>
           ))}
         </ul>
       </li>
@@ -102,12 +109,16 @@ const NavItem = ({ item, pathname, openSections, onToggleSection }: NavItemProps
 
   return (
     <li key={item.title} className="guide-nav-item">
-      {renderLeaf(item, pathname)}
+      {renderLeaf(item, pathname, onNavigate)}
     </li>
   );
 };
 
-const GuideNavigation = () => {
+type GuideNavigationProps = {
+  onNavigate?: () => void;
+};
+
+const GuideNavigation = ({ onNavigate }: GuideNavigationProps) => {
   const pathname = usePathname() ?? "/guide";
   const [openSections, setOpenSections] = useState<Set<string>>(() => new Set());
 
@@ -145,6 +156,7 @@ const GuideNavigation = () => {
             pathname={pathname}
             openSections={openSections}
             onToggleSection={onToggleSection}
+            onNavigate={onNavigate}
           />
         ))}
       </ul>

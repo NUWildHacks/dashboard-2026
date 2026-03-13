@@ -34,6 +34,7 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
+  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   async headers() {
     return [
       {

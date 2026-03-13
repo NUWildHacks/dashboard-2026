@@ -1,4 +1,4 @@
-import { Calendar, FolderGit2, Home, Users } from "lucide-react";
+import { Calendar, FolderGit2, Home, Users, TableCellsMerge } from "lucide-react";
 
 import {
   ADMIN,
@@ -9,6 +9,7 @@ import {
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
+  GUIDE_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -38,6 +39,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Users,
     visibleTo: [ADMIN],
   },
+  {
+    title: "Guide",
+    url: GUIDE_PATH,
+    icon: TableCellsMerge,
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+  },
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
@@ -46,4 +53,5 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",
+  guide: "Guide",
 };
