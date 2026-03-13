@@ -1,22 +1,18 @@
-import { redirect } from "next/navigation";
-
-import "@/config/firebase-admin";
-import { Calendar } from "@/app/dashboard/schedule/_components";
-import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import { getConfigDocSnapshot, getUserDocSnapshot, verifySession } from "@/lib";
+import { DASHBOARD_SCHEDULE_PATH, LOGIN_PATH } from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
-const SchedulePage = async () => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`);
+import { ScheduleDisplay } from "./_components";
 
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
+const SchedulePage = async () => {
+  const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SCHEDULE_PATH)}`;
+
+  const { role } = await getAuthenticatedUser(redirectPath);
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
-  return <Calendar config={wildhacksConfig} />;
+  return <ScheduleDisplay {...wildhacksConfig} userRole={role} />;
 };
 
 export default SchedulePage;

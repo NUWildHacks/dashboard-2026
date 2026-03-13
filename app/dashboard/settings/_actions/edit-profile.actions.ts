@@ -1,21 +1,27 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 
-import { type EditProfileFormSchema } from "../_schemas/edit-profile-form.schemas";
+import {
+  EditAdminProfileFormSchema,
+  EditJudgeMentorProfileFormSchema,
+  EditParticipantProfileFormSchema,
+} from "../_schemas/edit-profile-form.schemas";
 
-export type EditProfileResult = ActionResult<EditProfileFormSchema>;
+export type EditProfileResult<
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeMentorProfileFormSchema,
+> = ActionResult<T>;
 
-export const editProfile = async (data: EditProfileFormSchema): Promise<EditProfileResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
-
+export const editProfile = async <
+  T extends EditParticipantProfileFormSchema | EditAdminProfileFormSchema | EditJudgeMentorProfileFormSchema,
+>(
+  data: T
+): Promise<EditProfileResult<T>> => {
   const db = getFirestore();
   const now = Date.now();
 
@@ -30,29 +36,27 @@ export const editProfile = async (data: EditProfileFormSchema): Promise<EditProf
       };
     }
 
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
+    const { id: userId } = await getAuthenticatedUser(redirectPath);
 
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
+    await db
+      .collection(USERS_COLLECTION)
+      .doc(userId)
+      .update({
+        ...data,
+        updated_at: now,
+      });
 
-    await userDocRef.update({
-      ...data,
-      updated_at: now,
-    });
+    revalidatePath(DASHBOARD_SETTINGS_PATH);
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Edit profile error:", errorMessage);
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Edit profile error:", detailedError);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+
+    return { success: false, error: errorMessage };
   }
 };

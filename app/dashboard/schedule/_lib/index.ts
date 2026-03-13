@@ -1,8 +1,7 @@
 export {
   createOverlapGroups,
-  filterEventsByDay,
   getCalendarItems,
-  getDayEnd,
-  getDayStart,
+  getDayStartFromMilliseconds,
   getVisibleCalendarRows,
 } from "./calendar.lib";
+export { getEventsColumns } from "./events-columns.lib";

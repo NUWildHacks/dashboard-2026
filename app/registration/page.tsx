@@ -1,28 +1,49 @@
+import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import "@/config/firebase-admin";
-import { DASHBOARD_PATH, LOGIN_PATH, REGISTRATION_PATH } from "@/constants";
-import type { WildHacksConfig } from "@/types";
-
-import { verifySession } from "../../lib/session.lib";
-import { getUserDocSnapshot } from "../../lib/user.lib";
-import { getConfigDocSnapshot } from "../../lib/wildhacks.lib";
+import { DASHBOARD_PATH, JUDGE, LOGIN_PATH, MENTOR, USERS_COLLECTION } from "@/constants";
+import { getConfigDocSnapshot, verifySession } from "@/lib";
+import type { JudgeUser, WildHacksConfig } from "@/types";
 
 import RegistrationForm from "./_components/registration-form";
 
+const getCurrentTimestamp = () => Date.now();
+
 const RegistrationPage = async () => {
+  const userInfo = await verifySession();
+  if (!userInfo) redirect(LOGIN_PATH);
+
+  const { id, email } = userInfo;
+
+  const db = getFirestore();
+  const userDocSnapshotById = await db.collection(USERS_COLLECTION).doc(id).get();
+  if (userDocSnapshotById.exists) redirect(DASHBOARD_PATH);
+
+  const userDocSnapshotByEmail = await db.collection(USERS_COLLECTION).where("email", "==", email).limit(1).get();
+  if (!userDocSnapshotByEmail.empty) {
+    const newJudgeDocRef = db.collection(USERS_COLLECTION).doc(id);
+
+    const data = userDocSnapshotByEmail.docs[0].data();
+
+    if (data?.role === JUDGE || data?.role === MENTOR) {
+      const timestamp = getCurrentTimestamp();
+
+      await db.runTransaction(async (transaction) => {
+        transaction.set(newJudgeDocRef, {
+          ...data,
+          created_at: timestamp,
+          updated_at: timestamp,
+        } as JudgeUser);
+
+        transaction.delete(userDocSnapshotByEmail.docs[0].ref);
+      });
+
+      redirect(DASHBOARD_PATH);
+    }
+  }
+
   const configDocSnapshot = await getConfigDocSnapshot();
-  const wildHackConfig = configDocSnapshot.data() as WildHacksConfig;
-
-  const now = new Date().getTime();
-  const { end_time } = wildHackConfig;
-  if (now >= end_time) redirect(DASHBOARD_PATH);
-
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);
-
-  const userDocSnapshot = await getUserDocSnapshot(userId);
-  if (userDocSnapshot.exists) redirect(DASHBOARD_PATH);
+  const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
   return (
     <main className="flex-1 px-6 sm:px-12 py-12 flex flex-col justify-center items-center">
@@ -33,7 +54,7 @@ const RegistrationPage = async () => {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm {...wildHackConfig} />
+          <RegistrationForm userEmail={email} {...wildhacksConfig} />
         </div>
       </div>
     </main>

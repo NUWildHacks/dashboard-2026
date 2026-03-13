@@ -1,9 +1,10 @@
-import { getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib";
 
+import { CALENDAR_ROWS } from "./constants";
+
 const ScheduleLoading = async () => {
-  const visibleCalendarRows = getVisibleCalendarRows([], 0);
+  const visibleCalendarRows = CALENDAR_ROWS.slice(9, 17);
 
   return (
     <div
@@ -17,9 +18,9 @@ const ScheduleLoading = async () => {
         <Skeleton className="w-full h-9" />
       </div>
       <div className="w-full flex flex-col py-2">
-        {visibleCalendarRows.map(({ start, label }, index) => (
+        {visibleCalendarRows.map(({ label }, index) => (
           <div
-            key={`${label}-${start}`}
+            key={`${label}-${index}`}
             className={cn(
               "w-full grid grid-cols-[50px_1fr] space-x-2",
               index !== visibleCalendarRows.length - 1 && "h-[80px]"

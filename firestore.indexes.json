@@ -1,20 +1,6 @@
 {
   "indexes": [
     {
-      "collectionGroup": "announcements",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "audience",
-          "arrayConfig": "CONTAINS"
-        },
-        {
-          "fieldPath": "created_at",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
       "collectionGroup": "users",
       "queryScope": "COLLECTION",
       "fields": [

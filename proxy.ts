@@ -1,7 +1,7 @@
+import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  DASHBOARD_ANNOUNCEMENTS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_PROJECT_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -11,13 +11,39 @@ import {
   REGISTRATION_PATH,
   SESSION_COOKIE_NAME,
 } from "@/constants";
+import { validateRedirectPath } from "@/lib";
+
+/**
+ * Decodes a JWT token and checks if it's expired.
+ * This is a lightweight check that only decodes the payload without verifying the signature.
+ * Full signature verification is done later in verifySession() using Firebase Admin SDK.
+ * Uses jose library which is compatible with Edge Runtime.
+ *
+ * @param token - JWT token string
+ * @returns true if token is expired or invalid, false if still valid
+ */
+function isTokenExpired(token: string): boolean {
+  try {
+    const claims = decodeJwt(token);
+
+    if (!claims.exp) {
+      return true;
+    }
+
+    const expirationTime = claims.exp * 1000;
+    const currentTime = Date.now();
+
+    return currentTime >= expirationTime;
+  } catch {
+    return true;
+  }
+}
 
 export async function proxy(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
   const isProtectedRoute =
     currentPath === REGISTRATION_PATH ||
     currentPath === DASHBOARD_PATH ||
-    currentPath === DASHBOARD_ANNOUNCEMENTS_PATH ||
     currentPath === DASHBOARD_PROJECT_PATH ||
     currentPath === DASHBOARD_SCHEDULE_PATH ||
     currentPath === DASHBOARD_SUPPORT_PATH ||
@@ -26,9 +52,10 @@ export async function proxy(req: NextRequest) {
   if (isProtectedRoute) {
     const sessionCookie = req.cookies.get(SESSION_COOKIE_NAME)?.value;
 
-    if (!sessionCookie) {
+    if (!sessionCookie || isTokenExpired(sessionCookie)) {
       const loginUrl = new URL(LOGIN_PATH, req.url);
-      loginUrl.searchParams.set("redirect", req.nextUrl.pathname);
+      const redirectPath = validateRedirectPath(req.nextUrl.pathname);
+      loginUrl.searchParams.set("redirect", redirectPath);
 
       return NextResponse.redirect(loginUrl);
     }

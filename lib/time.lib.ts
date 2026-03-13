@@ -119,4 +119,137 @@ const getSendTime = (sendMilliseconds: number) => {
   }
 };
 
-export { getDateFromMilliseconds, getEventTimeRange, getSendTime, getTimeFromMilliseconds, getTimeFromMinutes };
+/**
+ * Convert milliseconds to a Date object.
+ *
+ * @param milliseconds - Timestamp in milliseconds since epoch
+ * @returns Date object or undefined if invalid
+ * @example
+ * ```ts
+ * const timestamp = new Date('2026-04-11T08:00:00').getTime();
+ * const date = millisecondsToDate(timestamp);
+ * // Returns: Date object for April 11, 2026 at 8:00 AM
+ * ```
+ */
+const millisecondsToDate = (milliseconds: number): Date | undefined => {
+  if (!milliseconds || milliseconds <= 0) return undefined;
+  return new Date(milliseconds);
+};
+
+/**
+ * Convert Date and time string to milliseconds.
+ *
+ * @param date - Date object
+ * @param time - Time string in HH:mm format
+ * @returns Timestamp in milliseconds since epoch
+ * @example
+ * ```ts
+ * const date = new Date('2026-04-11');
+ * const time = "14:30";
+ * const timestamp = combineDateAndTime(date, time);
+ * // Returns: milliseconds for April 11, 2026 at 2:30 PM
+ * ```
+ */
+const combineDateAndTime = (date: Date | undefined, time: string): number => {
+  if (!date || !time) return 0;
+  const [hours, minutes] = time.split(":").map(Number);
+  const combined = new Date(date);
+  combined.setHours(hours, minutes, 0, 0);
+  return combined.getTime();
+};
+
+/**
+ * Convert milliseconds to a time string in HH:mm format.
+ *
+ * @param milliseconds - Timestamp in milliseconds since epoch
+ * @returns Time string in HH:mm format (e.g., "14:30")
+ * @example
+ * ```ts
+ * const timestamp = new Date('2026-04-11T14:30:00').getTime();
+ * const timeStr = millisecondsToTime(timestamp);
+ * // Returns: "14:30"
+ * ```
+ */
+const millisecondsToTime = (milliseconds: number): string => {
+  if (!milliseconds || milliseconds <= 0) return "";
+  const date = new Date(milliseconds);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+/**
+ * Parse a date label string to a Date object.
+ * Parses format: "Mar 10, 2026" (abbreviated month from MONTH_ABBREVIATIONS)
+ *
+ * @param dateLabel - Date string in format "Month Day, Year" (e.g., "Mar 10, 2026")
+ * @returns Date object or undefined if invalid
+ * @example
+ * ```ts
+ * const date = parseDateLabel("Mar 10, 2026");
+ * // Returns: Date object for March 10, 2026
+ * ```
+ */
+const parseDateLabel = (dateLabel: string): Date | undefined => {
+  if (!dateLabel) return undefined;
+
+  // Format: "Mar 10, 2026"
+  const parts = dateLabel.split(" ");
+  if (parts.length !== 3) return undefined;
+
+  const monthAbbr = parts[0];
+  const day = parseInt(parts[1].replace(",", ""), 10);
+  const year = parseInt(parts[2], 10);
+
+  if (isNaN(day) || isNaN(year)) return undefined;
+
+  const monthIndex = MONTH_ABBREVIATIONS.indexOf(monthAbbr as (typeof MONTH_ABBREVIATIONS)[number]);
+  if (monthIndex === -1) return undefined;
+
+  const date = new Date(year, monthIndex, day);
+  // Validate the date is valid (handles cases like Feb 30)
+  if (date.getDate() !== day || date.getMonth() !== monthIndex || date.getFullYear() !== year) {
+    return undefined;
+  }
+
+  return date;
+};
+
+/**
+ * Find the day label for a given timestamp from a list of available days.
+ * Returns the label of the day that contains the timestamp.
+ *
+ * @param timestamp - Timestamp in milliseconds since epoch
+ * @param availableDays - Array of day objects with startMs, endMs, and label properties
+ * @returns Day label string or undefined if not found
+ * @example
+ * ```ts
+ * const days = [
+ *   { startMs: 1712793600000, endMs: 1712880000000, label: "Apr 11, 2026" },
+ *   { startMs: 1712880000000, endMs: 1712966400000, label: "Apr 12, 2026" }
+ * ];
+ * const label = findDayLabel(1712800000000, days);
+ * // Returns: "Apr 11, 2026"
+ * ```
+ */
+const findDayLabel = (
+  timestamp: number | undefined,
+  availableDays: Array<{ startMs: number; endMs: number; label: string }>
+): string | undefined => {
+  if (timestamp === undefined) return undefined;
+  const matchingDay = availableDays.find((day) => timestamp >= day.startMs && timestamp < day.endMs);
+  return matchingDay?.label;
+};
+
+export {
+  combineDateAndTime,
+  findDayLabel,
+  getDateFromMilliseconds,
+  getTimeFromMilliseconds,
+  getEventTimeRange,
+  getSendTime,
+  getTimeFromMinutes,
+  millisecondsToDate,
+  millisecondsToTime,
+  parseDateLabel,
+};

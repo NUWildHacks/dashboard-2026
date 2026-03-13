@@ -1,6 +1,8 @@
 export type WildHacksConfig = {
   max_team_size: number;
+  max_participants: number;
 
+  registration_deadline: number;
   start_time: number;
   end_time: number;
 

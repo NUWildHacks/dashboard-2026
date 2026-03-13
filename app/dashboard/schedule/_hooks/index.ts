@@ -1,2 +1,8 @@
+export { useEventFormDialog } from "./use-event-form-dialog";
+export type { UseEventFormDialogReturn } from "./use-event-form-dialog";
 export { useEvents } from "./use-events";
 export type { UseEventsReturn, UseEventsSettings } from "./use-events";
+export { useEventsTable } from "./use-events-table";
+export type { UseEventsTableReturn } from "./use-events-table";
+export { useScheduleDisplay } from "./use-schedule-display";
+export type { UseScheduleDisplayReturn } from "./use-schedule-display";

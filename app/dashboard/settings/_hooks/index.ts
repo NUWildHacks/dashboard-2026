@@ -1,4 +1,8 @@
-export { useEditProfileForm } from "./use-edit-profile-form";
-export type { UseEditProfileFormReturn } from "./use-edit-profile-form";
+export { useEditParticipantProfileForm } from "./use-edit-participant-profile-form";
+export type { UseEditParticipantProfileFormReturn } from "./use-edit-participant-profile-form";
+export { useEditJudgeMentorProfileForm } from "./use-edit-judge-mentor-profile-form";
+export type { UseEditJudgeMentorProfileFormReturn } from "./use-edit-judge-mentor-profile-form";
+export { useEditAdminProfileForm } from "./use-edit-admin-profile-form";
+export type { UseEditAdminProfileFormReturn } from "./use-edit-admin-profile-form";
 export { useEventWithdraw } from "./use-event-withdraw";
 export type { UseEventWithdrawReturn } from "./use-event-withdraw";

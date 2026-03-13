@@ -1,7 +1,8 @@
 import { LeaveProjectDialog } from "@/app/dashboard/project/_components";
-import type { Project, TeamMember } from "@/app/dashboard/project/_types";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { User } from "@/types";
+
+import type { Project, TeamMember } from "../../types";
 
 type TeamMemberItemProps = {
   userId: User["id"];

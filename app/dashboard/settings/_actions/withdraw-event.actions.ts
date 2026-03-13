@@ -1,19 +1,23 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
-import { PROJECTS_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_SETTINGS_PATH, USER_FIELDS } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import { getUserDocSnapshot } from "@/lib/user.lib";
-import type { ActionResult, WildHacksConfig } from "@/types";
+import admin from "@/config/firebase-admin";
+import {
+  PROJECTS_COLLECTION,
+  USERS_COLLECTION,
+  DASHBOARD_SETTINGS_PATH,
+  PARTICIPANT_USER_FIELDS,
+  LOGIN_PATH,
+} from "@/constants";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { ActionResult, ParticipantUser, User, WildHacksConfig } from "@/types";
+
+import type { Project } from "../../project/types";
 
 export type WithdrawEventResult = ActionResult;
 
 export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
-  const userId = await verifySession();
-  if (!userId) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`);
-
   const db = getFirestore();
   const now = Date.now();
 
@@ -28,60 +32,53 @@ export const withdrawEvent = async (): Promise<WithdrawEventResult> => {
       };
     }
 
-    const userDocSnapshot = await getUserDocSnapshot(userId);
-    if (!userDocSnapshot.exists) {
-      return {
-        success: false,
-        error: "User document not found",
-      };
-    }
-
-    const userData = userDocSnapshot.data();
-    const { project_id } = userData as { project_id?: string };
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_SETTINGS_PATH)}`;
+    const user = await getAuthenticatedUser(redirectPath);
+    const { project_id, id: userId } = user as { project_id?: ParticipantUser["project_id"]; id: User["id"] };
 
     if (project_id) {
       const projectDocRef = db.collection(PROJECTS_COLLECTION).doc(project_id);
+
       const projectDocSnapshot = await projectDocRef.get();
 
-      if (!projectDocSnapshot.exists) {
-        return {
-          success: false,
-          error: "Project not found",
-        };
-      }
+      if (projectDocSnapshot.exists) {
+        const { owner_id } = projectDocSnapshot.data() as Omit<Project, "id">;
 
-      const projectData = projectDocSnapshot.data();
-      const isOwner = projectData?.owner_id === userId;
+        const remainingTeamMembersQuery = await db
+          .collection(USERS_COLLECTION)
+          .where(PARTICIPANT_USER_FIELDS.project_id, "==", project_id)
+          .orderBy(PARTICIPANT_USER_FIELDS.joined_project_at, "asc")
+          .get();
 
-      const remainingTeamMembersQuery = await db
-        .collection(USERS_COLLECTION)
-        .where(USER_FIELDS.project_id, "==", project_id)
-        .orderBy(USER_FIELDS.joined_project_at, "asc")
-        .get();
+        const otherMembers = remainingTeamMembersQuery.docs.filter((doc) => doc.id !== userId);
 
-      if (remainingTeamMembersQuery.empty) {
-        await projectDocRef.delete();
-      } else if (isOwner) {
-        const newOwnerId = remainingTeamMembersQuery.docs[0].id;
+        if (otherMembers.length === 0) {
+          await projectDocRef.delete();
+        } else if (owner_id === userId) {
+          const newOwnerId = otherMembers[0]?.id;
 
-        await projectDocRef.update({
-          owner_id: newOwnerId,
-          updated_at: now,
-        });
+          if (newOwnerId) {
+            await projectDocRef.update({
+              owner_id: newOwnerId,
+              updated_at: now,
+            });
+          }
+        }
       }
     }
 
-    const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
-    await userDocRef.delete();
+    await db.collection(USERS_COLLECTION).doc(userId).delete();
+
+    await admin.auth().deleteUser(userId);
 
     return { success: true };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Withdraw event error:", errorMessage);
+    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    console.error("Withdraw event error:", detailedError);
 
-    return {
-      success: false,
-      error: errorMessage,
-    };
+    const isProduction = process.env.APP_ENV === "production";
+    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+
+    return { success: false, error: errorMessage };
   }
 };

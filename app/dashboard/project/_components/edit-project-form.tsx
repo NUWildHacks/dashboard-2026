@@ -4,12 +4,13 @@ import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/_types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+import { Project } from "../types";
 
 type EditProjectFormProps = {
   project: Project;
@@ -67,7 +68,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
                       placeholder={description}
                       aria-invalid={fieldState.invalid}
                       autoComplete="off"
-                      className="max-h-40"
+                      className="min-h-32 max-h-64 break-all"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
@@ -118,7 +119,7 @@ const EditProjectForm = ({ project }: EditProjectFormProps) => {
       <CardFooter>
         <Field orientation="horizontal" className="flex-row-reverse">
           <Button type="submit" form="edit-project-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save Changes"}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
           </Button>
           <Button type="button" variant="outline" disabled={isSubmitting || !isDirty} onClick={handleReset}>
             Reset

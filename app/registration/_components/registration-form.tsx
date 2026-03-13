@@ -40,14 +40,29 @@ import {
   SCHOOLS,
   TSHIRT_SIZES,
 } from "@/constants";
-import type { WildHacksConfig } from "@/types";
+import { User, WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = Pick<WildHacksConfig, "start_time" | "end_time">;
+type RegistrationFormProps = { userEmail: User["email"] } & Pick<
+  WildHacksConfig,
+  "start_time" | "end_time" | "max_participants" | "registration_deadline"
+>;
 
-const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(start_time, end_time);
+const RegistrationForm = ({
+  userEmail,
+  start_time,
+  end_time,
+  max_participants,
+  registration_deadline,
+}: RegistrationFormProps) => {
+  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(
+    userEmail,
+    start_time,
+    end_time,
+    max_participants,
+    registration_deadline
+  );
 
   const now = new Date().getTime();
 
@@ -122,6 +137,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                         placeholder="Enter your email"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
+                        disabled
                       />
                       {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                     </Field>
@@ -456,7 +472,7 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
 
             <FieldSeparator />
 
-            {now >= start_time && now < end_time && (
+            {now >= registration_deadline && now < start_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
@@ -514,9 +530,9 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                           MLH Code of Conduct
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I agree to the{" "}
+                          I have read and agree to the{" "}
                           <a
-                            href="https://mlh.io/code-of-conduct"
+                            href="https://github.com/MLH/mlh-policies/blob/main/code-of-conduct.md"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-primary"
@@ -550,14 +566,33 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                           MLH Privacy Policy
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I have read and agree to the{" "}
+                          I authorize you to share my application/registration information with Major League Hacking for
+                          event administration, ranking, and MLH administration in-line with the{" "}
                           <a
-                            href="https://mlh.io/privacy"
+                            href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-primary"
                           >
-                            MLH Privacy Policy
+                            MLH Privacy Policy.
+                          </a>{" "}
+                          I further agree to the terms of both the{" "}
+                          <a
+                            href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-primary"
+                          >
+                            MLH Contest Terms and Conditions
+                          </a>{" "}
+                          and the{" "}
+                          <a
+                            href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-primary"
+                          >
+                            MLH Privacy Policy.
                           </a>
                         </FieldDescription>
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
@@ -581,7 +616,8 @@ const RegistrationForm = ({ start_time, end_time }: RegistrationFormProps) => {
                       <FieldContent>
                         <FieldLabel htmlFor={field.name}>MLH Email Communications</FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize MLH to send me occasional emails about relevant events and opportunities
+                          I authorize MLH to send me occasional emails about relevant events, career opportunities, and
+                          community announcements.
                         </FieldDescription>
                         {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                       </FieldContent>

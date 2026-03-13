@@ -1,17 +1,12 @@
 import { JSX } from "react";
 
 import { CalendarItem } from "@/app/dashboard/schedule/_components";
-import {
-  BASE_Z_INDEX,
-  CALENDAR_ROWS,
-  DEFAULT_FIRST_CALENDAR_ROW_INDEX,
-  DEFAULT_LAST_CALENDAR_ROW_INDEX,
-  ROW_HEIGHT,
-  ROW_WIDTH_PERCENTAGE,
-} from "@/app/dashboard/schedule/_constants";
-import type { CalendarRowConfig, Event } from "@/app/dashboard/schedule/_types";
-import { ONE_DAY, ONE_MINUTE } from "@/constants";
-import type { UseDialogReturn } from "@/hooks";
+import { ONE_MINUTE } from "@/constants";
+import type { UseItemDialogReturn } from "@/hooks";
+import { WildHacksConfig } from "@/types";
+
+import { BASE_Z_INDEX, CALENDAR_ROWS, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "../constants";
+import type { CalendarDay, CalendarRowConfig, Event } from "../types";
 
 /**
  * Get the start of a day (midnight) in milliseconds for a given timestamp.
@@ -24,25 +19,10 @@ import type { UseDialogReturn } from "@/hooks";
  * const dayStart = getDayStart(timestamp); // Returns midnight (00:00:00) of April 11, 2026
  * ```
  */
-const getDayStart = (milliseconds: number): number => {
+const getDayStartFromMilliseconds = (milliseconds: number): number => {
   const date = new Date(milliseconds);
   date.setHours(0, 0, 0, 0);
   return date.getTime();
-};
-
-/**
- * Get the end of a day (next midnight) in milliseconds for a given timestamp.
- *
- * @param milliseconds - Timestamp in milliseconds since epoch
- * @returns The end of the day (next midnight) in milliseconds since epoch
- * @example
- * ```ts
- * const timestamp = new Date('2026-04-11T14:30:00').getTime(); // 2:30 PM
- * const dayEnd = getDayEnd(timestamp); // Returns midnight (00:00:00) of April 12, 2026
- * ```
- */
-const getDayEnd = (milliseconds: number): number => {
-  return getDayStart(milliseconds) + ONE_DAY;
 };
 
 /**
@@ -64,29 +44,6 @@ const millisecondsToMinutesInDay = (milliseconds: number, dayStart: number): num
 };
 
 /**
- * Filter events that occur on a specific day.
- * An event is considered to occur on a day if it overlaps with the day's time range.
- *
- * @param events - Array of events to filter
- * @param dayStart - The start of the day in milliseconds since epoch
- * @param dayEnd - The end of the day in milliseconds since epoch
- * @returns Array of events that occur on the specified day
- * @example
- * ```ts
- * const events = [
- *   { id: '1', start_time: new Date('2026-04-11T10:00:00').getTime(), end_time: new Date('2026-04-11T11:00:00').getTime() },
- *   { id: '2', start_time: new Date('2026-04-12T10:00:00').getTime(), end_time: new Date('2026-04-12T11:00:00').getTime() },
- * ];
- * const dayStart = new Date('2026-04-11T00:00:00').getTime();
- * const dayEnd = new Date('2026-04-12T00:00:00').getTime();
- * const filtered = filterEventsByDay(events, dayStart, dayEnd); // Returns only event with id '1'
- * ```
- */
-const filterEventsByDay = (events: Event[], dayStart: number, dayEnd: number): Event[] => {
-  return events.filter((event) => event.start_time < dayEnd && event.end_time > dayStart);
-};
-
-/**
  * Create overlap groups for events that occur at the same time.
  * Events that overlap in time are grouped together, with the first event in each group
  * serving as the anchor. This is used to determine how to display overlapping events
@@ -105,7 +62,7 @@ const filterEventsByDay = (events: Event[], dayStart: number, dayEnd: number): E
  * // Returns: Map { '1' => Set(['2']), '3' => Set() }
  * ```
  */
-export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
+const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
   const overlapGroups = new Map<Event["id"], Set<Event["id"]>>();
 
   // Sort events by start time
@@ -128,55 +85,54 @@ export const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event
 };
 
 /**
- * Get the visible calendar rows based on the events for a given day.
- * Determines which time slots (rows) should be displayed based on when events start and end.
- * Returns a subset of CALENDAR_ROWS that includes all events, with a minimum default range.
+ * Get the visible calendar rows for a given day based on the wildhacks event time range.
+ * Determines which time slots (rows) should be displayed based on when the wildhacks event
+ * overlaps with the current day. For multi-day events:
+ * - If event starts on this day: shows from start time to 23:59
+ * - If event ends on this day: shows from 00:00 to end time
+ * - If event spans this day: shows full day (00:00-23:59)
+ * - If no overlap: shows default range
  *
- * @param events - Array of events for the selected day
- * @param dayStart - The start of the day in milliseconds since epoch
+ * @param wildhacksStartTime - The start time of the wildhacks event in milliseconds since epoch
+ * @param wildhacksEndTime - The end time of the wildhacks event in milliseconds since epoch
+ * @param currentDay - The start of the current day in milliseconds since epoch
  * @returns Array of calendar row configurations to display
  * @example
  * ```ts
- * const events = [
- *   { id: '1', start_time: new Date('2026-04-11T09:00:00').getTime(), end_time: new Date('2026-04-11T10:00:00').getTime() },
- *   { id: '2', start_time: new Date('2026-04-11T15:00:00').getTime(), end_time: new Date('2026-04-11T16:00:00').getTime() },
- * ];
- * const dayStart = new Date('2026-04-11T00:00:00').getTime();
- * const rows = getVisibleCalendarRows(events, dayStart);
- * // Returns calendar rows from 9 AM to 4 PM (or default range if wider)
+ * // Event from 10am Apr 11 to 5pm Apr 12
+ * const wildhacksStartTime = new Date('2026-04-11T10:00:00').getTime();
+ * const wildhacksEndTime = new Date('2026-04-12T17:00:00').getTime();
+ *
+ * // For Apr 11
+ * const dayStartApr11 = new Date('2026-04-11T00:00:00').getTime();
+ * const rowsApr11 = getVisibleCalendarRows(wildhacksStartTime, wildhacksEndTime, dayStartApr11);
+ * // Returns calendar rows from 10 AM to 11 PM (10:00-23:59)
+ *
+ * // For Apr 12
+ * const dayStartApr12 = new Date('2026-04-12T00:00:00').getTime();
+ * const rowsApr12 = getVisibleCalendarRows(wildhacksStartTime, wildhacksEndTime, dayStartApr12);
+ * // Returns calendar rows from 12 AM to 5 PM (00:00-17:00)
  * ```
  */
-export const getVisibleCalendarRows = (events: Event[], dayStart: number): CalendarRowConfig[] => {
-  if (events.length === 0)
-    return CALENDAR_ROWS.slice(DEFAULT_FIRST_CALENDAR_ROW_INDEX, DEFAULT_LAST_CALENDAR_ROW_INDEX + 1);
+const getVisibleCalendarRows = (
+  wildhacksStartTime: WildHacksConfig["start_time"],
+  wildhacksEndTime: WildHacksConfig["end_time"],
+  calendarDayStartMs: CalendarDay["startMs"],
+  calendarDayEndMs: CalendarDay["endMs"]
+): CalendarRowConfig[] => {
+  const eventStartOnDay = Math.max(wildhacksStartTime, calendarDayStartMs);
+  const eventEndOnDay = Math.min(wildhacksEndTime, calendarDayEndMs);
 
-  // Convert event times to minutes within the day
-  const eventsWithMinutes = events.map((event) => ({
-    startMinutes: millisecondsToMinutesInDay(event.start_time, dayStart),
-    endMinutes: millisecondsToMinutesInDay(event.end_time, dayStart),
-  }));
+  const startMinutes = millisecondsToMinutesInDay(eventStartOnDay, calendarDayStartMs);
+  const endMinutes = millisecondsToMinutesInDay(eventEndOnDay, calendarDayStartMs);
 
-  // Sort by start time
-  eventsWithMinutes.sort((a, b) => a.startMinutes - b.startMinutes);
-
-  const firstEvent = eventsWithMinutes.at(0)!;
-  const lastEvent = eventsWithMinutes.at(-1)!;
-
-  const firstVisibleRowIndex = Math.min(
-    CALENDAR_ROWS.findIndex(
-      (interval) => interval.start <= firstEvent.startMinutes && interval.end > firstEvent.startMinutes
-    ),
-    DEFAULT_FIRST_CALENDAR_ROW_INDEX
+  const firstVisibleRowIndex = CALENDAR_ROWS.findIndex(
+    (interval) => interval.startMin <= startMinutes && interval.endMin > startMinutes
   );
   const lastVisibleRowIndex =
-    Math.max(
-      CALENDAR_ROWS.findIndex(
-        (interval) => interval.start < lastEvent.endMinutes && interval.end >= lastEvent.endMinutes
-      ) + 1,
-      DEFAULT_LAST_CALENDAR_ROW_INDEX
-    ) + 1;
+    CALENDAR_ROWS.findIndex((interval) => interval.startMin < endMinutes && interval.endMin >= endMinutes) + 1;
 
-  return CALENDAR_ROWS.slice(firstVisibleRowIndex, lastVisibleRowIndex);
+  return CALENDAR_ROWS.slice(firstVisibleRowIndex, lastVisibleRowIndex + 1);
 };
 
 /**
@@ -337,33 +293,33 @@ const isStandaloneEvent = (eventId: Event["id"], overlapGroups: Map<Event["id"],
  * // Returns array of CalendarItem components positioned side-by-side (50% width each)
  * ```
  */
-export const getCalendarItems = (
+const getCalendarItems = (
   events: Event[],
-  start: number,
-  end: number,
   overlapGroups: Map<Event["id"], Set<Event["id"]>>,
-  handleSelectItem: UseDialogReturn<Event>["handleSelectItem"],
-  dayStart: number
+  calendarRowStartMin: CalendarRowConfig["startMin"],
+  calendarRowEndMin: CalendarRowConfig["endMin"],
+  handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
+  calendarDayStartMs: CalendarDay["startMs"]
 ): JSX.Element[] => {
   const calendarItems: JSX.Element[] = [];
-  const slotDuration = end - start;
+  const slotDuration = calendarRowEndMin - calendarRowStartMin;
 
   // Convert event times to minutes and filter by the calendar row time range
   const filteredEvents = events
     .map((event) => ({
       event,
-      startMinutes: millisecondsToMinutesInDay(event.start_time, dayStart),
-      endMinutes: millisecondsToMinutesInDay(event.end_time, dayStart),
+      startMinutes: millisecondsToMinutesInDay(event.start_time, calendarDayStartMs),
+      endMinutes: millisecondsToMinutesInDay(event.end_time, calendarDayStartMs),
     }))
-    .filter(({ startMinutes }) => startMinutes >= start && startMinutes < end)
+    .filter(({ startMinutes }) => startMinutes >= calendarRowStartMin && startMinutes < calendarRowEndMin)
     .sort((a, b) => a.startMinutes - b.startMinutes)
     .map(({ event }) => event);
 
   for (let i = 0; i < filteredEvents.length; i++) {
     const event = filteredEvents[i]!;
 
-    const top = calculateTopPosition(event, start, slotDuration, dayStart);
-    const height = calculateItemHeight(event, slotDuration, dayStart);
+    const top = calculateTopPosition(event, calendarRowStartMin, slotDuration, calendarDayStartMs);
+    const height = calculateItemHeight(event, slotDuration, calendarDayStartMs);
 
     let zIndex = BASE_Z_INDEX;
     for (let j = 0; j < i; j++) {
@@ -432,5 +388,4 @@ export const getCalendarItems = (
   return calendarItems;
 };
 
-// Export helper functions for use in calendar component
-export { filterEventsByDay, getDayStart, getDayEnd };
+export { createOverlapGroups, getCalendarItems, getDayStartFromMilliseconds, getVisibleCalendarRows };
