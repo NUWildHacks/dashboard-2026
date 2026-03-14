@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH, MENTOR } from "@/constants";
-import type { ActionResult, User } from "@/types";
+import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
 import { verifySession } from ".";
 
@@ -80,4 +80,45 @@ const requireRole = <T extends User["role"]>(
   return null;
 };
 
-export { getAuthenticatedUser, requireRole };
+/**
+ * Onboard a judge or mentor user by marking them as onboarded.
+ * Retrieves the user document and checks if they are already onboarded.
+ * If not onboarded, updates the user document to set onboarded to true and updates the updated_at timestamp.
+ *
+ * @param id - The unique identifier of the user to onboard
+ * @returns Promise resolving to a boolean:
+ *   - `false` if the user was just onboarded (wasn't onboarded before)
+ *   - `true` if the user was already onboarded
+ * @example
+ * ```ts
+ * const wasAlreadyOnboarded = await onboardUser(userId);
+ * if (!wasAlreadyOnboarded) {
+ *   console.log("User was just onboarded");
+ * } else {
+ *   console.log("User was already onboarded");
+ * }
+ * ```
+ */
+const onboardUser = async (id: User["id"]): Promise<boolean> => {
+  const db = getFirestore();
+  const now = Date.now();
+
+  const judgeDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
+  const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
+
+  if (!onboarded) {
+    await db
+      .collection(USERS_COLLECTION)
+      .doc(id)
+      .update({
+        onboarded: true,
+        updated_at: now,
+      } as Partial<JudgeUser | MentorUser>);
+
+    return false;
+  }
+
+  return true;
+};
+
+export { getAuthenticatedUser, requireRole, onboardUser };
