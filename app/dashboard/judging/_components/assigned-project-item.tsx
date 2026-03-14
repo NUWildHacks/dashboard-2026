@@ -1,10 +1,7 @@
 "use client";
 
-import { Pencil } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import { ProjectWithMetadata } from "../types";
@@ -17,7 +14,13 @@ const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: Ass
   const { name, track, judging_form } = projectWithMetadata;
 
   return (
-    <Item variant="outline">
+    <Item
+      variant="outline"
+      tabIndex={0}
+      aria-label={`Judge project: ${name}`}
+      onClick={() => handleOpenJudgingForm(projectWithMetadata)}
+      className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
+    >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{name}</span>
@@ -34,16 +37,6 @@ const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: Ass
           )}
         </ItemDescription>
       </ItemContent>
-      <ItemActions>
-        <Button
-          variant="outline"
-          size="icon-sm"
-          onClick={() => handleOpenJudgingForm(projectWithMetadata)}
-          aria-label="Edit judging form"
-        >
-          <Pencil aria-hidden="true" />
-        </Button>
-      </ItemActions>
     </Item>
   );
 };
