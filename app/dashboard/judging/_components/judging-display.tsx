@@ -61,8 +61,8 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <Alert className="rounded-md border-green-600 bg-green-600/10 text-green-600 dark:border-green-400 dark:bg-green-400/10 dark:text-green-400">
-          <ExternalLinkIcon />
+        <Alert className="rounded-md border-yellow-600 bg-yellow-600/10 text-yellow-600 dark:border-yellow-400 dark:bg-yellow-400/10 dark:text-yellow-400">
+          {/* <ExternalLinkIcon /> */}
           <AlertTitle>
             {/* <a
               href={JUDGING_GUIDE_PATH}
