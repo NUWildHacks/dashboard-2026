@@ -62,4 +62,5 @@ export const JUDGE_USER_FIELDS = {
   affiliated_company: "affiliated_company",
   modality: "modality",
   other_modality: "other_modality",
+  onboarded: "onboarded",
 } as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;
