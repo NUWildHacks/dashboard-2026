@@ -88,10 +88,13 @@ const onboardUser = async (id: User["id"]): Promise<boolean> => {
   const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
 
   if (!onboarded) {
-    await db.collection(USERS_COLLECTION).doc(id).update({
-      onboarded: true,
-      updated_at: now,
-    } as Partial<JudgeUser | MentorUser>);
+    await db
+      .collection(USERS_COLLECTION)
+      .doc(id)
+      .update({
+        onboarded: true,
+        updated_at: now,
+      } as Partial<JudgeUser | MentorUser>);
 
     return false;
   }

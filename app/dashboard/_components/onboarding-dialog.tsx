@@ -26,7 +26,8 @@ const OnboardingDialog = ({ onboarded }: OnboardingDialogProps) => {
         <DialogHeader>
           <DialogTitle>Welcome!</DialogTitle>
           <DialogDescription>
-            You are now onboarded for WildHacks 2026! You can close this dialog now and wait for projects to be assigned to you.
+            You are now onboarded for WildHacks 2026! You can close this dialog now and wait for projects to be assigned
+            to you.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

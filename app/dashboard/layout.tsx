@@ -14,12 +14,12 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const { id: userId, role } = await getAuthenticatedUser(redirectPath);
   if (!userId) redirect(redirectPath);
 
-  const onboarded = (role === JUDGE || role === MENTOR) ? await onboardUser(userId) : true;
+  const onboarded = role === JUDGE || role === MENTOR ? await onboardUser(userId) : true;
 
   return (
     <>
       <DashboardSidebar role={role}>{children}</DashboardSidebar>
-      { role === JUDGE || role === MENTOR && <OnboardingDialog onboarded={onboarded} /> }
+      {role === JUDGE || (role === MENTOR && <OnboardingDialog onboarded={onboarded} />)}
     </>
   );
 };

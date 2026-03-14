@@ -19,7 +19,7 @@ const QRCode = ({ userId }: QRCodeProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="shadow-xs transition-colors hover:bg-accent hover:cursor-pointer">
+        <Card className="shadow-xs transition-colors hover:bg-accent hover:cursor-pointer h-full">
           <CardHeader>
             <CardTitle>View QR Code</CardTitle>
             <CardDescription>
