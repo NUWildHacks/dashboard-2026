@@ -28,10 +28,7 @@ const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
       ? "project assignments will appear here once judging begins!"
       : "you'll be notified once mentoring sign-ups open!";
 
-  const roleText = 
-    role === JUDGE
-      ? "Judge"
-      : "Mentor";
+  const roleText = role === JUDGE ? "Judge" : "Mentor";
 
   return (
     <Dialog open={isOnboardingDialogOpen} onOpenChange={setIsOnboardingDialogOpen}>
@@ -39,10 +36,9 @@ const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
         <DialogHeader>
           <DialogTitle>Welcome!</DialogTitle>
           <DialogDescription>
-            You&apos;re now officially a WildHacks 2026 {roleText}! Please take a 
-            moment to review your personal details and modality under settings. 
-            You can now close this dialog and explore the dashboard -- {" "}
-            {descriptionText}</DialogDescription>
+            You&apos;re now officially a WildHacks 2026 {roleText}! Please take a moment to review your personal details
+            and modality under settings. You can now close this dialog and explore the dashboard -- {descriptionText}
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>

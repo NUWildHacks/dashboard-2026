@@ -70,7 +70,7 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
               rel="noreferrer"
               className="underline-offset-4 hover:underline"
             > */}
-              Judging Guide coming soon...
+            Judging Guide coming soon...
             {/* </a> */}
           </AlertTitle>
         </Alert>
