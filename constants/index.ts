@@ -23,6 +23,7 @@ export {
   JUDGE_REGISTRATION_PATH,
   WILDHACKS_HOME,
   TECH_ROOM_FINDER_PATH,
+  JUDGING_GUIDE_PATH,
 } from "./routes.constants";
 
 export {

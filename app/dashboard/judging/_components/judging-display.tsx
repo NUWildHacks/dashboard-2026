@@ -1,9 +1,11 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import { ExternalLinkIcon, SearchIcon } from "lucide-react";
 
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { JUDGING_GUIDE_PATH } from "@/constants";
 import { CategoryWithAll, useFilters } from "@/hooks";
 import { JudgeUser } from "@/types";
 
@@ -28,7 +30,7 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
 
   return (
     <>
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="h-full flex flex-col gap-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<Track>)}>
             <SelectTrigger className="min-w-[190px] lg:w-[190px] w-full">
@@ -59,6 +61,19 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
             </InputGroupAddon>
           </InputGroup>
         </div>
+        <Alert className="rounded-md border-green-600 bg-green-600/10 text-green-600 dark:border-green-400 dark:bg-green-400/10 dark:text-green-400">
+          <ExternalLinkIcon />
+          <AlertTitle>
+            <a
+              href={JUDGING_GUIDE_PATH}
+              target="_blank"
+              rel="noreferrer"
+              className="underline-offset-4 hover:underline"
+            >
+              View the judging guide
+            </a>
+          </AlertTitle>
+        </Alert>
         <AssignedProjectGrid
           handleOpenJudgingForm={handleOpenJudgingForm}
           projectsWithMetadata={filteredProjectsWithMetadata}

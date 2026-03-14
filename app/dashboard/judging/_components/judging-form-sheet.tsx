@@ -40,7 +40,7 @@ const JudgingFormSheet = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="sm:max-w-[500px]">
+      <SheetContent className="sm:max-w-[550px]">
         <SheetHeader className="pb-0">
           <SheetTitle>Judging Form</SheetTitle>
           <SheetDescription asChild className="space-y-1">
