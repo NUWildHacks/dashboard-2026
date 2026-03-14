@@ -18,28 +18,28 @@
       "name": "Best Use of Gemini API",
       "prize": "Google Branded Backpacks",
       "description": "Push the boundaries of AI with Google Gemini. Build AI-powered apps that can understand language, analyze complex information, or generate creative content.",
-      "linkLabel": "Build with Gemini →",
+      "linkLabel": "Build with Gemini",
       "linkUrl": "https://mlh.link/gemini-quickstart"
     },
     {
       "name": "Best Use of MongoDB Atlas",
       "prize": "M5GO IoT Starter Kit",
       "description": "Use MongoDB Atlas to build a modern, cloud-ready data platform for your hack. Get started with the student credit or free tier.",
-      "linkLabel": "Build with MongoDB →",
+      "linkLabel": "Build with MongoDB",
       "linkUrl": "https://mlh.link/mongodb"
     },
     {
       "name": "Best .Tech Domain Name",
       "prize": "Blue Snowball Microphone & a Free .Tech Domain Name for up to 10 years",
       "description": "Showcase your project with a custom .Tech domain and win microphones to level up your collaboration setup.",
-      "linkLabel": "Build with .Tech →",
+      "linkLabel": "Build with .Tech",
       "linkUrl": "https://get.tech/mlh"
     },
     {
       "name": "Best Use of Auth0",
       "prize": "Wireless Headphones",
       "description": "Secure your apps with Auth0’s authentication features. Enable social sign-in, MFA, and passwordless login quickly.",
-      "linkLabel": "Build with Auth0 →",
+      "linkLabel": "Build with Auth0",
       "linkUrl": "https://mlh.link/auth0-MLH-guides"
     },
     {

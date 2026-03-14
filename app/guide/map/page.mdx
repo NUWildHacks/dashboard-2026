@@ -20,7 +20,26 @@ WildHacks programming will take place across two buildings connected to each oth
 
 Check-in, workshops, and opening/closing ceremony will take place in Tech. The building is accessible via the main entrance on the west side of the building, which faces Sheridan Road.
 
-**Northwestern University Techological Institute**<br />2145 Sheridan Road<br />Evanston, IL 60208<br />[View on Apple Maps](https://maps.apple.com/?address=2145%20Sheridan%20Rd,%20Evanston,%20IL%2060208,%20United%20States&auid=9021466912054288827&ll=42.057769,-87.675877&lsp=9902&q=Technological%20Institute)<br />[View on Google Maps](https://maps.app.goo.gl/KvQNxa82V3LPenuh8)
+<div className="guide-map-venue">
+  <p className="guide-map-venue-title">Northwestern University Technological Institute</p>
+  <p className="guide-map-venue-address">2145 Sheridan Road, Evanston, IL 60208</p>
+  <div className="guide-map-venue-links">
+    <a
+      href="https://maps.apple.com/?address=2145%20Sheridan%20Rd,%20Evanston,%20IL%2060208,%20United%20States&auid=9021466912054288827&ll=42.057769,-87.675877&lsp=9902&q=Technological%20Institute"
+      target="_blank"
+      rel="noreferrer"
+    >
+      View on Apple Maps
+    </a>
+    <a
+      href="https://www.google.com/maps/search/?api=1&query=2145%20Sheridan%20Road%2C%20Evanston%2C%20IL%2060208"
+      target="_blank"
+      rel="noreferrer"
+    >
+      View on Google Maps
+    </a>
+  </div>
+</div>
 
 ### Mudd
 
@@ -28,7 +47,31 @@ The [WildHacks Help Desk](/guide/help-desk) and [WildSnacks Station](/guide/logi
 
 The area will be open 24/7 and will include [overnight spaces](/guide/logistics/sleeping-and-showering).
 
-**Seeley G. Mudd Library**<br />2233 Tech Drive<br />Evanston, IL 60208<br />[View on Apple Maps](https://maps.apple.com/?address=2233%20Tech%20Dr,%20Evanston,%20IL%20%2060208,%20United%20States&auid=875104193315716512&ll=42.058282,-87.674389&lsp=9902&q=Mudd%20Library)<br />[View on Google Maps](https://maps.app.goo.gl/oxMTM9ysAxL3zPUW7)
+<div className="guide-map-venue">
+  <p className="guide-map-venue-title">Seeley G. Mudd Library</p>
+  <p className="guide-map-venue-address">2233 Tech Drive, Evanston, IL 60208</p>
+  <div className="guide-map-venue-links">
+    <a
+      href="https://maps.apple.com/?address=2233%20Tech%20Dr,%20Evanston,%20IL%20%2060208,%20United%20States&auid=875104193315716512&ll=42.058282,-87.674389&lsp=9902&q=Mudd%20Library"
+      target="_blank"
+      rel="noreferrer"
+    >
+      View on Apple Maps
+    </a>
+    <a
+      href="https://www.google.com/maps/search/?api=1&query=2233%20Tech%20Drive%2C%20Evanston%2C%20IL%2060208"
+      target="_blank"
+      rel="noreferrer"
+    >
+      View on Google Maps
+    </a>
+  </div>
+</div>
+
+<Callout type="note" emoji="🧩">
+  Space rows support richer metadata now: <strong>capacity</strong>, <strong>photo links</strong>, and{" "}
+  <strong>notes</strong>. Add fields in map data and they render automatically.
+</Callout>
 
 ### Saturday, April 11 Spaces
 
@@ -49,7 +92,20 @@ The area will be open 24/7 and will include [overnight spaces](/guide/logistics/
         <td data-label="Location">
           <InlineSegments segments={space.location} />
         </td>
-        <td data-label="Description">{space.description}</td>
+        <td data-label="Description">
+          <span className="guide-map-space-description">{space.description}</span>
+          {(space.capacity || space.notes || space.photoHref) && (
+            <span className="guide-map-space-meta">
+              {space.capacity ? <span>Capacity: {space.capacity}</span> : null}
+              {space.notes ? <span>{space.notes}</span> : null}
+              {space.photoHref ? (
+                <a className="guide-map-space-photo-link" href={space.photoHref} target="_blank" rel="noreferrer">
+                  View photo
+                </a>
+              ) : null}
+            </span>
+          )}
+        </td>
       </tr>
     ))}
   </tbody>
@@ -74,7 +130,20 @@ The area will be open 24/7 and will include [overnight spaces](/guide/logistics/
         <td data-label="Location">
           <InlineSegments segments={space.location} />
         </td>
-        <td data-label="Description">{space.description}</td>
+        <td data-label="Description">
+          <span className="guide-map-space-description">{space.description}</span>
+          {(space.capacity || space.notes || space.photoHref) && (
+            <span className="guide-map-space-meta">
+              {space.capacity ? <span>Capacity: {space.capacity}</span> : null}
+              {space.notes ? <span>{space.notes}</span> : null}
+              {space.photoHref ? (
+                <a className="guide-map-space-photo-link" href={space.photoHref} target="_blank" rel="noreferrer">
+                  View photo
+                </a>
+              ) : null}
+            </span>
+          )}
+        </td>
       </tr>
     ))}
   </tbody>
@@ -82,6 +151,6 @@ The area will be open 24/7 and will include [overnight spaces](/guide/logistics/
 
 ## Map
 
-[View a full size version of the map →](/guide/map.png)
+[View a full size version of the map](/guide/map.png)
 
 <GuideImage src="map.png" alt="WildHacks Event Map" />

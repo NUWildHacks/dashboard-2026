@@ -4,6 +4,9 @@ type MapRow = {
   readonly name: InlineSegment[];
   readonly location: InlineSegment[];
   readonly description: string;
+  readonly capacity: string;
+  readonly photoHref?: string;
+  readonly notes?: string;
 };
 
 const text = (content: string): InlineSegment[] => [{ content }];
@@ -18,6 +21,9 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Opening Ceremony",
+    capacity: "TBD",
+    photoHref: "/guide/tech-institute.jpg",
+    notes: "Main stage room for opening and large presentations.",
   },
   {
     name: text("Sponsor Fair"),
@@ -28,41 +34,52 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Sponsor Fair",
+    capacity: "TBD",
+    notes: "Drop in anytime during expo hours.",
   },
   {
     name: text("Meals"),
     location: text("Mudd 1st Floor"),
     description: "Meal Distribution",
+    capacity: "TBD",
   },
   {
     name: text("Help Desk / WildSnacks"),
     location: text("Mudd 2nd Floor"),
     description: "Help Desk and Snacks",
+    capacity: "TBD",
+    notes: "Organizer staffed area with snacks and supplies.",
   },
   {
     name: text("General Collaboration"),
     location: text("Mudd 3rd Floor"),
     description: "Collaboration and Overnight Space",
+    capacity: "TBD",
+    notes: "Open collaboration zone; overnight use allowed.",
   },
   {
     name: text("Collaboration 1"),
     location: text("Mudd 3001"),
     description: "Collaboration and Overnight Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 2"),
     location: text("Mudd 3108"),
     description: "Collaboration and Overnight Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 3"),
     location: text("Mudd 3501"),
     description: "Collaboration and Overnight Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 4"),
     location: text("Mudd 3514"),
     description: "Collaboration and Overnight Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 5"),
@@ -73,6 +90,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 6"),
@@ -83,6 +101,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 7"),
@@ -93,6 +112,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 8"),
@@ -103,6 +123,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 9"),
@@ -113,6 +134,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 10"),
@@ -123,6 +145,7 @@ export const saturdaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
 ];
 
@@ -136,6 +159,9 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Closing Ceremony",
+    capacity: "TBD",
+    photoHref: "/guide/tech-institute.jpg",
+    notes: "Live finals and closing ceremony venue.",
   },
   {
     name: text("Crowd Favorite"),
@@ -146,41 +172,51 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Crowd Favorite",
+    capacity: "TBD",
+    notes: "Public-facing demos for crowd voting.",
   },
   {
     name: text("Meals"),
     location: text("Mudd 1st Floor"),
     description: "Meal Distribution",
+    capacity: "TBD",
   },
   {
     name: text("Help Desk / WildSnacks"),
     location: text("Mudd 2nd Floor"),
     description: "Help Desk and Snacks",
+    capacity: "TBD",
+    notes: "Organizer staffed area with snacks and supplies.",
   },
   {
     name: text("General Collaboration"),
     location: text("Mudd 3rd Floor"),
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 1"),
     location: text("Mudd 3001"),
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 2"),
     location: text("Mudd 3108"),
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 3"),
     location: text("Mudd 3501"),
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 4"),
     location: text("Mudd 3514"),
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 5"),
@@ -191,6 +227,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 6"),
@@ -201,6 +238,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 7"),
@@ -211,6 +249,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 8"),
@@ -221,6 +260,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 9"),
@@ -231,6 +271,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 10"),
@@ -241,6 +282,7 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
   {
     name: text("Collaboration 11"),
@@ -251,5 +293,6 @@ export const sundaySpaces: MapRow[] = [
       },
     ],
     description: "Collaboration Space",
+    capacity: "TBD",
   },
 ];

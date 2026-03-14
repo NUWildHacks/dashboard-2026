@@ -870,7 +870,7 @@
 .guide-content-article a {
   color: var(--secondary-color);
   font-weight: 540;
-  font-size: 1.03em;
+  font-size: 1em;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -884,6 +884,7 @@
 .guide-content-article a[href^="../"],
 .guide-content-article a[href^="#"] {
   text-decoration: underline;
+  text-decoration-style: solid;
   text-decoration-color: rgba(var(--secondary-rgb), 0.5);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
@@ -894,17 +895,59 @@
 .guide-content-article a[href^="//"] {
   color: #1a94de;
   text-decoration: underline;
-  text-decoration-style: dashed;
+  text-decoration-style: dotted;
   text-decoration-color: rgba(26, 148, 222, 0.7);
   text-underline-offset: 0.2em;
 }
 
-.guide-content-article a[href^="http://"]::after,
-.guide-content-article a[href^="https://"]::after,
-.guide-content-article a[href^="//"]::after {
-  content: " \2197";
-  font-size: 0.8em;
-  line-height: 1;
+.guide-map-venue {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0 0 1.2rem;
+}
+
+.guide-map-venue-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 640;
+  color: var(--heading-color);
+}
+
+.guide-map-venue-address {
+  margin: 0;
+  font-size: 0.96rem;
+  color: var(--body-color);
+  line-height: 1.6;
+}
+
+.guide-map-venue-links {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.guide-content-article .guide-map-space-photo-link {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.guide-map-space-description {
+  display: block;
+}
+
+.guide-map-space-meta {
+  margin-top: 0.35rem;
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: var(--muted-color);
+}
+
+.guide-map-space-photo-link {
+  width: fit-content;
 }
 
 .guide-callout {
