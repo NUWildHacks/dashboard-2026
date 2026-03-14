@@ -1,6 +1,6 @@
-import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap, OnboardingDialog } from "@/app/dashboard/_components";
+import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap } from "@/app/dashboard/_components";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH } from "@/constants";
-import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot, onboardUser } from "@/lib";
+import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
 const DashboardPage = async () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Star } from "lucide-react";
 import { useState } from "react";
 import { FieldValues, UseControllerReturn } from "react-hook-form";
 
@@ -38,7 +38,7 @@ const Rating = <T extends FieldValues>({ label, fieldName, field, fieldState }: 
             onMouseLeave={() => setHoverRating(0)}
             type="button"
           >
-            <Heart
+            <Star
               className={cn(
                 "h-6 w-6 transition-colors",
                 (hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
