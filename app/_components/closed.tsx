@@ -9,7 +9,7 @@ const Closed = () => {
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">Welcome to WildHacks 2026! 🚀</h2>
       <p>
-        Closeds for participants, judges, and mentors are now closed, but the excitement is just getting started. For
+        Registration for participants, judges, and mentors are now closed, but the excitement is just getting started. For
         those joining us for the weekend, get ready to build something amazing in 24 hours alongside hundreds of
         students in a weekend of innovation, collaboration, and creativity!
       </p>
