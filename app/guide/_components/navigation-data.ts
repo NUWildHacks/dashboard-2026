@@ -34,7 +34,6 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
       { title: "Travel", href: "/guide/logistics/travel" },
       { title: "Checking In", href: "/guide/logistics/checking-in" },
       { title: "Food and Drinks", href: "/guide/logistics/food-and-drinks" },
-      { title: "Meal Options", href: "/guide/logistics/meal-options" },
       { title: "Sleeping and Showering", href: "/guide/logistics/sleeping-and-showering" },
       { title: "Leaving the Venue", href: "/guide/logistics/leaving-the-venue" },
     ],
@@ -51,8 +50,8 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
   {
     title: "Judging and Awards",
     children: [
-      { title: "How Judging Works", href: "/guide/judging-and-awards/how-judging-works" },
-      { title: "Project Evaluation", href: "/guide/judging-and-awards/project-evaluation" },
+      { title: "Judging Rounds", href: "/guide/judging-and-awards/how-judging-works" },
+      { title: "Project Evaluation Criteria", href: "/guide/judging-and-awards/project-evaluation" },
       { title: "Prizes", href: "/guide/judging-and-awards/prizes" },
       { title: "Understanding Your Scores", href: "/guide/judging-and-awards/understanding-your-scores" },
       { title: "How We Calculate Scores", href: "/guide/judging-and-awards/scoring-formula" },

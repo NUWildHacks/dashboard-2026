@@ -7,36 +7,36 @@
     {
       "title": "1st Place Overall",
       "description": "This prize is awarded to the first-place project across all tracks.",
-      "award": "1st Prize Overall is a pair of Apple Airpods 4 for all team members!",
+      "award": "Pair of Apple AirPods 4 for each team member.",
       "emoji": "🥇"
     },
     {
       "title": "2nd Place Overall",
       "description": "This prize is awarded to the second-place project across all tracks.",
-      "award": "2nd Prize Overall is a Fuji Film Instax Mini 11 Instant Film Camera for all team members!",
+      "award": "Fujifilm Instax Mini 11 instant camera for each team member.",
       "emoji": "🥈"
     },
     {
       "title": "3rd Place Overall",
       "description": "This prize is awarded to the third-place project across all tracks.",
-      "award": "3rd Prize Overall is an Anker Magnetic portable battery for all team members!",
+      "award": "Anker magnetic portable battery for each team member.",
       "emoji": "🥉"
     }
   ],
   "trackPrizes": [
     {
       "title": "Agriculture",
-      "award": "The Agriculture track's prize is an Uber Eats gift card for all team members!",
+      "award": "Uber Eats gift card for each team member.",
       "emoji": "🥦"
     },
     {
       "title": "Productivity / Wellness",
-      "award": "The Productivity / Wellness track's prize is a comfy for all team members!",
+      "award": "A Comfy for each team member.",
       "emoji": "🧠"
     },
     {
       "title": "Finance",
-      "award": "The Finance track's prize is a pickleball set for all team members!",
+      "award": "Pickleball set for each team member.",
       "emoji": "💲"
     }
   ],
@@ -64,7 +64,7 @@
   ],
   "crowdFavorite": {
     "title": "Crowd Favorite",
-    "award": "The prize for Crowd Favorite is a multi-color dinosaur light (it's cute, we promise 😉)!",
+    "award": "Multi-color dinosaur light for each team member.",
     "emoji": "🦖"
   }
 }

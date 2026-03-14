@@ -8,6 +8,7 @@ export type WorkshopWeekRow = {
 };
 
 export type DayScheduleRow = {
+  id?: string;
   time: string;
   event: InlineSegment[];
   location?: string;
@@ -117,7 +118,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "12:30 PM",
     event: [
-      { content: "Lunch", href: "/guide/logistics/meal-options#saturday-lunch-from-tomate" },
+      { content: "Lunch", href: "/guide/logistics/food-and-drinks#saturday-lunch-from-tomate" },
       { content: " from Tomate Fresh Kitchen" },
     ],
     location: "Mudd 1st Floor",
@@ -147,7 +148,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "6:30 PM",
     event: [
-      { content: "Dinner", href: "/guide/logistics/meal-options#saturday-dinner-from-papa-johns-pizza" },
+      { content: "Dinner", href: "/guide/logistics/food-and-drinks#saturday-dinner-from-papa-johns-pizza" },
       { content: " from Papa John's Pizza" },
     ],
     location: "Mudd 1st Floor",
@@ -174,7 +175,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   {
     time: "9:30 AM",
     event: [
-      { content: "Breakfast", href: "/guide/logistics/meal-options#sunday-breakfast-from-einstein-bros-bagels" },
+      { content: "Breakfast", href: "/guide/logistics/food-and-drinks#sunday-breakfast-from-einstein-bros-bagels" },
       { content: " from Einstein Bros. Bagels" },
     ],
     location: "Mudd 1st Floor",
@@ -191,7 +192,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   {
     time: "12:30 PM",
     event: [
-      { content: "Lunch", href: "/guide/logistics/meal-options#sunday-lunch-from-10q-chicken" },
+      { content: "Lunch", href: "/guide/logistics/food-and-drinks#sunday-lunch-from-10q-chicken" },
       { content: " from 10Q Chicken" },
     ],
     location: "Mudd 1st Floor",
@@ -214,6 +215,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     ],
   },
   {
+    id: "crowd-favorite-presentations",
     time: "1:45 PM - 2:30 PM",
     event: [
       {

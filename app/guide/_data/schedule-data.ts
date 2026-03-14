@@ -109,7 +109,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-11T12:30:00-05:00"),
     end: new Date("2026-04-11T13:00:00-05:00"),
     location: "Mudd 1st Floor",
-    url: "/guide/logistics/meal-options#saturday-lunch-from-tomate",
+    url: "/guide/logistics/food-and-drinks#saturday-lunch-from-tomate",
   },
   {
     title: "Dinner from Papa John's Pizza",
@@ -117,7 +117,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-11T18:30:00-05:00"),
     end: new Date("2026-04-11T19:30:00-05:00"),
     location: "Mudd 1st Floor",
-    url: "/guide/logistics/meal-options#saturday-dinner-from-papa-johns-pizza",
+    url: "/guide/logistics/food-and-drinks#saturday-dinner-from-papa-johns-pizza",
   },
   {
     title: "!Light Event with MLH",
@@ -140,7 +140,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-12T09:30:00-05:00"),
     end: new Date("2026-04-12T10:30:00-05:00"),
     location: "Mudd 1st Floor",
-    url: "/guide/logistics/meal-options#sunday-breakfast-from-einstein-bros-bagels",
+    url: "/guide/logistics/food-and-drinks#sunday-breakfast-from-einstein-bros-bagels",
   },
   {
     title: "Crowd Favorite Sign Up Deadline",
@@ -155,7 +155,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-12T12:30:00-05:00"),
     end: new Date("2026-04-12T13:30:00-05:00"),
     location: "Mudd 1st Floor",
-    url: "/guide/logistics/meal-options#sunday-lunch-from-10q-chicken",
+    url: "/guide/logistics/food-and-drinks#sunday-lunch-from-10q-chicken",
   },
   {
     title: "Submissions Due and Hacking Ends",

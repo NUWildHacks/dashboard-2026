@@ -1,20 +1,32 @@
 import rubric from "@/app/guide/_data/judging-rubric.json";
 
-# Project Evaluation
+# Project Evaluation Criteria
 
-## Areas of Evaluation
+During Round 1, judges score each project on five criteria. Each criterion is scored from 0 to 3, then weighted to
+produce a final Round 1 score out of 100.
 
-{rubric.areas.map((area) => (
+## Criteria Overview
 
-  <section key={area.name}>
-    <h3>
-      {area.name} ({area.weight}%)
-    </h3>
-    <p>{area.description}</p>
-  </section>
-))}
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Weight</th>
+      <th>What Judges Look For</th>
+    </tr>
+  </thead>
+  <tbody>
+    {rubric.areas.map((area) => (
+      <tr key={area.name}>
+        <td data-label="Criterion">{area.name}</td>
+        <td data-label="Weight">{area.weight}%</td>
+        <td data-label="What Judges Look For">{area.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
-## Score Criteria
+## Rubric Scale by Criterion
 
 <table className="guide-rich-table">
   <thead>
@@ -42,3 +54,11 @@ import rubric from "@/app/guide/_data/judging-rubric.json";
     ))}
   </tbody>
 </table>
+
+## How Scores Are Used
+
+The score report sent to teams includes an overall score and per-criterion scores, all scaled out of 100. The overall
+score determines Round 1 ranking and advancement to live presentations.
+
+To reduce strict-versus-lenient judge effects and keep scoring fair across judging pools, raw Round 1 scores are
+normalized using our [scoring model](/guide/judging-and-awards/scoring-formula).

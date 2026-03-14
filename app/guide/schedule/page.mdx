@@ -96,7 +96,7 @@ All times are in Central Time.
   </thead>
   <tbody>
     {sundayScheduleRows.map((row) => (
-      <tr key={`sun-${row.time}-${row.location ?? "na"}`} className={getScheduleRowClass(row.highlight)}>
+      <tr key={`sun-${row.time}-${row.location ?? "na"}`} id={row.id} className={getScheduleRowClass(row.highlight)}>
         <td className="guide-schedule-cell-time" data-label="Time">
           {row.time}
         </td>

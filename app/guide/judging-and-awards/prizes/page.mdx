@@ -1,44 +1,76 @@
-import { Callout } from "@/app/guide/_components/Callout";
 import prizes from "@/app/guide/_data/prizes.json";
 
 # Prizes
 
-<Callout type="info">{prizes.notices.info}</Callout>
+{prizes.notices.info}
 
-<Callout type="warning">{prizes.notices.warning}</Callout>
+{prizes.notices.warning}
 
 ## Grand Prizes
 
-{prizes.grandPrizes.map((prize) => (
-
-  <section key={prize.title}>
-    <h3>{prize.title}</h3>
-    <p>{prize.description}</p>
-    <Callout type="highlight" emoji={prize.emoji}>{prize.award}</Callout>
-  </section>
-))}
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Prize</th>
+      <th>Description</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.grandPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Prize">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Description">{prize.description}</td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
 ## Track Prizes
 
-{prizes.trackPrizes.map((prize) => (
-
-  <section key={prize.title}>
-    <h3>{prize.title}</h3>
-    <Callout type="highlight" emoji={prize.emoji}>{prize.award}</Callout>
-  </section>
-))}
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Track</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.trackPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Track">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
 ## MLH Challenge Prizes
 
-{prizes.mlhPrizes.map((prize) => (
-
-  <Callout key={prize.title} type="highlight" emoji={prize.emoji}>
-    The prize for <strong>{prize.title}</strong> is <em>{prize.award}</em>.
-  </Callout>
-))}
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Challenge</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.mlhPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Challenge">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
 ## Crowd Favorite
 
-<Callout type="highlight" emoji={prizes.crowdFavorite.emoji}>
-  {prizes.crowdFavorite.award}
-</Callout>
+{prizes.crowdFavorite.emoji} {prizes.crowdFavorite.award}

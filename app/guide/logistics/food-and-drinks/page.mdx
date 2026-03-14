@@ -1,5 +1,13 @@
 import { Callout } from "@/app/guide/_components/Callout";
+import { InlineSegments } from "@/app/guide/_components/InlineSegments";
 import logistics from "@/app/guide/_data/logistics.json";
+import {
+  saturdayDinnerOptions,
+  saturdayLunchOptions,
+  sundayBreakfastBagels,
+  sundayBreakfastShmears,
+  sundayLunchOptions,
+} from "@/app/guide/_data/meal-options-data";
 
 # Meals, Snacks, and Drinks
 
@@ -13,21 +21,126 @@ A hackathon is all about development. We want you to focus on that, so we'll pro
 </p>
 
 <p>
-  You can view our <a href={logistics.meals.optionsLink}>{logistics.meals.optionsText}</a> to see what we have at each
-  meal throughout the event.
+  See <a href="#meal-options">meal options</a> below for each distribution period.
 </p>
 
-<Callout type={logistics.meals.callout.type} emoji={logistics.meals.callout.emoji}>
+<Callout type="warning" emoji="⚠️">
   <strong>
     You must have your <a href={logistics.meals.wildhackerLink}>WildHacker Code</a> ready and have submitted a project
-    on Dev Post to receive meals. You can edit your project after submission.
+    on <a href="https://wildhacks-2026.devpost.com/">DevPost</a> to receive meals. You can edit your project after
+    submission.
   </strong>
 </Callout>
+
+## Meal Options
+
+### Saturday Lunch from [Tomate](https://www.tomatefreshkitchen.com/)
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Dietary Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {saturdayLunchOptions.map((item, index) => (
+      <tr key={`sat-lunch-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Saturday Dinner from [Papa John's Pizza](https://www.papajohns.com/)
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Dietary Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {saturdayDinnerOptions.map((item, index) => (
+      <tr key={`sat-dinner-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Sunday Breakfast from [Einstein Bros. Bagels](https://www.einsteinbros.com/)
+
+#### Bagels
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundayBreakfastBagels.map((item, index) => (
+      <tr key={`bagel-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+#### Shmears
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundayBreakfastShmears.map((item, index) => (
+      <tr key={`shmear-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Sunday Lunch from [10Q Chicken](https://www.10qchicken.com/)
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Dietary Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundayLunchOptions.map((item, index) => (
+      <tr key={`sun-lunch-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
 ## Snacks and Drinks
 
 <p>
-  {logistics.snacks.intro} <a href={logistics.snacks.mapLink}>WildSnacks Station</a>.
+  {logistics.snacks.intro} Find the <a href={logistics.snacks.mapLink}>WildSnacks Station</a> on the map.
 </p>
 
 <Callout emoji={logistics.snacks.callout.emoji}>{logistics.snacks.callout.text}</Callout>
@@ -35,3 +148,8 @@ A hackathon is all about development. We want you to focus on that, so we'll pro
 ## Additional Food and Drinks
 
 <p>{logistics.additional.intro}</p>
+
+<Callout type="note" emoji="📍">
+  For delivery apps, set your pickup location to <strong>Seeley G. Mudd Library (2233 Tech Drive)</strong> and meet your
+  driver at the main entrance.
+</Callout>

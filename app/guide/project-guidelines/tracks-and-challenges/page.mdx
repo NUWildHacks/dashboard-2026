@@ -26,9 +26,10 @@ You can choose to enter your project into any number of challenges.
 
 _MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://hackp.ac/WildHacks) website._
 
+<div className="guide-challenges-grid">
 {tracksData.mlhChallenges.map((challenge) => (
 
-  <section key={challenge.name}>
+  <section key={challenge.name} className="guide-challenge-card">
     <h3>{challenge.name}</h3>
     {challenge.prize && <p><em>{challenge.prize}</em></p>}
     <p>{challenge.description}</p>
@@ -39,3 +40,4 @@ _MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://ha
     )}
   </section>
 ))}
+</div>
