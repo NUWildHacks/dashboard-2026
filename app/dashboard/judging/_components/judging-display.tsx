@@ -5,7 +5,7 @@ import { ExternalLinkIcon, SearchIcon } from "lucide-react";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JUDGING_GUIDE_PATH } from "@/constants";
+// import { JUDGING_GUIDE_PATH } from "@/constants";
 import { CategoryWithAll, useFilters } from "@/hooks";
 import { JudgeUser } from "@/types";
 
@@ -64,14 +64,14 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
         <Alert className="rounded-md border-green-600 bg-green-600/10 text-green-600 dark:border-green-400 dark:bg-green-400/10 dark:text-green-400">
           <ExternalLinkIcon />
           <AlertTitle>
-            <a
+            {/* <a
               href={JUDGING_GUIDE_PATH}
               target="_blank"
               rel="noreferrer"
               className="underline-offset-4 hover:underline"
-            >
-              View the judging guide
-            </a>
+            > */}
+              Judging Guide coming soon...
+            {/* </a> */}
           </AlertTitle>
         </Alert>
         <AssignedProjectGrid
