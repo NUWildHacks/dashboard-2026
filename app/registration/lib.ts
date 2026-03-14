@@ -2,7 +2,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { DASHBOARD_PATH, JUDGE, MENTOR, USERS_COLLECTION } from "@/constants";
-import { JudgeUser, User } from "@/types";
+import { JudgeUser, MentorUser, User } from "@/types";
 
 const getCurrentTimestamp = () => Date.now();
 
@@ -15,7 +15,10 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
   if (!userDocSnapshotByEmail.empty) {
     const newJudgeDocRef = db.collection(USERS_COLLECTION).doc(userId);
 
-    const data = userDocSnapshotByEmail.docs[0].data();
+    const data = userDocSnapshotByEmail.docs[0].data() as Omit<
+      JudgeUser | MentorUser,
+      "id" | "created_at" | "updated_at"
+    >;
 
     if (data?.role === JUDGE || data?.role === MENTOR) {
       const timestamp = getCurrentTimestamp();
@@ -25,7 +28,7 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
           ...data,
           created_at: timestamp,
           updated_at: timestamp,
-        } as JudgeUser);
+        } as Omit<JudgeUser | MentorUser, "id">);
 
         transaction.delete(userDocSnapshotByEmail.docs[0].ref);
       });

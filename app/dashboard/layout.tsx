@@ -19,7 +19,7 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   return (
     <>
       <DashboardSidebar role={role}>{children}</DashboardSidebar>
-      {role === JUDGE || (role === MENTOR && <OnboardingDialog onboarded={onboarded} />)}
+      {(role === JUDGE || role === MENTOR) && <OnboardingDialog role={role} onboarded={onboarded} />}
     </>
   );
 };
