@@ -5,7 +5,7 @@ import { Controller } from "react-hook-form";
 
 import Rating from "@/components/form/rating";
 import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -40,7 +40,7 @@ const JudgingFormSheet = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent>
+      <SheetContent className="sm:max-w-[500px]">
         <SheetHeader className="pb-0">
           <SheetTitle>Judging Form</SheetTitle>
           <SheetDescription asChild className="space-y-1">
@@ -65,7 +65,20 @@ const JudgingFormSheet = ({
                 name="technical_complexity"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <Rating label="Technical Complexity" fieldName={field.name} field={field} fieldState={fieldState} />
+                  <Field data-invalid={fieldState.invalid} className="w-auto">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+                    >
+                      Technical Complexity
+                    </FieldLabel>
+                    <FieldDescription>
+                      Measures technical impressiveness: frameworks, APIs, algorithms, and functioning code with a
+                      working demo.
+                    </FieldDescription>
+                    <Rating fieldName={field.name} field={field} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  </Field>
                 )}
               />
 
@@ -73,7 +86,19 @@ const JudgingFormSheet = ({
                 name="usefulness"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <Rating label="Usefulness" fieldName={field.name} field={field} fieldState={fieldState} />
+                  <Field data-invalid={fieldState.invalid} className="w-auto">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+                    >
+                      Usefulness
+                    </FieldLabel>
+                    <FieldDescription>
+                      Measures potential for everyday use. Should be intuitive and easy to use.
+                    </FieldDescription>
+                    <Rating fieldName={field.name} field={field} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  </Field>
                 )}
               />
 
@@ -81,7 +106,19 @@ const JudgingFormSheet = ({
                 name="originality"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <Rating label="Originality" fieldName={field.name} field={field} fieldState={fieldState} />
+                  <Field data-invalid={fieldState.invalid} className="w-auto">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+                    >
+                      Originality
+                    </FieldLabel>
+                    <FieldDescription>
+                      Measures uniqueness and novelty, from new spins on existing ideas to completely original concepts.
+                    </FieldDescription>
+                    <Rating fieldName={field.name} field={field} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  </Field>
                 )}
               />
 
@@ -89,7 +126,19 @@ const JudgingFormSheet = ({
                 name="design"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <Rating label="Design" fieldName={field.name} field={field} fieldState={fieldState} />
+                  <Field data-invalid={fieldState.invalid} className="w-auto">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+                    >
+                      Design
+                    </FieldLabel>
+                    <FieldDescription>
+                      Measures how polished and professional the project looks and functions.
+                    </FieldDescription>
+                    <Rating fieldName={field.name} field={field} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  </Field>
                 )}
               />
 
@@ -97,7 +146,19 @@ const JudgingFormSheet = ({
                 name="presentation"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <Rating label="Presentation" fieldName={field.name} field={field} fieldState={fieldState} />
+                  <Field data-invalid={fieldState.invalid} className="w-auto">
+                    <FieldLabel
+                      htmlFor={field.name}
+                      className="after:content-['*'] after:ml-0.5 after:text-red-500 text-nowrap"
+                    >
+                      Presentation
+                    </FieldLabel>
+                    <FieldDescription>
+                      Measures the demo video&apos;s clarity in explaining the problem statement and solution.
+                    </FieldDescription>
+                    <Rating fieldName={field.name} field={field} />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  </Field>
                 )}
               />
 
