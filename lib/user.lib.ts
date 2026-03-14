@@ -80,6 +80,25 @@ const requireRole = <T extends User["role"]>(
   return null;
 };
 
+/**
+ * Onboard a judge or mentor user by marking them as onboarded.
+ * Retrieves the user document and checks if they are already onboarded.
+ * If not onboarded, updates the user document to set onboarded to true and updates the updated_at timestamp.
+ *
+ * @param id - The unique identifier of the user to onboard
+ * @returns Promise resolving to a boolean:
+ *   - `false` if the user was just onboarded (wasn't onboarded before)
+ *   - `true` if the user was already onboarded
+ * @example
+ * ```ts
+ * const wasAlreadyOnboarded = await onboardUser(userId);
+ * if (!wasAlreadyOnboarded) {
+ *   console.log("User was just onboarded");
+ * } else {
+ *   console.log("User was already onboarded");
+ * }
+ * ```
+ */
 const onboardUser = async (id: User["id"]): Promise<boolean> => {
   const db = getFirestore();
   const now = Date.now();

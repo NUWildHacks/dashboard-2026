@@ -70,6 +70,21 @@ const getUsers = async (): Promise<User[]> => {
   );
 };
 
+/**
+ * Get all judging assignments from Firestore.
+ * Retrieves all documents from the judging assignments collection and returns them as an array.
+ * Returns an empty array if no judging assignments exist.
+ *
+ * @returns Promise resolving to an array of JudgingAssignment objects
+ * @example
+ * ```ts
+ * const assignments = await getJudgingAssignments();
+ * console.log(`Found ${assignments.length} judging assignments`);
+ * assignments.forEach(assignment => {
+ *   console.log(assignment.id, assignment.judge_id, assignment.project_id);
+ * });
+ * ```
+ */
 const getJudgingAssignments = async (): Promise<JudgingAssignment[]> => {
   const db = getFirestore();
 

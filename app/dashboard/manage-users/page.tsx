@@ -8,16 +8,18 @@ import { getProjectsWithMetadata } from "../judging/lib";
 import { JudgingAssignmentsTable, PermissionCodesTable, UsersTable } from "./_components";
 import { getJudgingAssignments, getPermissionCodes, getUsers } from "./_lib";
 
-const PermissionCodesPage = async () => {
+const ManageUsersPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;
 
   const { role } = await getAuthenticatedUser(redirectPath);
   if (role !== ADMIN) redirect(DASHBOARD_PATH);
 
-  const permissionCodes = await getPermissionCodes();
-  const users = await getUsers();
-  const projectsWithMetadata = await getProjectsWithMetadata();
-  const judgingAssignments = await getJudgingAssignments();
+  const [permissionCodes, users, projectsWithMetadata, judgingAssignments] = await Promise.all([
+    getPermissionCodes(),
+    getUsers(),
+    getProjectsWithMetadata(),
+    getJudgingAssignments(),
+  ]);
 
   const judges = users.filter((user) => user.role === JUDGE);
 
@@ -43,4 +45,4 @@ const PermissionCodesPage = async () => {
   );
 };
 
-export default PermissionCodesPage;
+export default ManageUsersPage;

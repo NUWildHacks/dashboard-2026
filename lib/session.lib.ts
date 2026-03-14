@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { LOGIN_PATH, ROOT_PATH, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants";
+import { ROOT_PATH, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants";
 import type { User } from "@/types";
 
 /**
@@ -73,43 +73,6 @@ export async function verifySession() {
     console.error(errorMessage);
 
     return null;
-  }
-}
-
-/**
- * Update the session cookie expiration time.
- * Refreshes the session cookie with updated expiration time.
- * Redirects to login if the session is invalid.
- *
- * @returns Promise that resolves when the session is updated
- * @throws Redirects to login page if session verification fails
- * @example
- * ```ts
- * // In a protected route
- * await updateSession();
- * // Session expiration has been refreshed
- * ```
- */
-export async function updateSession() {
-  const adminAuth = firebaseAdmin.auth();
-  const cookieStore = await cookies();
-
-  try {
-    const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
-    if (!sessionCookie) throw new Error("Could not find session cookie");
-
-    const payload = await adminAuth.verifySessionCookie(sessionCookie, true);
-    if (!payload) {
-      cookieStore.delete(SESSION_COOKIE_NAME);
-      throw new Error("Could not verify session cookie");
-    }
-
-    cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
-  } catch (e) {
-    const errorMessage = e instanceof FirebaseAppError || e instanceof Error ? e.message : "An unknown error occurred";
-    console.error(errorMessage);
-
-    redirect(LOGIN_PATH);
   }
 }
 

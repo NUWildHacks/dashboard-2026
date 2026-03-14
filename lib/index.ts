@@ -1,5 +1,4 @@
-export { findUserByEmail } from "./auth.lib";
-export { createSession, deleteSession, updateSession, verifySession } from "./session.lib";
+export { createSession, deleteSession, verifySession } from "./session.lib";
 export {
   combineDateAndTime,
   findDayLabel,

@@ -37,6 +37,7 @@ export {
 } from "./time.constants";
 
 export {
+  USER_FIELDS,
   ADMIN,
   MENTOR,
   COUNTRIES,
