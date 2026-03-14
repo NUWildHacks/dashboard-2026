@@ -8,3 +8,4 @@ export { default as UpcomingEvents } from "./_upcoming-events/upcoming-events";
 export { default as VenueMap } from "./venue-map";
 export { default as EventsList } from "./_upcoming-events/events-list";
 export { default as EventItem } from "./_upcoming-events/event-item";
+export { default as OnboardingDialog } from "./onboarding-dialog";

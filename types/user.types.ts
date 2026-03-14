@@ -69,6 +69,8 @@ export type JudgeUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  onboarded?: boolean;
 };
 
 export type MentorUser = BaseUser & {
@@ -77,6 +79,8 @@ export type MentorUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  onboarded?: boolean;
 };
 
 export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser;

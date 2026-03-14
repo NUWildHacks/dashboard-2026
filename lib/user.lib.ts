@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
 import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH, MENTOR } from "@/constants";
-import type { ActionResult, User } from "@/types";
+import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
 import { verifySession } from ".";
 
@@ -80,4 +80,23 @@ const requireRole = <T extends User["role"]>(
   return null;
 };
 
-export { getAuthenticatedUser, requireRole };
+const onboardUser = async (id: User["id"]): Promise<boolean> => {
+  const db = getFirestore();
+  const now = Date.now();
+
+  const judgeDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
+  const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
+
+  if (!onboarded) {
+    await db.collection(USERS_COLLECTION).doc(id).update({
+      onboarded: true,
+      updated_at: now,
+    } as Partial<JudgeUser | MentorUser>);
+
+    return false;
+  }
+
+  return true;
+};
+
+export { getAuthenticatedUser, requireRole, onboardUser };
