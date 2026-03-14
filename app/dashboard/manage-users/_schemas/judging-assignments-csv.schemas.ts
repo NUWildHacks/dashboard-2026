@@ -16,10 +16,10 @@ export const judgingAssignmentsCsvSchema = z.object({
   track: z.enum(TRACKS, { message: "Invalid track" }),
   project_id: plainTextSingleLineSchema
     .min(1, "Project ID is required")
-    .max(50, "Project ID must be 100 characters or less"),
+    .max(50, "Project ID must be 50 characters or less"),
   project_name: plainTextSingleLineSchema
     .min(1, "Project name is required")
-    .max(50, "Project name must be 100 characters or less"),
+    .max(50, "Project name must be 50 characters or less"),
   project_url: secureUrlSchema,
 });
 
