@@ -55,16 +55,10 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
           </InputGroup>
         </div>
         <Alert className="rounded-md border-yellow-600 bg-yellow-600/10 text-yellow-600 dark:border-yellow-400 dark:bg-yellow-400/10 dark:text-yellow-400">
-          <AlertTitle>
-            Judging Guide coming soon...
-          </AlertTitle>
+          <AlertTitle>Judging Guide coming soon...</AlertTitle>
         </Alert>
-        <AssignedProjectGrid
-          handleOpenJudgingForm={null}
-          projectsWithMetadata={projectsWithMetadata}
-        />
+        <AssignedProjectGrid handleOpenJudgingForm={null} projectsWithMetadata={projectsWithMetadata} />
       </div>
-
     </>
   );
 };

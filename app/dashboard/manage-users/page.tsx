@@ -12,9 +12,7 @@ const ManageUsersPage = async () => {
   const { role } = await getAuthenticatedUser(redirectPath);
   if (role !== ADMIN) redirect(DASHBOARD_PATH);
 
-  const [users] = await Promise.all([
-    getUsers(),
-  ]);
+  const [users] = await Promise.all([getUsers()]);
 
   return (
     <div className="flex-1 flex flex-col gap-6">

@@ -3,13 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import {
-  USERS_COLLECTION,
-  PARTICIPANT,
-  LOGIN_PATH,
-  REGISTRATION_PATH,
-  PARTICIPANT_USER_FIELDS,
-} from "@/constants";
+import { USERS_COLLECTION, PARTICIPANT, LOGIN_PATH, REGISTRATION_PATH, PARTICIPANT_USER_FIELDS } from "@/constants";
 import { verifySession } from "@/lib";
 import type { ActionResult, WildHacksConfig } from "@/types";
 

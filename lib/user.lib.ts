@@ -3,7 +3,16 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, MENTOR, REGISTRATION_PATH, DASHBOARD_PATH } from "@/constants";
+import {
+  USERS_COLLECTION,
+  LOGIN_PATH,
+  PARTICIPANT,
+  ADMIN,
+  JUDGE,
+  MENTOR,
+  REGISTRATION_PATH,
+  DASHBOARD_PATH,
+} from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
 import { verifySession } from ".";
@@ -43,7 +52,7 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
   // but they'll still have to fill out the registration form
   // so we can capture their MLH agreements
 
-  // checks if the document was created AFTER we closed 
+  // checks if the document was created AFTER we closed
   // permission code registration (Mar 10)
   const userData = userDocSnapshot.data()!;
 
