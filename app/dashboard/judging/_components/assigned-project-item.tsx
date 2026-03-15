@@ -5,19 +5,15 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 
 import { ProjectWithMetadata } from "../types";
 
-type AssignedProjectItemProps = any;
+type AssignedProjectItemProps = {
+  projectWithMetadata: ProjectWithMetadata;
+};
 
-const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({ projectWithMetadata }: AssignedProjectItemProps) => {
   const { name, track, judging_form } = projectWithMetadata;
 
   return (
-    <Item
-      variant="outline"
-      tabIndex={0}
-      aria-label={`Judge project: ${name}`}
-      onClick={() => handleOpenJudgingForm(projectWithMetadata)}
-      className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
-    >
+    <Item variant="outline" aria-label={`Project: ${name}`} className="w-full shadow-xs">
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{name}</span>

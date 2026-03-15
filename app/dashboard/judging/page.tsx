@@ -14,7 +14,7 @@ const JudgingPage = async () => {
 
   const projectsWithMetadata = await getProjectsWithMetadata(user.id);
 
-  return <JudgingDisplay judgeId={user.id} projectsWithMetadata={projectsWithMetadata} />;
+  return <JudgingDisplay projectsWithMetadata={projectsWithMetadata} />;
 };
 
 export default JudgingPage;

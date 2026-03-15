@@ -7,11 +7,10 @@ import { ProjectWithMetadata } from "../types";
 import { AssignedProjectItem } from ".";
 
 type AssignedProjectGridProps = {
-  handleOpenJudgingForm: [];
   projectsWithMetadata: ProjectWithMetadata[];
 };
 
-const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithMetadata }: AssignedProjectGridProps) => {
+const AssignedProjectGrid = ({ projectsWithMetadata }: AssignedProjectGridProps) => {
   if (projectsWithMetadata.length === 0) {
     return (
       <Empty role="status" aria-live="polite">
@@ -29,11 +28,7 @@ const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithMetadata }: As
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {projectsWithMetadata.map((projectWithMetadata) => (
-        <AssignedProjectItem
-          key={projectWithMetadata.id}
-          handleOpenJudgingForm={handleOpenJudgingForm}
-          projectWithMetadata={projectWithMetadata}
-        />
+        <AssignedProjectItem key={projectWithMetadata.id} projectWithMetadata={projectWithMetadata} />
       ))}
     </div>
   );
