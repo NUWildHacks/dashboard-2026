@@ -3,12 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
-import { UseJudgingFormSheetReturn } from "../_hooks";
 import { ProjectWithMetadata } from "../types";
 
-type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm"> & {
-  projectWithMetadata: ProjectWithMetadata;
-};
+type AssignedProjectItemProps = any;
 
 const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: AssignedProjectItemProps) => {
   const { name, track, judging_form } = projectWithMetadata;
