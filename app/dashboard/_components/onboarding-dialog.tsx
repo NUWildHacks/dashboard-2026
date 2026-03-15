@@ -37,7 +37,9 @@ const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
           <DialogTitle>Welcome!</DialogTitle>
           <DialogDescription>
             You&apos;re now officially a WildHacks 2026 {roleText}! Please take a moment to review your personal details
-            and modality under settings. You can now close this dialog and explore the dashboard -- {descriptionText}
+            and modality under settings.
+            <br /> <br />
+            You can now close this dialog and explore the dashboard -- {descriptionText}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

@@ -5,7 +5,7 @@ export const WEB_TRACK = "Web Development";
 export const FINTECH_TRACK = "Fintech";
 export const PRODUCTIVITY_TRACK = "Productivity";
 
-export const TRACKS = [AI_TRACK, WEB_TRACK, FINTECH_TRACK, PRODUCTIVITY_TRACK];
+export const TRACKS = [AI_TRACK, WEB_TRACK, FINTECH_TRACK, PRODUCTIVITY_TRACK] as const;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",
