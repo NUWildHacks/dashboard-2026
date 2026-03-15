@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH, MENTOR } from "@/constants";
+import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, MENTOR, REGISTRATION_PATH, DASHBOARD_PATH } from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
 import { verifySession } from ".";
@@ -37,7 +37,26 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
   const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userInfo.id).get();
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  return { ...userDocSnapshot.data(), id } as User;
+  // check if this is a Kris-special permission participant
+  // We would've filled out a document for them with their email,
+  // "Participant" role, and created_at timestamp
+  // but they'll still have to fill out the registration form
+  // so we can capture their MLH agreements
+
+  // checks if the document was created AFTER we closed 
+  // permission code registration (Mar 10)
+  const userData = userDocSnapshot.data()!;
+
+  if (
+    userData.role === PARTICIPANT &&
+    userData.created_at > 1773205239000 &&
+    !userData.first_name &&
+    !userData.last_name
+  ) {
+    redirect(REGISTRATION_PATH);
+  }
+
+  return { ...userData, id } as User;
 };
 
 /**

@@ -3,9 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { PermissionCode } from "@/app/dashboard/manage-users/types";
 import {
-  PERMISSION_CODES_COLLECTION,
   USERS_COLLECTION,
   PARTICIPANT,
   LOGIN_PATH,
@@ -39,56 +37,56 @@ export const registerUser = async (
       throw new Error("The event has ended");
     }
 
-    const { permission_code, ...rest } = data;
+    const { ...rest } = data;
 
-    if (now >= registration_deadline && now < start_time) {
-      if (!permission_code || permission_code.trim() === "") {
-        return {
-          success: false,
-          error: "Registration deadline has passed. A permission code is required.",
-          field: "permission_code",
-        };
-      }
+    // if (now >= registration_deadline && now < start_time) {
+    //   if (!permission_code || permission_code.trim() === "") {
+    //     return {
+    //       success: false,
+    //       error: "Registration deadline has passed. A permission code is required.",
+    //       field: "permission_code",
+    //     };
+    //   }
 
-      if (!/^[a-zA-Z0-9]{20}$/.test(permission_code)) {
-        return {
-          success: false,
-          error: "Invalid permission code format",
-          field: "permission_code",
-        };
-      }
+    //   if (!/^[a-zA-Z0-9]{20}$/.test(permission_code)) {
+    //     return {
+    //       success: false,
+    //       error: "Invalid permission code format",
+    //       field: "permission_code",
+    //     };
+    //   }
 
-      const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION).doc(permission_code);
-      const permissionCodeDocSnap = await permissionCodeDocRef.get();
+    //   const permissionCodeDocRef = db.collection(PERMISSION_CODES_COLLECTION).doc(permission_code);
+    //   const permissionCodeDocSnap = await permissionCodeDocRef.get();
 
-      if (!permissionCodeDocSnap.exists) {
-        return {
-          success: false,
-          error: "Invalid permission code",
-          field: "permission_code",
-        };
-      }
+    //   if (!permissionCodeDocSnap.exists) {
+    //     return {
+    //       success: false,
+    //       error: "Invalid permission code",
+    //       field: "permission_code",
+    //     };
+    //   }
 
-      const permissionCodeData = permissionCodeDocSnap.data() as Omit<PermissionCode, "id">;
+    //   const permissionCodeData = permissionCodeDocSnap.data() as Omit<PermissionCode, "id">;
 
-      if (permissionCodeData.email !== rest.email) {
-        return {
-          success: false,
-          error: "Permission code email does not match registration email",
-          field: "permission_code",
-        };
-      }
+    //   if (permissionCodeData.email !== rest.email) {
+    //     return {
+    //       success: false,
+    //       error: "Permission code email does not match registration email",
+    //       field: "permission_code",
+    //     };
+    //   }
 
-      if (permissionCodeData.expires_at <= now) {
-        return {
-          success: false,
-          error: "Permission code has expired",
-          field: "permission_code",
-        };
-      }
+    //   if (permissionCodeData.expires_at <= now) {
+    //     return {
+    //       success: false,
+    //       error: "Permission code has expired",
+    //       field: "permission_code",
+    //     };
+    //   }
 
-      await permissionCodeDocRef.delete();
-    }
+    //   await permissionCodeDocRef.delete();
+    // }
 
     const participantsDocRefs = db.collection(USERS_COLLECTION).where(PARTICIPANT_USER_FIELDS.role, "==", PARTICIPANT);
     const participantsDocSnapshots = await participantsDocRefs.get();
