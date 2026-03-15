@@ -2,13 +2,12 @@ import { BookX } from "lucide-react";
 
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 
-import { UseJudgingFormSheetReturn } from "../_hooks";
 import { ProjectWithMetadata } from "../types";
 
 import { AssignedProjectItem } from ".";
 
 type AssignedProjectGridProps = {
-  handleOpenJudgingForm: UseJudgingFormSheetReturn["handleOpenJudgingForm"];
+  handleOpenJudgingForm: [];
   projectsWithMetadata: ProjectWithMetadata[];
 };
 
