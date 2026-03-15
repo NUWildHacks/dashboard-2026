@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { cookies } from "next/headers";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { USERS_COLLECTION, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN } from "@/constants";
+import { USERS_COLLECTION, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN, JUDGE, MENTOR, PARTICIPANT, USER_FIELDS } from "@/constants";
 import { verifySession } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -23,8 +23,17 @@ export const createVerifiedSession = async (idToken: string): Promise<ActionResu
     const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userInfo.id).get();
 
     if (!userDocSnapshot.exists) {
-      cookieStore.delete(SESSION_COOKIE_NAME);
-      return { success: false, error: "Registration is closed! Check back in the future for WildHacks 2027." };
+      const emailDocSnapshot = await db
+        .collection(USERS_COLLECTION)
+        .where(USER_FIELDS.email, "==", userInfo.email)
+        .limit(1)
+        .get();
+
+      const role = emailDocSnapshot.docs[0]?.data()?.role;
+      if (emailDocSnapshot.empty || (role !== JUDGE && role !== MENTOR && role !== PARTICIPANT)) {
+        cookieStore.delete(SESSION_COOKIE_NAME);
+        return { success: false, error: "Registration is closed! Check back in the future for WildHacks 2027." };
+      }
     }
 
     return { success: true };
