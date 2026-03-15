@@ -4,8 +4,6 @@ import {
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
   DASHBOARD_SUPPORT_PATH,
-  LOGIN_PATH,
-  REGISTRATION_PATH,
   ROOT_PATH,
 } from "@/constants";
 
@@ -21,8 +19,6 @@ export const validateRedirectPath = (path: string | null): string => {
     DASHBOARD_SUPPORT_PATH,
     DASHBOARD_MANAGE_USERS_PATH,
     ROOT_PATH,
-    LOGIN_PATH,
-    REGISTRATION_PATH,
   ];
 
   if (path && whitelistedPaths.includes(path)) {

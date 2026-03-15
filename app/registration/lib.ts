@@ -36,6 +36,9 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
       !userData.first_name &&
       !userData.last_name;
     if (!isIncompleteParticipant) redirect(DASHBOARD_PATH);
+    // Incomplete participant: skip email migration entirely and let them fill the form.
+    // Running the email query here could accidentally migrate them to judge/mentor status.
+    return;
   }
 
   const userDocSnapshotByEmail = await db
