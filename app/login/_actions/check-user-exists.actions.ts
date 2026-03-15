@@ -4,7 +4,16 @@ import { getFirestore } from "firebase-admin/firestore";
 import { cookies } from "next/headers";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { USERS_COLLECTION, SESSION_COOKIE_NAME, SESSION_COOKIE_OPTIONS, SESSION_EXPIRES_IN, JUDGE, MENTOR, PARTICIPANT, USER_FIELDS } from "@/constants";
+import {
+  USERS_COLLECTION,
+  SESSION_COOKIE_NAME,
+  SESSION_COOKIE_OPTIONS,
+  SESSION_EXPIRES_IN,
+  JUDGE,
+  MENTOR,
+  PARTICIPANT,
+  USER_FIELDS,
+} from "@/constants";
 import { verifySession } from "@/lib";
 import type { ActionResult } from "@/types";
 
