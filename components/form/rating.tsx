@@ -24,7 +24,9 @@ const Rating = <T extends FieldValues>({ fieldName, field }: RatingProps<T>) => 
           onClick={() => field.onChange(star)}
           onMouseEnter={() => setHoverRating(star)}
           onMouseLeave={() => setHoverRating(0)}
-          type="button"
+          aria-label={`Rate ${star} stars`}
+          role="radio"
+          aria-checked={rating === star}
         >
           <Star
             className={cn(
