@@ -6,6 +6,7 @@ import {
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
   DASHBOARD_SUPPORT_PATH,
+  DASHBOARD_JUDGING_PATH,
   LOGIN_PATH,
   REGISTRATION_PATH,
   SESSION_COOKIE_NAME,
@@ -45,7 +46,8 @@ export async function proxy(req: NextRequest) {
     currentPath === DASHBOARD_PATH ||
     currentPath === DASHBOARD_SCHEDULE_PATH ||
     currentPath === DASHBOARD_SUPPORT_PATH ||
-    currentPath === DASHBOARD_SETTINGS_PATH;
+    currentPath === DASHBOARD_SETTINGS_PATH ||
+    currentPath === DASHBOARD_JUDGING_PATH;
 
   if (isProtectedRoute) {
     const sessionCookie = req.cookies.get(SESSION_COOKIE_NAME)?.value;
