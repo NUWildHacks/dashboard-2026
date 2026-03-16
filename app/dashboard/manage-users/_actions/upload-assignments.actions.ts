@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import {
   ADMIN,
-  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_MANAGE_USERS_PATH,
   JUDGING_ASSIGNMENTS_COLLECTION,
   LOGIN_PATH,
   PROJECTS_COLLECTION,
@@ -22,7 +22,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
   const db = getFirestore();
 
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_JUDGING_PATH)}`;
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
     const roleError = requireRole(user, ADMIN, "You are not authorized to upload judging assignments");
@@ -61,7 +61,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
 
     await Promise.all([judgingAssignmentBatch.commit(), projectBatch.commit()]);
 
-    revalidatePath(DASHBOARD_JUDGING_PATH);
+    revalidatePath(DASHBOARD_MANAGE_USERS_PATH);
 
     return { success: true };
   } catch (error) {
