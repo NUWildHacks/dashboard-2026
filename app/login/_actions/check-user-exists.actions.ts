@@ -26,7 +26,10 @@ export const createVerifiedSession = async (idToken: string): Promise<ActionResu
     cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, SESSION_COOKIE_OPTIONS);
 
     const userInfo = await verifySession();
-    if (!userInfo) return { success: false, error: "Failed to verify session." };
+    if (!userInfo) {
+      cookieStore.delete(SESSION_COOKIE_NAME);
+      return { success: false, error: "Failed to verify session." };
+    }
 
     const db = getFirestore();
     const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userInfo.id).get();
@@ -49,6 +52,8 @@ export const createVerifiedSession = async (idToken: string): Promise<ActionResu
   } catch (e) {
     const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
     console.error(errorMessage);
+    const cookieStore = await cookies();
+    cookieStore.delete(SESSION_COOKIE_NAME);
     return { success: false, error: errorMessage };
   }
 };

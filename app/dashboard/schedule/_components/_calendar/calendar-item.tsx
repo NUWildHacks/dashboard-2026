@@ -39,39 +39,42 @@ const CalendarItem = ({
 
   return (
     <Item
+      asChild
       variant="outline"
       className={cn(
         "absolute px-3 shadow-xs bg-background transition-colors hover:bg-secondary hover:cursor-pointer overflow-hidden",
         isCompact ? "items-center py-0" : "items-start py-2"
       )}
-      style={{
-        left: `${left}%`,
-        top: `${top}%`,
-        width: `calc(${width}% - 2px)`,
-        height: `${height - 2}px`,
-        zIndex,
-      }}
-      tabIndex={0}
-      aria-label={`View event: ${title}`}
-      onClick={() => handleSelectItem(id)}
-      onKeyDown={(event) => handleKeyDown(event, id)}
     >
-      <ItemContent className={`gap-2 min-w-0 ${isCompact ? "flex-row justify-start items-center" : "flex-col"}`}>
-        <ItemTitle className={`${isCompact ? "" : "w-full"}`}>
-          <span className="truncate">{title}</span>
-        </ItemTitle>
-        <ItemDescription className="flex flex-row items-center gap-2">
-          <Badge variant="secondary">{category}</Badge>
-          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-            <Clock className="size-3 shrink-0" aria-hidden="true" />
-            {getEventTimeRange(start_time, end_time)}
-          </span>
-          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-            <MapPin className="size-3 shrink-0" aria-hidden="true" />
-            {location}
-          </span>
-        </ItemDescription>
-      </ItemContent>
+      <button
+        style={{
+          left: `${left}%`,
+          top: `${top}%`,
+          width: `calc(${width}% - 2px)`,
+          height: `${height - 2}px`,
+          zIndex,
+        }}
+        aria-label={`View event: ${title}`}
+        onClick={() => handleSelectItem(id)}
+        onKeyDown={(event) => handleKeyDown(event, id)}
+      >
+        <ItemContent className={`gap-2 min-w-0 ${isCompact ? "flex-row justify-start items-center" : "flex-col"}`}>
+          <ItemTitle className={`${isCompact ? "" : "w-full"}`}>
+            <span className="truncate">{title}</span>
+          </ItemTitle>
+          <ItemDescription className="flex flex-row items-center gap-2">
+            <Badge variant="secondary">{category}</Badge>
+            <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+              <Clock className="size-3 shrink-0" aria-hidden="true" />
+              {getEventTimeRange(start_time, end_time)}
+            </span>
+            <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+              <MapPin className="size-3 shrink-0" aria-hidden="true" />
+              {location}
+            </span>
+          </ItemDescription>
+        </ItemContent>
+      </button>
     </Item>
   );
 };

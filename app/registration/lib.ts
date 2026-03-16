@@ -1,7 +1,16 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_PATH, JUDGE, LOGIN_PATH, MENTOR, PARTICIPANT, USER_FIELDS, USERS_COLLECTION } from "@/constants";
+import {
+  DASHBOARD_PATH,
+  JUDGE,
+  LOGIN_PATH,
+  MENTOR,
+  PARTICIPANT,
+  USER_FIELDS,
+  USERS_COLLECTION,
+  CLOSED_REGISTRATION,
+} from "@/constants";
 import { JudgeUser, MentorUser, User } from "@/types";
 
 const getCurrentTimestamp = () => Date.now();
@@ -32,7 +41,7 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
     const userData = userDocSnapshotById.data()!;
     const isIncompleteParticipant =
       userData.role === PARTICIPANT &&
-      userData.created_at > 1773205239000 &&
+      userData.created_at > CLOSED_REGISTRATION &&
       !userData.first_name &&
       !userData.last_name;
     if (!isIncompleteParticipant) redirect(DASHBOARD_PATH);

@@ -12,7 +12,7 @@ import {
   MENTOR,
   REGISTRATION_PATH,
   DASHBOARD_PATH,
-  CLOSED_REGISTRATION
+  CLOSED_REGISTRATION,
 } from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
@@ -133,6 +133,7 @@ const onboardUser = async (id: User["id"]): Promise<boolean> => {
   const now = Date.now();
 
   const judgeDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
+  if (!judgeDocSnapshot.exists) return true;
   const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
 
   if (!onboarded) {
