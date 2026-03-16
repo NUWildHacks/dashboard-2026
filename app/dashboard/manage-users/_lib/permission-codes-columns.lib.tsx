@@ -99,7 +99,6 @@ export const getPermissionCodesColumns = (
       },
     },
     {
-      accessorKey: "status",
       header: "Status",
       cell: ({ row }) => {
         if (row.original.expires_at < Date.now()) {

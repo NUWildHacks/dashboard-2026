@@ -58,7 +58,6 @@ export const getProjectsColumns = (): ColumnDef<ProjectWithMetadata>[] => {
       },
     },
     {
-      accessorKey: "Status",
       header: "Status",
       cell: ({ row }) => {
         if (!row.original.judging_form) {
