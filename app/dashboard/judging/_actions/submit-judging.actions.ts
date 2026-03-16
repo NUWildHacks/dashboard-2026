@@ -33,6 +33,13 @@ export const submitJudging = async (
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
     if (roleError) return roleError;
 
+    if (user.id !== judgeId) {
+      return {
+        success: false,
+        error: "You are not authorized to submit judging form for this judge",
+      };
+    }
+
     const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
     if (!projectDocSnapshot.exists) {
       return {
