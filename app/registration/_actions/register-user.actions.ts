@@ -88,6 +88,12 @@ export const registerUser = async (
       throw new Error("The event is full");
     }
 
+    const emailDocSnapshot = await db
+      .collection(USERS_COLLECTION)
+      .where(PARTICIPANT_USER_FIELDS.email, "==", userInfo.email)
+      .limit(1)
+      .get();
+
     const userDocRef = db.collection(USERS_COLLECTION).doc(userId);
     await userDocRef.set({
       ...rest,
@@ -95,6 +101,10 @@ export const registerUser = async (
       created_at: now,
       updated_at: now,
     });
+
+    if (!emailDocSnapshot.empty) {
+      await emailDocSnapshot.docs[0].ref.delete();
+    }
 
     return { success: true };
   } catch (error) {

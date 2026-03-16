@@ -61,13 +61,11 @@ const getUsers = async (): Promise<User[]> => {
 
   const userDocSnapshots = await userDocRef.get();
 
-  return userDocSnapshots.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...doc.data(),
-      }) as User
-  );
+  // ensure that incomplete documents (e.g. new participants)
+  // are not included so it doesn't break
+  return userDocSnapshots.docs
+    .filter((doc) => doc.data().first_name)
+    .map((doc) => ({ id: doc.id, ...doc.data() }) as User);
 };
 
 /**
