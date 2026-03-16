@@ -20,11 +20,6 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    function isProjectMember(projectId) {
-      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
-      return isAuthenticated() && userDoc != null && userDoc.data != null && userDoc.data.project_id == projectId;
-    }
-
     // Users collection
     match /users/{userId} {
       // Authenticated users can read user documents (needed for team members queries)
@@ -48,19 +43,9 @@ service cloud.firestore {
 
     // Projects collection
     match /projects/{projectId} {
-      // Authenticated users can read project documents (needed for project details and team member queries)
+      // Authenticated users can read project documents (needed for judging)
+      // Note: Create, update, and delete operations are handled via server actions using Admin SDK
       allow read: if isAuthenticated();
-
-      // Project members can create projects (via server action)
-      // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow create: if isAuthenticated();
-
-      // Any project member can update the project
-      allow update: if isAuthenticated() && isProjectMember(projectId);
-
-      // Only admins can delete projects (or via server action when last member leaves)
-      // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow delete: if isAdmin();
     }
 
     // Events collection

@@ -1,4 +1,3 @@
-import { Project } from "@/app/dashboard/project/types";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -58,9 +57,6 @@ export type ParticipantUser = BaseUser & {
   mlh_code_of_conduct: boolean;
   mlh_privacy_policy: boolean;
   mlh_marketing: boolean;
-
-  project_id?: Project["id"];
-  joined_project_at?: number;
 };
 
 export type AdminUser = BaseUser & {
@@ -73,6 +69,8 @@ export type JudgeUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  onboarded?: boolean;
 };
 
 export type MentorUser = BaseUser & {
@@ -81,6 +79,8 @@ export type MentorUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  onboarded?: boolean;
 };
 
 export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser;

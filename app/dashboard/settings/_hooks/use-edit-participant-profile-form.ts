@@ -44,6 +44,8 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
         });
         return;
       }
+
+      toast.success("Profile updated successfully");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Edit profile error:", errorMessage);

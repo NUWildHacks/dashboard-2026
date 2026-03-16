@@ -3,13 +3,15 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import { EventDialog, EventsList } from "@/app/dashboard/schedule/_components";
+import { EventDialog } from "@/app/dashboard/schedule/_components";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
 import type { Event } from "@/app/dashboard/schedule/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DASHBOARD_SCHEDULE_PATH } from "@/constants";
 import { useItemDialog } from "@/hooks";
+
+import { EventsList } from "..";
 
 const UpcomingEvents = () => {
   const useEventsReturn = useEvents({ limitCount: 3 });

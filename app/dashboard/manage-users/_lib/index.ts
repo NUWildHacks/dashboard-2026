@@ -1,1 +1,1 @@
-export { getPermissionCodes, getUsers } from "./lib";
+export { getPermissionCodes, getUsers, getJudgingAssignments } from "./lib";

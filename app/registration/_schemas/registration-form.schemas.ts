@@ -58,10 +58,10 @@ export const registrationFormSchema = z
       "Other dietary restrictions must be 500 characters or less"
     ),
 
-    permission_code: z
-      .string()
-      .regex(/^[a-zA-Z0-9]{20}$/, "Invalid permission code")
-      .or(z.literal("")),
+    // permission_code: z
+    //   .string()
+    //   .regex(/^[a-zA-Z0-9]{20}$/, "Invalid permission code")
+    //   .or(z.literal("")),
 
     mlh_code_of_conduct: z.boolean().refine((val) => val === true, {
       message: "You must agree to the MLH Code of Conduct",

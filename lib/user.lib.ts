@@ -3,8 +3,18 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { USERS_COLLECTION, LOGIN_PATH, PARTICIPANT, ADMIN, JUDGE, REGISTRATION_PATH, MENTOR } from "@/constants";
-import type { ActionResult, User } from "@/types";
+import {
+  USERS_COLLECTION,
+  LOGIN_PATH,
+  PARTICIPANT,
+  ADMIN,
+  JUDGE,
+  MENTOR,
+  REGISTRATION_PATH,
+  DASHBOARD_PATH,
+  CLOSED_REGISTRATION,
+} from "@/constants";
+import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
 import { verifySession } from ".";
 
@@ -37,7 +47,26 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
   const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userInfo.id).get();
   if (!userDocSnapshot.exists) redirect(REGISTRATION_PATH);
 
-  return { ...userDocSnapshot.data(), id } as User;
+  // check if this is a Kris-special permission participant
+  // We would've filled out a document for them with their email,
+  // "Participant" role, and created_at timestamp
+  // but they'll still have to fill out the registration form
+  // so we can capture their MLH agreements
+
+  // checks if the document was created AFTER we closed
+  // permission code registration (Mar 10)
+  const userData = userDocSnapshot.data()!;
+
+  if (
+    userData.role === PARTICIPANT &&
+    userData.created_at > CLOSED_REGISTRATION &&
+    !userData.first_name &&
+    !userData.last_name
+  ) {
+    redirect(REGISTRATION_PATH);
+  }
+
+  return { ...userData, id } as User;
 };
 
 /**
@@ -80,4 +109,46 @@ const requireRole = <T extends User["role"]>(
   return null;
 };
 
-export { getAuthenticatedUser, requireRole };
+/**
+ * Onboard a judge or mentor user by marking them as onboarded.
+ * Retrieves the user document and checks if they are already onboarded.
+ * If not onboarded, updates the user document to set onboarded to true and updates the updated_at timestamp.
+ *
+ * @param id - The unique identifier of the user to onboard
+ * @returns Promise resolving to a boolean:
+ *   - `false` if the user was just onboarded (wasn't onboarded before)
+ *   - `true` if the user was already onboarded
+ * @example
+ * ```ts
+ * const wasAlreadyOnboarded = await onboardUser(userId);
+ * if (!wasAlreadyOnboarded) {
+ *   console.log("User was just onboarded");
+ * } else {
+ *   console.log("User was already onboarded");
+ * }
+ * ```
+ */
+const onboardUser = async (id: User["id"]): Promise<boolean> => {
+  const db = getFirestore();
+  const now = Date.now();
+
+  const judgeDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
+  if (!judgeDocSnapshot.exists) return true;
+  const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
+
+  if (!onboarded) {
+    await db
+      .collection(USERS_COLLECTION)
+      .doc(id)
+      .update({
+        onboarded: true,
+        updated_at: now,
+      } as Partial<JudgeUser | MentorUser>);
+
+    return false;
+  }
+
+  return true;
+};
+
+export { getAuthenticatedUser, requireRole, onboardUser };
