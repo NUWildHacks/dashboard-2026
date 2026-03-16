@@ -8,11 +8,10 @@ import { ProjectWithMetadata } from "../types";
 import { AssignedProjectItem } from ".";
 
 type AssignedProjectGridProps = {
-  handleOpenJudgingForm: UseJudgingFormSheetReturn["handleOpenJudgingForm"];
   projectsWithMetadata: ProjectWithMetadata[];
-};
+} & Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown">;
 
-const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithMetadata }: AssignedProjectGridProps) => {
+const AssignedProjectGrid = ({ handleOpenJudgingForm, handleKeyDown, projectsWithMetadata }: AssignedProjectGridProps) => {
   if (projectsWithMetadata.length === 0) {
     return (
       <Empty role="status" aria-live="polite">
@@ -33,6 +32,7 @@ const AssignedProjectGrid = ({ handleOpenJudgingForm, projectsWithMetadata }: As
         <AssignedProjectItem
           key={projectWithMetadata.id}
           handleOpenJudgingForm={handleOpenJudgingForm}
+          handleKeyDown={handleKeyDown}
           projectWithMetadata={projectWithMetadata}
         />
       ))}

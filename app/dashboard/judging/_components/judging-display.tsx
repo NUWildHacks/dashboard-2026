@@ -74,7 +74,7 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
           </AlertTitle>
         </Alert>
         <AssignedProjectGrid
-          handleOpenJudgingForm={handleOpenJudgingForm}
+          {...useJudgingFormSheetReturn}
           projectsWithMetadata={filteredProjectsWithMetadata}
         />
       </div>
