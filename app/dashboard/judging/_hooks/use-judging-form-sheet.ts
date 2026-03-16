@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { Control, SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -16,6 +16,7 @@ export type UseJudgingFormSheetReturn = {
   setIsOpen: (isOpen: boolean) => void;
   selectedProjectWithMetadata: ProjectWithMetadata | undefined;
   handleOpenJudgingForm: (projectWithMetadata?: ProjectWithMetadata) => void;
+  handleKeyDown: (event: KeyboardEvent, projectWithMetadata?: ProjectWithMetadata) => void;
   control: Control<JudgingFormSchema>;
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
@@ -77,6 +78,13 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormShe
     }
   };
 
+  const handleKeyDown = (event: KeyboardEvent, projectWithMetadata?: ProjectWithMetadata) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleOpenJudgingForm(projectWithMetadata);
+    }
+  };
+
   const handleOpenJudgingForm = (projectWithMetadata?: ProjectWithMetadata) => {
     setSelectedProjectWithMetadata(projectWithMetadata);
     setIsOpen(true);
@@ -96,6 +104,7 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormShe
     setIsOpen,
     selectedProjectWithMetadata,
     handleOpenJudgingForm,
+    handleKeyDown,
     control,
     handleSubmit,
     onSubmit,

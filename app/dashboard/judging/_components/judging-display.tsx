@@ -1,11 +1,10 @@
 "use client";
 
-import { ExternalLinkIcon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { JUDGING_GUIDE_PATH } from "@/constants";
 import { CategoryWithAll, useFilters } from "@/hooks";
 import { JudgeUser } from "@/types";
 

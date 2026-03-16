@@ -6,11 +6,11 @@ import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/i
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import { ProjectWithMetadata } from "../types";
 
-type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm"> & {
+type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
   projectWithMetadata: ProjectWithMetadata;
 };
 
-const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({ handleOpenJudgingForm, handleKeyDown, projectWithMetadata }: AssignedProjectItemProps) => {
   const { name, track, judging_form } = projectWithMetadata;
 
   return (
@@ -19,6 +19,7 @@ const AssignedProjectItem = ({ handleOpenJudgingForm, projectWithMetadata }: Ass
       tabIndex={0}
       aria-label={`Judge project: ${name}`}
       onClick={() => handleOpenJudgingForm(projectWithMetadata)}
+      onKeyDown={(event) => handleKeyDown(event, projectWithMetadata)}
       className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
     >
       <ItemContent className="gap-2 min-w-0">

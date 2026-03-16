@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { toast } from "sonner";
 
 import { ActionResult } from "@/types";
@@ -11,7 +11,7 @@ export type UseItemDialogReturn<T extends { id: string }> = {
   isDeleting: boolean;
   setIsOpen: (isOpen: boolean) => void;
   handleSelectItem: (itemId: T["id"]) => void;
-  handleKeyDown: (event: React.KeyboardEvent, id: T["id"]) => void;
+  handleKeyDown: (event: KeyboardEvent, id: T["id"]) => void;
   handleDeleteItem: (deleteFn: (ids: string[]) => Promise<ActionResult<T>>) => Promise<void>;
 };
 
@@ -31,7 +31,7 @@ export const useItemDialog = <T extends { id: string }>(items: T[], itemName: st
     setIsOpen(true);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent, id: T["id"]) => {
+  const handleKeyDown = (event: KeyboardEvent, id: T["id"]) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleSelectItem(id);
