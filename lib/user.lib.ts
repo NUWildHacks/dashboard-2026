@@ -12,6 +12,7 @@ import {
   MENTOR,
   REGISTRATION_PATH,
   DASHBOARD_PATH,
+  CLOSED_REGISTRATION
 } from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
@@ -58,7 +59,7 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
 
   if (
     userData.role === PARTICIPANT &&
-    userData.created_at > 1773205239000 &&
+    userData.created_at > CLOSED_REGISTRATION &&
     !userData.first_name &&
     !userData.last_name
   ) {
