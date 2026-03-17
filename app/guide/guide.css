@@ -705,7 +705,7 @@
   justify-content: space-between;
   gap: 0.5rem;
   width: 100%;
-  padding: 0;
+  padding: 0.28rem 0.6rem;
   margin-bottom: 0.4rem;
   font: inherit;
   font-size: 0.85rem;
@@ -757,6 +757,9 @@
 
 .guide-nav-group > .guide-nav-sublist {
   margin-bottom: 0.25rem;
+  margin-left: 0.9rem;
+  padding-left: 0.3rem;
+  border-left: 2px solid var(--surface-border);
 }
 
 .guide-nav-link,
@@ -786,7 +789,13 @@
 .guide-nav-label-level-2 {
   font-size: 0.9rem;
   font-weight: 500;
-  padding-left: 1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.6rem;
+}
+
+.guide-nav-heading-level-1 {
+  font-size: 0.96rem;
+  font-weight: 600;
 }
 
 .guide-nav-link-level-3,
@@ -1369,12 +1378,13 @@
 .guide-content .guide-rich-table:has(thead th:nth-child(5)) tr {
   display: block;
   border: 1px solid var(--surface-border);
+  border-left: 3px solid var(--secondary-color);
   background: rgba(var(--secondary-rgb), 0.07);
   padding: 0.72rem 0.95rem;
 }
 
 .dark .guide-content .guide-rich-table:has(thead th:nth-child(5)) tr {
-  background: rgba(var(--secondary-rgb), 0.16);
+  background: transparent;
 }
 
 .guide-content .guide-rich-table:has(thead th:nth-child(5)) tr > * + * {
@@ -1386,10 +1396,14 @@
   align-items: flex-start;
   gap: 0.8rem;
   width: 100%;
-  border-bottom: none;
-  padding: 0.38rem 0;
+  border-bottom: 1px solid var(--surface-border);
+  padding: 0.5rem 0;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.guide-content .guide-rich-table:has(thead th:nth-child(5)) td:last-child {
+  border-bottom: none;
 }
 
 .guide-content .guide-rich-table:has(thead th:nth-child(5)) td::before {
@@ -1399,10 +1413,15 @@
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--muted-color);
+  color: var(--heading-color);
+  font-weight: 600;
   line-height: 1.5;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.dark .guide-content .guide-rich-table:has(thead th:nth-child(5)) td::before {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .guide-content .guide-rich-table:has(thead th:nth-child(5)) td:not([data-label])::before,
@@ -1435,11 +1454,16 @@
   .guide-content table tr {
     display: block;
     border: 1px solid var(--surface-border);
+    border-left: 3px solid var(--secondary-color);
     background: rgba(var(--secondary-rgb), 0.07);
     padding: 0.72rem 0.95rem;
   }
 
   .dark .guide-content table tr {
+    background: rgba(var(--secondary-rgb), 0.16);
+  }
+
+  .dark .guide-content .guide-rich-table:has(thead th:nth-child(5)) tr {
     background: rgba(var(--secondary-rgb), 0.16);
   }
 
@@ -1452,10 +1476,14 @@
     align-items: flex-start;
     gap: 0.8rem;
     width: 100%;
-    border-bottom: none;
-    padding: 0.38rem 0;
+    border-bottom: 1px solid var(--surface-border);
+    padding: 0.5rem 0;
     min-width: 0;
     overflow-wrap: anywhere;
+  }
+
+  .guide-content table td:last-child {
+    border-bottom: none;
   }
 
   .guide-content table td::before {
@@ -1464,9 +1492,14 @@
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--muted-color);
+    color: var(--heading-color);
+    font-weight: 600;
     line-height: 1.5;
     flex-shrink: 0;
+  }
+
+  .dark .guide-content table td::before {
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .guide-content table td:not([data-label])::before,
