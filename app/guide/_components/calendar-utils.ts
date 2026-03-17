@@ -62,6 +62,18 @@ const makeAbsoluteURL = (url: string | undefined, baseURL: string) => {
     return undefined;
   }
 
+  const normalized = url.trim().toLowerCase();
+  const isCalendarSubscriptionURL =
+    normalized.startsWith("webcal://") ||
+    normalized.includes("/calendar/ical/") ||
+    normalized.includes("calendar.google.com/calendar/embed?src=") ||
+    normalized.includes("calendar.google.com/calendar/u/0?cid=") ||
+    /\.ics($|[?#])/.test(normalized);
+
+  if (isCalendarSubscriptionURL) {
+    return undefined;
+  }
+
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
