@@ -45,5 +45,6 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",
+  "check-in": "Check-in",
   judging: "Judging",
 };

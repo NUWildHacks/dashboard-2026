@@ -30,6 +30,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   fps = 10,
 }) => {
   const scannerRef = useRef<Html5Qrcode | null>(null);
+  const successCallbackRef = useRef<(decodedText: string) => void>(() => {});
+  const errorCallbackRef = useRef<(errorMessage: string) => void>(() => {});
   const lastScanTimeRef = useRef<number>(0);
   const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
@@ -106,6 +108,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             console.debug("[QRScanner] Scan error (expected if no code in frame):", errorMessage);
           }
         };
+
+        successCallbackRef.current = handleQrCodeSuccess;
+        errorCallbackRef.current = handleQrCodeError;
 
         // Start scanning
         await scanner.start(
@@ -188,8 +193,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             fps: fps || 10,
             qrbox: { width: 250, height: 250 },
           },
-          () => {}, // onSuccess - already bound from initialization
-          () => {} // onError - already bound from initialization
+          successCallbackRef.current,
+          errorCallbackRef.current
         );
         setIsScanning(true);
       }
