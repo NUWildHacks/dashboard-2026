@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Loader2, RefreshCcw, Ticket, UtensilsCrossed } from "lucide-react";
+import { AlertCircle, Camera, CameraOff, CheckCircle2, Loader2, RefreshCcw, Ticket, Users, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { QRScanner, type QRScannerError } from "@/components/qr-scanner";
@@ -13,8 +13,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getEventTimeRange, getSendTime, getTimeFromMilliseconds } from "@/lib";
 import type { Role } from "@/types";
 
-import { getRecentEventCheckIns, getRecentMealExchanges, processCheckIn, processMealExchange } from "../_actions";
-import type { CheckInEventOption, CheckInMode } from "../types";
+import { getRecentEventCheckIns, processCheckIn, WILDHACKS_EVENT_ID } from "../_actions";
+import type { CheckInEventOption } from "../types";
 
 type CheckInConsoleProps = {
   events: CheckInEventOption[];
@@ -40,10 +40,6 @@ type RecentActivityItem = {
 const DUPLICATE_SCAN_WINDOW_MS = 1500;
 const RECENT_ACTIVITY_LIMIT = 12;
 
-const getModeLabel = (mode: CheckInMode): string => {
-  return mode === "check-in" ? "Event check-in" : "Meal exchange";
-};
-
 const formatRoleLabel = (role: Role | undefined): string => {
   if (!role) return "Unknown role";
 
@@ -52,8 +48,9 @@ const formatRoleLabel = (role: Role | undefined): string => {
 };
 
 const CheckInConsole = ({ events }: CheckInConsoleProps) => {
-  const [selectedEventId, setSelectedEventId] = useState(events[0]?.id ?? "");
-  const [mode, setMode] = useState<CheckInMode>("check-in");
+  const [checkInMode, setCheckInMode] = useState<"event" | "wildhacks">("event");
+  const [selectedEventId, setSelectedEventId] = useState("");
+  const [isScannerEnabled, setIsScannerEnabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRefreshingRecent, setIsRefreshingRecent] = useState(false);
   const [feedback, setFeedback] = useState<ScanFeedback | null>(null);
@@ -63,23 +60,39 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
   const inFlightScanRef = useRef(false);
   const lastSubmissionRef = useRef<{ key: string; at: number } | null>(null);
 
+  // Effective event ID based on mode
+  const effectiveEventId = checkInMode === "wildhacks" ? WILDHACKS_EVENT_ID : selectedEventId;
+
   useEffect(() => {
-    if (!events.length) {
+    if (checkInMode === "wildhacks") {
       setSelectedEventId("");
       return;
     }
 
-    const selectedEventExists = events.some((event) => event.id === selectedEventId);
-    if (!selectedEventExists) {
-      setSelectedEventId(events[0].id);
+    if (!events.length) {
+      setSelectedEventId("");
+      setIsScannerEnabled(false);
+      return;
     }
-  }, [events, selectedEventId]);
+
+    const selectedEventExists = events.some((event) => event.id === selectedEventId);
+    if (!selectedEventExists && selectedEventId !== "") {
+      setSelectedEventId("");
+      setIsScannerEnabled(false);
+    }
+  }, [events, selectedEventId, checkInMode]);
+
+  useEffect(() => {
+    if (!effectiveEventId) {
+      setIsScannerEnabled(false);
+    }
+  }, [effectiveEventId]);
 
   const selectedEvent = useMemo(() => {
     return events.find((event) => event.id === selectedEventId);
   }, [events, selectedEventId]);
 
-  const refreshRecentActivity = useCallback(async (eventId: string, selectedMode: CheckInMode) => {
+  const refreshRecentActivity = useCallback(async (eventId: string) => {
     if (!eventId) {
       setRecentActivity([]);
       return;
@@ -88,51 +101,25 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
     setIsRefreshingRecent(true);
 
     try {
-      if (selectedMode === "check-in") {
-        const result = await getRecentEventCheckIns({ eventId, limitCount: RECENT_ACTIVITY_LIMIT });
-
-        if (!result.success) {
-          setRecentActivity([]);
-          setFeedback({
-            tone: "error",
-            title: "Unable to load recent check-ins",
-            description: result.error ?? "Please try refreshing recent activity.",
-            timestamp: Date.now(),
-          });
-          return;
-        }
-
-        const activity = (result.check_ins ?? []).map((checkIn) => ({
-          id: checkIn.id,
-          userId: checkIn.user_id,
-          email: checkIn.scan_payload.email,
-          role: checkIn.scan_payload.role,
-          processedAt: checkIn.checked_in_at,
-        }));
-
-        setRecentActivity(activity);
-        return;
-      }
-
-      const result = await getRecentMealExchanges({ eventId, limitCount: RECENT_ACTIVITY_LIMIT });
+      const result = await getRecentEventCheckIns({ eventId, limitCount: RECENT_ACTIVITY_LIMIT });
 
       if (!result.success) {
         setRecentActivity([]);
         setFeedback({
           tone: "error",
-          title: "Unable to load recent meal exchanges",
+          title: "Unable to load recent check-ins",
           description: result.error ?? "Please try refreshing recent activity.",
           timestamp: Date.now(),
         });
         return;
       }
 
-      const activity = (result.meal_exchanges ?? []).map((mealExchange) => ({
-        id: mealExchange.id,
-        userId: mealExchange.user_id,
-        email: mealExchange.scan_payload.email,
-        role: mealExchange.scan_payload.role,
-        processedAt: mealExchange.exchanged_at,
+      const activity = (result.check_ins ?? []).map((checkIn) => ({
+        id: checkIn.id,
+        userId: checkIn.user_id,
+        email: checkIn.scan_payload.email,
+        role: checkIn.scan_payload.role,
+        processedAt: checkIn.checked_in_at,
       }));
 
       setRecentActivity(activity);
@@ -149,25 +136,22 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!selectedEventId) {
-      setRecentActivity([]);
-      return;
-    }
-
-    void refreshRecentActivity(selectedEventId, mode);
-  }, [mode, refreshRecentActivity, selectedEventId]);
+  // useEffect(() => {
+  //   if (!isScannerEnabled) {
+  //     setFeedback(null);
+  //   }
+  // }, [isScannerEnabled]);
 
   const handleScan = useCallback(
     async (scanPayload: string) => {
       const normalizedPayload = scanPayload.trim();
       if (!normalizedPayload) return;
 
-      if (!selectedEventId) {
+      if (!effectiveEventId) {
         setFeedback({
           tone: "error",
-          title: "Select an event first",
-          description: "Please choose an event before scanning QR codes.",
+          title: "Select an event or mode first",
+          description: "Please choose a check-in mode and event before scanning QR codes.",
           timestamp: Date.now(),
         });
         return;
@@ -175,7 +159,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
 
       if (inFlightScanRef.current) return;
 
-      const submissionKey = `${mode}:${selectedEventId}:${normalizedPayload}`;
+      const submissionKey = `check-in:${effectiveEventId}:${normalizedPayload}`;
       const now = Date.now();
       const previousSubmission = lastSubmissionRef.current;
 
@@ -194,57 +178,31 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       setLastScannedValue(normalizedPayload);
 
       try {
-        if (mode === "check-in") {
-          const result = await processCheckIn({ eventId: selectedEventId, scanPayload: normalizedPayload });
-          const errorMessage = !result.success ? result.error : "Unable to process this QR code.";
+        const result = await processCheckIn({ eventId: effectiveEventId, scanPayload: normalizedPayload });
+        const errorMessage = !result.success ? result.error : "Unable to process this QR code.";
 
-          if (!result.success || !result.check_in) {
-            setFeedback({
-              tone: "error",
-              title: "Check-in failed",
-              description: errorMessage,
-              timestamp: Date.now(),
-            });
-            return;
-          }
-
-          const userDisplay = result.check_in.scan_payload.email ?? result.check_in.user_id;
-
+        if (!result.success || !result.check_in) {
           setFeedback({
-            tone: result.already_checked_in ? "warning" : "success",
-            title: result.already_checked_in ? "Already checked in" : "Check-in successful",
-            description: result.already_checked_in
-              ? `${userDisplay} was already checked in for this event.`
-              : `${userDisplay} has been checked in successfully.`,
+            tone: "error",
+            title: "Check-in failed",
+            description: errorMessage,
             timestamp: Date.now(),
           });
-        } else {
-          const result = await processMealExchange({ eventId: selectedEventId, scanPayload: normalizedPayload });
-          const errorMessage = !result.success ? result.error : "Unable to process this QR code.";
-
-          if (!result.success || !result.meal_exchange) {
-            setFeedback({
-              tone: "error",
-              title: "Meal exchange failed",
-              description: errorMessage,
-              timestamp: Date.now(),
-            });
-            return;
-          }
-
-          const userDisplay = result.meal_exchange.scan_payload.email ?? result.meal_exchange.user_id;
-
-          setFeedback({
-            tone: result.already_exchanged ? "warning" : "success",
-            title: result.already_exchanged ? "Meal already exchanged" : "Meal exchange successful",
-            description: result.already_exchanged
-              ? `${userDisplay} already exchanged a meal for this event.`
-              : `${userDisplay} can now receive a meal.`,
-            timestamp: Date.now(),
-          });
+          return;
         }
 
-        await refreshRecentActivity(selectedEventId, mode);
+        const userDisplay = result.check_in.scan_payload.email ?? result.check_in.user_id;
+
+        setFeedback({
+          tone: result.already_checked_in ? "warning" : "success",
+          title: result.already_checked_in ? "Already checked in" : "Check-in successful",
+          description: result.already_checked_in
+            ? `${userDisplay} was already checked in.`
+            : `${userDisplay} has been checked in successfully.`,
+          timestamp: Date.now(),
+        });
+
+        await refreshRecentActivity(effectiveEventId);
       } catch (error) {
         setFeedback({
           tone: "error",
@@ -257,7 +215,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
         setIsSubmitting(false);
       }
     },
-    [mode, refreshRecentActivity, selectedEventId]
+    [effectiveEventId, refreshRecentActivity]
   );
 
   const handleScannerError = useCallback((scannerError: QRScannerError, message: string) => {
@@ -278,26 +236,41 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
         ? "border-amber-300 text-amber-900 [&>svg]:text-amber-700"
         : undefined;
 
+  const isCameraActive = !!effectiveEventId && isScannerEnabled;
   const hasEventSchedule = !!selectedEvent && selectedEvent.start_time > 0 && selectedEvent.end_time > 0;
 
   const truncatedScanPayload = lastScannedValue.length > 96 ? `${lastScannedValue.slice(0, 96)}...` : lastScannedValue;
 
   return (
-    <div className="flex-1 flex flex-col gap-6">
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <Card>
+    <div className="flex min-w-0 flex-1 flex-col gap-6">
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+        <Card className="min-w-0">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Ticket className="size-4" />
               Admin check-in console
             </CardTitle>
-            <CardDescription>
-              Select an event, choose a mode, and scan attendee QR codes for {getModeLabel(mode).toLowerCase()}.
-            </CardDescription>
+            <CardDescription>Select an event and scan attendee QR codes to check them in.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
+            <div className="space-y-3">
+              <p className="text-sm font-medium">Check-in Mode</p>
+              <Tabs value={checkInMode} onValueChange={(value) => setCheckInMode(value as "event" | "wildhacks")}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="event">
+                    <Ticket className="size-4" />
+                    Event
+                  </TabsTrigger>
+                  <TabsTrigger value="wildhacks">
+                    <Users className="size-4" />
+                    WildHacks
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            {checkInMode === "event" && (
+              <div className="space-y-2 min-w-0">
                 <p className="text-sm font-medium">Event</p>
                 <Select
                   value={selectedEventId}
@@ -316,26 +289,18 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Mode</p>
-                <Tabs value={mode} onValueChange={(nextMode) => setMode(nextMode as CheckInMode)}>
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="check-in">
-                      <Ticket />
-                      Check-in
-                    </TabsTrigger>
-                    <TabsTrigger value="meal-exchange">
-                      <UtensilsCrossed />
-                      Meal
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-            </div>
+            )}
 
-            {selectedEvent && (
+            {checkInMode === "wildhacks" && (
               <div className="rounded-lg border bg-muted/40 px-3 py-2">
-                <p className="text-sm font-medium">{selectedEvent.title}</p>
+                <p className="text-sm font-medium">WildHacks 2026</p>
+                <p className="text-xs text-muted-foreground">Main event check-in</p>
+              </div>
+            )}
+
+            {checkInMode === "event" && selectedEvent && (
+              <div className="rounded-lg border bg-muted/40 px-3 py-2">
+                <p className="text-sm font-medium break-words">{selectedEvent.title}</p>
                 <p className="text-xs text-muted-foreground">
                   {hasEventSchedule
                     ? getEventTimeRange(selectedEvent.start_time, selectedEvent.end_time)
@@ -345,7 +310,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
               </div>
             )}
 
-            {!events.length && (
+            {checkInMode === "event" && !events.length && (
               <Alert>
                 <AlertCircle />
                 <AlertTitle>No events available</AlertTitle>
@@ -354,27 +319,54 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
             )}
 
             {feedback && (
-              <Alert variant={feedback.tone === "error" ? "destructive" : "default"} className={feedbackAlertClassName}>
+              <Alert
+                variant={feedback.tone === "error" ? "destructive" : "default"}
+                className={`relative pr-10 ${feedbackAlertClassName}`}
+              >
                 {feedback.tone === "error" ? <AlertCircle /> : <CheckCircle2 />}
                 <AlertTitle>{feedback.title}</AlertTitle>
                 <AlertDescription>
                   <p>{feedback.description}</p>
                   <p className="text-xs">Updated {getSendTime(feedback.timestamp)}</p>
                 </AlertDescription>
+                <button
+                  onClick={() => setFeedback(null)}
+                  className="absolute right-3 top-3 rounded-md p-1 hover:bg-black/10 transition-colors"
+                  aria-label="Close notification"
+                >
+                  <X className="size-4" />
+                </button>
               </Alert>
             )}
 
             {events.length > 0 && (
               <>
-                <QRScanner
-                  onScan={handleScan}
-                  onError={handleScannerError}
-                  debounceMs={700}
-                  enabled={!!selectedEventId}
-                />
-                <div className="flex items-center justify-between rounded-lg border bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-                  <p>
-                    Last payload: <span className="font-mono">{truncatedScanPayload || "No scans yet"}</span>
+                <div className="flex flex-col gap-2 rounded-lg border bg-muted/40 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    {!effectiveEventId
+                      ? checkInMode === "event"
+                        ? "Select an event to enable camera controls."
+                        : "Camera controls ready."
+                      : isCameraActive
+                        ? "Camera is on and ready to scan."
+                        : "Camera is off. Turn it on when ready."}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={!effectiveEventId || isSubmitting}
+                    onClick={() => setIsScannerEnabled((previous) => !previous)}
+                  >
+                    {isCameraActive ? <CameraOff className="size-4" /> : <Camera className="size-4" />}
+                    {isCameraActive ? "Turn camera off" : "Turn camera on"}
+                  </Button>
+                </div>
+
+                <QRScanner onScan={handleScan} onError={handleScannerError} debounceMs={700} enabled={isCameraActive} />
+                <div className="flex flex-col gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+                  <p className="min-w-0">
+                    Last payload: <span className="font-mono break-all">{truncatedScanPayload || "No scans yet"}</span>
                   </p>
                   {isSubmitting && (
                     <span className="inline-flex items-center gap-1">
@@ -388,20 +380,18 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="min-w-0">
           <CardHeader>
             <div className="flex items-start justify-between gap-2">
               <div>
                 <CardTitle>Recent activity</CardTitle>
-                <CardDescription>
-                  Latest {getModeLabel(mode).toLowerCase()} records for the selected event.
-                </CardDescription>
+                <CardDescription>Latest check-in records for the selected event.</CardDescription>
               </div>
               <Button
                 variant="outline"
                 size="sm"
-                disabled={!selectedEventId || isRefreshingRecent}
-                onClick={() => void refreshRecentActivity(selectedEventId, mode)}
+                disabled={!effectiveEventId || isRefreshingRecent}
+                onClick={() => void refreshRecentActivity(effectiveEventId)}
               >
                 {isRefreshingRecent ? <Loader2 className="size-4 animate-spin" /> : <RefreshCcw className="size-4" />}
                 Refresh
@@ -409,22 +399,24 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
             </div>
           </CardHeader>
           <CardContent className="space-y-2">
-            {!selectedEventId && (
-              <p className="text-sm text-muted-foreground">Select an event to load recent activity.</p>
+            {!effectiveEventId && (
+              <p className="text-sm text-muted-foreground">
+                {checkInMode === "event" ? "Select an event" : "Select a mode"} to load recent activity.
+              </p>
             )}
 
-            {selectedEventId && !isRefreshingRecent && recentActivity.length === 0 && (
-              <p className="text-sm text-muted-foreground">No recent activity yet for this mode.</p>
+            {effectiveEventId && !isRefreshingRecent && recentActivity.length === 0 && (
+              <p className="text-sm text-muted-foreground">No recent check-ins for this selection.</p>
             )}
 
             {recentActivity.map((activityItem) => (
               <div key={activityItem.id} className="rounded-lg border p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-medium">{activityItem.email ?? activityItem.userId}</p>
-                  <Badge variant="secondary">{mode === "check-in" ? "Checked in" : "Meal exchanged"}</Badge>
+                  <p className="truncate text-sm font-medium min-w-0">{activityItem.email ?? activityItem.userId}</p>
+                  <Badge variant="secondary">Checked in</Badge>
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                  <span>ID: {activityItem.userId}</span>
+                  <span className="break-all">ID: {activityItem.userId}</span>
                   <span>{formatRoleLabel(activityItem.role)}</span>
                   <span>{getSendTime(activityItem.processedAt)}</span>
                   <span>{getTimeFromMilliseconds(activityItem.processedAt)}</span>

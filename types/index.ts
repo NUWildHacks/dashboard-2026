@@ -4,9 +4,6 @@ export type {
   CheckInActionResponse,
   EventCheckIn,
   GetEventCheckInsActionResponse,
-  GetMealExchangesActionResponse,
-  MealExchange,
-  MealExchangeActionResponse,
   QRCodeScanPayload,
 } from "./check-in.types";
 export type { ErrorPageProps } from "./error-page.types";

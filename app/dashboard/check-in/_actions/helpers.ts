@@ -1,6 +1,8 @@
 import { ADMIN, DASHBOARD_CHECK_IN_PATH, JUDGE, LOGIN_PATH, MENTOR, PARTICIPANT } from "@/constants";
 import type { QRCodeScanPayload, User } from "@/types";
 
+export const WILDHACKS_EVENT_ID = "wildhacks-2026" as const;
+
 type ParsedScanPayloadResult = { success: true; payload: QRCodeScanPayload } | { success: false; error: string };
 
 export const getCheckInRedirectPath = (): string => {

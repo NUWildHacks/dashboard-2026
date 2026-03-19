@@ -1,10 +1,11 @@
-import { BookOpenCheck, Calendar, Home, Users } from "lucide-react";
+import { BookOpenCheck, Calendar, Home, QrCode, Users } from "lucide-react";
 
 import {
   ADMIN,
   JUDGE,
   MENTOR,
   PARTICIPANT,
+  DASHBOARD_CHECK_IN_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -30,6 +31,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Manage users",
     url: DASHBOARD_MANAGE_USERS_PATH,
     icon: Users,
+    visibleTo: [ADMIN],
+  },
+  {
+    title: "Check-in",
+    url: DASHBOARD_CHECK_IN_PATH,
+    icon: QrCode,
     visibleTo: [ADMIN],
   },
   {

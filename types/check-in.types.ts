@@ -17,28 +17,11 @@ export type EventCheckIn = BaseModel & {
   scan_payload: QRCodeScanPayload;
 };
 
-export type MealExchange = BaseModel & {
-  event_id: string;
-  user_id: string;
-  exchanged_at: number;
-  exchanged_by: string;
-  scan_payload: QRCodeScanPayload;
-};
-
 export type CheckInActionResponse = ActionResult & {
   check_in?: EventCheckIn;
   already_checked_in?: boolean;
 };
 
-export type MealExchangeActionResponse = ActionResult & {
-  meal_exchange?: MealExchange;
-  already_exchanged?: boolean;
-};
-
 export type GetEventCheckInsActionResponse = ActionResult & {
   check_ins?: EventCheckIn[];
-};
-
-export type GetMealExchangesActionResponse = ActionResult & {
-  meal_exchanges?: MealExchange[];
 };

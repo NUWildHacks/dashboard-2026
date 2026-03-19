@@ -1,4 +1,4 @@
-export type CheckInMode = "check-in" | "meal-exchange";
+export type CheckInMode = "check-in";
 
 export type CheckInEventOption = {
   id: string;

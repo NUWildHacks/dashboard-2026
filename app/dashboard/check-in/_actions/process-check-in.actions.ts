@@ -6,7 +6,7 @@ import { ADMIN, EVENT_CHECK_INS_COLLECTION, EVENTS_COLLECTION, USERS_COLLECTION 
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { CheckInActionResponse, EventCheckIn, QRCodeScanPayload, User } from "@/types";
 
-import { getCheckInRedirectPath, isAllowedScannableRole, parseScanPayload } from "./helpers";
+import { getCheckInRedirectPath, isAllowedScannableRole, parseScanPayload, WILDHACKS_EVENT_ID } from "./helpers";
 
 export type ProcessCheckInInput = {
   eventId: string;
@@ -28,9 +28,12 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       return { success: false, error: "Event ID is required" };
     }
 
-    const eventDocSnapshot = await db.collection(EVENTS_COLLECTION).doc(normalizedEventId).get();
-    if (!eventDocSnapshot.exists) {
-      return { success: false, error: "Selected event does not exist" };
+    // Skip event validation for WildHacks main event
+    if (normalizedEventId !== WILDHACKS_EVENT_ID) {
+      const eventDocSnapshot = await db.collection(EVENTS_COLLECTION).doc(normalizedEventId).get();
+      if (!eventDocSnapshot.exists) {
+        return { success: false, error: "Selected event does not exist" };
+      }
     }
 
     const parsedPayloadResult = parseScanPayload(scanPayload);
