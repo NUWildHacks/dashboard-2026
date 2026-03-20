@@ -1,6 +1,6 @@
 import type { ActionResult } from "./action-result.types";
 import type { BaseModel } from "./base-model.types";
-import type { Role } from "./user.types";
+import type { DietaryRestriction, Role } from "./user.types";
 
 export type QRCodeScanPayload = {
   user_id: string;
@@ -20,6 +20,7 @@ export type EventCheckIn = BaseModel & {
 export type CheckInActionResponse = ActionResult & {
   check_in?: EventCheckIn;
   already_checked_in?: boolean;
+  dietary_restrictions?: DietaryRestriction[];
 };
 
 export type GetEventCheckInsActionResponse = ActionResult & {

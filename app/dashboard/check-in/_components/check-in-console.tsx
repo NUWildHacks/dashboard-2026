@@ -27,6 +27,7 @@ type ScanFeedback = {
   title: string;
   description: string;
   timestamp: number;
+  dietaryRestrictions?: string[];
 };
 
 type RecentActivityItem = {
@@ -200,6 +201,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
             ? `${userDisplay} was already checked in.`
             : `${userDisplay} has been checked in successfully.`,
           timestamp: Date.now(),
+          dietaryRestrictions: result.dietary_restrictions,
         });
 
         await refreshRecentActivity(effectiveEventId);
@@ -327,6 +329,12 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
                 <AlertTitle>{feedback.title}</AlertTitle>
                 <AlertDescription>
                   <p>{feedback.description}</p>
+                  {feedback.dietaryRestrictions && (
+                    <p className="text-sm text-white font-semibold mt-2">
+                      Dietary restrictions:{" "}
+                      {feedback.dietaryRestrictions.length > 0 ? feedback.dietaryRestrictions.join(", ") : "None"}
+                    </p>
+                  )}
                   <p className="text-xs">Updated {getSendTime(feedback.timestamp)}</p>
                 </AlertDescription>
                 <button
@@ -417,7 +425,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
                   <span className="break-all">ID: {activityItem.userId}</span>
-                  <span>{formatRoleLabel(activityItem.role)}</span>
+                  {activityItem.role && <span>{formatRoleLabel(activityItem.role)}</span>}
                   <span>{getSendTime(activityItem.processedAt)}</span>
                   <span>{getTimeFromMilliseconds(activityItem.processedAt)}</span>
                 </div>

@@ -28,12 +28,17 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       return { success: false, error: "Event ID is required" };
     }
 
+    let isFoodEvent = false;
+
     // Skip event validation for WildHacks main event
     if (normalizedEventId !== WILDHACKS_EVENT_ID) {
       const eventDocSnapshot = await db.collection(EVENTS_COLLECTION).doc(normalizedEventId).get();
       if (!eventDocSnapshot.exists) {
         return { success: false, error: "Selected event does not exist" };
       }
+
+      const eventCategory = eventDocSnapshot.data()?.category;
+      isFoodEvent = typeof eventCategory === "string" && eventCategory.toLowerCase() === "food";
     }
 
     const parsedPayloadResult = parseScanPayload(scanPayload);
@@ -56,6 +61,8 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       };
     }
 
+    const dietaryRestrictions = isFoodEvent ? scannedUser.dietary_restrictions : undefined;
+
     const existingCheckInSnapshot = await db
       .collection(EVENT_CHECK_INS_COLLECTION)
       .where("event_id", "==", normalizedEventId)
@@ -74,6 +81,7 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
         success: true,
         check_in: existingCheckIn,
         already_checked_in: true,
+        dietary_restrictions: dietaryRestrictions,
       };
     }
 
@@ -95,6 +103,7 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       success: true,
       check_in: checkInRecord,
       already_checked_in: false,
+      dietary_restrictions: dietaryRestrictions,
     };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
