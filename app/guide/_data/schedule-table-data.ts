@@ -99,7 +99,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "8:30 AM - 10:00 AM",
     event: [{ content: "Sponsor Expo" }],
-    location: "LR4",
+    location: "Tech M120",
   },
   {
     time: "10:00 AM - 11:00 AM",

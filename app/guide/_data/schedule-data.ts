@@ -80,7 +80,7 @@ export const scheduleEvents: CalendarEvent[] = [
     description: "Meet with sponsors and learn about opportunities",
     start: new Date("2026-04-11T08:30:00-05:00"),
     end: new Date("2026-04-11T10:00:00-05:00"),
-    location: "LR4",
+    location: "Tech M120",
   },
   {
     title: "Opening Ceremony",
