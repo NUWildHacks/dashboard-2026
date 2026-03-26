@@ -49,12 +49,16 @@ const GuideShell = ({ children, entries }: GuideShellProps) => {
         </aside>
         <main className="guide-main" role="main">
           <div className="guide-content">
-            <div className="guide-content-body">
-              <GuideBreadcrumbs entries={entries} />
-              <GuideOnThisPage />
-              <div id="guide-content-article" className="guide-content-article">
-                {children}
+            <div className="guide-content-inner">
+              <div className="guide-content-body">
+                <GuideBreadcrumbs entries={entries} />
+                <div id="guide-content-article" className="guide-content-article">
+                  {children}
+                </div>
               </div>
+              <aside className="guide-toc-panel">
+                <GuideOnThisPage />
+              </aside>
             </div>
             <GuideContentFooter entries={entries} />
           </div>

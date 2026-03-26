@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 type TocItem = {
   id: string;
   title: string;
-  level: 1 | 2 | 3;
+  level: 2 | 3;
 };
 
 const SCROLL_DURATION_MS = 880;
@@ -140,7 +140,7 @@ const GuideOnThisPage = () => {
       return;
     }
 
-    const headings = Array.from(article.querySelectorAll("h1, h2, h3")) as HTMLHeadingElement[];
+    const headings = Array.from(article.querySelectorAll("h2, h3")) as HTMLHeadingElement[];
     const seenIds = new Map<string, number>();
 
     const nextItems: TocItem[] = headings
@@ -158,7 +158,7 @@ const GuideOnThisPage = () => {
         heading.id = id;
 
         const level = Number(heading.tagName.slice(1));
-        if (level !== 1 && level !== 2 && level !== 3) {
+        if (level !== 2 && level !== 3) {
           return null;
         }
 
