@@ -1,7 +1,7 @@
 "use client";
 
 import { Html5Qrcode } from "html5-qrcode";
-import { AlertCircle, Camera, CameraOff, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 export type QRScannerError = "CAMERA_NOT_FOUND" | "PERMISSION_DENIED" | "SCAN_FAILED" | "UNKNOWN";
@@ -373,131 +373,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       void stopAndClearScanner();
     };
   }, [enabled, debounceMs, fps, scannerElementId]);
-
-  // Handle pause/resume
-  const toggleScannerState = async () => {
-    const scanner = scannerRef.current;
-    if (!scanner) return;
-
-    try {
-      if (isScanning) {
-        await scanner.stop();
-        setIsScanning(false);
-      } else if (isCameraAvailable) {
-        let startSuccess = false;
-        let lastError: unknown = null;
-
-        // Strategy 1: Try the previously active camera
-        if (activeCameraIdRef.current) {
-          try {
-            await scanner.start(
-              activeCameraIdRef.current,
-              {
-                fps: fps || 10,
-                qrbox: { width: 250, height: 250 },
-              },
-              successCallbackRef.current,
-              errorCallbackRef.current
-            );
-            startSuccess = true;
-          } catch (error) {
-            lastError = error;
-            if (process.env.NODE_ENV === "development") {
-              console.debug("[QRScanner] Failed to resume with previous camera, trying others:", error);
-            }
-          }
-        }
-
-        // Strategy 2: Try enumerated cameras
-        if (!startSuccess) {
-          try {
-            const cameras = await Html5Qrcode.getCameras();
-
-            if (cameras && cameras.length > 0) {
-              const orderedCameras = getPreferredCameraOrder(cameras);
-              const cameraCandidates = activeCameraIdRef.current
-                ? [
-                    activeCameraIdRef.current,
-                    ...orderedCameras
-                      .map((camera) => camera.id)
-                      .filter((cameraId) => cameraId !== activeCameraIdRef.current),
-                  ]
-                : orderedCameras.map((camera) => camera.id);
-
-              for (const cameraId of cameraCandidates) {
-                try {
-                  await scanner.start(
-                    cameraId,
-                    {
-                      fps: fps || 10,
-                      qrbox: { width: 250, height: 250 },
-                    },
-                    successCallbackRef.current,
-                    errorCallbackRef.current
-                  );
-
-                  activeCameraIdRef.current = cameraId;
-                  startSuccess = true;
-                  break;
-                } catch (error) {
-                  lastError = error;
-                }
-              }
-            }
-          } catch (enumerationError) {
-            lastError = enumerationError;
-          }
-        }
-
-        // Strategy 3: Fallback to facingMode constraint
-        if (!startSuccess) {
-          try {
-            await scanner.start(
-              { facingMode: "environment" },
-              {
-                fps: fps || 10,
-                qrbox: { width: 250, height: 250 },
-              },
-              successCallbackRef.current,
-              errorCallbackRef.current
-            );
-            startSuccess = true;
-          } catch (error) {
-            lastError = error;
-
-            // Strategy 4: Last resort - user-facing camera
-            try {
-              await scanner.start(
-                { facingMode: "user" },
-                {
-                  fps: fps || 10,
-                  qrbox: { width: 250, height: 250 },
-                },
-                successCallbackRef.current,
-                errorCallbackRef.current
-              );
-              startSuccess = true;
-            } catch (userError) {
-              lastError = userError;
-            }
-          }
-        }
-
-        if (!startSuccess) {
-          throw lastError || new Error("Failed to resume scanner");
-        }
-
-        setError(null);
-        setIsScanning(true);
-      }
-    } catch (err) {
-      const errorMessage = getErrorMessage(err, "Failed to toggle scanner");
-      const errorType = getScannerErrorType(errorMessage);
-      console.error("[QRScanner] Toggle failed:", errorMessage, err);
-      setError({ type: errorType, message: errorMessage });
-      onErrorRef.current?.(errorType, errorMessage);
-    }
-  };
 
   if (!enabled) {
     return null;
