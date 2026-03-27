@@ -1,4 +1,5 @@
 import tracksData from "@/app/guide/_data/tracks.json";
+import { Callout } from "@/app/guide/_components/Callout";
 
 # Project Tracks and Challenges
 
@@ -6,13 +7,17 @@ import tracksData from "@/app/guide/_data/tracks.json";
 
 Your project must be submitted to one track.
 
-{tracksData.tracks.map((track) => (
+<Callout type="info" emoji="❓">
+  Tracks will be released AFTER opening ceremony. Stay tuned for more updates!
+</Callout>
+
+{/* {tracksData.tracks.map((track) => (
 
   <section key={track.name}>
     <h3>{track.name}</h3>
     <p>{track.description}</p>
   </section>
-))}
+))} */}
 
 ## Track and Challenge Rules
 
@@ -24,9 +29,13 @@ However, you can enter your project into any number of MLH's challenges for a ch
 
 You can choose to enter your project into any number of challenges.
 
-_MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://hackp.ac/WildHacks) website._
+{/* _MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://hackp.ac/WildHacks) website._ */}
 
-<div className="guide-challenges-grid">
+<Callout type="info" emoji="❓">
+  Challenges will be released AFTER opening ceremony. Stay tuned for more updates!
+</Callout>
+
+{/* <div className="guide-challenges-grid">
 {tracksData.mlhChallenges.map((challenge) => (
 
   <section key={challenge.name} className="guide-challenge-card">
@@ -40,4 +49,4 @@ _MLH challenges are listed below and on the [MLH Prizes at WildHacks](https://ha
     )}
   </section>
 ))}
-</div>
+</div> */}
