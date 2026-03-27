@@ -19,7 +19,7 @@ export const saturdayLunchOptions: MealOptionRow[] = [
   { option: text("Chicken Al Pastor Burrito"), notes: text("Gluten Free Friendly") },
   {
     option: text("Tilapia Burrito"),
-    notes: text("Allergy Free Friendly — No lactose, tree nut, peas, chickpea, mango, banana, or avocado"),
+    notes: text("Allergy Free Friendly"),
   },
 ];
 
@@ -29,6 +29,23 @@ export const saturdayDinnerOptions: MealOptionRow[] = [
   { option: text("Sausage Pizza") },
   { option: text("Veggie Pizza") },
   { option: text("Garden Veggie Papa Bowl"), notes: text("Option for no cheese and no Italian seasoning") },
+];
+
+export const midnightSnack: MealOptionRow[] = [
+  { option: text("Chocolate Chunk") },
+  { option: text("Cookies 'N Cream") },
+  { option: text("Double Chocolate Chunk") },
+  { option: text("Classic with M&M'S") },
+  { option: text("Peanut Butter Chip") },
+  { option: text("Snickerdoodle") },
+  { option: text("Double Chocolate Mint") },
+  { option: text("Oatmeal Raisin") },
+  { option: text("Sugar") },
+  { option: text("White Chocolate Macademia") },
+  { option: text("Vegan Birthday Cake"), notes: text("Vegan Friendly") },
+  { option: text("Vegan Chocolate Chunk"), notes: text("Vegan Friendly") },
+  { option: text("Vegan Double Chocolate Chunk"), notes: text("Vegan Friendly") },
+  { option: text("Vegan Gluten Free Chocolate Chip"), notes: text("Vegan and Gluten Free Friendly") },
 ];
 
 export const sundayBreakfastBagels: SingleColumnRow[] = [
@@ -61,7 +78,7 @@ export const sundayLunchOptions: MealOptionRow[] = [
   { option: text("K-BBQ Chicken Bowl (Gluten Free)"), notes: text("Gluten Free Friendly") },
   {
     option: text("Fire Chicken Bowl (Allergy-Free)"),
-    notes: text("Allergy Free Friendly — No lactose, tree nut, peas, chickpea, mango, banana, or avocado"),
+    notes: text("Allergy Free Friendly"),
   },
   { option: text("K-BBQ Chicken Bowl (Kosher)"), notes: text("Kosher Friendly") },
 ];

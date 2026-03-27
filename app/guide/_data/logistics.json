@@ -10,14 +10,14 @@
       "emoji": "⚠️",
       "text": "You must have your WildHacker Code ready and have submitted a project on Dev Post to receive meals. You can edit your project after submission."
     },
-    "wildhackerLink": "https://dashboard.wildhacks.net/code"
+    "wildhackerLink": "https://dashboard.wildhacks.net/dashboard"
   },
   "snacks": {
     "intro": "Snacks and drinks will be available throughout the event. They will be located at the WildSnacks Station.",
     "mapLink": "/guide/map",
     "callout": {
       "emoji": "❤️",
-      "text": "Thank you to the Red Bull team for providing our WildHackers with wiiings to complete their applications!"
+      "text": "Thank you to the Red Bull and Monster Energy teams for providing our WildHackers with the energy to finish their projects!"
     }
   },
   "additional": {

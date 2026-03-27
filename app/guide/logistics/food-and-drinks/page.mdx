@@ -5,6 +5,7 @@ import {
   saturdayDinnerOptions,
   saturdayLunchOptions,
   sundayBreakfastBagels,
+  midnightSnack,
   sundayBreakfastShmears,
   sundayLunchOptions,
 } from "@/app/guide/_data/meal-options-data";
@@ -67,6 +68,29 @@ A hackathon is all about development. We want you to focus on that, so we'll pro
   <tbody>
     {saturdayDinnerOptions.map((item, index) => (
       <tr key={`sat-dinner-${index}`}>
+        <td data-label="Option">
+          <InlineSegments segments={item.option} />
+        </td>
+        <td data-label="Dietary Notes">{item.notes ? <InlineSegments segments={item.notes} /> : ""}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+### Midnight Snack from [Insomnia Cookies](https://insomniacookies.com/)
+
+#### Cookies
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Dietary Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    {midnightSnack.map((item, index) => (
+      <tr key={`midnight-snack-${index}`}>
         <td data-label="Option">
           <InlineSegments segments={item.option} />
         </td>
