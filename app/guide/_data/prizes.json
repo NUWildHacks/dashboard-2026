@@ -7,64 +7,59 @@
     {
       "title": "1st Place Overall",
       "description": "This prize is awarded to the first-place project across all tracks.",
-      "award": "Pair of Apple AirPods 4 for each team member.",
+      "award": "To be announced!",
       "emoji": "🥇"
     },
     {
       "title": "2nd Place Overall",
       "description": "This prize is awarded to the second-place project across all tracks.",
-      "award": "Fujifilm Instax Mini 11 instant camera for each team member.",
+      "award": "To be announced!",
       "emoji": "🥈"
     },
     {
       "title": "3rd Place Overall",
       "description": "This prize is awarded to the third-place project across all tracks.",
-      "award": "Anker magnetic portable battery for each team member.",
+      "award": "To be announced!",
       "emoji": "🥉"
     }
   ],
   "trackPrizes": [
     {
-      "title": "Agriculture",
-      "award": "Uber Eats gift card for each team member.",
-      "emoji": "🥦"
+      "title": "Track 1",
+      "award": "To be announced!",
+      "emoji": "1️⃣"
     },
     {
-      "title": "Productivity / Wellness",
-      "award": "A Comfy for each team member.",
-      "emoji": "🧠"
+      "title": "Track 2",
+      "award": "To be announced!",
+      "emoji": "2️⃣"
     },
     {
-      "title": "Finance",
-      "award": "Pickleball set for each team member.",
-      "emoji": "💲"
+      "title": "Track 3",
+      "award": "To be announced!",
+      "emoji": "3️⃣"
     }
   ],
   "mlhPrizes": [
     {
-      "title": "Best Use of Gemini API",
-      "award": "Google Branded Backpacks",
-      "emoji": "☁️"
-    },
-    {
-      "title": "Best Use of MongoDB Atlas",
-      "award": "M5GO IoT Starter Kit",
-      "emoji": "📊"
-    },
-    {
-      "title": "Best .Tech Domain Name",
-      "award": "Blue Snowball Microphone & a Free .Tech Domain Name for up to 10 years",
+      "title": "Prize 1!",
+      "award": "To be announced!",
       "emoji": "💻"
     },
     {
-      "title": "Best Use of Auth0",
-      "award": "Wireless Headphones",
-      "emoji": "🔒"
+      "title": "Prize 2!",
+      "award": "To be announced!",
+      "emoji": "💻"
+    },
+    {
+      "title": "Prize 3!",
+      "award": "To be announced!",
+      "emoji": "💻"
     }
   ],
   "crowdFavorite": {
     "title": "Crowd Favorite",
-    "award": "Multi-color dinosaur light for each team member.",
-    "emoji": "🦖"
+    "award": "To be announced!",
+    "emoji": "😄"
   }
 }
