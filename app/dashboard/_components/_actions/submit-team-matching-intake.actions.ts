@@ -15,6 +15,7 @@ export type TeamMatchingIntakeData = {
   preferred_team_size: number;
   work_style: string;
   required_teammates: string;
+  consent: boolean;
 };
 
 export const submitTeamMatchingIntake = async (
@@ -26,6 +27,10 @@ export const submitTeamMatchingIntake = async (
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const { id: userId } = await getAuthenticatedUser(redirectPath);
+
+    if (!data.consent) {
+      return { success: false, error: "You must consent to participate in team matching." };
+    }
 
     const docRef = db.collection(TEAM_MATCHING_INTAKE_COLLECTION).doc(userId);
     const existing = await docRef.get();

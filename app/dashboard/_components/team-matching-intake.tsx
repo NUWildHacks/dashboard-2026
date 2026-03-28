@@ -184,6 +184,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
     if (form.preferred_roles.length === 0) missing.push("Preferred roles");
     if (Object.values(form.skills).every((v) => v === 0)) missing.push("Skills");
     if (!form.work_style) missing.push("Work style");
+    if (!consentChecked) missing.push("Consent");
 
     if (missing.length > 0) {
       toast.error("Please fill in all required fields", {
@@ -199,6 +200,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
       preferred_roles: form.preferred_roles.join(", "),
       skills: JSON.stringify(form.skills),
       required_teammates: form.required_teammates.map((t) => t.email).join(", "),
+      consent: consentChecked,
     });
 
     setIsSubmitting(false);
@@ -261,8 +263,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
             <div className="flex flex-col items-center gap-3 py-8 text-center">
               <p className="text-lg font-semibold">You&apos;re all set!</p>
               <p className="text-muted-foreground text-sm">
-                We&apos;ll reach out with team suggestions before the hackathon begins. Keep an eye
-                on your inbox.
+                Team suggestions will go live right after the opening ceremony! Check back then.
               </p>
               <DialogClose asChild>
                 <Button className="mt-2">Close</Button>
