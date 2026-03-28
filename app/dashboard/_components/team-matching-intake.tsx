@@ -362,13 +362,14 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
 
                     <Field>
                       <FieldLabel>What roles are you interested in? <span className="text-destructive">*</span></FieldLabel>
-                      <div className="flex flex-wrap gap-2 mt-1">
+                      <div role="group" aria-label="What roles are you interested in?" className="flex flex-wrap gap-2 mt-1">
                         {ROLE_OPTIONS.map((role) => {
                           const selected = form.preferred_roles.includes(role);
                           return (
                             <button
                               key={role}
                               type="button"
+                              aria-pressed={selected}
                               disabled={isSubmitting}
                               onClick={() =>
                                 setForm((prev) => ({
