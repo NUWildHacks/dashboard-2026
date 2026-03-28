@@ -29,7 +29,7 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
     }
 
     const user = snapshot.docs[0].data();
-    return { success: true, name: `${user.first_name} ${user.last_name}` };
+    return { success: true, name: user.first_name as string };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
     console.error("Teammate email verification error:", detailedError);

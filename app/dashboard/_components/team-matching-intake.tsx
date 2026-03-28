@@ -91,6 +91,7 @@ type TeamMatchingIntakeProps = {
   email: string;
   school: string;
   fieldOfStudy: string;
+  eventStartTime: number;
 };
 
 const TeamMatchingIntake = ({
@@ -100,6 +101,7 @@ const TeamMatchingIntake = ({
   email,
   school,
   fieldOfStudy,
+  eventStartTime,
 }: TeamMatchingIntakeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
@@ -248,7 +250,9 @@ const TeamMatchingIntake = ({
           )}
         </CardContent>
         <CardFooter className="flex items-center justify-between">
-          <p className="text-muted-foreground text-xs">Available until April 12, 2026</p>
+          <p className="text-muted-foreground text-xs">
+            Available until {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+          </p>
         </CardFooter>
       </Card>
 

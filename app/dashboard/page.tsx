@@ -52,6 +52,7 @@ const DashboardPage = async () => {
             email={email}
             school={school as string}
             fieldOfStudy={field_of_study as string}
+            eventStartTime={wildhacksConfig.start_time}
           />
         )}
       </div>
