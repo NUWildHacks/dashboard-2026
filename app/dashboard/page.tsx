@@ -4,6 +4,7 @@ import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap } from "@/app/d
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, TEAM_MATCHING_INTAKE_COLLECTION } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
+
 import TeamMatchingIntake from "./_components/team-matching-intake";
 
 const DashboardPage = async () => {
