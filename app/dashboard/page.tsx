@@ -40,7 +40,7 @@ const DashboardPage = async () => {
           <VenueMap />
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+      <div className={cn("grid grid-cols-1 gap-4", (wildHacksStatistics || role === PARTICIPANT) && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
         {role === PARTICIPANT && (

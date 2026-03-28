@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, OctagonAlert, X } from "lucide-react";
-import { useState } from "react";
+import { type FormEvent, type KeyboardEvent, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -160,7 +160,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
     setTeammateInput("");
   };
 
-  const handleTeammateKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleTeammateKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleAddTeammate();
@@ -175,7 +175,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
     setTeammateError(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const missing: string[] = [];
@@ -197,9 +197,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
 
     const result = await submitTeamMatchingIntake({
       ...form,
-      preferred_roles: form.preferred_roles.join(", "),
-      skills: JSON.stringify(form.skills),
-      required_teammates: form.required_teammates.map((t) => t.email).join(", "),
+      required_teammates: form.required_teammates.map((t) => t.email),
       consent: consentChecked,
     });
 
@@ -282,18 +280,6 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
                     </EmptyDescription>
                 </EmptyHeader>
             </Empty>
-
-            // <div className="flex flex-col items-center gap-3 py-8 text-center">
-            //     <OctagonAlert />
-            //     <p className="text-lg font-semibold">Looks like you already have a full team!</p>
-            //     <p className="text-muted-foreground text-sm">
-            //         You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself.
-            //         Team matching isn&apos;t needed. Close this and connect with your teammates directly.
-            //     </p>
-            //     <Button variant="outline" onClick={() => handleOpenChange(false)} className="mt-2">
-            //         Close
-            //     </Button>
-            // </div>
           ) : (
             <form id="team-matching-form" onSubmit={handleSubmit}>
               <FieldGroup>
