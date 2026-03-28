@@ -18,9 +18,7 @@ export type TeamMatchingIntakeData = {
   consent: boolean;
 };
 
-export const submitTeamMatchingIntake = async (
-  data: TeamMatchingIntakeData
-): Promise<ActionResult> => {
+export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Promise<ActionResult> => {
   const db = getFirestore();
   const now = Date.now();
 

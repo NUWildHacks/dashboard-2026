@@ -18,7 +18,11 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
     const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck;
 
-    const snapshot = await db.collection(USERS_COLLECTION).where("email", "==", email.toLowerCase().trim()).limit(1).get();
+    const snapshot = await db
+      .collection(USERS_COLLECTION)
+      .where("email", "==", email.toLowerCase().trim())
+      .limit(1)
+      .get();
 
     if (snapshot.empty) {
       return { success: false, error: "No registered participant found with this email." };

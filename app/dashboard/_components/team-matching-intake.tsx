@@ -19,19 +19,12 @@ import {
 import { Empty, EmptyHeader, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldGroup, FieldLabel, FieldSeparator, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
 
 import { submitTeamMatchingIntake } from "./_actions/submit-team-matching-intake.actions";
 import { verifyTeammateEmail } from "./_actions/verify-teammate-email.actions";
-
 
 const ROLE_OPTIONS = [
   "Frontend Engineer",
@@ -102,7 +95,14 @@ type TeamMatchingIntakeProps = {
   fieldOfStudy: string;
 };
 
-const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, fieldOfStudy }: TeamMatchingIntakeProps) => {
+const TeamMatchingIntake = ({
+  hasSubmitted,
+  firstName,
+  lastName,
+  email,
+  school,
+  fieldOfStudy,
+}: TeamMatchingIntakeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,7 +140,9 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
     }
 
     if (form.required_teammates.length + 2 >= form.preferred_team_size) {
-      setTeammateError(`Adding this teammate would fill your preferred team of ${form.preferred_team_size}. You don't need matching — connect with them directly.`);
+      setTeammateError(
+        `Adding this teammate would fill your preferred team of ${form.preferred_team_size}. You don't need matching — connect with them directly.`
+      );
       return;
     }
 
@@ -236,20 +238,19 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
         <CardHeader>
           <CardTitle>No team yet? We&lsquo;ll help you find one.</CardTitle>
           <CardDescription>
-            Answer a few questions and we&lsquo;ll suggest teams based on skills, interests, and
-            vibe. Totally optional &mdash; you&lsquo;re always free to form your own team.
+            Answer a few questions and we&lsquo;ll suggest teams based on skills, interests, and vibe. Totally optional
+            &mdash; you&lsquo;re always free to form your own team.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
-            {submitted ? (
-                <p className="text-muted-foreground text-sm">See your match after the opening ceremony</p>
-            ) : (
-                <Button onClick={() => setIsOpen(true)}>Take the survey &rarr;</Button>
-            )}
+          {submitted ? (
+            <p className="text-muted-foreground text-sm">See your match after the opening ceremony</p>
+          ) : (
+            <Button onClick={() => setIsOpen(true)}>Take the survey &rarr;</Button>
+          )}
         </CardContent>
         <CardFooter className="flex items-center justify-between">
           <p className="text-muted-foreground text-xs">Available until April 12, 2026</p>
-          
         </CardFooter>
       </Card>
 
@@ -258,285 +259,295 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
           <DialogHeader className="shrink-0">
             <DialogTitle>Team Matching Interest Form</DialogTitle>
             <DialogDescription>
-              Help us match you with a compatible team. Some key details are required so we can suggest good
-              matches, while the rest is optional but helps us fine-tune your match.
+              Help us match you with a compatible team. Some key details are required so we can suggest good matches,
+              while the rest is optional but helps us fine-tune your match.
             </DialogDescription>
           </DialogHeader>
 
           <div className="overflow-y-auto overscroll-contain -mx-6 px-6 flex-1">
-          {submitted ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-center">
-              <p className="text-lg font-semibold">You&apos;re all set!</p>
-              <p className="text-muted-foreground text-sm">
-                Team suggestions will go live right after the opening ceremony! Check back then.
-              </p>
-              <DialogClose asChild>
-                <Button className="mt-2">Close</Button>
-              </DialogClose>
-            </div>
-          ) : hasFullTeam ? (
-            <Empty role="status" aria-live="polite">
+            {submitted ? (
+              <div className="flex flex-col items-center gap-3 py-8 text-center">
+                <p className="text-lg font-semibold">You&apos;re all set!</p>
+                <p className="text-muted-foreground text-sm">
+                  Team suggestions will go live right after the opening ceremony! Check back then.
+                </p>
+                <DialogClose asChild>
+                  <Button className="mt-2">Close</Button>
+                </DialogClose>
+              </div>
+            ) : hasFullTeam ? (
+              <Empty role="status" aria-live="polite">
                 <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                        <OctagonAlert aria-hidden="true" />
-                    </EmptyMedia>
-                    <EmptyTitle>Looks like you already have a full team!</EmptyTitle>
-                    <EmptyDescription>
-                        You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself.
-                        Team matching isn&apos;t needed, close this and connect with your teammates directly!
-                    </EmptyDescription>
+                  <EmptyMedia variant="icon">
+                    <OctagonAlert aria-hidden="true" />
+                  </EmptyMedia>
+                  <EmptyTitle>Looks like you already have a full team!</EmptyTitle>
+                  <EmptyDescription>
+                    You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself. Team
+                    matching isn&apos;t needed, close this and connect with your teammates directly!
+                  </EmptyDescription>
                 </EmptyHeader>
-            </Empty>
-          ) : (
-            <form id="team-matching-form" onSubmit={handleSubmit}>
-              <FieldGroup>
-                <FieldSet disabled={isSubmitting}>
-                  <FieldGroup>
-                    <div className="grid grid-cols-2 gap-4">
-                      <Field>
-                        <FieldLabel htmlFor="first_name">First name</FieldLabel>
-                        <Input id="first_name" value={firstName} disabled />
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="last_name">Last name</FieldLabel>
-                        <Input id="last_name" value={lastName} disabled />
-                      </Field>
-                    </div>
-
-                    <Field>
-                      <FieldLabel htmlFor="school">School</FieldLabel>
-                      <Input id="school" value={school} disabled />
-                    </Field>
-
-                    <Field>
-                      <FieldLabel htmlFor="field_of_study">Major</FieldLabel>
-                      <Input id="field_of_study" value={fieldOfStudy} disabled />
-                    </Field>
-
-                    <FieldSeparator />
-
-                    <Field>
-                      <FieldLabel htmlFor="experience_level">Experience level <span className="text-destructive">*</span></FieldLabel>
-                      <Select
-                        value={form.experience_level}
-                        onValueChange={(v) => handleChange("experience_level", v)}
-                      >
-                        <SelectTrigger id="experience_level" className="w-full">
-                          <SelectValue placeholder="Select your experience level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="beginner">Beginner (0–1 hackathons)</SelectItem>
-                          <SelectItem value="intermediate">Intermediate (2–4 hackathons)</SelectItem>
-                          <SelectItem value="experienced">Experienced (5+ hackathons)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </Field>
-
-                    <Field>
-                      <FieldLabel htmlFor="preferred_team_size">Preferred team size <span className="text-destructive">*</span></FieldLabel>
-                      <div className="flex gap-2 mt-1">
-                        {[2, 3, 4].map((size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            disabled={isSubmitting}
-                            onClick={() => setForm((prev) => ({ ...prev, preferred_team_size: size }))}
-                            className={`rounded-full border px-4 py-1 text-sm transition-colors ${
-                              form.preferred_team_size === size
-                                ? "bg-primary text-primary-foreground border-primary"
-                                : "bg-background text-foreground border-border hover:bg-muted"
-                            } disabled:opacity-50 disabled:cursor-not-allowed`}
-                          >
-                            {size}
-                          </button>
-                        ))}
+              </Empty>
+            ) : (
+              <form id="team-matching-form" onSubmit={handleSubmit}>
+                <FieldGroup>
+                  <FieldSet disabled={isSubmitting}>
+                    <FieldGroup>
+                      <div className="grid grid-cols-2 gap-4">
+                        <Field>
+                          <FieldLabel htmlFor="first_name">First name</FieldLabel>
+                          <Input id="first_name" value={firstName} disabled />
+                        </Field>
+                        <Field>
+                          <FieldLabel htmlFor="last_name">Last name</FieldLabel>
+                          <Input id="last_name" value={lastName} disabled />
+                        </Field>
                       </div>
-                    </Field>
 
-                    <Field>
-                      <FieldLabel>What roles are you interested in? <span className="text-destructive">*</span></FieldLabel>
-                      <div role="group" aria-label="What roles are you interested in?" className="flex flex-wrap gap-2 mt-1">
-                        {ROLE_OPTIONS.map((role) => {
-                          const selected = form.preferred_roles.includes(role);
-                          return (
+                      <Field>
+                        <FieldLabel htmlFor="school">School</FieldLabel>
+                        <Input id="school" value={school} disabled />
+                      </Field>
+
+                      <Field>
+                        <FieldLabel htmlFor="field_of_study">Major</FieldLabel>
+                        <Input id="field_of_study" value={fieldOfStudy} disabled />
+                      </Field>
+
+                      <FieldSeparator />
+
+                      <Field>
+                        <FieldLabel htmlFor="experience_level">
+                          Experience level <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <Select
+                          value={form.experience_level}
+                          onValueChange={(v) => handleChange("experience_level", v)}
+                        >
+                          <SelectTrigger id="experience_level" className="w-full">
+                            <SelectValue placeholder="Select your experience level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="beginner">Beginner (0–1 hackathons)</SelectItem>
+                            <SelectItem value="intermediate">Intermediate (2–4 hackathons)</SelectItem>
+                            <SelectItem value="experienced">Experienced (5+ hackathons)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <FieldLabel htmlFor="preferred_team_size">
+                          Preferred team size <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <div className="flex gap-2 mt-1">
+                          {[2, 3, 4].map((size) => (
                             <button
-                              key={role}
+                              key={size}
                               type="button"
-                              aria-pressed={selected}
                               disabled={isSubmitting}
-                              onClick={() =>
-                                setForm((prev) => ({
-                                  ...prev,
-                                  preferred_roles: selected
-                                    ? prev.preferred_roles.filter((r) => r !== role)
-                                    : [...prev.preferred_roles, role],
-                                }))
-                              }
-                              className={`rounded-full border px-3 py-1 text-sm transition-colors ${
-                                selected
+                              onClick={() => setForm((prev) => ({ ...prev, preferred_team_size: size }))}
+                              className={`rounded-full border px-4 py-1 text-sm transition-colors ${
+                                form.preferred_team_size === size
                                   ? "bg-primary text-primary-foreground border-primary"
                                   : "bg-background text-foreground border-border hover:bg-muted"
                               } disabled:opacity-50 disabled:cursor-not-allowed`}
                             >
-                              {role}
+                              {size}
                             </button>
-                          );
-                        })}
-                      </div>
-                    </Field>
+                          ))}
+                        </div>
+                      </Field>
 
-                    <Field>
-                      <FieldLabel>Skills <span className="text-destructive">*</span></FieldLabel>
-                      <p className="text-muted-foreground text-xs mb-3">
-                        Rate your proficiency from 0 (none) to 5 (expert). Rate at least one.
-                      </p>
-                      <div className="flex flex-col gap-3">
-                        {SKILL_OPTIONS.map((skill) => {
-                          const value = form.skills[skill] ?? 0;
-                          return (
-                            <div key={skill} className="grid grid-cols-[1fr_2fr_auto] items-center gap-3">
+                      <Field>
+                        <FieldLabel>
+                          What roles are you interested in? <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <div
+                          role="group"
+                          aria-label="What roles are you interested in?"
+                          className="flex flex-wrap gap-2 mt-1"
+                        >
+                          {ROLE_OPTIONS.map((role) => {
+                            const selected = form.preferred_roles.includes(role);
+                            return (
+                              <button
+                                key={role}
+                                type="button"
+                                aria-pressed={selected}
+                                disabled={isSubmitting}
+                                onClick={() =>
+                                  setForm((prev) => ({
+                                    ...prev,
+                                    preferred_roles: selected
+                                      ? prev.preferred_roles.filter((r) => r !== role)
+                                      : [...prev.preferred_roles, role],
+                                  }))
+                                }
+                                className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                                  selected
+                                    ? "bg-primary text-primary-foreground border-primary"
+                                    : "bg-background text-foreground border-border hover:bg-muted"
+                                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                              >
+                                {role}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </Field>
+
+                      <Field>
+                        <FieldLabel>
+                          Skills <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <p className="text-muted-foreground text-xs mb-3">
+                          Rate your proficiency from 0 (none) to 5 (expert). Rate at least one.
+                        </p>
+                        <div className="flex flex-col gap-3">
+                          {SKILL_OPTIONS.map((skill) => {
+                            const value = form.skills[skill] ?? 0;
+                            return (
+                              <div key={skill} className="grid grid-cols-[1fr_2fr_auto] items-center gap-3">
                                 <span className="text-sm text-muted-foreground">{skill}</span>
                                 <Slider
-                                    min={0}
-                                    max={5}
-                                    step={1}
-                                    value={[value]}
-                                    onValueChange={([v]) =>
+                                  min={0}
+                                  max={5}
+                                  step={1}
+                                  value={[value]}
+                                  onValueChange={([v]) =>
                                     setForm((prev) => ({ ...prev, skills: { ...prev.skills, [skill]: v } }))
-                                    }
-                                    disabled={isSubmitting}
+                                  }
+                                  disabled={isSubmitting}
                                 />
                                 <span className="text-sm font-medium w-4 text-center">{value}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </Field>
-
-                    <Field>
-                      <FieldLabel htmlFor="work_style">Work style <span className="text-destructive">*</span></FieldLabel>
-                      <Select
-                        value={form.work_style}
-                        onValueChange={(v) => handleChange("work_style", v)}
-                      >
-                        <SelectTrigger id="work_style" className="w-full">
-                          <SelectValue placeholder="Select your work style" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {WORK_STYLE_OPTIONS.map(({ value, label }) => (
-                            <SelectItem key={value} value={value}>{label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </Field>
-
-                    <FieldSeparator />
-
-                    <Field>
-                      <FieldLabel>
-                        Required teammates{" "}
-                        <span className="text-muted-foreground font-normal">(optional)</span>
-                      </FieldLabel>
-                      <p className="text-muted-foreground text-xs mb-2">
-                        Enter the emails of people you want to be matched with. You can add up to 3.
-                      </p>
-                      <div className="rounded-md border border-yellow-400/60 bg-yellow-50 dark:bg-yellow-950/30 p-3 text-xs text-yellow-800 dark:text-yellow-300 mb-3">
-                        <strong>Heads up:</strong> This only works if both of you add each other{"'"}s
-                        email. If one person {"doesn't"}, this preference will be ignored.
-                      </div>
-
-                      {form.required_teammates.length < MAX_REQUIRED_TEAMMATES && (
-                        <div className="flex gap-2">
-                          <Input
-                            id="teammate_input"
-                            type="email"
-                            placeholder="teammate@example.com"
-                            value={teammateInput}
-                            onChange={(e) => {
-                              setTeammateInput(e.target.value);
-                              setTeammateError(null);
-                            }}
-                            onKeyDown={handleTeammateKeyDown}
-                            disabled={isSubmitting || teammateVerifying}
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={handleAddTeammate}
-                            disabled={isSubmitting || teammateVerifying || !teammateInput.trim()}
-                          >
-                            {teammateVerifying ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}
-                          </Button>
+                              </div>
+                            );
+                          })}
                         </div>
-                      )}
+                      </Field>
 
-                      {teammateError && (
-                        <p className="text-destructive text-xs mt-1">{teammateError}</p>
-                      )}
+                      <Field>
+                        <FieldLabel htmlFor="work_style">
+                          Work style <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <Select value={form.work_style} onValueChange={(v) => handleChange("work_style", v)}>
+                          <SelectTrigger id="work_style" className="w-full">
+                            <SelectValue placeholder="Select your work style" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {WORK_STYLE_OPTIONS.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
 
-                      {form.required_teammates.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          {form.required_teammates.map(({ email, name }) => (
-                            <div
-                              key={email}
-                              className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-sm"
+                      <FieldSeparator />
+
+                      <Field>
+                        <FieldLabel>
+                          Required teammates <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FieldLabel>
+                        <p className="text-muted-foreground text-xs mb-2">
+                          Enter the emails of people you want to be matched with. You can add up to 3.
+                        </p>
+                        <div className="rounded-md border border-yellow-400/60 bg-yellow-50 dark:bg-yellow-950/30 p-3 text-xs text-yellow-800 dark:text-yellow-300 mb-3">
+                          <strong>Heads up:</strong> This only works if both of you add each other{"'"}s email. If one
+                          person {"doesn't"}, this preference will be ignored.
+                        </div>
+
+                        {form.required_teammates.length < MAX_REQUIRED_TEAMMATES && (
+                          <div className="flex gap-2">
+                            <Input
+                              id="teammate_input"
+                              type="email"
+                              placeholder="teammate@example.com"
+                              value={teammateInput}
+                              onChange={(e) => {
+                                setTeammateInput(e.target.value);
+                                setTeammateError(null);
+                              }}
+                              onKeyDown={handleTeammateKeyDown}
+                              disabled={isSubmitting || teammateVerifying}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={handleAddTeammate}
+                              disabled={isSubmitting || teammateVerifying || !teammateInput.trim()}
                             >
-                              <span>
-                                {name}{" "}
-                                <span className="text-muted-foreground text-xs">({email})</span>
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveTeammate(email)}
-                                disabled={isSubmitting}
-                                className="text-muted-foreground hover:text-foreground transition-colors disabled:cursor-not-allowed"
-                                aria-label={`Remove ${name}`}
+                              {teammateVerifying ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add"}
+                            </Button>
+                          </div>
+                        )}
+
+                        {teammateError && <p className="text-destructive text-xs mt-1">{teammateError}</p>}
+
+                        {form.required_teammates.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {form.required_teammates.map(({ email, name }) => (
+                              <div
+                                key={email}
+                                className="flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-sm"
                               >
-                                <X className="h-3 w-3" />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </Field>
+                                <span>
+                                  {name} <span className="text-muted-foreground text-xs">({email})</span>
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveTeammate(email)}
+                                  disabled={isSubmitting}
+                                  className="text-muted-foreground hover:text-foreground transition-colors disabled:cursor-not-allowed"
+                                  aria-label={`Remove ${name}`}
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Field>
 
-                    <FieldSeparator />
+                      <FieldSeparator />
 
-                    <Field>
-                      <FieldLabel htmlFor="additional_notes">Anything else to add?</FieldLabel>
-                      <Textarea
-                        id="additional_notes"
-                        placeholder="Any project ideas, constraints, or other notes…"
-                        value={form.additional_notes}
-                        onChange={(e) => handleChange("additional_notes", e.target.value)}
-                        disabled={isSubmitting}
-                        className="text-sm"
-                      />
-                    </Field>
-                    <FieldSeparator />
-                  </FieldGroup>
-                </FieldSet>
-              </FieldGroup>
+                      <Field>
+                        <FieldLabel htmlFor="additional_notes">Anything else to add?</FieldLabel>
+                        <Textarea
+                          id="additional_notes"
+                          placeholder="Any project ideas, constraints, or other notes…"
+                          value={form.additional_notes}
+                          onChange={(e) => handleChange("additional_notes", e.target.value)}
+                          disabled={isSubmitting}
+                          className="text-sm"
+                        />
+                      </Field>
+                      <FieldSeparator />
+                    </FieldGroup>
+                  </FieldSet>
+                </FieldGroup>
 
-              <div className="flex flex-col items-start gap-3 mt-6 mb-6">
-                <p className="text-sm leading-snug">
-                    We’ll use your responses to suggest potential teammates based on your skills, interests, and work style. Your name, role, and profile may be shared with your suggested matches.
-                    This is totally optional—you’re always free to form your own team.
-                </p>
-                <div className="flex w-full items-start gap-3 rounded-md border p-4">
+                <div className="flex flex-col items-start gap-3 mt-6 mb-6">
+                  <p className="text-sm leading-snug">
+                    We’ll use your responses to suggest potential teammates based on your skills, interests, and work
+                    style. Your name, role, and profile may be shared with your suggested matches. This is totally
+                    optional—you’re always free to form your own team.
+                  </p>
+                  <div className="flex w-full items-start gap-3 rounded-md border p-4">
                     <Checkbox
-                    id="consent"
-                    checked={consentChecked}
-                    onCheckedChange={(v) => setConsentChecked(v === true)}
-                    disabled={isSubmitting}
+                      id="consent"
+                      checked={consentChecked}
+                      onCheckedChange={(v) => setConsentChecked(v === true)}
+                      disabled={isSubmitting}
                     />
                     <label htmlFor="consent" className="text-sm leading-snug cursor-pointer select-none">
-                        I agree to participate in team matching
+                      I agree to participate in team matching
                     </label>
+                  </div>
                 </div>
-              </div>
-            </form>
-          )}
+              </form>
+            )}
           </div>
 
           {!submitted && !hasFullTeam && (
