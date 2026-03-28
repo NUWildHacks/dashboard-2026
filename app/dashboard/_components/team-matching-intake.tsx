@@ -251,7 +251,8 @@ const TeamMatchingIntake = ({
         </CardContent>
         <CardFooter className="flex items-center justify-between">
           <p className="text-muted-foreground text-xs">
-            Available until {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            Available until{" "}
+            {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
           </p>
         </CardFooter>
       </Card>
