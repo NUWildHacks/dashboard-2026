@@ -2,7 +2,8 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { USERS_COLLECTION } from "@/constants";
+import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
+import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
 export type VerifyTeammateEmailResult = ActionResult & { name?: string };
@@ -11,6 +12,12 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
   const db = getFirestore();
 
   try {
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
+    const caller = await getAuthenticatedUser(redirectPath);
+
+    const roleCheck = requireRole(caller, PARTICIPANT);
+    if (roleCheck) return roleCheck;
+
     const snapshot = await db.collection(USERS_COLLECTION).where("email", "==", email.toLowerCase().trim()).limit(1).get();
 
     if (snapshot.empty) {
