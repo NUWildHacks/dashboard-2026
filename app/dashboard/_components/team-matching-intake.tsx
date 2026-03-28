@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, X } from "lucide-react";
+import { Loader2, OctagonAlert, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -16,6 +16,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { Empty, EmptyHeader, EmptyDescription, EmptyMedia, EmptyTitle, EmptyContent } from "@/components/ui/empty";
 import { Field, FieldGroup, FieldLabel, FieldSeparator, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -30,6 +31,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { submitTeamMatchingIntake } from "./_actions/submit-team-matching-intake.actions";
 import { verifyTeammateEmail } from "./_actions/verify-teammate-email.actions";
+
 
 const ROLE_OPTIONS = [
   "Frontend Engineer",
@@ -95,11 +97,12 @@ type TeamMatchingIntakeProps = {
   hasSubmitted: boolean;
   firstName: string;
   lastName: string;
+  email: string;
   school: string;
   fieldOfStudy: string;
 };
 
-const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, school, fieldOfStudy }: TeamMatchingIntakeProps) => {
+const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, fieldOfStudy }: TeamMatchingIntakeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,12 +119,17 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, school, fieldOf
   };
 
   const handleAddTeammate = async () => {
-    const email = teammateInput.trim().toLowerCase();
+    const teammateEmail = teammateInput.trim().toLowerCase();
     setTeammateError(null);
 
-    if (!email) return;
+    if (!teammateEmail) return;
 
-    if (form.required_teammates.some((t) => t.email === email)) {
+    if (teammateEmail === email.toLowerCase()) {
+      setTeammateError("You can't add yourself as a teammate.");
+      return;
+    }
+
+    if (form.required_teammates.some((t) => t.email === teammateEmail)) {
       setTeammateError("This email is already added.");
       return;
     }
@@ -131,8 +139,13 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, school, fieldOf
       return;
     }
 
+    if (form.required_teammates.length + 1 >= form.preferred_team_size) {
+      setTeammateError(`Your required teammates already fill your preferred team size of ${form.preferred_team_size}.`);
+      return;
+    }
+
     setTeammateVerifying(true);
-    const result = await verifyTeammateEmail(email);
+    const result = await verifyTeammateEmail(teammateEmail);
     setTeammateVerifying(false);
 
     if (!result.success) {
@@ -142,7 +155,7 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, school, fieldOf
 
     setForm((prev) => ({
       ...prev,
-      required_teammates: [...prev.required_teammates, { email, name: result.name! }],
+      required_teammates: [...prev.required_teammates, { email: teammateEmail, name: result.name! }],
     }));
     setTeammateInput("");
   };
@@ -256,16 +269,30 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, school, fieldOf
               </DialogClose>
             </div>
           ) : hasFullTeam ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-center">
-              <p className="text-lg font-semibold">Looks like you already have a full team!</p>
-              <p className="text-muted-foreground text-sm">
-                You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself.
-                Team matching isn&apos;t needed. Close this and connect with your teammates directly.
-              </p>
-              <Button variant="outline" onClick={() => handleOpenChange(false)} className="mt-2">
-                Close
-              </Button>
-            </div>
+            <Empty role="status" aria-live="polite">
+                <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                        <OctagonAlert aria-hidden="true" />
+                    </EmptyMedia>
+                    <EmptyTitle>Looks like you already have a full team!</EmptyTitle>
+                    <EmptyDescription>
+                        You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself.
+                        Team matching isn&apos;t needed, close this and connect with your teammates directly!
+                    </EmptyDescription>
+                </EmptyHeader>
+            </Empty>
+
+            // <div className="flex flex-col items-center gap-3 py-8 text-center">
+            //     <OctagonAlert />
+            //     <p className="text-lg font-semibold">Looks like you already have a full team!</p>
+            //     <p className="text-muted-foreground text-sm">
+            //         You&apos;ve specified 3 required teammates — that&apos;s a full team of 4 including yourself.
+            //         Team matching isn&apos;t needed. Close this and connect with your teammates directly.
+            //     </p>
+            //     <Button variant="outline" onClick={() => handleOpenChange(false)} className="mt-2">
+            //         Close
+            //     </Button>
+            // </div>
           ) : (
             <form id="team-matching-form" onSubmit={handleSubmit}>
               <FieldGroup>

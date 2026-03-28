@@ -9,7 +9,7 @@ import TeamMatchingIntake from "./_components/team-matching-intake";
 const DashboardPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
 
-  const { id: userId, role, first_name, last_name, ...userProfile } = await getAuthenticatedUser(redirectPath);
+  const { id: userId, role, first_name, last_name, email, ...userProfile } = await getAuthenticatedUser(redirectPath);
   const school = "school" in userProfile ? userProfile.school : "";
   const field_of_study = "field_of_study" in userProfile ? userProfile.field_of_study : "";
 
@@ -48,6 +48,7 @@ const DashboardPage = async () => {
             hasSubmitted={hasSubmittedTeamMatching}
             firstName={first_name}
             lastName={last_name}
+            email={email}
             school={school as string}
             fieldOfStudy={field_of_study as string}
           />
