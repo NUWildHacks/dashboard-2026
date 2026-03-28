@@ -10,7 +10,6 @@ export type TeamMatchingIntakeData = {
   experience_level: string;
   preferred_roles: string[];
   skills: Record<string, number>;
-  project_interests: string;
   additional_notes: string;
   preferred_team_size: number;
   work_style: string;

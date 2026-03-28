@@ -68,7 +68,6 @@ type FormState = {
   experience_level: string;
   preferred_roles: string[];
   skills: Record<string, number>;
-  project_interests: string;
   additional_notes: string;
   preferred_team_size: number;
   work_style: string;
@@ -79,7 +78,6 @@ const INITIAL_FORM_STATE: FormState = {
   experience_level: "",
   preferred_roles: [],
   skills: {},
-  project_interests: "",
   additional_notes: "",
   preferred_team_size: 4,
   work_style: "",
