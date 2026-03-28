@@ -139,8 +139,8 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
       return;
     }
 
-    if (form.required_teammates.length + 1 >= form.preferred_team_size) {
-      setTeammateError(`Your required teammates already fill your preferred team size of ${form.preferred_team_size}.`);
+    if (form.required_teammates.length + 2 >= form.preferred_team_size) {
+      setTeammateError(`Adding this teammate would fill your preferred team of ${form.preferred_team_size}. You don't need matching — connect with them directly.`);
       return;
     }
 
@@ -189,6 +189,13 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
     if (missing.length > 0) {
       toast.error("Please fill in all required fields", {
         description: missing.join(", "),
+      });
+      return;
+    }
+
+    if (form.required_teammates.length + 2 >= form.preferred_team_size) {
+      toast.error("Your required teammates already fill your preferred team size", {
+        description: "You don't need team matching — close this and connect with your teammates directly.",
       });
       return;
     }
