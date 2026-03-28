@@ -16,7 +16,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { Empty, EmptyHeader, EmptyDescription, EmptyMedia, EmptyTitle, EmptyContent } from "@/components/ui/empty";
+import { Empty, EmptyHeader, EmptyDescription, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Field, FieldGroup, FieldLabel, FieldSeparator, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -251,8 +251,8 @@ const TeamMatchingIntake = ({ hasSubmitted, firstName, lastName, email, school, 
           <DialogHeader className="shrink-0">
             <DialogTitle>Team Matching Interest Form</DialogTitle>
             <DialogDescription>
-              Help us match you with a compatible team. All fields are optional, but more info means
-              a better match!
+              Help us match you with a compatible team. Some key details are required so we can suggest good
+              matches, while the rest is optional but helps us fine-tune your match.
             </DialogDescription>
           </DialogHeader>
 
