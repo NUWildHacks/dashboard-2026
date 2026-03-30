@@ -72,19 +72,19 @@ export const saturdaySpaces: MapRow[] = [
     // capacity: "TBD",
   },
   {
-    name: text("Collaboration 3"),
+    name: text("Collaboration 2"),
     location: text("Mudd 3501"),
     description: "Collaboration and Overnight Space",
     // capacity: "TBD",
   },
   {
-    name: text("Collaboration 4"),
+    name: text("Collaboration 3"),
     location: text("Mudd 3514"),
     description: "Collaboration and Overnight Space",
     // capacity: "TBD",
   },
   {
-    name: text("Collaboration 5"),
+    name: text("Collaboration 4"),
     location: [
       {
         content: "Tech M166",
@@ -95,7 +95,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "21",
   },
   {
-    name: text("Collaboration 6"),
+    name: text("Collaboration 5"),
     location: [
       {
         content: "Tech LG68",
@@ -106,7 +106,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "23",
   },
   {
-    name: text("Collaboration 7"),
+    name: text("Collaboration 6"),
     location: [
       {
         content: "Tech LG62",
@@ -117,7 +117,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "20",
   },
   {
-    name: text("Collaboration 8"),
+    name: text("Collaboration 7"),
     location: [
       {
         content: "Tech F280",
@@ -128,7 +128,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "24",
   },
   {
-    name: text("Collaboration 9"),
+    name: text("Collaboration 8"),
     location: [
       {
         content: "Tech LG72",
@@ -139,7 +139,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "20",
   },
   {
-    name: text("Collaboration 10"),
+    name: text("Collaboration 9"),
     location: [
       {
         content: "Tech MG28",
@@ -150,7 +150,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "35",
   },
   {
-    name: text("Collaboration 11"),
+    name: text("Collaboration 10"),
     location: [
       {
         content: "Tech F281",
@@ -161,7 +161,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "28",
   },
   {
-    name: text("Collaboration 12"),
+    name: text("Collaboration 11"),
     location: [
       {
         content: "Tech L211",
@@ -172,7 +172,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "168",
   },
   {
-    name: text("Collaboration 13"),
+    name: text("Collaboration 12"),
     location: [
       {
         content: "Tech L221",
@@ -183,7 +183,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "43",
   },
   {
-    name: text("Collaboration 14"),
+    name: text("Collaboration 13"),
     location: [
       {
         content: "Tech L251",
@@ -194,7 +194,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "55",
   },
   {
-    name: text("Collaboration 15"),
+    name: text("Collaboration 14"),
     location: [
       {
         content: "Tech M177",
@@ -205,18 +205,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "40",
   },
   {
-    name: text("Collaboration 16"),
-    location: [
-      {
-        content: "Tech M152",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M152&room-floor=1&room-id=872&room-ingress=",
-      },
-    ],
-    description: "Collaboration Space",
-    capacity: "56",
-  },
-  {
-    name: text("Collaboration 17"),
+    name: text("Collaboration 15"),
     location: [
       {
         content: "Tech M128",
@@ -227,7 +216,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "40",
   },
   {
-    name: text("Collaboration 18"),
+    name: text("Collaboration 16"),
     location: [
       {
         content: "Tech M120",
@@ -238,7 +227,7 @@ export const saturdaySpaces: MapRow[] = [
     capacity: "28",
   },
   {
-    name: text("Collaboration 19"),
+    name: text("Collaboration 17"),
     location: [
       {
         content: "Tech LG52",
@@ -247,6 +236,17 @@ export const saturdaySpaces: MapRow[] = [
     ],
     description: "Collaboration Space",
     capacity: "36",
+  },
+  {
+    name: text("Collaboration 18"),
+    location: [
+      {
+        content: "Tech LG66",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG66&room-floor=0&room-id=855&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "35",
   },
 ];
 
@@ -325,17 +325,6 @@ export const sundaySpaces: MapRow[] = [
     name: text("Collaboration 4"),
     location: [
       {
-        content: "Tech M152",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M152&room-floor=1&room-id=872&room-ingress=",
-      },
-    ],
-    description: "Collaboration Space",
-    capacity: "56",
-  },
-  {
-    name: text("Collaboration 5"),
-    location: [
-      {
         content: "Tech M166",
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M166&room-floor=1&room-id=876&room-ingress=",
       },
@@ -344,7 +333,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "21",
   },
   {
-    name: text("Collaboration 6"),
+    name: text("Collaboration 5"),
     location: [
       {
         content: "Tech LG52",
@@ -355,7 +344,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "36",
   },
   {
-    name: text("Collaboration 7"),
+    name: text("Collaboration 6"),
     location: [
       {
         content: "Tech LG62",
@@ -366,7 +355,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "20",
   },
   {
-    name: text("Collaboration 8"),
+    name: text("Collaboration 7"),
     location: [
       {
         content: "Tech LG68",
@@ -377,7 +366,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "23",
   },
   {
-    name: text("Collaboration 9"),
+    name: text("Collaboration 8"),
     location: [
       {
         content: "Tech LG72",
@@ -388,7 +377,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "20",
   },
   {
-    name: text("Collaboration 10"),
+    name: text("Collaboration 9"),
     location: [
       {
         content: "Tech LG66",
@@ -399,7 +388,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "35",
   },
   {
-    name: text("Collaboration 11"),
+    name: text("Collaboration 10"),
     location: [
       {
         content: "Tech M128",
@@ -410,7 +399,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "40",
   },
   {
-    name: text("Collaboration 12"),
+    name: text("Collaboration 11"),
     location: [
       {
         content: "Tech M120",
@@ -421,7 +410,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "28",
   },
   {
-    name: text("Collaboration 13"),
+    name: text("Collaboration 12"),
     location: [
       {
         content: "Tech F280",
@@ -432,7 +421,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "24",
   },
   {
-    name: text("Collaboration 14"),
+    name: text("Collaboration 13"),
     location: [
       {
         content: "Tech F281",
@@ -443,7 +432,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "28",
   },
   {
-    name: text("Collaboration 15"),
+    name: text("Collaboration 14"),
     location: [
       {
         content: "Tech L211",
@@ -454,7 +443,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "168",
   },
   {
-    name: text("Collaboration 16"),
+    name: text("Collaboration 15"),
     location: [
       {
         content: "Tech L221",
@@ -465,7 +454,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "43",
   },
   {
-    name: text("Collaboration 17"),
+    name: text("Collaboration 16"),
     location: [
       {
         content: "Tech L251",
@@ -476,7 +465,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "55",
   },
   {
-    name: text("Collaboration 18"),
+    name: text("Collaboration 17"),
     location: [
       {
         content: "Tech M177",
@@ -487,7 +476,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "40",
   },
   {
-    name: text("Collaboration 19"),
+    name: text("Collaboration 18"),
     location: [
       {
         content: "Tech MG28",
