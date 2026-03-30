@@ -47,7 +47,7 @@ const renderLeaf = (item: GuideNavItem, pathname: string, depth: number, onNavig
         target="_blank"
       >
         {item.title}
-      </a> 
+      </a>
     );
   }
 
