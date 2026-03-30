@@ -8,7 +8,7 @@ export type GuideNavItem = {
 
 export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
   {
-    title: "Dashboard",
+    title: "Back to Dashboard",
     href: "/dashboard",
   },
   {

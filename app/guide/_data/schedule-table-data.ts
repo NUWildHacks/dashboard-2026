@@ -92,17 +92,17 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
 
 export const saturdayScheduleRows: DayScheduleRow[] = [
   {
-    time: "8:30 AM - 10:00 AM",
+    time: "8:30 - 10:00 AM",
     event: [{ content: "Check-In", href: "/guide/logistics/checking-in" }],
     location: "Front of LR2",
   },
   {
-    time: "8:30 AM - 10:00 AM",
+    time: "8:30 - 10:00 AM",
     event: [{ content: "Sponsor Expo" }],
     location: "Tech M120",
   },
   {
-    time: "10:00 AM - 11:00 AM",
+    time: "10:00 - 11:00 AM",
     event: [{ content: "Opening Ceremony", bold: true }],
     location: "LR2",
   },
@@ -111,7 +111,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
     event: [{ content: "Hacking Starts", bold: true }],
   },
   {
-    time: "11:00 AM - 11:30 AM",
+    time: "11:00 - 11:30 AM",
     event: [{ content: "Team Formation Event" }],
     location: "LR4",
   },
@@ -213,7 +213,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     ],
   },
   {
-    time: "11:15 AM - 1:15 PM",
+    time: "11:15 - 1:15 PM",
     event: [
       {
         content: "Round 1 of Track Judging",
@@ -231,7 +231,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   },
   {
     id: "second-round-judging",
-    time: "2:00 PM - 3:30 PM",
+    time: "2:00 - 3:30 PM",
     event: [
       {
         content: "Round 2 of Track Judging",
@@ -242,7 +242,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   },
   {
     id: "crowd-favorite-presentations",
-    time: "2:00 PM - 3:30 PM",
+    time: "2:00 - 3:30 PM",
     event: [
       {
         content: "Crowd Favorite",
@@ -253,7 +253,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     location: "LR4",
   },
   {
-    time: "3:45 PM - 5:00 PM",
+    time: "3:45 - 5:00 PM",
     event: [{ content: "Closing Keynote Speaker and Ceremony", bold: true }],
     location: "LR2",
   },
