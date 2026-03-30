@@ -19,7 +19,7 @@ export const InlineSegments = ({ segments }: InlineSegmentsProps) => {
         const content = segment.bold ? <strong>{segment.content}</strong> : segment.content;
 
         if (segment.href) {
-          const externalProps = isExternal ? { target: "_blank", rel: "noreferrer" } : undefined;
+          const externalProps = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : undefined;
 
           return (
             <a key={key} href={segment.href} {...externalProps}>

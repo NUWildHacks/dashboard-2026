@@ -43,11 +43,11 @@ const renderLeaf = (item: GuideNavItem, pathname: string, depth: number, onNavig
         className={`guide-nav-link ${levelClass}${active ? " guide-nav-link-active" : ""}`}
         href={item.href}
         onClick={onNavigate}
-        rel="noreferrer"
+        rel="noopener noreferrer"
         target="_blank"
       >
         {item.title}
-      </a>
+      </a> 
     );
   }
 

@@ -6,12 +6,12 @@ export type GuideSearchEntry = {
   readonly href: string;
 };
 
-function flattenNavItems(items: GuideNavItem[], _basePath = ""): GuideSearchEntry[] {
+function flattenNavItems(items: GuideNavItem[]): GuideSearchEntry[] {
   const entries: GuideSearchEntry[] = [];
 
   for (const item of items) {
     if (item.children?.length) {
-      entries.push(...flattenNavItems(item.children, item.title));
+      entries.push(...flattenNavItems(item.children));
       continue;
     }
     if (item.href && !item.external && item.href.startsWith("/guide")) {

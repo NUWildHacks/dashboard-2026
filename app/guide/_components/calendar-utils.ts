@@ -180,9 +180,6 @@ export const parseTimeRange = (timeStr: string, date: Date) => {
 };
 
 export const parseDate = (dateStr: string) => {
-  try {
-    return new Date(dateStr);
-  } catch {
-    return null;
-  }
+  const date = new Date(dateStr);
+  return Number.isNaN(date.getTime()) ? null : date;
 };
