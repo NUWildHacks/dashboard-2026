@@ -106,7 +106,7 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     await docRef.set({
       ...data,
       user_id: userId,
-      created_at: now,
+      created_at: new Date(),
     });
 
     return { success: true };
