@@ -1,8 +1,9 @@
 "use server";
 
 import firebaseAdmin from "@/config/firebase-admin";
-import { findUserByEmail } from "@/lib/auth.lib";
 import type { ActionResult } from "@/types";
+
+import { findUserByEmail } from "../lib";
 
 export type LinkAccountResult = ActionResult & {
   customToken?: string;

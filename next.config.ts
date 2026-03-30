@@ -3,7 +3,12 @@ import { createRequire } from "module";
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
-import { JUDGE_REGISTRATION_PATH, WILDHACKS_HOME } from "./constants/routes.constants";
+import {
+  JUDGE_REGISTRATION_PATH,
+  WILDHACKS_HOME,
+  TECH_ROOM_FINDER_PATH,
+  JUDGING_GUIDE_PATH,
+} from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
 
@@ -60,6 +65,18 @@ const nextConfig: NextConfig = {
         source: JUDGE_REGISTRATION_PATH,
         destination:
           "https://docs.google.com/forms/d/e/1FAIpQLScyJ4OXjGQOlXSNj-nAZzdcXA1eQWc1URs2fsVpe2dahjlzXw/viewform?usp=dialog",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: TECH_ROOM_FINDER_PATH,
+        destination: "https://www.mccormick.northwestern.edu/contact/tech-room-finder.html",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: JUDGING_GUIDE_PATH,
+        destination: "https://guide.wildhacks.net/judging-and-awards/how-judging-works/",
         basePath: false,
         permanent: false,
       },

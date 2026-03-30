@@ -51,8 +51,6 @@ export const PARTICIPANT_USER_FIELDS = {
   mlh_code_of_conduct: "mlh_code_of_conduct",
   mlh_privacy_policy: "mlh_privacy_policy",
   mlh_marketing: "mlh_marketing",
-  project_id: "project_id",
-  joined_project_at: "joined_project_at",
 } as const satisfies Record<keyof Omit<ParticipantUser, "id">, string>;
 
 export const ADMIN_USER_FIELDS = {
@@ -64,4 +62,5 @@ export const JUDGE_USER_FIELDS = {
   affiliated_company: "affiliated_company",
   modality: "modality",
   other_modality: "other_modality",
+  onboarded: "onboarded",
 } as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;

@@ -472,7 +472,7 @@ const RegistrationForm = ({
 
             <FieldSeparator />
 
-            {now >= registration_deadline && now < start_time && (
+            {/* {now >= registration_deadline && now < start_time && (
               <>
                 <FieldSet disabled={isSubmitting}>
                   <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
@@ -504,7 +504,7 @@ const RegistrationForm = ({
 
                 <FieldSeparator />
               </>
-            )}
+            )} */}
 
             <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">MLH Agreements</FieldLegend>

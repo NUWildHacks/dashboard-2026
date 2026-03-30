@@ -4,5 +4,8 @@ export { default as SidebarLogoutButton } from "./_sidebar/sidebar-logout-button
 export { default as Statistics } from "./statistics";
 export { ThemeProvider } from "./theme-provider";
 export { default as Countdown } from "./countdown";
-export { default as UpcomingEvents } from "./upcoming-events";
+export { default as UpcomingEvents } from "./_upcoming-events/upcoming-events";
 export { default as VenueMap } from "./venue-map";
+export { default as EventsList } from "./_upcoming-events/events-list";
+export { default as EventItem } from "./_upcoming-events/event-item";
+export { default as OnboardingDialog } from "./onboarding-dialog";

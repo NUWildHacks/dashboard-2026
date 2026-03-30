@@ -50,7 +50,7 @@ export const useRegistrationForm = (
       dietary_restrictions: [],
       other_dietary_restrictions: "",
 
-      permission_code: "",
+      // permission_code: "",
 
       mlh_code_of_conduct: false,
       mlh_privacy_policy: false,

@@ -39,6 +39,11 @@ const UsersTable = ({ users }: UsersTableProps) => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
           <div className="flex flex-col md:flex-row gap-4">
+            {(role === PARTICIPANT || role === JUDGE || role === MENTOR) && (
+              <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
+                Download CSV
+              </Button>
+            )}
             <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
               <SelectTrigger
                 id="role-filter"
@@ -55,11 +60,6 @@ const UsersTable = ({ users }: UsersTableProps) => {
                 ))}
               </SelectContent>
             </Select>
-            {(role === PARTICIPANT || role === JUDGE || role === MENTOR) && (
-              <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
-                Download CSV
-              </Button>
-            )}
           </div>
           {selectedUserIds.length > 0 && (
             <Button
@@ -98,7 +98,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
-            id="search"
+            id="search-users"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search users..."
