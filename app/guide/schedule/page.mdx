@@ -1,0 +1,127 @@
+import { Callout } from "@/app/guide/_components/Callout";
+import { InlineSegments } from "@/app/guide/_components/InlineSegments";
+import CalendarExport from "@/app/guide/_components/CalendarExport";
+import { scheduleEvents } from "@/app/guide/_data/schedule-data";
+import { saturdayScheduleRows, sundayScheduleRows, workshopWeekRows } from "@/app/guide/_data/schedule-table-data";
+import { formatDateWithWeekday, getScheduleRowClass } from "@/app/guide/schedule/schedule-table-utils";
+
+# WildHacks 2026 Schedule
+
+{/* <CalendarExport events={scheduleEvents} /> */}
+
+See the [event map](/guide/map) for location details. All WildHackers are provided work spaces in [Mudd Library](https://www.library.northwestern.edu/libraries-collections/mudd-library/) and the [Technological Institute](https://maps.northwestern.edu/txt/facility/132). If you are an out-of-town WildHacker, we recommend you _do not_ leave these designated areas.
+
+## (Optional) Workshop Week, April 6-10, 2026
+
+{/* <Callout emoji="👾">
+Workshop Week is a hybrid, *optional\* collaboration to introduce newer WildHackers to software development topics. We
+are grateful to Northwestern's computing student organizations for hosting these sessions! 💓
+
+</Callout> */}
+
+<Callout emoji="👾">
+  Workshop Week is a hybrid, *optional* collaboration to introduce newer WildHackers to software development topics. We
+  will be updating this page shortly. Stay tuned for more updates!
+</Callout>
+
+{/* All times are in Central Time. Virtual options will be provided for all sessions to all registered WildHackers. */}
+
+{/* <table className="guide-schedule-table">
+
+  <thead>
+    <tr>
+      <th className="guide-schedule-col-date">Date</th>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {workshopWeekRows.map((row) => (
+      <tr key={`${row.date}-${row.time}`}>
+        <td className="guide-schedule-cell-date" data-label="Date">
+          {formatDateWithWeekday(row.date)}
+        </td>
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
+          <InlineSegments segments={row.event} />
+        </td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table> */}
+
+## Saturday, April 11, 2026
+
+**Hackathon Day 1**
+
+All times are in Central Time.
+
+<Callout emoji="⚠️">All meals will be distributed in waves. Stay tuned for more updates!</Callout>
+
+<table className="guide-schedule-table">
+  <thead>
+    <tr>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {saturdayScheduleRows.map((row) => (
+      <tr key={`sat-${row.time}-${row.location ?? "na"}`} className={getScheduleRowClass(row.highlight)}>
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
+          <InlineSegments segments={row.event} />
+        </td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location ?? ""}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Sunday, April 12, 2026
+
+**Hackathon Day 2**
+
+All times are in Central Time.
+
+<Callout emoji="⚠️">All meals will be distributed in waves. Stay tuned for more updates!</Callout>
+
+<table className="guide-schedule-table">
+  <thead>
+    <tr>
+      <th className="guide-schedule-col-time">Time</th>
+      <th className="guide-schedule-col-event">Event</th>
+      <th className="guide-schedule-col-location">Location</th>
+    </tr>
+  </thead>
+  <tbody>
+    {sundayScheduleRows.map((row) => (
+      <tr
+        key={`sun-${row.time}-${row.location ?? "na"}-${row.id ?? "na"}`}
+        id={row.id}
+        className={getScheduleRowClass(row.highlight)}
+      >
+        <td className="guide-schedule-cell-time" data-label="Time">
+          {row.time}
+        </td>
+        <td className="guide-schedule-cell-event" data-label="Event">
+          <InlineSegments segments={row.event} />
+        </td>
+        <td className="guide-schedule-cell-location" data-label="Location">
+          {row.location ?? ""}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>

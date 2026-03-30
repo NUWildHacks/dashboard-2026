@@ -7,6 +7,7 @@ export const DASHBOARD_SCHEDULE_PATH = "/dashboard/schedule" as const;
 export const DASHBOARD_MANAGE_USERS_PATH = "/dashboard/manage-users" as const;
 export const DASHBOARD_SUPPORT_PATH = "/dashboard/support" as const;
 export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
+export const GUIDE_PATH = "/guide" as const;
 export const DASHBOARD_JUDGING_PATH = "/dashboard/judging" as const;
 
 export const LOGIN_PATH = "/login" as const;

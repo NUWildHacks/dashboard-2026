@@ -1,3 +1,6 @@
+import { createRequire } from "module";
+
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 import {
@@ -26,7 +29,17 @@ const cspHeader = `
   .replace(/\s{2,}/g, " ")
   .trim();
 
+const require = createRequire(import.meta.url);
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [require.resolve("remark-gfm")],
+  },
+});
+
 const nextConfig: NextConfig = {
+  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
   async headers() {
     return [
       {
@@ -71,4 +84,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
