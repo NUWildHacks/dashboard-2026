@@ -12,6 +12,7 @@ import {
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
+const discordInviteUrl = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? "";
 
 const cspHeader = `
   default-src 'self';
@@ -83,7 +84,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: DISCORD_PATH,
-        destination: "https://discord.gg/DCefDDT6sq",
+        destination: discordInviteUrl,
         basePath: false,
         permanent: false,
       },
