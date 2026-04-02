@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { JudgeUser, MentorUser } from "@/types";
+import type { JudgeUser, JudgeAndMentorUser } from "@/types";
 
 import { editProfile } from "../_actions";
 import { type EditJudgeMentorProfileFormSchema, editJudgeMentorProfileFormSchema } from "../_schemas";
@@ -14,7 +14,9 @@ export type UseEditJudgeMentorProfileFormReturn = {
   handleReset: () => void;
 } & Pick<UseFormReturn<EditJudgeMentorProfileFormSchema>, "control" | "handleSubmit">;
 
-export const useEditJudgeMentorProfileForm = (user: JudgeUser | MentorUser): UseEditJudgeMentorProfileFormReturn => {
+export const useEditJudgeMentorProfileForm = (
+  user: JudgeUser | JudgeAndMentorUser
+): UseEditJudgeMentorProfileFormReturn => {
   const {
     control,
     handleSubmit,

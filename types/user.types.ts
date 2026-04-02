@@ -10,10 +10,9 @@ import {
   TSHIRT_SIZES,
   ADMIN,
   JUDGE,
-  MENTOR,
   MODALITIES,
   PARTICIPANT,
-  JUDGE_OR_MENTOR,
+  JUDGE_AND_MENTOR,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -74,8 +73,8 @@ export type JudgeUser = BaseUser & {
   onboarded?: boolean;
 };
 
-export type MentorUser = BaseUser & {
-  role: typeof MENTOR;
+export type JudgeAndMentorUser = BaseUser & {
+  role: typeof JUDGE_AND_MENTOR;
 
   affiliated_company: string;
   modality: Modality;
@@ -84,14 +83,4 @@ export type MentorUser = BaseUser & {
   onboarded?: boolean;
 };
 
-export type JudgeOrMentorUser = BaseUser & {
-  role: typeof JUDGE_OR_MENTOR;
-
-  affiliated_company: string;
-  modality: Modality;
-  other_modality: string;
-
-  onboarded?: boolean;
-};
-
-export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser | JudgeOrMentorUser;
+export type User = ParticipantUser | AdminUser | JudgeUser | JudgeAndMentorUser;
