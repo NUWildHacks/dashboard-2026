@@ -12,7 +12,7 @@ import {
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
-const discordInviteUrl = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL ?? "";
+const discordInviteUrl = process.env.DISCORD_INVITE_URL ?? "";
 
 const cspHeader = `
   default-src 'self';
