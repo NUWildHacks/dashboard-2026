@@ -1,4 +1,4 @@
-import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
+import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck, GraduationCap } from "lucide-react";
 
 import {
   ADMIN,
@@ -10,6 +10,7 @@ import {
   DASHBOARD_SCHEDULE_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
+  DASHBOARD_MENTORING_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -45,6 +46,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: BookOpenCheck,
     visibleTo: [JUDGE, JUDGE_AND_MENTOR],
   },
+  {
+    title: "Mentoring",
+    url: DASHBOARD_MENTORING_PATH,
+    icon: GraduationCap,
+    visibleTo: [JUDGE_AND_MENTOR],
+  },
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
@@ -54,4 +61,5 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   "manage-users": "Manage users",
   guide: "Guide",
   judging: "Judging",
+  mentoring: "Mentoring",
 };
