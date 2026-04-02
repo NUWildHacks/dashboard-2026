@@ -10,6 +10,7 @@ import {
   DASHBOARD_SCHEDULE_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
+  JUDGE_OR_MENTOR,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -19,13 +20,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR, JUDGE_OR_MENTOR],
   },
   {
     title: "Schedule",
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR, JUDGE_OR_MENTOR],
   },
   {
     title: "Manage users",
@@ -37,13 +38,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Guide",
     url: GUIDE_PATH,
     icon: TableCellsMerge,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR, JUDGE_OR_MENTOR],
   },
   {
     title: "Judging",
     url: DASHBOARD_JUDGING_PATH,
     icon: BookOpenCheck,
-    visibleTo: [JUDGE],
+    visibleTo: [JUDGE, JUDGE_OR_MENTOR],
   },
 ];
 
