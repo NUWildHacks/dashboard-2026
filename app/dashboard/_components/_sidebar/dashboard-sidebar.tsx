@@ -74,7 +74,7 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
               <SidebarMenuButton asChild>
                 <a href={DISCORD_PATH} target="_blank" rel="noreferrer">
                   <Discord />
-                  Discord
+                  Join our Discord
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
