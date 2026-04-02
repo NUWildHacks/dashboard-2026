@@ -8,6 +8,7 @@ import {
   WILDHACKS_HOME,
   TECH_ROOM_FINDER_PATH,
   JUDGING_GUIDE_PATH,
+  DISCORD_PATH,
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
@@ -77,6 +78,12 @@ const nextConfig: NextConfig = {
       {
         source: JUDGING_GUIDE_PATH,
         destination: "https://guide.wildhacks.net/judging-and-awards/how-judging-works/",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: DISCORD_PATH,
+        destination: "https://discord.gg/DCefDDT6sq",
         basePath: false,
         permanent: false,
       },

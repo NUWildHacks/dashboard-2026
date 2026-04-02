@@ -3,7 +3,7 @@ import {
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
-  DASHBOARD_SUPPORT_PATH,
+  DISCORD_PATH,
   ROOT_PATH,
 } from "@/constants";
 
@@ -16,7 +16,7 @@ export const validateRedirectPath = (path: string | null): string => {
     DASHBOARD_PATH,
     DASHBOARD_SCHEDULE_PATH,
     DASHBOARD_SETTINGS_PATH,
-    DASHBOARD_SUPPORT_PATH,
+    DISCORD_PATH,
     DASHBOARD_MANAGE_USERS_PATH,
     ROOT_PATH,
   ];

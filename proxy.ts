@@ -2,10 +2,12 @@ import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
+  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_SETTINGS_PATH,
-  DASHBOARD_SUPPORT_PATH,
+  GUIDE_PATH,
   LOGIN_PATH,
   REGISTRATION_PATH,
   SESSION_COOKIE_NAME,
@@ -44,7 +46,9 @@ export async function proxy(req: NextRequest) {
     currentPath === REGISTRATION_PATH ||
     currentPath === DASHBOARD_PATH ||
     currentPath === DASHBOARD_SCHEDULE_PATH ||
-    currentPath === DASHBOARD_SUPPORT_PATH ||
+    currentPath === DASHBOARD_MANAGE_USERS_PATH ||
+    currentPath === GUIDE_PATH ||
+    currentPath === DASHBOARD_JUDGING_PATH ||
     currentPath === DASHBOARD_SETTINGS_PATH;
 
   if (isProtectedRoute) {

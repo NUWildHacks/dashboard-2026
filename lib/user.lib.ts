@@ -11,7 +11,6 @@ import {
   JUDGE,
   MENTOR,
   REGISTRATION_PATH,
-  DASHBOARD_PATH,
   CLOSED_REGISTRATION,
 } from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";

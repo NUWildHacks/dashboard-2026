@@ -1,4 +1,4 @@
-import { Calendar, FolderGit2, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
+import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
 
 import {
   ADMIN,
@@ -49,7 +49,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
   schedule: "Schedule",
-  support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",
   guide: "Guide",
