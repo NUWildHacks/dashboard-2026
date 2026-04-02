@@ -13,6 +13,7 @@ import {
   MENTOR,
   MODALITIES,
   PARTICIPANT,
+  JUDGE_OR_MENTOR,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -83,4 +84,14 @@ export type MentorUser = BaseUser & {
   onboarded?: boolean;
 };
 
-export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser;
+export type JudgeOrMentorUser = BaseUser & {
+  role: typeof JUDGE_OR_MENTOR;
+
+  affiliated_company: string;
+  modality: Modality;
+  other_modality: string;
+
+  onboarded?: boolean;
+};
+
+export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser | JudgeOrMentorUser;

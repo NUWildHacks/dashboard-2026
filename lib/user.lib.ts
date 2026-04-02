@@ -11,8 +11,8 @@ import {
   JUDGE,
   MENTOR,
   REGISTRATION_PATH,
-  DASHBOARD_PATH,
   CLOSED_REGISTRATION,
+  JUDGE_OR_MENTOR,
 } from "@/constants";
 import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
 
@@ -98,6 +98,7 @@ const requireRole = <T extends User["role"]>(
       [ADMIN]: "You must be an administrator to perform this action",
       [JUDGE]: "You must be a judge to perform this action",
       [MENTOR]: "You must be a mentor to perform this action",
+      [JUDGE_OR_MENTOR]: "You must be a judge or mentor to perform this action",
     };
 
     return {
