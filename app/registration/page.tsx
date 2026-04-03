@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { LOGIN_PATH } from "@/constants";
-import { getConfigDocSnapshot, verifySession } from "@/lib";
-import type { WildHacksConfig } from "@/types";
+import { verifySession } from "@/lib";
 
 import RegistrationForm from "./_components/registration-form";
 import { registerJudgeMentorWithEmail } from "./lib";
@@ -15,9 +14,6 @@ const RegistrationPage = async () => {
 
   await registerJudgeMentorWithEmail(id, email);
 
-  const configDocSnapshot = await getConfigDocSnapshot();
-  const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
-
   return (
     <main className="flex-1 px-6 sm:px-12 py-12 flex flex-col justify-center items-center">
       <div className="max-w-[650px]">
@@ -27,7 +23,7 @@ const RegistrationPage = async () => {
             Fill out the registration form below and you&apos;ll be all set. We just need some basic info to get you
             started. This should only take a few minutes!
           </p>
-          <RegistrationForm userEmail={email} {...wildhacksConfig} />
+          <RegistrationForm userEmail={email} />
         </div>
       </div>
     </main>
