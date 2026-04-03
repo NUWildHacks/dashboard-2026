@@ -20,8 +20,7 @@ const MentoringTimeslotRadioGroup = ({ mentoring_timeslot }: MentoringTimeslotRa
   const { selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
     useMentoringTimeslotRadioGroup(mentoring_timeslot);
 
-  const isDisabled =
-    isSubmitting || !selectedMentoringTimeslot || new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE;
+  const isTimeslotConfirmationDeadlinePassed = new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE;
 
   return (
     <Card>
@@ -36,6 +35,7 @@ const MentoringTimeslotRadioGroup = ({ mentoring_timeslot }: MentoringTimeslotRa
       <CardContent className="flex flex-col gap-4">
         <RadioGroup
           value={selectedMentoringTimeslot}
+          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting}
           onValueChange={(value: string) => setSelectedMentoringTimeslot(value as MentoringTimeslot)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
@@ -51,8 +51,14 @@ const MentoringTimeslotRadioGroup = ({ mentoring_timeslot }: MentoringTimeslotRa
           ))}
         </RadioGroup>
       </CardContent>
-      <CardFooter className="flex justify-end">
-        <Button type="button" onClick={onSubmit} disabled={isDisabled}>
+      <CardFooter className="flex justify-end items-center gap-4">
+        {isTimeslotConfirmationDeadlinePassed && (
+          <p className="text-sm text-muted-foreground">
+            The timeslot confirmation deadline has passed. Please contact the organizers if you need to update your
+            timeslot.
+          </p>
+        )}
+        <Button type="button" onClick={onSubmit} disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting}>
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
         </Button>
       </CardFooter>
