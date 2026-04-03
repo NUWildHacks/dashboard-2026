@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleQuestionMark, Settings } from "lucide-react";
+import { CircleQuestionMark, Map, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,7 +21,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { DASHBOARD_SUPPORT_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
+import { DASHBOARD_SUPPORT_PATH, DASHBOARD_SETTINGS_PATH, GUIDE_PATH } from "@/constants";
 import { Role } from "@/types";
 
 import { SIDEBAR_ITEMS } from "../../constants";
@@ -74,6 +74,14 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
                 <Link href={DASHBOARD_SUPPORT_PATH} className="font-regular">
                   <CircleQuestionMark />
                   Support
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href={GUIDE_PATH} className="font-regular">
+                  <Map />
+                  Guide
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -1,4 +1,4 @@
-import { Calendar, FolderGit2, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
+import { Calendar, Home, Users, BookOpenCheck } from "lucide-react";
 
 import {
   ADMIN,
@@ -8,7 +8,6 @@ import {
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
-  GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
 } from "@/constants";
 
@@ -32,12 +31,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     url: DASHBOARD_MANAGE_USERS_PATH,
     icon: Users,
     visibleTo: [ADMIN],
-  },
-  {
-    title: "Guide",
-    url: GUIDE_PATH,
-    icon: TableCellsMerge,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
   },
   {
     title: "Judging",
