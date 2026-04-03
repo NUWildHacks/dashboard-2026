@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import type { JudgeAndMentorUser, MentoringTimeslot } from "@/types";
 
 import { confirmMentoringTimeslot } from "../_actions";
+import { TIMESLOT_CONFIRMATION_DEADLINE } from "../constants";
 
 export type UseMentoringTimeslotRadioGroupReturn = {
   selectedMentoringTimeslot: MentoringTimeslot | undefined;
@@ -24,7 +25,10 @@ export const useMentoringTimeslotRadioGroup = (
 
   const onSubmit = async () => {
     if (!selectedMentoringTimeslot) {
-      toast.error("Please select a mentoring timeslot");
+      return;
+    }
+
+    if (new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE) {
       return;
     }
 

@@ -10,6 +10,7 @@ import { MENTORING_TIMESLOTS } from "@/constants";
 import type { JudgeAndMentorUser, MentoringTimeslot } from "@/types";
 
 import { useMentoringTimeslotRadioGroup } from "../_hooks";
+import { TIMESLOT_CONFIRMATION_DEADLINE } from "../constants";
 
 type MentoringTimeslotRadioGroupProps = {
   mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"];
@@ -19,11 +20,18 @@ const MentoringTimeslotRadioGroup = ({ mentoring_timeslot }: MentoringTimeslotRa
   const { selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
     useMentoringTimeslotRadioGroup(mentoring_timeslot);
 
+  const isDisabled =
+    isSubmitting || !selectedMentoringTimeslot || new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Select Mentoring Timeslot</CardTitle>
-        <CardDescription>Select which timeslot that you will be available for mentoring.</CardDescription>
+        <CardTitle>Mentoring Timeslot</CardTitle>
+        <CardDescription>
+          Select when you will be available for mentoring. Keep in mind that mentoring will happen on{" "}
+          <span className="font-bold underline underline-offset-4">Saturday, April 11th</span> and you must confirm a
+          timeslot by <span className="font-bold underline underline-offset-4">Wednesday, April 6th, 11:59 PM CT.</span>
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <RadioGroup
@@ -44,7 +52,7 @@ const MentoringTimeslotRadioGroup = ({ mentoring_timeslot }: MentoringTimeslotRa
         </RadioGroup>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button type="button" onClick={onSubmit} disabled={isSubmitting || !selectedMentoringTimeslot}>
+        <Button type="button" onClick={onSubmit} disabled={isDisabled}>
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
         </Button>
       </CardFooter>
