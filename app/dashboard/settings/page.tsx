@@ -1,6 +1,6 @@
 import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, MENTOR, PARTICIPANT } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { AdminUser, JudgeUser, MentorUser, ParticipantUser, WildHacksConfig } from "@/types";
+import { getAuthenticatedUser } from "@/lib";
+import type { AdminUser, JudgeUser, MentorUser, ParticipantUser } from "@/types";
 
 import {
   EditParticipantProfileForm,
@@ -16,12 +16,6 @@ const SettingsPage = async () => {
 
   const user = await getAuthenticatedUser(redirectPath);
 
-  let wildHacksConfig: WildHacksConfig | undefined;
-  if (user.role === ADMIN) {
-    const configDocSnapshot = await getConfigDocSnapshot();
-    wildHacksConfig = configDocSnapshot.data() as WildHacksConfig;
-  }
-
   return (
     <div className="flex-1 flex flex-col gap-6">
       <div className="flex flex-col gap-4">
@@ -29,10 +23,10 @@ const SettingsPage = async () => {
         <ThemeSelect />
         {user.role !== ADMIN && <EventWithdraw />}
       </div>
-      {wildHacksConfig && (
+      {user.role === ADMIN && (
         <div className="flex flex-col gap-4">
           <h2 className="text-md font-semibold">WildHacks Configuration</h2>
-          <EditWildhacksConfigForm wildhacksConfig={wildHacksConfig} />
+          <EditWildhacksConfigForm />
         </div>
       )}
       <div className="flex flex-col gap-4">
