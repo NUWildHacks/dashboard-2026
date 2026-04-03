@@ -2,12 +2,12 @@
 
 import { useCountdown } from "@/app/dashboard/_hooks";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useWildhacksGlobalSettings } from "@/hooks";
 import { cn } from "@/lib";
-import type { WildHacksConfig } from "@/types";
 
-type CountdownProps = Pick<WildHacksConfig, "start_time" | "end_time">;
+const Countdown = () => {
+  const { start_time, end_time } = useWildhacksGlobalSettings();
 
-const Countdown = ({ start_time, end_time }: CountdownProps) => {
   const { days, hours, minutes, seconds, hasStarted, hasEnded } = useCountdown(start_time, end_time);
 
   let descriptionText = "";
