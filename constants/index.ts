@@ -58,6 +58,7 @@ export {
   ADMIN_USER_FIELDS,
   JUDGE_USER_FIELDS,
   PARTICIPANT_USER_FIELDS,
+  MENTORING_TIMESLOTS,
 } from "./user.constants";
 
 export { USER_NOT_FOUND, ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL } from "./firebase.constants";

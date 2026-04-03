@@ -7,6 +7,7 @@ export type {
   BaseUser,
   Country,
   DietaryRestriction,
+  MentoringTimeslot,
   FieldOfStudy,
   Gender,
   JudgeUser,

@@ -25,6 +25,8 @@ export const JUDGE_AND_MENTOR = "Judge/Mentor" as const;
 export const ADMIN = "Admin" as const;
 export const ROLES = [PARTICIPANT, JUDGE, JUDGE_AND_MENTOR, ADMIN] as const;
 
+export const MENTORING_TIMESLOTS = ["1-5pm", "5-9pm"] as const;
+
 export const USER_FIELDS = {
   email: "email",
   first_name: "first_name",
@@ -70,5 +72,6 @@ export const JUDGE_AND_MENTOR_USER_FIELDS = {
   affiliated_company: "affiliated_company",
   modality: "modality",
   other_modality: "other_modality",
+  mentoring_timeslot: "mentoring_timeslot",
   onboarded: "onboarded",
 } as const satisfies Record<keyof Omit<JudgeAndMentorUser, "id">, string>;

@@ -13,6 +13,7 @@ import {
   MODALITIES,
   PARTICIPANT,
   JUDGE_AND_MENTOR,
+  MENTORING_TIMESLOTS,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -26,6 +27,8 @@ export type Gender = (typeof GENDERS)[number];
 export type Race = (typeof RACES)[number];
 export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
 export type Modality = (typeof MODALITIES)[number];
+
+export type MentoringTimeslot = (typeof MENTORING_TIMESLOTS)[number];
 
 export type Role = (typeof ROLES)[number];
 
@@ -79,6 +82,8 @@ export type JudgeAndMentorUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  mentoring_timeslot?: MentoringTimeslot;
 
   onboarded?: boolean;
 };
