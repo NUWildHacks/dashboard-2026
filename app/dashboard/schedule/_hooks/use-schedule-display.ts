@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 
 import { ONE_DAY } from "@/constants";
+import { useWildhacksGlobalSettings } from "@/hooks";
 import { getDateFromMilliseconds } from "@/lib";
-import { WildHacksConfig } from "@/types";
 
 import { getDayStartFromMilliseconds } from "../_lib";
 import { CalendarDay } from "../types";
@@ -15,10 +15,9 @@ export type UseScheduleDisplayReturn = {
   setDisplay: (display: "calendar" | "table") => void;
 };
 
-export const useScheduleDisplay = (
-  start_time: WildHacksConfig["start_time"],
-  end_time: WildHacksConfig["end_time"]
-): UseScheduleDisplayReturn => {
+export const useScheduleDisplay = (): UseScheduleDisplayReturn => {
+  const { start_time, end_time } = useWildhacksGlobalSettings();
+
   const availableDays = useMemo(() => {
     const days: CalendarDay[] = [];
     let currentDayStartMs = getDayStartFromMilliseconds(start_time);

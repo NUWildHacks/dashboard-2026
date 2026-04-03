@@ -7,8 +7,8 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADMIN } from "@/constants";
-import { CategoryWithAll, useItemDialog, useFilters } from "@/hooks";
-import { User, WildHacksConfig } from "@/types";
+import { CategoryWithAll, useItemDialog, useFilters, useWildhacksGlobalSettings } from "@/hooks";
+import { User } from "@/types";
 
 import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } from "../_hooks";
 import { EVENT_CATEGORIES } from "../constants";
@@ -18,10 +18,10 @@ import { Calendar, EventDialog, EventFormDialog, EventsTable } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
-} & Pick<WildHacksConfig, "start_time" | "end_time">;
+};
 
-const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProps) => {
-  const { selectedDay, availableDays, handleSelectDay, display, setDisplay } = useScheduleDisplay(start_time, end_time);
+const ScheduleDisplay = ({ userRole }: ScheduleDisplayProps) => {
+  const { selectedDay, availableDays, handleSelectDay, display, setDisplay } = useScheduleDisplay();
   const { label } = selectedDay;
 
   const { category, setCategory, search, setSearch } = useFilters<EventCategory>();
@@ -32,7 +32,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const useEventDialogReturn = useItemDialog<Event>(events, "event");
   const { handleSelectItem } = useEventDialogReturn;
 
-  const useEventFormDialogReturn = useEventFormDialog(start_time, end_time, availableDays);
+  const useEventFormDialogReturn = useEventFormDialog(availableDays);
   const { handleOpenEventFormDialog } = useEventFormDialogReturn;
 
   const useEventsTableReturn = useEventsTable(events, handleSelectItem, handleOpenEventFormDialog, handleDeleteEvents);
@@ -111,15 +111,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
             </InputGroupAddon>
           </InputGroup>
         </div>
-        {display === "calendar" && (
-          <Calendar
-            start_time={start_time}
-            end_time={end_time}
-            {...selectedDay}
-            {...useEventsReturn}
-            {...useEventDialogReturn}
-          />
-        )}
+        {display === "calendar" && <Calendar {...selectedDay} {...useEventsReturn} {...useEventDialogReturn} />}
         {display === "table" && userRole === ADMIN && <EventsTable columns={eventsColumns} table={table} />}
       </div>
       <EventDialog userRole={userRole} {...useEventDialogReturn} />

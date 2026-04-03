@@ -1,8 +1,7 @@
 "use client";
 
 import { CalendarRow } from "@/app/dashboard/schedule/_components";
-import { UseItemDialogReturn } from "@/hooks";
-import type { WildHacksConfig } from "@/types";
+import { UseItemDialogReturn, useWildhacksGlobalSettings } from "@/hooks";
 
 import { UseEventsReturn } from "../../_hooks";
 import { createOverlapGroups, getVisibleCalendarRows } from "../../_lib";
@@ -10,10 +9,11 @@ import { CalendarDay, Event } from "../../types";
 
 type CalendarProps = Pick<UseEventsReturn, "events"> &
   Pick<CalendarDay, "startMs" | "endMs"> &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> &
-  Pick<WildHacksConfig, "start_time" | "end_time">;
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
 
-const Calendar = ({ events, startMs, endMs, handleSelectItem, handleKeyDown, start_time, end_time }: CalendarProps) => {
+const Calendar = ({ events, startMs, endMs, handleSelectItem, handleKeyDown }: CalendarProps) => {
+  const { start_time, end_time } = useWildhacksGlobalSettings();
+
   const visibleCalendarRows = getVisibleCalendarRows(start_time, end_time, startMs, endMs);
 
   const overlapGroups = createOverlapGroups(events);

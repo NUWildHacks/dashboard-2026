@@ -5,8 +5,8 @@ import { useState } from "react";
 import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 
+import { useWildhacksGlobalSettings } from "@/hooks";
 import { combineDateAndTime, findDayLabel, millisecondsToTime, parseDateLabel } from "@/lib";
-import { WildHacksConfig } from "@/types";
 
 import { saveEvent, SaveEventData } from "../_actions";
 import { eventFormDialogSchema, EventFormDialogSchema } from "../_schemas";
@@ -21,11 +21,9 @@ export type UseEventFormDialogReturn = {
   isSubmitting: boolean;
 } & Pick<UseFormReturn<EventFormDialogSchema>, "control" | "handleSubmit">;
 
-export const useEventFormDialog = (
-  start_time: WildHacksConfig["start_time"],
-  end_time: WildHacksConfig["end_time"],
-  availableDays: CalendarDay[]
-): UseEventFormDialogReturn => {
+export const useEventFormDialog = (availableDays: CalendarDay[]): UseEventFormDialogReturn => {
+  const { start_time, end_time } = useWildhacksGlobalSettings();
+
   const [eventId, setEventId] = useState<Event["id"] | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 

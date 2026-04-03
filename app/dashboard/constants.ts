@@ -1,4 +1,4 @@
-import { Calendar, FolderGit2, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
+import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
 
 import {
   ADMIN,
