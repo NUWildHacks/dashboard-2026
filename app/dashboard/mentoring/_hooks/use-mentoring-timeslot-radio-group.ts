@@ -25,10 +25,12 @@ export const useMentoringTimeslotRadioGroup = (
 
   const onSubmit = async () => {
     if (!selectedMentoringTimeslot) {
+      toast.error("Please select a timeslot before confirming");
       return;
     }
 
     if (new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE) {
+      toast.error("The timeslot confirmation deadline has passed");
       return;
     }
 
