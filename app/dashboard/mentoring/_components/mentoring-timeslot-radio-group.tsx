@@ -32,7 +32,7 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
             <p>You have been assigned to a mentoring timeslot. If you wish to change it, you can do so by selecting a different timeslot below.</p>
             <p>
               Keep in mind that mentoring will happen on <span className="font-bold underline underline-offset-4">Saturday, April 11th</span> and you must confirm a
-              timeslot by <span className="font-bold underline underline-offset-4">Wednesday, April 6th, 11:59 PM CT.</span>
+              timeslot by <span className="font-bold underline underline-offset-4">Wednesday, April 8th, 11:59 PM CT.</span>
             </p>
           </div>
         </CardDescription>
