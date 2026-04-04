@@ -56,7 +56,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
   schedule: "Schedule",
-  support: "Support",
   settings: "Settings",
   "manage-users": "Manage users",
   guide: "Guide",

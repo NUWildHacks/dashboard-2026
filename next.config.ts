@@ -8,9 +8,11 @@ import {
   WILDHACKS_HOME,
   TECH_ROOM_FINDER_PATH,
   JUDGING_GUIDE_PATH,
+  DISCORD_INVITE_PATH,
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
+const discordInviteDestination = process.env.DISCORD_INVITE_URL as string;
 
 const cspHeader = `
   default-src 'self';
@@ -77,6 +79,12 @@ const nextConfig: NextConfig = {
       {
         source: JUDGING_GUIDE_PATH,
         destination: "https://guide.wildhacks.net/judging-and-awards/how-judging-works/",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: DISCORD_INVITE_PATH,
+        destination: discordInviteDestination,
         basePath: false,
         permanent: false,
       },
