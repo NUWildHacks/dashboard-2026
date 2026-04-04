@@ -94,9 +94,9 @@ export const saturdaySpaces: MapRow[] = [
     description: "Collaboration and Overnight Space",
     // capacity: "TBD",
   },
-  // 
+  //
   // TECH: GROUND FLOOR
-  // 
+  //
   {
     name: text("Collaboration 4"),
     location: [
@@ -163,9 +163,9 @@ export const saturdaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "35",
   },
-  // 
+  //
   // TECH: FIRST FLOOR
-  // 
+  //
   {
     name: text("Collaboration 10"),
     location: [
@@ -210,9 +210,9 @@ export const saturdaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "40",
   },
-  // 
+  //
   // TECH: SECOND FLOOR
-  // 
+  //
   {
     name: text("Collaboration 14"),
     location: [
@@ -224,7 +224,7 @@ export const saturdaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "24",
   },
-  
+
   {
     name: text("Collaboration 15"),
     location: [
@@ -269,9 +269,9 @@ export const saturdaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "55",
   },
-  // 
+  //
   // TECH: THIRD FLOOR
-  // 
+  //
   {
     name: text("Collaboration 19"),
     location: [
@@ -389,9 +389,9 @@ export const sundaySpaces: MapRow[] = [
     description: "Collaboration Space",
     // capacity: "TBD",
   },
-  // 
+  //
   // TECH: GROUND FLOOR
-  // 
+  //
   {
     name: text("Collaboration 4"),
     location: [
@@ -458,9 +458,9 @@ export const sundaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "35",
   },
-  // 
+  //
   // TECH: FIRST FLOOR
-  // 
+  //
   {
     name: text("Collaboration 10"),
     location: [
@@ -505,9 +505,9 @@ export const sundaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "40",
   },
-  // 
+  //
   // TECH: SECOND FLOOR
-  // 
+  //
   {
     name: text("Collaboration 14"),
     location: [
@@ -563,9 +563,9 @@ export const sundaySpaces: MapRow[] = [
     description: "Collaboration Space",
     capacity: "55",
   },
-  // 
+  //
   // TECH: THIRD FLOOR
-  // 
+  //
   {
     name: text("Collaboration 19"),
     location: [
