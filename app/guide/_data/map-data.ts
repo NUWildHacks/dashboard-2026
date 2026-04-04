@@ -49,6 +49,17 @@ export const saturdaySpaces: MapRow[] = [
     notes: "Drop in anytime during expo hours.",
   },
   {
+    name: text("LR4"),
+    location: [
+      {
+        content: "Tech LR4",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M113&room-floor=1&room-id=863&room-ingress=",
+      },
+    ],
+    description: "Team Formation Event",
+    capacity: "91",
+  },
+  {
     name: text("Meals"),
     location: text("Mudd 1st Floor"),
     description: "Meal Distribution",
@@ -271,6 +282,39 @@ export const saturdaySpaces: MapRow[] = [
     ],
     description: "Wilkinson Computing Lab",
     capacity: "TBD",
+  },
+  {
+    name: text("Collaboration 19"),
+    location: [
+      {
+        content: "Tech M338",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "22",
+  },
+  {
+    name: text("Collaboration 20"),
+    location: [
+      {
+        content: "Tech M345",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M345&room-floor=3&room-id=935&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "100",
+  },
+  {
+    name: text("Collaboration 21"),
+    location: [
+      {
+        content: "Tech L158",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L158&room-floor=1&room-id=785&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "21",
   },
 ];
 
@@ -532,5 +576,49 @@ export const sundaySpaces: MapRow[] = [
     ],
     description: "Wilkinson Computing Lab",
     capacity: "TBD",
+  },
+  {
+    name: text("Collaboration 19"),
+    location: [
+      {
+        content: "Tech M338",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "22",
+  },
+  {
+    name: text("Collaboration 20"),
+    location: [
+      {
+        content: "Tech M345",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M345&room-floor=3&room-id=935&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "100",
+  },
+  {
+    name: text("Collaboration 21"),
+    location: [
+      {
+        content: "Tech L160",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L160&room-floor=1&room-id=786&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "30",
+  },
+  {
+    name: text("Collaboration 22"),
+    location: [
+      {
+        content: "Tech L168",
+        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L168&room-floor=1&room-id=786&room-ingress=",
+      },
+    ],
+    description: "Collaboration Space",
+    capacity: "25",
   },
 ];
