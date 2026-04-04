@@ -65,7 +65,7 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
             timeslot.
           </p>
         )}
-        <Button type="button" onClick={onSubmit} disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting}>
+        <Button type="button" onClick={onSubmit} disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting || !selectedMentoringTimeslot}>
           {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
         </Button>
       </CardFooter>
