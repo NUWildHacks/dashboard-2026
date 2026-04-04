@@ -6,7 +6,7 @@ import levelsOfStudy from "@/data/levels-of-study.json";
 import races from "@/data/races.json";
 import schools from "@/data/schools.json";
 import tshirtSizes from "@/data/tshirt-sizes.json";
-import type { ParticipantUser, AdminUser, JudgeUser, User } from "@/types/user.types";
+import type { ParticipantUser, AdminUser, JudgeUser, User, JudgeAndMentorUser } from "@/types/user.types";
 
 export const COUNTRIES = countries;
 export const SCHOOLS = schools;
@@ -21,9 +21,11 @@ export const MODALITIES = ["In-Person", "Remote", "Other"] as const;
 
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
-export const MENTOR = "Mentor" as const;
+export const JUDGE_AND_MENTOR = "Judge/Mentor" as const;
 export const ADMIN = "Admin" as const;
-export const ROLES = [PARTICIPANT, JUDGE, MENTOR, ADMIN] as const;
+export const ROLES = [PARTICIPANT, JUDGE, JUDGE_AND_MENTOR, ADMIN] as const;
+
+export const MENTORING_TIMESLOTS = ["1-5pm", "5-9pm"] as const;
 
 export const USER_FIELDS = {
   email: "email",
@@ -64,3 +66,12 @@ export const JUDGE_USER_FIELDS = {
   other_modality: "other_modality",
   onboarded: "onboarded",
 } as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;
+
+export const JUDGE_AND_MENTOR_USER_FIELDS = {
+  ...USER_FIELDS,
+  affiliated_company: "affiliated_company",
+  modality: "modality",
+  other_modality: "other_modality",
+  mentoring_timeslot: "mentoring_timeslot",
+  onboarded: "onboarded",
+} as const satisfies Record<keyof Omit<JudgeAndMentorUser, "id">, string>;

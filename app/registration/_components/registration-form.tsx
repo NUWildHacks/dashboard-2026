@@ -64,8 +64,6 @@ const RegistrationForm = ({
     registration_deadline
   );
 
-  const now = new Date().getTime();
-
   return (
     <Card className="rounded-2xl shadow-sm">
       <CardContent>

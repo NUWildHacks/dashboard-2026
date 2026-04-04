@@ -1,15 +1,16 @@
-import { Calendar, FolderGit2, Home, Users, TableCellsMerge, BookOpenCheck } from "lucide-react";
+import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck, GraduationCap } from "lucide-react";
 
 import {
   ADMIN,
   JUDGE,
-  MENTOR,
+  JUDGE_AND_MENTOR,
   PARTICIPANT,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
+  DASHBOARD_MENTORING_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -19,13 +20,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Home",
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Schedule",
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Manage users",
@@ -37,13 +38,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Guide",
     url: GUIDE_PATH,
     icon: TableCellsMerge,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, MENTOR],
+    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Judging",
     url: DASHBOARD_JUDGING_PATH,
     icon: BookOpenCheck,
-    visibleTo: [JUDGE],
+    visibleTo: [JUDGE, JUDGE_AND_MENTOR],
+  },
+  {
+    title: "Mentoring",
+    url: DASHBOARD_MENTORING_PATH,
+    icon: GraduationCap,
+    visibleTo: [JUDGE_AND_MENTOR],
   },
 ];
 
@@ -54,4 +61,5 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   "manage-users": "Manage users",
   guide: "Guide",
   judging: "Judging",
+  mentoring: "Mentoring",
 };
