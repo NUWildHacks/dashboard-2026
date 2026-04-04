@@ -12,6 +12,16 @@ import type { JudgeAndMentorUser, MentoringTimeslot } from "@/types";
 import { useMentoringTimeslotRadioGroup } from "../_hooks";
 import { TIMESLOT_CONFIRMATION_DEADLINE } from "../constants";
 
+const formattedDeadline = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Chicago",
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZoneName: "short",
+}).format(new Date(TIMESLOT_CONFIRMATION_DEADLINE));
+
 type MentoringTimeslotRadioGroupProps = {
   modality: JudgeAndMentorUser["modality"];
   mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"];
@@ -37,7 +47,7 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
               Keep in mind that mentoring will happen on{" "}
               <span className="font-bold underline underline-offset-4">Saturday, April 11th</span> and you must confirm
               a timeslot by{" "}
-              <span className="font-bold underline underline-offset-4">Wednesday, April 8th, 11:59 PM CT.</span>
+              <span className="font-bold underline underline-offset-4">{formattedDeadline}.</span>
             </p>
           </div>
         </CardDescription>
