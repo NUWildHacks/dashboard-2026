@@ -22,7 +22,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { DISCORD_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
+import { DISCORD_INVITE_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
 import { SIDEBAR_ITEMS } from "../../constants";
@@ -72,7 +72,7 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
           <SidebarMenu className="gap-2">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href={DISCORD_PATH} target="_blank" rel="noreferrer">
+                <a href={DISCORD_INVITE_PATH} target="_blank" rel="noreferrer">
                   <Discord />
                   Join our Discord
                 </a>
