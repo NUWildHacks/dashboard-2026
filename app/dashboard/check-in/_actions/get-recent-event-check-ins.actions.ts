@@ -2,9 +2,9 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, EVENT_CHECK_INS_COLLECTION, EVENTS_COLLECTION } from "@/constants";
+import { ADMIN, EVENT_CHECK_INS_COLLECTION, EVENTS_COLLECTION, USERS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { EventCheckIn, GetEventCheckInsActionResponse } from "@/types";
+import type { EventCheckIn, GetEventCheckInsActionResponse, User } from "@/types";
 
 import { getCheckInRedirectPath, WILDHACKS_EVENT_ID } from "./helpers";
 
@@ -50,7 +50,7 @@ export const getRecentEventCheckIns = async ({
       .where("event_id", "==", normalizedEventId)
       .get();
 
-    const checkIns = checkInsSnapshot.docs
+    const rawCheckIns = checkInsSnapshot.docs
       .map(
         (doc) =>
           ({
@@ -60,6 +60,34 @@ export const getRecentEventCheckIns = async ({
       )
       .sort((a, b) => b.checked_in_at - a.checked_in_at)
       .slice(0, normalizeLimit(limitCount));
+
+    const userIds = Array.from(new Set(rawCheckIns.map((checkIn) => checkIn.user_id).filter(Boolean)));
+    const usersById = new Map<string, User>();
+
+    await Promise.all(
+      userIds.map(async (userId) => {
+        const userDocSnapshot = await db.collection(USERS_COLLECTION).doc(userId).get();
+        if (!userDocSnapshot.exists) return;
+
+        const user = { id: userDocSnapshot.id, ...userDocSnapshot.data() } as User;
+        usersById.set(userId, user);
+      })
+    );
+
+    const checkIns = rawCheckIns.map((checkIn) => {
+      const user = usersById.get(checkIn.user_id);
+      const fullName = user ? `${user.first_name} ${user.last_name}`.trim() : undefined;
+
+      return {
+        ...checkIn,
+        scan_payload: {
+          ...checkIn.scan_payload,
+          full_name: checkIn.scan_payload.full_name ?? (fullName || undefined),
+          email: checkIn.scan_payload.email ?? user?.email,
+          role: checkIn.scan_payload.role ?? user?.role,
+        },
+      };
+    });
 
     return {
       success: true,

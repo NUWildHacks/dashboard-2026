@@ -1,7 +1,8 @@
 "use client";
 
-import { AlertCircle, Camera, CameraOff, CheckCircle2, Loader2, RefreshCcw, Ticket, Users, X } from "lucide-react";
+import { AlertCircle, Camera, CameraOff, Loader2, RefreshCcw, Ticket, Users } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { QRScanner, type QRScannerError } from "@/components/qr-scanner";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -20,19 +21,10 @@ type CheckInConsoleProps = {
   events: CheckInEventOption[];
 };
 
-type FeedbackTone = "success" | "warning" | "error";
-
-type ScanFeedback = {
-  tone: FeedbackTone;
-  title: string;
-  description: string;
-  timestamp: number;
-  dietaryRestrictions?: string[];
-};
-
 type RecentActivityItem = {
   id: string;
   userId: string;
+  fullName?: string;
   email?: string;
   role?: Role;
   processedAt: number;
@@ -54,7 +46,6 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
   const [isScannerEnabled, setIsScannerEnabled] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRefreshingRecent, setIsRefreshingRecent] = useState(false);
-  const [feedback, setFeedback] = useState<ScanFeedback | null>(null);
   const [lastScannedValue, setLastScannedValue] = useState("");
   const [recentActivity, setRecentActivity] = useState<RecentActivityItem[]>([]);
 
@@ -106,11 +97,8 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
 
       if (!result.success) {
         setRecentActivity([]);
-        setFeedback({
-          tone: "error",
-          title: "Unable to load recent check-ins",
+        toast.error("Unable to load recent check-ins", {
           description: result.error ?? "Please try refreshing recent activity.",
-          timestamp: Date.now(),
         });
         return;
       }
@@ -118,6 +106,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       const activity = (result.check_ins ?? []).map((checkIn) => ({
         id: checkIn.id,
         userId: checkIn.user_id,
+        fullName: checkIn.scan_payload.full_name,
         email: checkIn.scan_payload.email,
         role: checkIn.scan_payload.role,
         processedAt: checkIn.checked_in_at,
@@ -126,22 +115,13 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       setRecentActivity(activity);
     } catch (error) {
       setRecentActivity([]);
-      setFeedback({
-        tone: "error",
-        title: "Unable to load recent activity",
+      toast.error("Unable to load recent activity", {
         description: error instanceof Error ? error.message : "An unknown error occurred while loading activity.",
-        timestamp: Date.now(),
       });
     } finally {
       setIsRefreshingRecent(false);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (!isScannerEnabled) {
-  //     setFeedback(null);
-  //   }
-  // }, [isScannerEnabled]);
 
   const handleScan = useCallback(
     async (scanPayload: string) => {
@@ -149,11 +129,8 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       if (!normalizedPayload) return;
 
       if (!effectiveEventId) {
-        setFeedback({
-          tone: "error",
-          title: "Select an event or mode first",
+        toast.error("Select an event or mode first", {
           description: "Please choose a check-in mode and event before scanning QR codes.",
-          timestamp: Date.now(),
         });
         return;
       }
@@ -183,34 +160,41 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
         const errorMessage = !result.success ? result.error : "Unable to process this QR code.";
 
         if (!result.success || !result.check_in) {
-          setFeedback({
-            tone: "error",
-            title: "Check-in failed",
+          if (result.requires_wildhacks_check_in) {
+            toast.warning("WildHacks check-in required", {
+              description: errorMessage,
+            });
+            return;
+          }
+
+          toast.error("Check-in failed", {
             description: errorMessage,
-            timestamp: Date.now(),
           });
           return;
         }
 
-        const userDisplay = result.check_in.scan_payload.email ?? result.check_in.user_id;
+        const userDisplay =
+          result.check_in.scan_payload.full_name ?? result.check_in.scan_payload.email ?? result.check_in.user_id;
 
-        setFeedback({
-          tone: result.already_checked_in ? "warning" : "success",
-          title: result.already_checked_in ? "Already checked in" : "Check-in successful",
-          description: result.already_checked_in
-            ? `${userDisplay} was already checked in.`
-            : `${userDisplay} has been checked in successfully.`,
-          timestamp: Date.now(),
-          dietaryRestrictions: result.dietary_restrictions,
-        });
+        const dietaryRestrictionsText =
+          result.dietary_restrictions !== undefined
+            ? ` Dietary restrictions: ${result.dietary_restrictions.length > 0 ? result.dietary_restrictions.join(", ") : "None"}.`
+            : "";
+
+        if (result.already_checked_in) {
+          toast.warning("Already checked in", {
+            description: `${userDisplay} was already checked in.${dietaryRestrictionsText}`,
+          });
+        } else {
+          toast.success("Check-in successful", {
+            description: `${userDisplay} has been checked in successfully.${dietaryRestrictionsText}`,
+          });
+        }
 
         await refreshRecentActivity(effectiveEventId);
       } catch (error) {
-        setFeedback({
-          tone: "error",
-          title: "Unable to process scan",
+        toast.error("Unable to process scan", {
           description: error instanceof Error ? error.message : "An unknown error occurred while processing the scan.",
-          timestamp: Date.now(),
         });
       } finally {
         inFlightScanRef.current = false;
@@ -223,20 +207,10 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
   const handleScannerError = useCallback((scannerError: QRScannerError, message: string) => {
     const title = scannerError === "PERMISSION_DENIED" ? "Camera permission required" : "Scanner unavailable";
 
-    setFeedback({
-      tone: "error",
-      title,
+    toast.error(title, {
       description: message,
-      timestamp: Date.now(),
     });
   }, []);
-
-  const feedbackAlertClassName =
-    feedback?.tone === "success"
-      ? "border-emerald-300 text-emerald-900 [&>svg]:text-emerald-700"
-      : feedback?.tone === "warning"
-        ? "border-amber-300 text-amber-900 [&>svg]:text-amber-700"
-        : undefined;
 
   const isCameraActive = !!effectiveEventId && isScannerEnabled;
   const hasEventSchedule = !!selectedEvent && selectedEvent.start_time > 0 && selectedEvent.end_time > 0;
@@ -320,33 +294,6 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
               </Alert>
             )}
 
-            {feedback && (
-              <Alert
-                variant={feedback.tone === "error" ? "destructive" : "default"}
-                className={`relative pr-10 ${feedbackAlertClassName}`}
-              >
-                {feedback.tone === "error" ? <AlertCircle /> : <CheckCircle2 />}
-                <AlertTitle>{feedback.title}</AlertTitle>
-                <AlertDescription>
-                  <p>{feedback.description}</p>
-                  {feedback.dietaryRestrictions && (
-                    <p className="text-sm text-white font-semibold mt-2">
-                      Dietary restrictions:{" "}
-                      {feedback.dietaryRestrictions.length > 0 ? feedback.dietaryRestrictions.join(", ") : "None"}
-                    </p>
-                  )}
-                  <p className="text-xs">Updated {getSendTime(feedback.timestamp)}</p>
-                </AlertDescription>
-                <button
-                  onClick={() => setFeedback(null)}
-                  className="absolute right-3 top-3 rounded-md p-1 hover:bg-black/10 transition-colors"
-                  aria-label="Close notification"
-                >
-                  <X className="size-4" />
-                </button>
-              </Alert>
-            )}
-
             {events.length > 0 && (
               <>
                 <div className="flex flex-col gap-2 rounded-lg border bg-muted/40 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
@@ -420,11 +367,13 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
             {recentActivity.map((activityItem) => (
               <div key={activityItem.id} className="rounded-lg border p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-medium min-w-0">{activityItem.email ?? activityItem.userId}</p>
+                  <p className="truncate text-sm font-medium min-w-0">
+                    {activityItem.fullName ?? activityItem.email ?? activityItem.userId}
+                  </p>
                   <Badge variant="secondary">Checked in</Badge>
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-                  <span className="break-all">ID: {activityItem.userId}</span>
+                  {activityItem.email && <span className="break-all">{activityItem.email}</span>}
                   {activityItem.role && <span>{formatRoleLabel(activityItem.role)}</span>}
                   <span>{getSendTime(activityItem.processedAt)}</span>
                   <span>{getTimeFromMilliseconds(activityItem.processedAt)}</span>

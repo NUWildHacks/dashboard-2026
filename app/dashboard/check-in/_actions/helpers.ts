@@ -29,6 +29,7 @@ export const parseScanPayload = (scanPayload: QRCodeScanPayload | string): Parse
       if (parsedPayload && typeof parsedPayload === "object" && "user_id" in parsedPayload) {
         normalizedPayload = {
           user_id: typeof parsedPayload.user_id === "string" ? parsedPayload.user_id.trim() : "",
+          full_name: typeof parsedPayload.full_name === "string" ? parsedPayload.full_name.trim() : undefined,
           email: typeof parsedPayload.email === "string" ? parsedPayload.email.trim() : undefined,
           role: typeof parsedPayload.role === "string" ? (parsedPayload.role as User["role"]) : undefined,
           issued_at: typeof parsedPayload.issued_at === "number" ? parsedPayload.issued_at : undefined,
@@ -43,6 +44,7 @@ export const parseScanPayload = (scanPayload: QRCodeScanPayload | string): Parse
     normalizedPayload = {
       ...scanPayload,
       user_id: scanPayload.user_id?.trim(),
+      full_name: scanPayload.full_name?.trim(),
       email: scanPayload.email?.trim(),
     };
   }

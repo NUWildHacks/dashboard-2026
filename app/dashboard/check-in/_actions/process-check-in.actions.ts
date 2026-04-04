@@ -61,6 +61,25 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       };
     }
 
+    const fullName = `${scannedUser.first_name} ${scannedUser.last_name}`.trim();
+
+    if (normalizedEventId !== WILDHACKS_EVENT_ID) {
+      const wildhacksCheckInSnapshot = await db
+        .collection(EVENT_CHECK_INS_COLLECTION)
+        .where("event_id", "==", WILDHACKS_EVENT_ID)
+        .where("user_id", "==", payload.user_id)
+        .limit(1)
+        .get();
+
+      if (wildhacksCheckInSnapshot.empty) {
+        return {
+          success: false,
+          error: "This attendee must check in to WildHacks before checking in to other events.",
+          requires_wildhacks_check_in: true,
+        };
+      }
+    }
+
     const dietaryRestrictions = isFoodEvent ? scannedUser.dietary_restrictions : undefined;
 
     const existingCheckInSnapshot = await db
@@ -72,10 +91,20 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
 
     if (!existingCheckInSnapshot.empty) {
       const existingCheckInDoc = existingCheckInSnapshot.docs[0];
-      const existingCheckIn = {
+      const existingCheckInData = {
         id: existingCheckInDoc.id,
         ...existingCheckInDoc.data(),
       } as EventCheckIn;
+
+      const existingCheckIn: EventCheckIn = {
+        ...existingCheckInData,
+        scan_payload: {
+          ...existingCheckInData.scan_payload,
+          full_name: existingCheckInData.scan_payload.full_name ?? (fullName || undefined),
+          email: existingCheckInData.scan_payload.email ?? scannedUser.email,
+          role: existingCheckInData.scan_payload.role ?? scannedUser.role,
+        },
+      };
 
       return {
         success: true,
@@ -92,7 +121,12 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       user_id: payload.user_id,
       checked_in_at: now,
       checked_in_by: adminUser.id,
-      scan_payload: payload,
+      scan_payload: {
+        ...payload,
+        full_name: fullName || undefined,
+        email: payload.email ?? scannedUser.email,
+        role: payload.role ?? scannedUser.role,
+      },
       created_at: now,
       updated_at: now,
     };
