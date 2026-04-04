@@ -46,8 +46,7 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
             <p>
               Keep in mind that mentoring will happen on{" "}
               <span className="font-bold underline underline-offset-4">Saturday, April 11th</span> and you must confirm
-              a timeslot by{" "}
-              <span className="font-bold underline underline-offset-4">{formattedDeadline}.</span>
+              a timeslot by <span className="font-bold underline underline-offset-4">{formattedDeadline}.</span>
             </p>
           </div>
         </CardDescription>
