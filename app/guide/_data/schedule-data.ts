@@ -1,72 +1,65 @@
 import type { CalendarEvent } from "../_components/calendar-utils";
 
 export const scheduleEvents: CalendarEvent[] = [
-  // {
-  //   title: "Emerging Coders: Web Development",
-  //   description:
-  //     "Curious about how websites are built? This beginner-friendly workshop by Emerging Coders will walk you through the basics of web development—from structuring a webpage with HTML to styling with CSS and adding interactivity with JavaScript.",
-  //   start: new Date("2026-04-02T18:00:00-05:00"),
-  //   end: new Date("2026-04-02T19:00:00-05:00"),
-  //   location: "Tech LR5",
-  //   url: "/guide/workshops#emerging-coders-web-development",
-  // },
-  // {
-  //   title: "ColorStack: Introduction to Python",
-  //   description:
-  //     "New to coding? This beginner-friendly workshop is the perfect place to start. Join ColorStack to learn the fundamentals of Python—the world's most popular programming language.",
-  //   start: new Date("2026-04-02T19:00:00-05:00"),
-  //   end: new Date("2026-04-02T20:00:00-05:00"),
-  //   location: "Mudd 3514",
-  //   url: "/guide/workshops#colorstack-introduction-to-python",
-  // },
-  // {
-  //   title: "DISC: React",
-  //   description: "Learn React fundamentals",
-  //   start: new Date("2026-04-03T18:00:00-05:00"),
-  //   end: new Date("2026-04-03T19:00:00-05:00"),
-  //   location: "Tech L168",
-  //   url: "/guide/workshops#disc-react",
-  // },
-  // {
-  //   title: "IEEE: GitHub",
-  //   description: "Learn GitHub fundamentals",
-  //   start: new Date("2026-04-03T19:00:00-05:00"),
-  //   end: new Date("2026-04-03T20:00:00-05:00"),
-  //   location: "Tech M177",
-  //   url: "/guide/workshops#ieee-github",
-  // },
-  // {
-  //   title: "Locket Cybersecurity: Introduction to Cybersecurity",
-  //   description: "Introduction to Cybersecurity",
-  //   start: new Date("2026-04-04T17:00:00-05:00"),
-  //   end: new Date("2026-04-04T18:00:00-05:00"),
-  //   location: "Tech L221",
-  //   url: "/guide/workshops#locket-cybersecurity-introduction-to-cybersecurity",
-  // },
-  // {
-  //   title: "Women in Computing: GitHub",
-  //   description: "Learn GitHub fundamentals",
-  //   start: new Date("2026-04-04T18:00:00-05:00"),
-  //   end: new Date("2026-04-04T19:00:00-05:00"),
-  //   location: "Tech M152",
-  //   url: "/guide/workshops#women-in-computing-github",
-  // },
-  // {
-  //   title: "Women in Computing: Full Stack with Python (MLH TechTogether Event)",
-  //   description: "Full Stack with Python workshop",
-  //   start: new Date("2026-04-11T12:45:00-05:00"),
-  //   end: new Date("2026-04-11T13:30:00-05:00"),
-  //   location: "Tech M164",
-  //   url: "/guide/workshops#women-in-computing-full-stack-with-python-mlh-techtogether-event",
-  // },
-  // {
-  //   title: "MLH: Making Better Hacks, Faster, Using GitHub Copilot!",
-  //   description: "Making Better Hacks, Faster, Using GitHub Copilot!",
-  //   start: new Date("2026-04-11T14:30:00-05:00"),
-  //   end: new Date("2026-04-11T15:30:00-05:00"),
-  //   location: "Tech L160",
-  //   url: "/guide/workshops#making-better-hacks-faster-using-github-copilot",
-  // },
+  {
+    title: "DISC X WildHacks Git/GitHub Workshop",
+    description:
+      "Join us on April 6th from 6:00–7:30 PM in TCHM177 for a hands-on workshop where you'll learn how to manage your projects, collaborate with others, and start building your developer portfolio! We'll cover all the essentials including how to set up repositories to understanding version control and writing pull requests. This session will give you the foundation you need to work like a pro.",
+    start: new Date("2026-04-06T18:00:00-05:00"),
+    end: new Date("2026-04-06T19:30:00-05:00"),
+    location: "Tech M177",
+    url: "/guide/workshops#disc-x-wildhacks-gitgithub-workshop",
+    zoom: "https://northwestern.zoom.us/j/92894172756",
+  },
+  {
+    title: "Colorstack X WildHacks SQL & Databases Workshop",
+    description:
+      "Join us on April 7th from 6:00–7:00 PM in TCHM166 for a beginner-friendly workshop designed to get you querying with confidence! We'll walk you through how to design tables, write queries, and extract meaningful insights from data. By the end of the session, you'll have a solid understanding of how databases work and how to put them to use in your own projects.",
+    start: new Date("2026-04-07T18:00:00-05:00"),
+    end: new Date("2026-04-07T19:00:00-05:00"),
+    location: "Tech M166",
+    url: "/guide/workshops#colorstack-x-wildhacks-sql-databases-workshop",
+    zoom: "https://northwestern.zoom.us/j/96017289357",
+  },
+  {
+    title: "IMC Trading x WildHacks Tech Talk",
+    description:
+      "Join us on April 8th from 6:00–7:30 PM CT in Tech LR 3 for an exclusive Tech Talk with IMC engineers! Hear from a Software Engineer and a Hardware Engineer as they share what it's like to build technology at one of the world's leading trading firms. The session will wrap up with an open Q&A, and dinner will be provided. Don't miss this opportunity to learn about engineering life at IMC and explore recruiting opportunities! (https://imc.recsolu.com/app/collect/event/7f7mf8T8lS3kXHAntpLG9A)",
+    start: new Date("2026-04-08T18:00:00-05:00"),
+    end: new Date("2026-04-08T19:30:00-05:00"),
+    url: "/guide/workshops#imc-trading-x-wildhacks-tech-talk",
+    location: "Tech LR3",
+  },
+  {
+    title: "Colorstack X WildHacks Python & FastAPI Workshop",
+    description:
+      "Join us on April 9th from 5:30–6:30 PM in TCHA110 for a hands-on workshop where you'll learn how to build and deploy your own web APIs using Python and FastAPI! We'll cover Python fundamentals to designing and running a real API endpoint to power your own projects and applications. Come build something real and walk away with skills you can use right away.",
+    start: new Date("2026-04-09T17:30:00-05:00"),
+    end: new Date("2026-04-09T18:30:00-05:00"),
+    location: "Tech A110",
+    url: "/guide/workshops#colorstack-x-wildhacks-python-fastapi-workshop",
+    zoom: "https://northwestern.zoom.us/j/94749025701",
+  },
+  {
+    title: "IEEE X WildHacks Command Line/Linux Workshop",
+    description:
+      "Join us on April 9th from 7:00–8:00 PM in TCHM128 for a workshop that will transform the way you interact with your computer! We'll break down the command line and Linux essentials to understand the tools that power real-world development environments. This session will give you the confidence to use the command line like a pro.",
+    start: new Date("2026-04-09T19:00:00-05:00"),
+    end: new Date("2026-04-09T20:00:00-05:00"),
+    location: "Tech M128",
+    url: "/guide/workshops#ieee-x-wildhacks-command-linelinux-workshop",
+    zoom: "https://northwestern.zoom.us/j/92724703609",
+  },
+  {
+    title: "EMCO X WildHacks Frontend Web Dev Workshop",
+    description:
+      "Join us on April 10th from 5:00–6:30 PM in TCHM177 for a beginner-friendly dive into the world of frontend web development! We'll cover the building blocks of the web and walk you through how to design and build your own webpage from scratch. Come see just how much you can build in just 90 minutes!",
+    start: new Date("2026-04-10T17:00:00-05:00"),
+    end: new Date("2026-04-10T18:30:00-05:00"),
+    location: "Tech M177",
+    url: "/guide/workshops#emco-x-wildhacks-frontend-web-dev-workshop",
+    zoom: "https://northwestern.zoom.us/j/93439784644",
+  },
   {
     title: "Check-In",
     description: "Check-in for WildHacks 2026. Have your student ID and WildHacker Code ready.",

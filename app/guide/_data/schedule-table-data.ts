@@ -16,78 +16,72 @@ export type DayScheduleRow = {
 };
 
 export const workshopWeekRows: WorkshopWeekRow[] = [
-  // {
-  //   date: "April 2, 2026",
-  //   time: "6:00 PM - 7:00 PM",
-  //   event: [
-  //     { content: "Emerging Coders", href: "/guide/workshops#emerging-coders-web-development" },
-  //     { content: ": Web Development" },
-  //   ],
-  //   location: "Tech LR5",
-  // },
-  // {
-  //   date: "April 2, 2026",
-  //   time: "7:00 PM - 8:00 PM",
-  //   event: [
-  //     { content: "ColorStack", href: "/guide/workshops#colorstack-introduction-to-python" },
-  //     { content: ": Introduction to Python" },
-  //   ],
-  //   location: "Mudd 3514",
-  // },
-  // {
-  //   date: "April 3, 2026",
-  //   time: "6:00 PM - 7:00 PM",
-  //   event: [{ content: "DISC", href: "/guide/workshops#disc-react" }, { content: ": React" }],
-  //   location: "Tech L168",
-  // },
-  // {
-  //   date: "April 3, 2026",
-  //   time: "7:00 PM - 8:00 PM",
-  //   event: [{ content: "IEEE", href: "/guide/workshops#ieee-github" }, { content: ": GitHub" }],
-  //   location: "Tech M177",
-  // },
-  // {
-  //   date: "April 4, 2026",
-  //   time: "5:00 PM - 6:00 PM",
-  //   event: [
-  //     {
-  //       content: "Locket Cybersecurity",
-  //       href: "/guide/workshops#locket-cybersecurity-introduction-to-cybersecurity",
-  //     },
-  //     { content: ": Introduction to Cybersecurity" },
-  //   ],
-  //   location: "Tech L221",
-  // },
-  // {
-  //   date: "April 4, 2026",
-  //   time: "6:00 PM - 7:00 PM",
-  //   event: [
-  //     { content: "Women in Computing", href: "/guide/workshops#women-in-computing-github" },
-  //     { content: ": GitHub" },
-  //   ],
-  //   location: "Tech M152",
-  // },
-  // {
-  //   date: "April 11, 2026",
-  //   time: "12:45 PM - 1:30 PM",
-  //   event: [
-  //     {
-  //       content: "Women in Computing",
-  //       href: "/guide/workshops#women-in-computing-full-stack-with-python-mlh-techtogether-event",
-  //     },
-  //     { content: ": Full Stack with Python" },
-  //   ],
-  //   location: "Tech M164",
-  // },
-  // {
-  //   date: "April 11, 2026",
-  //   time: "2:30 PM - 3:30 PM",
-  //   event: [
-  //     { content: "MLH", href: "/guide/workshops#making-better-hacks-faster-using-github-copilot" },
-  //     { content: ": Making Better Hacks, Faster, Using GitHub Copilot!" },
-  //   ],
-  //   location: "Tech L160",
-  // },
+  {
+    date: "April 6, 2026",
+    time: "6:00 PM - 7:30 PM",
+    event: [
+      {
+        content: "DISC X WildHacks Git/GitHub Workshop",
+        href: "/guide/workshops#disc-x-wildhacks-git-github-workshop",
+      },
+    ],
+    location: "Tech M177",
+  },
+  {
+    date: "April 7, 2026",
+    time: "6:00 PM - 7:00 PM",
+    event: [
+      {
+        content: "ColorStack X WildHacks SQL & Databases Workshop",
+        href: "/guide/workshops#colorstack-x-wildhacks-sql-databases-workshop",
+      },
+    ],
+    location: "Tech M166",
+  },
+  {
+    date: "April 8, 2026",
+    time: "6:00 PM - 7:30 PM",
+    event: [
+      {
+        content: "IMC Trading x WildHacks Tech Talk",
+        href: "/guide/workshops#imc-trading-x-wildhacks-tech-talk",
+      },
+    ],
+    location: "Tech LR3",
+  },
+  {
+    date: "April 9, 2026",
+    time: "5:30 PM - 6:30 PM",
+    event: [
+      {
+        content: "ColorStack X WildHacks Python & FastAPI Workshop",
+        href: "/guide/workshops#colorstack-x-wildhacks-python-fastapi-workshop",
+      },
+    ],
+    location: "Tech A110",
+  },
+  {
+    date: "April 9, 2026",
+    time: "7:00 PM - 8:00 PM",
+    event: [
+      {
+        content: "IEEE X WildHacks Command Line/Linux Workshop",
+        href: "/guide/workshops#ieee-x-wildhacks-command-linelinux-workshop",
+      },
+    ],
+    location: "Tech M128",
+  },
+  {
+    date: "April 10, 2026",
+    time: "5:00 PM - 6:30 PM",
+    event: [
+      {
+        content: "EMCO X WildHacks Frontend Web Dev Workshop",
+        href: "/guide/workshops#emco-x-wildhacks-frontend-web-dev-workshop",
+      },
+    ],
+    location: "Tech M177",
+  },
 ];
 
 export const saturdayScheduleRows: DayScheduleRow[] = [

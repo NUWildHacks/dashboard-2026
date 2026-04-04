@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { ADMIN, DASHBOARD_PATH, DASHBOARD_MANAGE_USERS_PATH, LOGIN_PATH, JUDGE } from "@/constants";
+import { ADMIN, DASHBOARD_PATH, DASHBOARD_MANAGE_USERS_PATH, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
 import { UsersTable } from "./_components";

@@ -5,6 +5,7 @@ export type CalendarEvent = {
   readonly end: Date;
   readonly location?: string;
   readonly url?: string;
+  readonly zoom?: string;
 };
 
 const escapeICS = (text: string) =>

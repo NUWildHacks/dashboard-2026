@@ -27,10 +27,10 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DIETARY_RESTRICTIONS } from "@/constants";
 import { MODALITIES } from "@/constants/user.constants";
-import type { JudgeUser, MentorUser } from "@/types";
+import type { JudgeUser, JudgeAndMentorUser } from "@/types";
 
 type EditJudgeMentorProfileFormProps = {
-  user: JudgeUser | MentorUser;
+  user: JudgeUser | JudgeAndMentorUser;
 };
 
 const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) => {

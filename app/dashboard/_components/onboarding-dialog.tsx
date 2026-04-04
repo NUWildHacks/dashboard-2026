@@ -13,10 +13,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { JUDGE } from "@/constants";
-import { JudgeUser, MentorUser } from "@/types";
+import { JudgeUser, JudgeAndMentorUser } from "@/types";
 
 type OnboardingDialogProps = {
-  role: JudgeUser["role"] | MentorUser["role"];
+  role: JudgeUser["role"] | JudgeAndMentorUser["role"];
   onboarded: boolean;
 };
 
@@ -28,7 +28,7 @@ const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
       ? "project assignments will appear here once judging begins!"
       : "you'll be notified once mentoring sign-ups open!";
 
-  const roleText = role === JUDGE ? "Judge" : "Mentor";
+  const roleText = role === JUDGE ? "Judge" : "Judge and Mentor";
 
   return (
     <Dialog open={isOnboardingDialogOpen} onOpenChange={setIsOnboardingDialogOpen}>
