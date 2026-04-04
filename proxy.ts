@@ -1,11 +1,7 @@
 import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  LOGIN_PATH,
-  PROTECTED_ROUTES,
-  SESSION_COOKIE_NAME,
-} from "@/constants";
+import { LOGIN_PATH, PROTECTED_ROUTES, SESSION_COOKIE_NAME } from "@/constants";
 import { validateRedirectPath } from "@/lib";
 
 /**
