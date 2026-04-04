@@ -26,7 +26,7 @@ const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
   const descriptionText =
     role === JUDGE
       ? "project assignments will appear here once judging begins!"
-      : "you'll be notified once mentoring sign-ups open!";
+      : "mentoring sign-up slots are now live, and your timeslots have been pre-assigned. Please review and update them as needed!";
 
   const roleText = role === JUDGE ? "Judge" : "Judge and Mentor";
 
