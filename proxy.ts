@@ -2,14 +2,8 @@ import { decodeJwt } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 import {
-  DASHBOARD_JUDGING_PATH,
-  DASHBOARD_MANAGE_USERS_PATH,
-  DASHBOARD_PATH,
-  DASHBOARD_SCHEDULE_PATH,
-  DASHBOARD_SETTINGS_PATH,
-  GUIDE_PATH,
   LOGIN_PATH,
-  REGISTRATION_PATH,
+  PROTECTED_ROUTES,
   SESSION_COOKIE_NAME,
 } from "@/constants";
 import { validateRedirectPath } from "@/lib";
@@ -42,14 +36,7 @@ function isTokenExpired(token: string): boolean {
 
 export async function proxy(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
-  const isProtectedRoute =
-    currentPath === REGISTRATION_PATH ||
-    currentPath === DASHBOARD_PATH ||
-    currentPath === DASHBOARD_SCHEDULE_PATH ||
-    currentPath === DASHBOARD_MANAGE_USERS_PATH ||
-    currentPath === GUIDE_PATH ||
-    currentPath === DASHBOARD_JUDGING_PATH ||
-    currentPath === DASHBOARD_SETTINGS_PATH;
+  const isProtectedRoute = (PROTECTED_ROUTES as readonly string[]).includes(currentPath);
 
   if (isProtectedRoute) {
     const sessionCookie = req.cookies.get(SESSION_COOKIE_NAME)?.value;
