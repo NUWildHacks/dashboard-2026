@@ -20,7 +20,8 @@ const DashboardPage = async () => {
   const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
 
   let hasSubmittedTeamMatching = false;
-  if (role === PARTICIPANT) {
+  // if (role === PARTICIPANT) {
+  if (role === ADMIN) {
     const db = getFirestore();
     const doc = await db.collection(TEAM_MATCHING_INTAKE_COLLECTION).doc(userId).get();
     hasSubmittedTeamMatching = doc.exists;
