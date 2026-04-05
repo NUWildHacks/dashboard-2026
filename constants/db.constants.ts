@@ -4,6 +4,8 @@ export const EVENTS_COLLECTION = "events" as const;
 export const PROJECTS_COLLECTION = "projects" as const;
 export const WILDHACKS_COLLECTION = "wildhacks" as const;
 export const JUDGING_ASSIGNMENTS_COLLECTION = "judging_assignments" as const;
+export const RESUME_COLLECTION = "resume" as const;
 
 export const WILDHACKS_CONFIG_DOC = "config" as const;
+export const RESUME_METADATA_DOC = "resume_metadata" as const;
 export const CLOSED_REGISTRATION = 1773205239000 as const;

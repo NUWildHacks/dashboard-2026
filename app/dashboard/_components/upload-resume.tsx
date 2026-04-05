@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "@/types";
 
-import { uploadResumeAction } from "../_actions/upload-resume";
+import { uploadResume } from "../_actions/upload-resume";
 
 type UploadResumeProps = Pick<User, "id" | "first_name" | "last_name">;
 
@@ -28,7 +28,7 @@ const UploadResume = ({ id, first_name, last_name }: UploadResumeProps) => {
     setIsUploading(true);
 
     try {
-      const result = await uploadResumeAction(first_name, last_name, file);
+      const result = await uploadResume(id, first_name, last_name, file);
       const { success } = result;
 
       if (!success) {
