@@ -41,10 +41,26 @@ const DashboardPage = async () => {
           <VenueMap />
         </div>
       </div>
-      <div className={cn("grid grid-cols-1 gap-4", (wildHacksStatistics || role === PARTICIPANT) && "lg:grid-cols-2")}>
+      {/* <div className={cn("grid grid-cols-1 gap-4", (wildHacksStatistics || role === PARTICIPANT) && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
         {role === PARTICIPANT && (
+          <TeamMatchingIntake
+            hasSubmitted={hasSubmittedTeamMatching}
+            firstName={first_name}
+            lastName={last_name}
+            email={email}
+            school={school as string}
+            fieldOfStudy={field_of_study as string}
+            eventStartTime={wildhacksConfig.start_time}
+          />
+        )}
+      </div> */}
+
+      <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-3")}>
+        <UpcomingEvents />
+        {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
+        {role === ADMIN && (
           <TeamMatchingIntake
             hasSubmitted={hasSubmittedTeamMatching}
             firstName={first_name}
