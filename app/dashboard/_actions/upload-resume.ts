@@ -1,6 +1,6 @@
 "use server";
 
-import { getFirestore, } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { revalidatePath } from "next/cache";
 
@@ -12,7 +12,6 @@ import { MAX_FILE_SIZE, RESUME_MIME_TYPE } from "../constants";
 import { ResumeMetadata } from "../types";
 
 export const uploadResume = async (
-  userId: User["id"],
   firstName: User["first_name"],
   lastName: User["last_name"],
   resume: File
@@ -21,8 +20,6 @@ export const uploadResume = async (
   const storage = getStorage();
 
   const now = Date.now();
-
-  const newFileName = `${firstName} ${lastName} - Resume.pdf`;
 
   if (resume.type !== RESUME_MIME_TYPE) return { success: false, error: "Only PDFs are allowed" };
   if (resume.size > MAX_FILE_SIZE) return { success: false, error: "File exceeds 5MB limit" };
@@ -35,30 +32,43 @@ export const uploadResume = async (
     if (roleError) return roleError;
 
     const bucket = storage.bucket();
-    const buffer = Buffer.from(await resume.arrayBuffer());
-    const file = bucket.file(newFileName);
+    const newFileName = `${firstName} ${lastName} - Resume.pdf`;
+    const newStoragePath = `gs://${bucket.name}/${newFileName}`;
 
-    await file.save(buffer, {
+    const resumeRef = db.collection(RESUMES_COLLECTION).doc(user.id);
+    const resumeDocSnapshot = await resumeRef.get();
+
+    if (resumeDocSnapshot.exists) {
+      const { storage_path: oldStoragePath, file_name: oldFileName } = resumeDocSnapshot.data() as Omit<
+        ResumeMetadata,
+        "id"
+      >;
+
+      if (oldStoragePath !== newStoragePath) {
+        await bucket.file(oldFileName).delete();
+      }
+    }
+
+    const buffer = Buffer.from(await resume.arrayBuffer());
+    await bucket.file(newFileName).save(buffer, {
       metadata: {
         contentType: RESUME_MIME_TYPE,
+        uploadedBy: user.id,
+        originalFileName: resume.name,
       },
     });
 
-    const storagePath = `gs://${bucket.name}/${newFileName}`;
-
-    const resumeRef = db.collection(RESUMES_COLLECTION).doc(userId);
-    const resumeDocSnapshot = await resumeRef.get();
     if (resumeDocSnapshot.exists) {
       await resumeRef.update({
         file_name: newFileName,
-        storage_path: storagePath,
+        storage_path: newStoragePath,
         content_type: resume.type,
         updated_at: now,
       } as Omit<ResumeMetadata, "id" | "created_at">);
     } else {
       await resumeRef.set({
         file_name: newFileName,
-        storage_path: storagePath,
+        storage_path: newStoragePath,
         content_type: resume.type,
         created_at: now,
         updated_at: now,
