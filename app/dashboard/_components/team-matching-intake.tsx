@@ -160,7 +160,7 @@ const TeamMatchingIntake = ({
       ...prev,
       required_teammates: [
         ...prev.required_teammates,
-        { userId: result.userId!, email: teammateEmail, name: result.name! },
+        { userId: result.userId, email: teammateEmail, name: result.name },
       ],
     }));
     setTeammateInput("");

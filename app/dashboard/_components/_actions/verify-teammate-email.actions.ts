@@ -4,9 +4,10 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
 
-export type VerifyTeammateEmailResult = ActionResult & { name?: string; userId?: string };
+export type VerifyTeammateEmailResult =
+  | { success: true; name: string; userId: string }
+  | { success: false; error: string };
 
 export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammateEmailResult> => {
   const db = getFirestore();
@@ -17,7 +18,7 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
 
     // const roleCheck = requireRole(caller, PARTICIPANT);
     const roleCheck = requireRole(caller, ADMIN);
-    if (roleCheck) return roleCheck;
+    if (roleCheck) return roleCheck as { success: false; error: string };
 
     const snapshot = await db
       .collection(USERS_COLLECTION)
