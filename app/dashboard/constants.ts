@@ -1,4 +1,13 @@
-import { Calendar, Home, Users, TableCellsMerge, BookOpenCheck, GraduationCap } from "lucide-react";
+import {
+  Calendar,
+  Home,
+  Users,
+  TableCellsMerge,
+  BookOpenCheck,
+  GraduationCap,
+  Headset,
+  SquareCode,
+} from "lucide-react";
 
 import {
   ADMIN,
@@ -11,6 +20,8 @@ import {
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
   DASHBOARD_MENTORING_PATH,
+  VIRTUAL_ZOOM_JUDGING_PATH,
+  DEVPOST_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -51,6 +62,18 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     url: DASHBOARD_MENTORING_PATH,
     icon: GraduationCap,
     visibleTo: [JUDGE_AND_MENTOR],
+  },
+  {
+    title: "View Devpost",
+    url: DEVPOST_PATH,
+    icon: SquareCode,
+    visibleTo: [PARTICIPANT],
+  },
+  {
+    title: "Virtual Judging Zoom",
+    url: VIRTUAL_ZOOM_JUDGING_PATH,
+    icon: Headset,
+    visibleTo: [JUDGE, JUDGE_AND_MENTOR],
   },
 ];
 
