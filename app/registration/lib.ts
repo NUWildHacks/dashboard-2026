@@ -11,6 +11,7 @@ import {
   USERS_COLLECTION,
   CLOSED_REGISTRATION,
 } from "@/constants";
+import { deleteSession } from "@/lib";
 import { JudgeUser, JudgeAndMentorUser, User } from "@/types";
 
 const getCurrentTimestamp = () => Date.now();
@@ -80,7 +81,7 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
       redirect(DASHBOARD_PATH);
     }
   } else {
-    redirect(LOGIN_PATH);
+    await deleteSession();
   }
 };
 
