@@ -58,7 +58,11 @@ const ResumeUpload = ({ fileName }: ResumeUploadProps) => {
         </Item>
       </CardContent>
       <CardFooter className="justify-end items-center gap-4">
-        {fileName && <p className="text-right text-sm text-muted-foreground italic">Note: Uploading a new resume will replace your current resume.</p>}
+        {fileName && (
+          <p className="text-right text-sm text-muted-foreground italic">
+            Note: Uploading a new resume will replace your current resume.
+          </p>
+        )}
         <Button onClick={handleOpenFileInput}>
           {isUploading ? <Loader2 className="animate-spin" /> : <Upload aria-hidden="true" />}
           Upload Resume

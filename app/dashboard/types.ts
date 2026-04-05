@@ -12,5 +12,4 @@ export type SidebarItem = {
 export type ResumeMetadata = BaseModel & {
   file_name: string;
   storage_path: string;
-  content_type: string;
 };

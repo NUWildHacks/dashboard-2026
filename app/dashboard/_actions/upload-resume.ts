@@ -49,9 +49,7 @@ export const uploadResume = async (resume: File): Promise<ActionResult> => {
     const buffer = Buffer.from(await resume.arrayBuffer());
     await bucket.file(newFileName).save(buffer, {
       metadata: {
-        contentType: RESUME_MIME_TYPE,
         uploadedBy: id,
-        originalFileName: resume.name,
       },
     });
 
@@ -59,14 +57,12 @@ export const uploadResume = async (resume: File): Promise<ActionResult> => {
       await resumeRef.update({
         file_name: newFileName,
         storage_path: newStoragePath,
-        content_type: resume.type,
         updated_at: now,
       } as Omit<ResumeMetadata, "id" | "created_at">);
     } else {
       await resumeRef.set({
         file_name: newFileName,
         storage_path: newStoragePath,
-        content_type: resume.type,
         created_at: now,
         updated_at: now,
       } as Omit<ResumeMetadata, "id">);
