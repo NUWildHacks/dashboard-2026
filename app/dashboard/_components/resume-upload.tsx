@@ -7,16 +7,17 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
+import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
+import { cn } from "@/lib";
 
 import { deleteResume } from "../_actions/delete-resume";
 import { uploadResume } from "../_actions/upload-resume";
 
-type UploadResumeProps = {
+type ResumeUploadProps = {
   fileName?: string;
 };
 
-const UploadResume = ({ fileName }: UploadResumeProps) => {
+const ResumeUpload = ({ fileName }: ResumeUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -81,7 +82,7 @@ const UploadResume = ({ fileName }: UploadResumeProps) => {
     <Card className="shadow-xs size-full">
       <CardHeader>
         <CardTitle>Resume Upload</CardTitle>
-        <CardDescription>Upload your resume for our event sponsors to see!</CardDescription>
+        <CardDescription>Upload your resume for our event sponsors to take a look at!</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col justify-start items-center gap-4">
         <input
@@ -95,14 +96,13 @@ const UploadResume = ({ fileName }: UploadResumeProps) => {
         <Item variant="outline" className="w-full">
           <ItemMedia variant="icon">{fileName ? <File /> : <FileX />}</ItemMedia>
           <ItemContent>
-            <ItemTitle className="text-sm text-muted-foreground italic font-normal">
-              {fileName ? "You currently have a resume uploaded." : "You currently have no resume uploaded."}
+            <ItemTitle className={cn("text-sm text-muted-foreground", { "italic": !fileName })}>
+              {fileName ? fileName : "You currently have no resume uploaded."}
             </ItemTitle>
-            {fileName && <ItemDescription className="text-sm text-muted-foreground font-normal">{fileName}</ItemDescription>}
           </ItemContent>
           {fileName && (
             <ItemActions>
-              <Button size="icon" onClick={handleDownloadResume}>
+              <Button size="icon" variant="outline" onClick={handleDownloadResume}>
                 <Download aria-hidden="true" />
               </Button>
               <Button size="icon" variant="destructive" onClick={handleDeleteResume}>
@@ -122,4 +122,4 @@ const UploadResume = ({ fileName }: UploadResumeProps) => {
   );
 };
 
-export default UploadResume;
+export default ResumeUpload;

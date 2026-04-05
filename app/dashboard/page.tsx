@@ -1,4 +1,4 @@
-import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap, UploadResume } from "@/app/dashboard/_components";
+import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap, ResumeUpload } from "@/app/dashboard/_components";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
@@ -33,9 +33,11 @@ const DashboardPage = async () => {
           <VenueMap />
         </div>
       </div>
+
+      {/* TODO: Switch back to PARTICIPANT after testing */}
       {role === ADMIN && (
         <div>
-          <UploadResume fileName={fileName} />
+          <ResumeUpload fileName={fileName} />
         </div>
       )}
       <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-2")}>

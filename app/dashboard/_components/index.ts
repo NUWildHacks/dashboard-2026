@@ -9,4 +9,4 @@ export { default as VenueMap } from "./venue-map";
 export { default as EventsList } from "./_upcoming-events/events-list";
 export { default as EventItem } from "./_upcoming-events/event-item";
 export { default as OnboardingDialog } from "./onboarding-dialog";
-export { default as UploadResume } from "./upload-resume";
+export { default as ResumeUpload } from "./resume-upload";
