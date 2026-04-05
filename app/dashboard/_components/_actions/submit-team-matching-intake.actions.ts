@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { TEAM_MATCHING_INTAKE_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
+import { TEAM_MATCHING_INTAKE_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -50,7 +50,8 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleCheck = requireRole(user, PARTICIPANT);
+    // const roleCheck = requireRole(user, PARTICIPANT);
+    const roleCheck = requireRole(user, ADMIN);
     if (roleCheck) return roleCheck;
 
     const { id: userId } = user;
