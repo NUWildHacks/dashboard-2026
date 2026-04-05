@@ -145,9 +145,7 @@ export const getUsersColumns = (
                 const user = row.original;
                 if (user.role === JUDGE_AND_MENTOR) {
                   return (
-                    <div className="text-left text-muted-foreground">
-                      {user.mentoring_timeslot ?? "Not selected"}
-                    </div>
+                    <div className="text-left text-muted-foreground">{user.mentoring_timeslot ?? "Not selected"}</div>
                   );
                 }
                 return null;

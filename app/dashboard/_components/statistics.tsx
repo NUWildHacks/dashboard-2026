@@ -10,11 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { WildHacksStatistics } from "@/types";
 
 const chartConfig = {
-  value:        { label: "Users" },
+  value: { label: "Users" },
   participants: { label: "Participants", color: "var(--chart-1)" },
-  judges:       { label: "Judges",       color: "var(--chart-2)" },
-  mentors:      { label: "Mentors",      color: "var(--chart-3)" },
-  admins:       { label: "Admins",       color: "var(--chart-4)" },
+  judges: { label: "Judges", color: "var(--chart-2)" },
+  mentors: { label: "Mentors", color: "var(--chart-3)" },
+  admins: { label: "Admins", color: "var(--chart-4)" },
 } satisfies ChartConfig;
 
 type StatisticsProps = WildHacksStatistics;
@@ -22,12 +22,15 @@ type StatisticsProps = WildHacksStatistics;
 const Statistics = ({ participants, judges, mentors, admins, projects, submissions }: StatisticsProps) => {
   const id = "pie-statistics";
 
-  const pieData = React.useMemo(() => [
-    { name: "participants", value: participants, fill: "var(--color-participants)" },
-    { name: "judges",       value: judges,       fill: "var(--color-judges)" },
-    { name: "mentors",      value: mentors,      fill: "var(--color-mentors)" },
-    { name: "admins",       value: admins,       fill: "var(--color-admins)" },
-  ], [participants, judges, mentors, admins]);
+  const pieData = React.useMemo(
+    () => [
+      { name: "participants", value: participants, fill: "var(--color-participants)" },
+      { name: "judges", value: judges, fill: "var(--color-judges)" },
+      { name: "mentors", value: mentors, fill: "var(--color-mentors)" },
+      { name: "admins", value: admins, fill: "var(--color-admins)" },
+    ],
+    [participants, judges, mentors, admins]
+  );
 
   const [activeName, setActiveName] = React.useState(pieData[0].name);
 
@@ -75,7 +78,15 @@ const Statistics = ({ participants, judges, mentors, admins, projects, submissio
         <ChartContainer id={id} config={chartConfig} className="mx-auto aspect-square w-full max-w-[300px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={pieData} dataKey="value" nameKey="name" innerRadius={60} strokeWidth={5} activeIndex={activeIndex} activeShape={activeShape}>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              innerRadius={60}
+              strokeWidth={5}
+              activeIndex={activeIndex}
+              activeShape={activeShape}
+            >
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
