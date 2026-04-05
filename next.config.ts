@@ -10,10 +10,12 @@ import {
   JUDGING_GUIDE_PATH,
   DISCORD_INVITE_PATH,
   DEVPOST_PATH,
+  VIRTUAL_ZOOM_JUDGING_PATH,
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
 const discordInviteDestination = process.env.DISCORD_INVITE_URL as string;
+const virtualZoomJudgingDestination = process.env.VIRTUAL_ZOOM_JUDGING_URL as string;
 
 const cspHeader = `
   default-src 'self';
@@ -92,6 +94,12 @@ const nextConfig: NextConfig = {
       {
         source: DEVPOST_PATH,
         destination: "https://wildhacks-2026.devpost.com/",
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: VIRTUAL_ZOOM_JUDGING_PATH,
+        destination: virtualZoomJudgingDestination,
         basePath: false,
         permanent: false,
       },
