@@ -32,7 +32,6 @@ const VALID_SKILLS = [
   "Docker / DevOps",
 ] as const;
 const MAX_REQUIRED_TEAMMATES = 3;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export type TeamMatchingIntakeData = {
   experience_level: string;
@@ -91,7 +90,7 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     if (
       !Array.isArray(data.required_teammates) ||
       data.required_teammates.length > MAX_REQUIRED_TEAMMATES ||
-      data.required_teammates.some((e) => typeof e !== "string" || !EMAIL_RE.test(e))
+      data.required_teammates.some((e) => typeof e !== "string" || !e.trim())
     ) {
       return { success: false, error: "Invalid required teammates." };
     }

@@ -6,7 +6,7 @@ import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
-export type VerifyTeammateEmailResult = ActionResult & { name?: string };
+export type VerifyTeammateEmailResult = ActionResult & { name?: string; userId?: string };
 
 export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammateEmailResult> => {
   const db = getFirestore();
@@ -29,8 +29,8 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
       return { success: false, error: "No registered participant found with this email." };
     }
 
-    const user = snapshot.docs[0].data();
-    return { success: true, name: user.first_name as string };
+    const doc = snapshot.docs[0];
+    return { success: true, name: doc.data().first_name as string, userId: doc.id };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
     console.error("Teammate email verification error:", detailedError);

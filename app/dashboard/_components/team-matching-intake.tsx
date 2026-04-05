@@ -60,6 +60,7 @@ const WORK_STYLE_OPTIONS = [
 const MAX_REQUIRED_TEAMMATES = 3;
 
 type TeammateEntry = {
+  userId: string;
   email: string;
   name: string;
 };
@@ -157,7 +158,7 @@ const TeamMatchingIntake = ({
 
     setForm((prev) => ({
       ...prev,
-      required_teammates: [...prev.required_teammates, { email: teammateEmail, name: result.name! }],
+      required_teammates: [...prev.required_teammates, { userId: result.userId!, email: teammateEmail, name: result.name! }],
     }));
     setTeammateInput("");
   };
@@ -206,7 +207,7 @@ const TeamMatchingIntake = ({
 
     const result = await submitTeamMatchingIntake({
       ...form,
-      required_teammates: form.required_teammates.map((t) => t.email),
+      required_teammates: form.required_teammates.map((t) => t.userId),
       consent: consentChecked,
     });
 
