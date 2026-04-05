@@ -10,7 +10,7 @@ export type SidebarItem = {
 };
 
 export type ResumeMetadata = BaseModel & {
-  file_id: string;
   file_name: string;
-  web_view_link: string;
+  storage_path: string;
+  content_type: string;
 };
