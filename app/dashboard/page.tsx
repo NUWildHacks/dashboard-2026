@@ -30,7 +30,7 @@ const DashboardPage = async () => {
       </div>
       {role === PARTICIPANT && (
         <div>
-          <UploadResume userId={userId} />
+          <UploadResume />
         </div>
       )}
       <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-2")}>

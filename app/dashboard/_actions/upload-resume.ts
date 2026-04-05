@@ -6,16 +6,12 @@ import { revalidatePath } from "next/cache";
 
 import { DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, RESUMES_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import { ActionResult, User } from "@/types";
+import { ActionResult } from "@/types";
 
 import { MAX_FILE_SIZE, RESUME_MIME_TYPE } from "../constants";
 import { ResumeMetadata } from "../types";
 
-export const uploadResume = async (
-  firstName: User["first_name"],
-  lastName: User["last_name"],
-  resume: File
-): Promise<ActionResult> => {
+export const uploadResume = async (resume: File): Promise<ActionResult> => {
   const db = getFirestore();
   const storage = getStorage();
 
@@ -27,15 +23,16 @@ export const uploadResume = async (
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
+    const { id, first_name, last_name } = user;
 
     const roleError = requireRole(user, PARTICIPANT, "You are not authorized to upload a resume");
     if (roleError) return roleError;
 
     const bucket = storage.bucket();
-    const newFileName = `${firstName} ${lastName} - Resume.pdf`;
+    const newFileName = `${first_name} ${last_name} - Resume.pdf`;
     const newStoragePath = `gs://${bucket.name}/${newFileName}`;
 
-    const resumeRef = db.collection(RESUMES_COLLECTION).doc(user.id);
+    const resumeRef = db.collection(RESUMES_COLLECTION).doc(id);
     const resumeDocSnapshot = await resumeRef.get();
 
     if (resumeDocSnapshot.exists) {
@@ -53,7 +50,7 @@ export const uploadResume = async (
     await bucket.file(newFileName).save(buffer, {
       metadata: {
         contentType: RESUME_MIME_TYPE,
-        uploadedBy: user.id,
+        uploadedBy: id,
         originalFileName: resume.name,
       },
     });

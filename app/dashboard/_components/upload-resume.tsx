@@ -6,13 +6,10 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { User } from "@/types";
 
 import { uploadResume } from "../_actions/upload-resume";
 
-type UploadResumeProps = Pick<User, "first_name" | "last_name">;
-
-const UploadResume = ({ first_name, last_name }: UploadResumeProps) => {
+const UploadResume = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -28,7 +25,7 @@ const UploadResume = ({ first_name, last_name }: UploadResumeProps) => {
     setIsUploading(true);
 
     try {
-      const result = await uploadResume(first_name, last_name, file);
+      const result = await uploadResume(file);
       const { success } = result;
 
       if (!success) {
