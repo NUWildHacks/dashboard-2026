@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { TEAM_MATCHING_INTAKE_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
+import { TEAM_MATCHING_INTAKE_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -32,7 +32,6 @@ const VALID_SKILLS = [
   "Docker / DevOps",
 ] as const;
 const MAX_REQUIRED_TEAMMATES = 3;
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export type TeamMatchingIntakeData = {
   experience_level: string;
@@ -91,12 +90,29 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     if (
       !Array.isArray(data.required_teammates) ||
       data.required_teammates.length > MAX_REQUIRED_TEAMMATES ||
-      data.required_teammates.some((e) => typeof e !== "string" || !EMAIL_RE.test(e))
+      data.required_teammates.some((e) => typeof e !== "string" || !e.trim())
     ) {
       return { success: false, error: "Invalid required teammates." };
     }
 
+    if (data.required_teammates.includes(userId)) {
+      return { success: false, error: "You cannot add yourself as a required teammate." };
+    }
+
+    if (new Set(data.required_teammates).size !== data.required_teammates.length) {
+      return { success: false, error: "Duplicate required teammates are not allowed." };
+    }
+
+    const now = Date.now();
     const db = getFirestore();
+
+    if (data.required_teammates.length > 0) {
+      const teammateRefs = data.required_teammates.map((id) => db.collection(USERS_COLLECTION).doc(id));
+      const teammateDocs = await db.getAll(...teammateRefs);
+      if (teammateDocs.some((d) => !d.exists)) {
+        return { success: false, error: "One or more required teammates could not be found." };
+      }
+    }
     const docRef = db.collection(TEAM_MATCHING_INTAKE_COLLECTION).doc(userId);
     const existing = await docRef.get();
 
@@ -107,7 +123,7 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     await docRef.set({
       ...data,
       user_id: userId,
-      created_at: new Date(),
+      created_at: now,
     });
 
     return { success: true };

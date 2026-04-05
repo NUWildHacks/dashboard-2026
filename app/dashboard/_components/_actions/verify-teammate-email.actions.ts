@@ -4,9 +4,10 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
 
-export type VerifyTeammateEmailResult = ActionResult & { name?: string };
+export type VerifyTeammateEmailResult =
+  | { success: true; name: string; userId: string }
+  | { success: false; error: string };
 
 export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammateEmailResult> => {
   const db = getFirestore();
@@ -17,7 +18,7 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
 
     // const roleCheck = requireRole(caller, PARTICIPANT);
     const roleCheck = requireRole(caller, ADMIN);
-    if (roleCheck) return roleCheck;
+    if (roleCheck) return roleCheck as { success: false; error: string };
 
     const snapshot = await db
       .collection(USERS_COLLECTION)
@@ -29,8 +30,8 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
       return { success: false, error: "No registered participant found with this email." };
     }
 
-    const user = snapshot.docs[0].data();
-    return { success: true, name: user.first_name as string };
+    const doc = snapshot.docs[0];
+    return { success: true, name: doc.data().first_name as string, userId: doc.id };
   } catch (error) {
     const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
     console.error("Teammate email verification error:", detailedError);
