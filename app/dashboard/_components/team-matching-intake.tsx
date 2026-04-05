@@ -244,7 +244,7 @@ const TeamMatchingIntake = ({
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
           {submitted ? (
-            <p className="text-muted-foreground text-sm">See your match after the opening ceremony</p>
+            <p className="text-muted-foreground text-sm">See your match after the opening ceremony!</p>
           ) : (
             <Button onClick={() => setIsOpen(true)}>Take the survey &rarr;</Button>
           )}
