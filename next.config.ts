@@ -9,6 +9,7 @@ import {
   TECH_ROOM_FINDER_PATH,
   JUDGING_GUIDE_PATH,
   DISCORD_INVITE_PATH,
+  DEVPOST_PATH,
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
@@ -85,6 +86,12 @@ const nextConfig: NextConfig = {
       {
         source: DISCORD_INVITE_PATH,
         destination: discordInviteDestination,
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: DEVPOST_PATH,
+        destination: "https://wildhacks-2026.devpost.com/",
         basePath: false,
         permanent: false,
       },

@@ -28,6 +28,7 @@ export {
   TECH_ROOM_FINDER_PATH,
   JUDGING_GUIDE_PATH,
   DISCORD_INVITE_PATH,
+  DEVPOST_PATH,
 } from "./routes.constants";
 
 export {
