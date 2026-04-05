@@ -3,6 +3,8 @@ import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
+import { getResumeMetadata } from "./_lib/resume";
+
 const DashboardPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
 
@@ -12,6 +14,9 @@ const DashboardPage = async () => {
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
   const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
+
+  const resumeMetadata = await getResumeMetadata(userId);
+  const fileName = resumeMetadata?.file_name;
 
   return (
     <>
@@ -28,9 +33,9 @@ const DashboardPage = async () => {
           <VenueMap />
         </div>
       </div>
-      {role === PARTICIPANT && (
+      {role === ADMIN && (
         <div>
-          <UploadResume />
+          <UploadResume fileName={fileName} />
         </div>
       )}
       <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-2")}>

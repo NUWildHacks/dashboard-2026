@@ -1,15 +1,22 @@
 "use client";
 
-import { Loader2, Upload } from "lucide-react";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { Download, File, FileX, Loader2, Trash, Upload } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 
+import { deleteResume } from "../_actions/delete-resume";
 import { uploadResume } from "../_actions/upload-resume";
 
-const UploadResume = () => {
+type UploadResumeProps = {
+  fileName?: string;
+};
+
+const UploadResume = ({ fileName }: UploadResumeProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -42,6 +49,34 @@ const UploadResume = () => {
     }
   };
 
+  const handleDeleteResume = async () => {
+    if (!fileName) return;
+
+    const result = await deleteResume();
+    const { success } = result;
+
+    if (!success) {
+      const { error } = result;
+      throw new Error(error);
+    }
+
+    toast.success("Resume deleted successfully");
+  };
+
+  const handleDownloadResume = async () => {
+    if (!fileName) return;
+
+    const storage = getStorage();
+    const fileRef = ref(storage, fileName);
+
+    const url = await getDownloadURL(fileRef);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+  };
+
   return (
     <Card className="shadow-xs size-full">
       <CardHeader>
@@ -57,7 +92,25 @@ const UploadResume = () => {
           className="hidden"
           onChange={handleUploadResume}
         />
-        <p className="text-sm text-muted-foreground italic">You currently have no resume uploaded.</p>
+        <Item variant="outline" className="w-full">
+          <ItemMedia variant="icon">{fileName ? <File /> : <FileX />}</ItemMedia>
+          <ItemContent>
+            <ItemTitle className="text-sm text-muted-foreground italic font-normal">
+              {fileName ? "You currently have a resume uploaded." : "You currently have no resume uploaded."}
+            </ItemTitle>
+            {fileName && <ItemDescription className="text-sm text-muted-foreground font-normal">{fileName}</ItemDescription>}
+          </ItemContent>
+          {fileName && (
+            <ItemActions>
+              <Button size="icon" onClick={handleDownloadResume}>
+                <Download aria-hidden="true" />
+              </Button>
+              <Button size="icon" variant="destructive" onClick={handleDeleteResume}>
+                <Trash aria-hidden="true" />
+              </Button>
+            </ItemActions>
+          )}
+        </Item>
       </CardContent>
       <CardFooter className="justify-end gap-4">
         <Button onClick={handleOpenFileInput}>

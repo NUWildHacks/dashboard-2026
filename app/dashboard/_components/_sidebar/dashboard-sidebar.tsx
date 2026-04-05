@@ -25,8 +25,8 @@ import {
 import { DISCORD_INVITE_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
+import { getHeaderText } from "../../_lib/sidebar";
 import { SIDEBAR_ITEMS } from "../../constants";
-import { getHeaderText } from "../../lib";
 
 type DashboardSidebarProps = PropsWithChildren<{
   role: Role;

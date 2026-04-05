@@ -18,7 +18,7 @@ export const deleteResume = async (): Promise<ActionResult> => {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to upload a resume");
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to delete a resume");
     if (roleError) return roleError;
 
     const bucket = storage.bucket();
