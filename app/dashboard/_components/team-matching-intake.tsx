@@ -158,7 +158,10 @@ const TeamMatchingIntake = ({
 
     setForm((prev) => ({
       ...prev,
-      required_teammates: [...prev.required_teammates, { userId: result.userId!, email: teammateEmail, name: result.name! }],
+      required_teammates: [
+        ...prev.required_teammates,
+        { userId: result.userId!, email: teammateEmail, name: result.name! },
+      ],
     }));
     setTeammateInput("");
   };
