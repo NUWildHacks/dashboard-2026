@@ -2,15 +2,17 @@
 
 import { Loader2, Upload } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { User } from "@/types";
 
-type UploadResumeProps = {
-  userId: string;
-};
+import { uploadResumeAction } from "../_actions/upload-resume";
 
-const UploadResume = ({ userId }: UploadResumeProps) => {
+type UploadResumeProps = Pick<User, "id" | "first_name" | "last_name">;
+
+const UploadResume = ({ id, first_name, last_name }: UploadResumeProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -19,15 +21,25 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     fileInputRef.current?.click();
   };
 
-  const handleUploadResume = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadResume = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setIsUploading(true);
+
     try {
-      console.log(file.name);
-      // TODO: Upload resume to Google Drive
+      const result = await uploadResumeAction(first_name, last_name, file);
+      const { success } = result;
+
+      if (!success) {
+        const { error } = result;
+        throw new Error(error);
+      }
+
+      toast.success("Resume uploaded successfully");
     } catch (error) {
-      console.error(error);
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      toast.error("Failed to upload resume", { description: errorMessage });
     } finally {
       setIsUploading(false);
     }
@@ -37,12 +49,17 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     <Card className="shadow-xs size-full">
       <CardHeader>
         <CardTitle>Resume Upload</CardTitle>
-        <CardDescription>
-          Upload your resume for our event sponsors to see!
-        </CardDescription>
+        <CardDescription>Upload your resume for our event sponsors to see!</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col justify-start items-center gap-4">
-        <input type="file" name="file" accept="application/pdf" ref={fileInputRef} className="hidden" onChange={handleUploadResume} />
+        <input
+          type="file"
+          name="file"
+          accept="application/pdf"
+          ref={fileInputRef}
+          className="hidden"
+          onChange={handleUploadResume}
+        />
         <p className="text-sm text-muted-foreground italic">You currently have no resume uploaded.</p>
       </CardContent>
       <CardFooter className="justify-end gap-4">
