@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import {
   DASHBOARD_PATH,
   JUDGE,
-  LOGIN_PATH,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
   USER_FIELDS,
