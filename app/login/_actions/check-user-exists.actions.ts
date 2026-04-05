@@ -10,7 +10,7 @@ import {
   SESSION_COOKIE_OPTIONS,
   SESSION_EXPIRES_IN,
   JUDGE,
-  MENTOR,
+  JUDGE_AND_MENTOR,
   PARTICIPANT,
   USER_FIELDS,
 } from "@/constants";
@@ -42,7 +42,7 @@ export const createVerifiedSession = async (idToken: string): Promise<ActionResu
         .get();
 
       const role = emailDocSnapshot.docs[0]?.data()?.role;
-      if (emailDocSnapshot.empty || (role !== JUDGE && role !== MENTOR && role !== PARTICIPANT)) {
+      if (emailDocSnapshot.empty || (role !== JUDGE && role !== JUDGE_AND_MENTOR && role !== PARTICIPANT)) {
         cookieStore.delete(SESSION_COOKIE_NAME);
         return { success: false, error: "Registration is closed! Check back in the future for WildHacks 2027." };
       }

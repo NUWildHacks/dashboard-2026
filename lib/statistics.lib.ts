@@ -3,7 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { cache } from "react";
 
-import { PARTICIPANT, JUDGE, ADMIN } from "@/constants";
+import { PARTICIPANT, JUDGE, JUDGE_AND_MENTOR, ADMIN } from "@/constants";
 import { PROJECTS_COLLECTION, USERS_COLLECTION } from "@/constants/db.constants";
 import type { WildHacksStatistics } from "@/types";
 
@@ -28,6 +28,7 @@ export const calculateStatistics = cache(async (): Promise<WildHacksStatistics> 
 
   let participants = 0;
   let judges = 0;
+  let mentors = 0;
   let admins = 0;
 
   usersSnapshot.forEach((doc) => {
@@ -38,6 +39,8 @@ export const calculateStatistics = cache(async (): Promise<WildHacksStatistics> 
       participants++;
     } else if (role === JUDGE) {
       judges++;
+    } else if (role === JUDGE_AND_MENTOR) {
+      mentors++;
     } else if (role === ADMIN) {
       admins++;
     }
@@ -56,6 +59,7 @@ export const calculateStatistics = cache(async (): Promise<WildHacksStatistics> 
   return {
     participants,
     judges,
+    mentors,
     admins,
     projects,
     submissions,

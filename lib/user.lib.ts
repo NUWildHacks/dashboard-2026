@@ -9,11 +9,11 @@ import {
   PARTICIPANT,
   ADMIN,
   JUDGE,
-  MENTOR,
   REGISTRATION_PATH,
   CLOSED_REGISTRATION,
+  JUDGE_AND_MENTOR,
 } from "@/constants";
-import type { ActionResult, JudgeUser, MentorUser, User } from "@/types";
+import type { ActionResult, JudgeUser, JudgeAndMentorUser, User } from "@/types";
 
 import { verifySession } from ".";
 
@@ -96,7 +96,7 @@ const requireRole = <T extends User["role"]>(
       [PARTICIPANT]: "You must be a participant to perform this action",
       [ADMIN]: "You must be an administrator to perform this action",
       [JUDGE]: "You must be a judge to perform this action",
-      [MENTOR]: "You must be a mentor to perform this action",
+      [JUDGE_AND_MENTOR]: "You must be a judge and mentor to perform this action",
     };
 
     return {
@@ -133,7 +133,7 @@ const onboardUser = async (id: User["id"]): Promise<boolean> => {
 
   const judgeDocSnapshot = await db.collection(USERS_COLLECTION).doc(id).get();
   if (!judgeDocSnapshot.exists) return true;
-  const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | MentorUser, "id">;
+  const { onboarded } = judgeDocSnapshot.data() as Omit<JudgeUser | JudgeAndMentorUser, "id">;
 
   if (!onboarded) {
     await db
@@ -142,7 +142,7 @@ const onboardUser = async (id: User["id"]): Promise<boolean> => {
       .update({
         onboarded: true,
         updated_at: now,
-      } as Partial<JudgeUser | MentorUser>);
+      } as Partial<JudgeUser | JudgeAndMentorUser>);
 
     return false;
   }

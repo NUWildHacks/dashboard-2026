@@ -12,6 +12,7 @@ export type WildHacksConfig = {
 export type WildHacksStatistics = {
   participants: number;
   judges: number;
+  mentors: number;
   admins: number;
   projects: number;
   submissions: number;

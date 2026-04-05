@@ -5,13 +5,13 @@ import {
   DASHBOARD_PATH,
   JUDGE,
   LOGIN_PATH,
-  MENTOR,
+  JUDGE_AND_MENTOR,
   PARTICIPANT,
   USER_FIELDS,
   USERS_COLLECTION,
   CLOSED_REGISTRATION,
 } from "@/constants";
-import { JudgeUser, MentorUser, User } from "@/types";
+import { JudgeUser, JudgeAndMentorUser, User } from "@/types";
 
 const getCurrentTimestamp = () => Date.now();
 
@@ -22,7 +22,7 @@ const getCurrentTimestamp = () => Date.now();
  * This function performs the following operations:
  * 1. Checks if a user document with the given userId already exists (redirects if found)
  * 2. Searches for an existing user document by email
- * 3. If found and the user has JUDGE or MENTOR role, migrates the data:
+ * 3. If found and the user has JUDGE or JUDGE_AND_MENTOR role, migrates the data:
  *    - Creates a new document using the userId as the document ID
  *    - Copies all user data (excluding id, created_at, updated_at)
  *    - Sets new timestamps for created_at and updated_at
@@ -59,11 +59,11 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
     const newJudgeDocRef = db.collection(USERS_COLLECTION).doc(userId);
 
     const data = userDocSnapshotByEmail.docs[0].data() as Omit<
-      JudgeUser | MentorUser,
+      JudgeUser | JudgeAndMentorUser,
       "id" | "created_at" | "updated_at" | "onboarded"
     >;
 
-    if (data?.role === JUDGE || data?.role === MENTOR) {
+    if (data?.role === JUDGE || data?.role === JUDGE_AND_MENTOR) {
       const timestamp = getCurrentTimestamp();
 
       await db.runTransaction(async (transaction) => {
@@ -72,7 +72,7 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
           onboarded: false,
           created_at: timestamp,
           updated_at: timestamp,
-        } as Omit<JudgeUser | MentorUser, "id">);
+        } as Omit<JudgeUser | JudgeAndMentorUser, "id">);
 
         transaction.delete(userDocSnapshotByEmail.docs[0].ref);
       });
