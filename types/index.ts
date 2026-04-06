@@ -6,6 +6,11 @@ export type {
   GetEventCheckInsActionResponse,
   QRCodeScanPayload,
 } from "./check-in.types";
+export type {
+  CrowdFavoriteProject,
+  CrowdFavoriteTeamMember,
+  Vote,
+} from "./crowd-favorite.types";
 export type { ErrorPageProps } from "./error-page.types";
 export type {
   AdminUser,

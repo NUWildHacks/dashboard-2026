@@ -6,6 +6,8 @@ export type WildHacksConfig = {
   start_time: number;
   end_time: number;
 
+  crowd_favorite_password: string;
+
   updated_at: number;
 };
 

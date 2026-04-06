@@ -58,6 +58,17 @@ service cloud.firestore {
       allow read: if isAuthenticated();
     }
 
+    // Crowd Favorite projects and per-user votes (writes via Admin SDK / server actions)
+    match /crowd_favorites/{projectId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+
+      match /votes/{voteId} {
+        allow read: if isAuthenticated();
+        allow write: if false;
+      }
+    }
+
     // Events collection
     match /events/{eventId} {
       // All authenticated users can read events
