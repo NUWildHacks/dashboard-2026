@@ -167,16 +167,6 @@ app/
 │   │   ├── types.ts
 │   │   ├── page.tsx
 │   │   └── loading.tsx
-│   ├── project/         # Project feature
-│   │   ├── _actions/
-│   │   ├── _components/
-│   │   ├── _hooks/
-│   │   ├── _schemas/
-│   │   ├── constants.ts
-│   │   ├── lib.ts       # Simple utility functions
-│   │   ├── types.ts
-│   │   ├── page.tsx
-│   │   └── loading.tsx
 │   ├── manage-users/    # Manage users feature
 │   │   ├── _actions/
 │   │   ├── _components/
@@ -254,8 +244,8 @@ Within each group, imports are sorted alphabetically. Type imports should use `i
 import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
-import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/types";
+import { useMyFeatureForm } from "@/app/dashboard/my-feature/_hooks";
+import type { MyFeature } from "@/app/dashboard/my-feature/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 ```
@@ -265,7 +255,7 @@ import { Card, CardContent } from "@/components/ui/card";
 ```typescript
 import type { NextConfig } from "next";
 
-import type { Project } from "@/app/dashboard/project/types";
+import type { MyFeature } from "@/app/dashboard/my-feature/types";
 import type { User } from "@/types";
 ```
 
@@ -273,21 +263,21 @@ import type { User } from "@/types";
 
 #### Files
 
-- **Components**: `kebab-case.tsx` (e.g., `edit-project-form.tsx`)
-- **Hooks**: `use-kebab-case.ts` (e.g., `use-edit-project-form.ts`)
-- **Types**: `types.ts` (single file per feature, e.g., `app/dashboard/project/types.ts`)
-- **Constants**: `constants.ts` (single file per feature, e.g., `app/dashboard/project/constants.ts`)
-- **Schemas**: `kebab-case.schemas.ts` (e.g., `create-project-form.schemas.ts`)
-- **Utilities**: `lib.ts` or `lib.tsx` (single file per feature, e.g., `app/dashboard/project/lib.ts`)
+- **Components**: `kebab-case.tsx` (e.g., `edit-feature-form.tsx`)
+- **Hooks**: `use-kebab-case.ts` (e.g., `use-edit-feature-form.ts`)
+- **Types**: `types.ts` (single file per feature, e.g., `app/dashboard/my-feature/types.ts`)
+- **Constants**: `constants.ts` (single file per feature, e.g., `app/dashboard/my-feature/constants.ts`)
+- **Schemas**: `kebab-case.schemas.ts` (e.g., `create-feature-form.schemas.ts`)
+- **Utilities**: `lib.ts` or `lib.tsx` (single file per feature, e.g., `app/dashboard/my-feature/lib.ts`)
 
 #### Code
 
-- **Components**: `PascalCase` (e.g., `EditProjectForm`)
-- **Hooks**: `camelCase` with `use` prefix (e.g., `useEditProjectForm`)
-- **Types**: `PascalCase` (e.g., `Project`, `UseEditProjectFormReturn`)
-- **Constants**: `UPPER_SNAKE_CASE` (e.g., `PROJECT_FIELDS`)
-- **Functions**: `camelCase` (e.g., `getProjectDocSnapshot`)
-- **Variables**: `camelCase` (e.g., `projectId`)
+- **Components**: `PascalCase` (e.g., `EditFeatureForm`)
+- **Hooks**: `camelCase` with `use` prefix (e.g., `useEditFeatureForm`)
+- **Types**: `PascalCase` (e.g., `MyFeature`, `UseEditFeatureFormReturn`)
+- **Constants**: `UPPER_SNAKE_CASE` (e.g., `MY_FEATURE_FIELDS`)
+- **Functions**: `camelCase` (e.g., `getFeatureDocSnapshot`)
+- **Variables**: `camelCase` (e.g., `featureId`)
 
 ### Prettier Configuration
 
@@ -329,16 +319,16 @@ Always run `pnpm run format && pnpm run lint:fix` before committing.
 
 Each feature folder should have an `index.ts` that exports all public APIs:
 
-**Example: `app/dashboard/project/_hooks/index.ts`**
+**Example: `app/dashboard/my-feature/_hooks/index.ts`**
 
 ```typescript
-export { useCreateProjectDialog } from "./use-create-project-dialog";
-export { useEditProjectForm } from "./use-edit-project-form";
-export { useJoinProjectDialog } from "./use-join-project-dialog";
-export { useLeaveProjectDialog } from "./use-leave-project-dialog";
-export { useTeamMembersList } from "./use-team-members";
-export type { UseCreateNewProjectDialogReturn } from "./use-create-project-form";
-export type { UseEditProjectFormReturn } from "./use-edit-project-form";
+export { useMyFeatureDialog } from "./use-my-feature-dialog";
+export { useEditFeatureForm } from "./use-edit-feature-form";
+export { useCreateFeatureDialog } from "./use-create-feature-dialog";
+export { useDeleteFeatureDialog } from "./use-delete-feature-dialog";
+export { useFeatureList } from "./use-feature-list";
+export type { UseMyFeatureDialogReturn } from "./use-my-feature-dialog";
+export type { UseEditFeatureFormReturn } from "./use-edit-feature-form";
 // ... more type exports
 ```
 
@@ -360,18 +350,18 @@ export type { UseEditProjectFormReturn } from "./use-edit-project-form";
 ✅ **Good:**
 
 ```typescript
-import { useEditProjectForm } from "@/app/dashboard/project/_hooks";
-import type { Project } from "@/app/dashboard/project/types";
-import { PROJECT_FIELDS } from "@/app/dashboard/project/constants";
-import { getProject } from "@/app/dashboard/project/lib";
+import { useEditFeatureForm } from "@/app/dashboard/my-feature/_hooks";
+import type { MyFeature } from "@/app/dashboard/my-feature/types";
+import { MY_FEATURE_FIELDS } from "@/app/dashboard/my-feature/constants";
+import { getFeature } from "@/app/dashboard/my-feature/lib";
 ```
 
 ❌ **Bad:**
 
 ```typescript
-import { useEditProjectForm } from "@/app/dashboard/project/_hooks/use-edit-project-form";
-import type { Project } from "@/app/dashboard/project/_types/project.types";
-import { PROJECT_FIELDS } from "@/app/dashboard/project/_constants/project.constants";
+import { useEditFeatureForm } from "@/app/dashboard/my-feature/_hooks/use-edit-feature-form";
+import type { MyFeature } from "@/app/dashboard/my-feature/_types/my-feature.types";
+import { MY_FEATURE_FIELDS } from "@/app/dashboard/my-feature/_constants/my-feature.constants";
 ```
 
 ### Component Organization
@@ -380,15 +370,14 @@ Components within a feature are organized by purpose:
 
 ```
 _components/
-├── _empty-project/        # Grouped related components
-│   ├── create-project-dialog.tsx
-│   ├── empty-project.tsx
-│   └── join-project-dialog.tsx
-├── _team-members/        # Another group
-│   ├── leave-project-dialog.tsx
-│   ├── team-member-item.tsx
-│   └── team-members-list.tsx
-├── edit-project-form.tsx # Standalone component
+├── _dialogs/             # Grouped related components
+│   ├── create-feature-dialog.tsx
+│   ├── edit-feature-dialog.tsx
+│   └── delete-feature-dialog.tsx
+├── _lists/               # Another group
+│   ├── feature-item.tsx
+│   └── feature-list.tsx
+├── edit-feature-form.tsx # Standalone component
 └── index.ts              # Barrel export
 ```
 
@@ -458,13 +447,13 @@ export default MyComponent;
 Always define explicit prop types:
 
 ```typescript
-type EditProjectFormProps = {
-  project: Project;
+type EditFeatureFormProps = {
+  feature: MyFeature;
   userId: User["id"];
   onSuccess?: () => void;
 };
 
-const EditProjectForm = ({ project, userId, onSuccess }: EditProjectFormProps) => {
+const EditFeatureForm = ({ feature, userId, onSuccess }: EditFeatureFormProps) => {
   // Component implementation
 };
 ```
@@ -566,16 +555,15 @@ This provides:
 Server actions are located in `_actions` folders within feature directories:
 
 ```
-app/dashboard/project/
+app/dashboard/my-feature/
 ├── _actions/
-│   ├── create-project.actions.ts
-│   ├── edit-project.actions.ts
-│   ├── join-project.actions.ts
-│   ├── leave-project.actions.ts
+│   ├── create-feature.actions.ts
+│   ├── edit-feature.actions.ts
+│   ├── delete-feature.actions.ts
 │   └── index.ts
 ```
 
-**Naming Convention**: `kebab-case.actions.ts` (e.g., `create-project.actions.ts`)
+**Naming Convention**: `kebab-case.actions.ts` (e.g., `create-feature.actions.ts`)
 
 ### Server Action Structure
 
@@ -852,7 +840,7 @@ export const useMyForm = (): UseMyFormReturn => {
 3. **Return structured errors** using `ActionResult` type
 4. **Handle redirects** for unauthenticated users
 5. **Use try-catch** for error handling
-6. **Log errors** to console for debugging with descriptive context (e.g., `console.error("Edit project error:", detailedError)`)
+6. **Log errors** to console for debugging with descriptive context (e.g., `console.error("Edit feature error:", detailedError)`)
 7. **Sanitize error messages in production**: Always check `process.env.APP_ENV === "production"` and return generic error messages to users in production while logging detailed errors for debugging. This prevents exposing sensitive information.
 8. **Validate permissions** before performing operations
 9. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
@@ -868,13 +856,13 @@ Prefer `type` over `interface` for consistency:
 
 ```typescript
 // Good
-export type Project = BaseModel & {
+export type MyFeature = BaseModel & {
   name: string;
   description: string;
 };
 
 // Also acceptable, but prefer type
-export interface Project extends BaseModel {
+export interface MyFeature extends BaseModel {
   name: string;
   description: string;
 }
@@ -886,10 +874,10 @@ export interface Project extends BaseModel {
 
 ```typescript
 // Good
-export type { Project, TeamMember } from "./types";
+export type { MyFeature, FeatureItem } from "./types";
 
 // Bad
-export type { default as Project } from "./types";
+export type { default as MyFeature } from "./types";
 ```
 
 ### Type Organization
@@ -897,7 +885,7 @@ export type { default as Project } from "./types";
 Types should be organized in a single `types.ts` file per feature:
 
 ```
-app/dashboard/project/
+app/dashboard/my-feature/
 ├── types.ts
 └── ...
 ```
@@ -907,15 +895,15 @@ app/dashboard/project/
 ```typescript
 import type { BaseModel, User } from "@/types";
 
-export type Project = BaseModel & {
+export type MyFeature = BaseModel & {
   name: string;
   description: string;
   owner_id: User["id"];
 };
 
-export type TeamMember = BaseModel & {
+export type FeatureItem = BaseModel & {
   user_id: User["id"];
-  project_id: Project["id"];
+  feature_id: MyFeature["id"];
   role: "owner" | "member";
 };
 ```
@@ -923,7 +911,7 @@ export type TeamMember = BaseModel & {
 **Importing types:**
 
 ```typescript
-import type { Project } from "@/app/dashboard/project/types";
+import type { MyFeature } from "@/app/dashboard/my-feature/types";
 ```
 
 ## Constants and Schemas
@@ -933,13 +921,13 @@ import type { Project } from "@/app/dashboard/project/types";
 Constants are organized in a single `constants.ts` file per feature:
 
 ```typescript
-import type { Project } from "./types";
+import type { MyFeature } from "./types";
 
-export const PROJECT_FIELDS = {
+export const MY_FEATURE_FIELDS = {
   name: "name",
   description: "description",
   // ...
-} as const satisfies Record<keyof Omit<Project, "id">, string>;
+} as const satisfies Record<keyof Omit<MyFeature, "id">, string>;
 ```
 
 **Naming**: Use `UPPER_SNAKE_CASE` for constants.
@@ -947,7 +935,7 @@ export const PROJECT_FIELDS = {
 **Importing constants:**
 
 ```typescript
-import { PROJECT_FIELDS } from "@/app/dashboard/project/constants";
+import { MY_FEATURE_FIELDS } from "@/app/dashboard/my-feature/constants";
 ```
 
 ### Zod Schemas
@@ -1024,8 +1012,8 @@ The project provides reusable validation schemas in `lib/validation.lib.ts` for 
 **Barrel exports**: Schemas should be exported from `_schemas/index.ts`:
 
 ```typescript
-export { createProjectFormSchema } from "./create-project-form.schemas";
-export type { CreateProjectFormSchema } from "./create-project-form.schemas";
+export { createFeatureFormSchema } from "./create-feature-form.schemas";
+export type { CreateFeatureFormSchema } from "./create-feature-form.schemas";
 ```
 
 ## Git Workflow
@@ -1036,7 +1024,7 @@ Use descriptive branch names with your Github username:
 
 - `feature/<github-username>/add-user-profile` - New features
 - `fix/<github-username>/login-redirect-issue` - Bug fixes
-- `refactor/<github-username>/improve-project-hooks` - Refactoring
+- `refactor/<github-username>/improve-schedule-hooks` - Refactoring
 - `docs/<github-username>/update-contributing-guide` - Documentation
 
 ### Commit Messages
@@ -1064,7 +1052,7 @@ footer (optional)
 **Examples:**
 
 ```
-feat(project): add project creation dialog
+feat(schedule): add event creation dialog
 
 fix(auth): resolve session expiration issue
 

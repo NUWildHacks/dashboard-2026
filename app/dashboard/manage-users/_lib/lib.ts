@@ -2,9 +2,10 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
+import { JUDGING_ASSIGNMENTS_COLLECTION, PERMISSION_CODES_COLLECTION, USERS_COLLECTION } from "@/constants";
 import type { User } from "@/types";
 
+import { JudgingAssignment } from "../../judging/types";
 import type { PermissionCode } from "../types";
 
 /**
@@ -60,13 +61,36 @@ const getUsers = async (): Promise<User[]> => {
 
   const userDocSnapshots = await userDocRef.get();
 
-  return userDocSnapshots.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...doc.data(),
-      }) as User
-  );
+  // ensure that incomplete documents (e.g. new participants)
+  // are not included so it doesn't break
+  return userDocSnapshots.docs
+    .filter((doc) => doc.data().first_name)
+    .map((doc) => ({ id: doc.id, ...doc.data() }) as User);
 };
 
-export { getPermissionCodes, getUsers };
+/**
+ * Get all judging assignments from Firestore.
+ * Retrieves all documents from the judging assignments collection and returns them as an array.
+ * Returns an empty array if no judging assignments exist.
+ *
+ * @returns Promise resolving to an array of JudgingAssignment objects
+ * @example
+ * ```ts
+ * const assignments = await getJudgingAssignments();
+ * console.log(`Found ${assignments.length} judging assignments`);
+ * assignments.forEach(assignment => {
+ *   console.log(assignment.id, assignment.judge_id, assignment.project_id);
+ * });
+ * ```
+ */
+const getJudgingAssignments = async (): Promise<JudgingAssignment[]> => {
+  const db = getFirestore();
+
+  const judgingAssignmentDocRef = db.collection(JUDGING_ASSIGNMENTS_COLLECTION);
+
+  const judgingAssignmentDocSnapshots = await judgingAssignmentDocRef.get();
+
+  return judgingAssignmentDocSnapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as JudgingAssignment);
+};
+
+export { getPermissionCodes, getUsers, getJudgingAssignments };

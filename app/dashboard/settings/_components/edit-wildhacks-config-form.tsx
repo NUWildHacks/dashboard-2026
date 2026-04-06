@@ -10,7 +10,7 @@ import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/component
 import { Input } from "@/components/ui/input";
 import { WildHacksConfig } from "@/types";
 
-import { useEditWildhacksConfigForm } from "../_hooks/use-edit-wildhacks-config-form";
+import { useEditWildhacksConfigForm } from "../_hooks";
 
 type EditWildhacksConfigFormProps = {
   wildhacksConfig: WildHacksConfig;

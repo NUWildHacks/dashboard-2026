@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-const Completed = async () => {
+const Completed = () => {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">That&apos;s a wrap! 🎉</h2>
@@ -12,15 +12,15 @@ const Completed = async () => {
         extraordinary. From first-time hackers to returning champions, you all brought your best.
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
-        <Link href="#">
-          <Button variant="outline">
+        <Button variant="outline" asChild>
+          <Link href="#">
             <CodeXml />
             Browse Projects
-          </Button>
-        </Link>
-        <Link href="#">
-          <Button variant="link">Get notified for WildHacks 2027</Button>
-        </Link>
+          </Link>
+        </Button>
+        <Button asChild>
+          <Link href="#">Get notified for WildHacks 2027</Link>
+        </Button>
       </div>
     </>
   );

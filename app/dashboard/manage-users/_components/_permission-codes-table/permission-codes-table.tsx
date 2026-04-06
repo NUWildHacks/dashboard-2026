@@ -36,7 +36,7 @@ const PermissionCodesTable = ({ permissionCodes }: PermissionCodesTableProps) =>
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
-            id="search"
+            id="search-emails"
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
             placeholder="Search emails..."

@@ -8,9 +8,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/config/firebase-client";
 import { ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL } from "@/constants";
-import { createSession, validateRedirectPath } from "@/lib";
+import { validateRedirectPath } from "@/lib";
 
-import { getCustomTokenForExistingAccount } from "../_actions";
+import { createVerifiedSession, getCustomTokenForExistingAccount } from "../_actions";
 
 const Google = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -40,7 +40,11 @@ const GoogleLoginButton = () => {
 
       const idToken = await result.user.getIdToken(true);
 
-      await createSession(idToken);
+      const sessionResult = await createVerifiedSession(idToken);
+      if (!sessionResult.success) {
+        toast.error("Registration is closed!", { description: "Check back in the future for WildHacks 2027." });
+        return;
+      }
 
       const searchParams = new URLSearchParams(window.location.search);
       const redirectTo = validateRedirectPath(searchParams.get("redirect"));
@@ -76,7 +80,10 @@ const GoogleLoginButton = () => {
             await linkWithCredential(customTokenResult.user, credential);
 
             const idToken = await customTokenResult.user.getIdToken(true);
-            await createSession(idToken);
+            const sessionResult = await createVerifiedSession(idToken);
+            if (!sessionResult.success) {
+              throw new Error(sessionResult.error || "Registration is closed.");
+            }
 
             const searchParams = new URLSearchParams(window.location.search);
             const redirect = validateRedirectPath(searchParams.get("redirect"));

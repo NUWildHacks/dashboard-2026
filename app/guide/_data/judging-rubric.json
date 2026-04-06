@@ -1,0 +1,76 @@
+{
+  "areas": [
+    {
+      "name": "Technical Complexity",
+      "weight": 30,
+      "description": "The hack should be technically impressive for a 24-hour project. Frameworks, APIs, algorithms, interesting languages, and a functioning demo can add to the technical difficulty."
+    },
+    {
+      "name": "Usefulness",
+      "weight": 30,
+      "description": "The hack should have the potential to be useful in everyday life and be intuitive and easy to use."
+    },
+    {
+      "name": "Originality",
+      "weight": 20,
+      "description": "The hack should be unique and interesting, ranging from a new twist on existing ideas to something completely outlandish."
+    },
+    {
+      "name": "Design",
+      "weight": 15,
+      "description": "The hack should look and work beautifully. The closer it feels to a professional-grade application, the better."
+    },
+    {
+      "name": "Presentation",
+      "weight": 5,
+      "description": "The demo should clearly explain the problem and solution and showcase the team’s understanding of the project’s impact."
+    }
+  ],
+  "criteria": [
+    {
+      "category": "Technical Complexity (30%)",
+      "levels": [
+        "The project is not interactive or doesn't utilize code (Ex: Wix, Google Sites, Figma).",
+        "Uses some frameworks, APIs, or algorithms but is not technically difficult. Could be built within 24 hours.",
+        "Uses difficult frameworks, APIs, or algorithms. Would be challenging to build in 24 hours.",
+        "Uses remarkably complex frameworks, APIs, or algorithms. Judges find it incredible to have been built in 24 hours."
+      ]
+    },
+    {
+      "category": "Usefulness (30%)",
+      "levels": [
+        "Very little or no application. Target users are unclear. Difficult to use or unintuitive.",
+        "Addresses real-world problems but may not be used often by the target audience.",
+        "Addresses a relevant issue for a clear target audience; users could incorporate it into their lifestyle.",
+        "Addresses a unique, key need for a clear target audience; highly intuitive and exciting to use."
+      ]
+    },
+    {
+      "category": "Originality (20%)",
+      "levels": [
+        "Similar solutions already exist.",
+        "Adds a twist on an existing idea but remains closely based on it.",
+        "Novel or adds an exciting twist that makes it better than the original.",
+        "Groundbreaking and unlike anything judges have seen; stands out among projects."
+      ]
+    },
+    {
+      "category": "Design (15%)",
+      "levels": [
+        "Lacks consistency and looks unpolished.",
+        "Inconsistent structure but uses some clear aesthetics.",
+        "Consistent structure and clear aesthetics; uses colors and fonts well.",
+        "Cohesive, professional-grade aesthetics that enrich the user experience."
+      ]
+    },
+    {
+      "category": "Presentation (5%)",
+      "levels": [
+        "Video is not present.",
+        "Shows the project in action but doesn’t explain the mission; unengaging.",
+        "Explains how it works and intended use in an engaging, clear way.",
+        "Goes beyond explanation to connect outcomes; extremely engaging and charismatic."
+      ]
+    }
+  ]
+}

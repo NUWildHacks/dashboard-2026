@@ -1,0 +1,76 @@
+import prizes from "@/app/guide/_data/prizes.json";
+
+# Prizes
+
+{prizes.notices.info}
+
+{prizes.notices.warning}
+
+## Grand Prizes
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Prize</th>
+      <th>Description</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.grandPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Prize">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Description">{prize.description}</td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Track Prizes
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Track</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.trackPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Track">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## MLH Challenge Prizes
+
+<table className="guide-rich-table">
+  <thead>
+    <tr>
+      <th>Challenge</th>
+      <th>Award</th>
+    </tr>
+  </thead>
+  <tbody>
+    {prizes.mlhPrizes.map((prize) => (
+      <tr key={prize.title}>
+        <td data-label="Challenge">
+          {prize.emoji} {prize.title}
+        </td>
+        <td data-label="Award">{prize.award}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Crowd Favorite
+
+{prizes.crowdFavorite.emoji} {prizes.crowdFavorite.award}

@@ -1,12 +1,13 @@
 "use client";
 
-import { CircleQuestionMark, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ComponentProps, PropsWithChildren } from "react";
 
 import { SidebarLogoutButton } from "@/app/dashboard/_components";
+import Discord from "@/components/icon/discord";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -21,11 +22,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { DASHBOARD_SUPPORT_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
+import { DISCORD_INVITE_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
+import { getHeaderText } from "../../_lib/sidebar";
 import { SIDEBAR_ITEMS } from "../../constants";
-import { getHeaderText } from "../../lib";
 
 type DashboardSidebarProps = PropsWithChildren<{
   role: Role;
@@ -71,10 +72,10 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
           <SidebarMenu className="gap-2">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href={DASHBOARD_SUPPORT_PATH} className="font-regular">
-                  <CircleQuestionMark />
-                  Support
-                </Link>
+                <a href={DISCORD_INVITE_PATH} target="_blank" rel="noopener noreferrer">
+                  <Discord />
+                  Join our Discord
+                </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>

@@ -57,6 +57,8 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
         });
         return;
       }
+
+      toast.success("WildHacks config updated successfully");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
       console.error("Edit wildhacks config error:", errorMessage);
