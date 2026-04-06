@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import type { GuideSearchEntry, GuideSearchRecord } from "../_data/guide-search-data";
 
@@ -24,7 +24,6 @@ const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\
 
 const normalizeDisplayLabel = (value: string): string => {
   const normalizedSpacing = value.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/\s+/g, " ");
-  // .trim();
 
   return normalizedSpacing.replace(/(\b(?:Page|Route)\b\s*)+$/i, "").trim();
 };
@@ -142,15 +141,15 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
   }, []);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <button type="button" className="guide-search-trigger" aria-label="Search guide pages (⌘K)">
           <SearchIcon className="guide-search-icon" aria-hidden />
           <span className="guide-search-trigger-text">Search guide...</span>
           <kbd className="guide-search-kbd">⌘K</kbd>
         </button>
-      </PopoverTrigger>
-      <PopoverContent className="guide-search-popover" align="end" sideOffset={8}>
+      </DialogTrigger>
+      <DialogContent className="guide-search-popover !top-12 !translate-y-0 sm:!top-16" showCloseButton={false}>
         <Command className="guide-search-command" shouldFilter={false}>
           <CommandInput
             placeholder="Search pages..."
@@ -177,15 +176,17 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
                     }}
                   >
                     <span className="guide-search-result-title">{highlightMatch(getResultTitle(result), query)}</span>
-                    <span className="guide-search-result-meta">{highlightMatch(getResultMeta(result), query)}</span>
+                    {getResultMeta(result) ? (
+                      <span className="guide-search-result-meta">{highlightMatch(getResultMeta(result), query)}</span>
+                    ) : null}
                   </Link>
                 </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>
         </Command>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 };
 
