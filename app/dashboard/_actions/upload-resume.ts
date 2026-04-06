@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { revalidatePath } from "next/cache";
 
-import { DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, RESUMES_COLLECTION } from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, RESUMES_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import { ActionResult } from "@/types";
 
@@ -25,7 +25,9 @@ export const uploadResume = async (resume: File): Promise<ActionResult> => {
     const user = await getAuthenticatedUser(redirectPath);
     const { id, first_name, last_name } = user;
 
-    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to upload a resume");
+    // change back to participant after testing
+    // const roleError = requireRole(user, PARTICIPANT, "You are not authorized to upload a resume");
+    const roleError = requireRole(user, ADMIN, "You are not authorized to upload a resume");
     if (roleError) return roleError;
 
     const bucket = storage.bucket();
