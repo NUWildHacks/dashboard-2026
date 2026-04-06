@@ -1,4 +1,4 @@
-import { ADMIN, DASHBOARD_CHECK_IN_PATH, JUDGE, LOGIN_PATH, MENTOR, PARTICIPANT } from "@/constants";
+import { ADMIN, DASHBOARD_CHECK_IN_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
 import type { QRCodeScanPayload, User } from "@/types";
 
 export const WILDHACKS_EVENT_ID = "wildhacks-2026" as const;
@@ -10,7 +10,7 @@ export const getCheckInRedirectPath = (): string => {
 };
 
 export const isAllowedScannableRole = (role: User["role"]): boolean => {
-  return role === PARTICIPANT || role === JUDGE || role === MENTOR;
+  return role === PARTICIPANT || role === JUDGE || role === JUDGE_AND_MENTOR;
 };
 
 export const parseScanPayload = (scanPayload: QRCodeScanPayload | string): ParsedScanPayloadResult => {
@@ -57,7 +57,7 @@ export const parseScanPayload = (scanPayload: QRCodeScanPayload | string): Parse
     normalizedPayload.role &&
     normalizedPayload.role !== PARTICIPANT &&
     normalizedPayload.role !== JUDGE &&
-    normalizedPayload.role !== MENTOR &&
+    normalizedPayload.role !== JUDGE_AND_MENTOR &&
     normalizedPayload.role !== ADMIN
   ) {
     return { success: false, error: "QR code payload contains an invalid role" };
