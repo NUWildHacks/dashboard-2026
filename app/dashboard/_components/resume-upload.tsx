@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, File, FileX, Loader2, Trash, Upload } from "lucide-react";
+import { Download, File, FileX, Loader2, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,7 @@ const ResumeUpload = ({ fileName }: ResumeUploadProps) => {
   const {
     fileInputRef,
     isUploading,
+    isDeleting,
     handleOpenFileInput,
     handleUploadResume,
     handleDeleteResume,
@@ -47,11 +48,16 @@ const ResumeUpload = ({ fileName }: ResumeUploadProps) => {
           </ItemContent>
           {fileName && (
             <ItemActions>
-              <Button size="icon" variant="outline" onClick={handleDownloadResume}>
+              <Button size="icon" variant="outline" onClick={handleDownloadResume} disabled={isUploading || isDeleting}>
                 <Download aria-hidden="true" />
               </Button>
-              <Button size="icon" variant="destructive" onClick={handleDeleteResume}>
-                <Trash aria-hidden="true" />
+              <Button
+                size="icon"
+                variant="destructive"
+                onClick={handleDeleteResume}
+                disabled={isUploading || isDeleting}
+              >
+                {isDeleting ? <Loader2 className="animate-spin" /> : <Trash aria-hidden="true" />}
               </Button>
             </ItemActions>
           )}
@@ -63,9 +69,8 @@ const ResumeUpload = ({ fileName }: ResumeUploadProps) => {
             Note: Uploading a new resume will replace your current resume.
           </p>
         )}
-        <Button onClick={handleOpenFileInput}>
-          {isUploading ? <Loader2 className="animate-spin" /> : <Upload aria-hidden="true" />}
-          Upload Resume
+        <Button onClick={handleOpenFileInput} disabled={isUploading || isDeleting}>
+          {isUploading ? <Loader2 className="animate-spin" /> : "Upload Resume"}
         </Button>
       </CardFooter>
     </Card>

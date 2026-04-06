@@ -10,6 +10,7 @@ import { uploadResume } from "../_actions/upload-resume";
 export type UseResumeUploadReturn = {
   fileInputRef: RefObject<HTMLInputElement | null>;
   isUploading: boolean;
+  isDeleting: boolean;
   handleOpenFileInput: () => void;
   handleUploadResume: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   handleDeleteResume: () => Promise<void>;
@@ -20,6 +21,7 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleOpenFileInput = () => {
     fileInputRef.current?.click();
@@ -52,15 +54,24 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
   const handleDeleteResume = async () => {
     if (!fileName) return;
 
-    const result = await deleteResume();
-    const { success } = result;
+    setIsDeleting(true);
 
-    if (!success) {
-      const { error } = result;
-      throw new Error(error);
+    try {
+      const result = await deleteResume();
+      const { success } = result;
+
+      if (!success) {
+        const { error } = result;
+        throw new Error(error);
+      }
+
+      toast.success("Resume deleted successfully");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      toast.error("Failed to delete resume", { description: errorMessage });
+    } finally {
+      setIsDeleting(false);
     }
-
-    toast.success("Resume deleted successfully");
   };
 
   const handleDownloadResume = async () => {
@@ -77,6 +88,7 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
   return {
     fileInputRef,
     isUploading,
+    isDeleting,
     handleOpenFileInput,
     handleUploadResume,
     handleDeleteResume,
