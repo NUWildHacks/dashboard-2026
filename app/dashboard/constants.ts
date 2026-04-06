@@ -64,16 +64,16 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [JUDGE_AND_MENTOR],
   },
   {
-    title: "View Devpost",
+    title: "Devpost",
     url: DEVPOST_PATH,
     icon: SquareCode,
-    visibleTo: [PARTICIPANT],
+    visibleTo: [PARTICIPANT, ADMIN],
   },
   {
     title: "Virtual Judging Zoom",
     url: VIRTUAL_ZOOM_JUDGING_PATH,
     icon: Headset,
-    visibleTo: [JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
   },
 ];
 
