@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getStorage } from "firebase-admin/storage";
 import { revalidatePath } from "next/cache";
 
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, RESUMES_COLLECTION } from "@/constants";
+import { DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, RESUMES_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import { ActionResult } from "@/types";
 
@@ -18,9 +18,7 @@ export const deleteResume = async (): Promise<ActionResult> => {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    // change back to participant after testing
-    // const roleError = requireRole(user, PARTICIPANT, "You are not authorized to delete a resume");
-    const roleError = requireRole(user, ADMIN, "You are not authorized to delete a resume");
+    const roleError = requireRole(user, PARTICIPANT, "You are not authorized to delete a resume");
     if (roleError) return roleError;
 
     const bucket = storage.bucket();
