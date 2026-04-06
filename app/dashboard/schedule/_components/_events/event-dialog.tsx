@@ -18,12 +18,14 @@ import type { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks"
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
+import { deleteEvents } from "../../_actions";
+import { UseEventFormDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
-type EventDialogProps = {
+type EventDialogProps = { 
   userRole?: User["role"];
   handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"];
-} & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem">;
+ } & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
 
 const EventDialog = ({
   userRole = PARTICIPANT,
@@ -31,6 +33,7 @@ const EventDialog = ({
   setIsOpen,
   selectedItem,
   handleOpenConfirmDeleteDialog,
+  handleOpenEventFormDialog,
 }: EventDialogProps) => {
   if (!selectedItem) return null;
 
@@ -74,7 +77,21 @@ const EventDialog = ({
                   Delete event
                 </Button>
               )}
+              {handleOpenEventFormDialog && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleOpenEventFormDialog(selectedItem);
+                  }}
+                  disabled={isDeleting}
+                >
+                  Edit event
+                </Button>
+              )}
             </>
+
+            
           )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>

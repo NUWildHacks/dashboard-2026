@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { JUDGE, MENTOR, PARTICIPANT } from "@/constants";
+import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
 import { UseConfirmDeleteDialogReturn } from "@/hooks";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 import type { User } from "@/types";
@@ -96,42 +96,29 @@ export const getUsersColumns = (
   ];
 
   const roleSpecificColumns: ColumnDef<User>[] = [];
+  const roleSpecificMetadataColumns: ColumnDef<User>[] = [];
 
   if (role === PARTICIPANT) {
-    roleSpecificColumns.push(
-      {
-        accessorKey: "github_username",
-        header: "GitHub Username",
-        cell: ({ row }) => {
-          const user = row.original;
-          if (user.role === PARTICIPANT) {
-            return <div className="text-left text-muted-foreground">{user.github_username || "None"}</div>;
-          }
-          return null;
-        },
-        enableHiding: false,
+    roleSpecificColumns.push({
+      accessorKey: "github_username",
+      header: "GitHub Username",
+      cell: ({ row }) => {
+        const user = row.original;
+        if (user.role === PARTICIPANT) {
+          return <div className="text-left text-muted-foreground">{user.github_username || "None"}</div>;
+        }
+        return null;
       },
-      {
-        accessorKey: "project_id",
-        header: "Project ID",
-        cell: ({ row }) => {
-          const user = row.original;
-          if (user.role === PARTICIPANT) {
-            return <div className="text-left text-muted-foreground">{user.project_id || "None"}</div>;
-          }
-          return null;
-        },
-        enableHiding: false,
-      }
-    );
-  } else if (role === JUDGE || role === MENTOR) {
+      enableHiding: false,
+    });
+  } else if (role === JUDGE || role === JUDGE_AND_MENTOR) {
     roleSpecificColumns.push(
       {
         accessorKey: "affiliated_company",
         header: "Affiliated Company",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === JUDGE || user.role === MENTOR) {
+          if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
             return <div className="text-left text-muted-foreground">{user.affiliated_company}</div>;
           }
           return null;
@@ -143,14 +130,71 @@ export const getUsersColumns = (
         header: "Modality",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === JUDGE || user.role === MENTOR) {
+          if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
             return <Badge variant="secondary">{user.modality}</Badge>;
           }
           return null;
         },
         enableHiding: false,
-      }
+      },
+      ...(role === JUDGE_AND_MENTOR
+        ? [
+            {
+              accessorKey: "mentoring_timeslot",
+              header: "Mentoring Timeslot",
+              cell: ({ row }: { row: { original: User } }) => {
+                const user = row.original;
+                if (user.role === JUDGE_AND_MENTOR) {
+                  return (
+                    <div className="text-left text-muted-foreground">{user.mentoring_timeslot ?? "Not selected"}</div>
+                  );
+                }
+                return null;
+              },
+            } as ColumnDef<User>,
+          ]
+        : [])
     );
+
+    roleSpecificMetadataColumns.push({
+      accessorKey: "updated_at",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Onboarded
+            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const user = row.original;
+        if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
+          if (user.onboarded) {
+            return (
+              <Badge
+                variant="outline"
+                className="border-none bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 focus-visible:outline-none dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5"
+              >
+                Yes
+              </Badge>
+            );
+          } else {
+            return (
+              <Badge
+                variant="outline"
+                className="bg-destructive/10 [a&]:hover:bg-destructive/5 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 text-destructive border-none focus-visible:outline-none"
+              >
+                No
+              </Badge>
+            );
+          }
+        }
+        return (
+          <div className="text-left text-muted-foreground">{`${getDateFromMilliseconds(row.original.updated_at)}, ${getTimeFromMilliseconds(row.original.updated_at)}`}</div>
+        );
+      },
+      enableHiding: false,
+    });
   }
 
   const eventPlanningColumns: ColumnDef<User>[] = [
@@ -241,6 +285,7 @@ export const getUsersColumns = (
     ...identificationColumns,
     ...roleSpecificColumns,
     ...eventPlanningColumns,
+    ...roleSpecificMetadataColumns,
     ...metadataColumns,
     ...actionsColumn,
   ];

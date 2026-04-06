@@ -1,6 +1,6 @@
-import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, MENTOR, PARTICIPANT } from "@/constants";
+import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { AdminUser, JudgeUser, MentorUser, ParticipantUser, WildHacksConfig } from "@/types";
+import type { AdminUser, JudgeUser, JudgeAndMentorUser, ParticipantUser, WildHacksConfig } from "@/types";
 
 import {
   EditParticipantProfileForm,
@@ -38,8 +38,8 @@ const SettingsPage = async () => {
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>
         {user.role === PARTICIPANT && <EditParticipantProfileForm participantUser={user as ParticipantUser} />}
-        {(user.role === JUDGE || user.role === MENTOR) && (
-          <EditJudgeMentorProfileForm user={user as JudgeUser | MentorUser} />
+        {(user.role === JUDGE || user.role === JUDGE_AND_MENTOR) && (
+          <EditJudgeMentorProfileForm user={user as JudgeUser | JudgeAndMentorUser} />
         )}
         {user.role === ADMIN && <EditAdminProfileForm adminUser={user as AdminUser} />}
       </div>

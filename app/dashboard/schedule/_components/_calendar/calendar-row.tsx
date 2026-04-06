@@ -11,7 +11,7 @@ type CalendarRowProps = {
   overlapGroups: Map<Event["id"], Set<Event["id"]>>;
   calendarDayStartMs: CalendarDay["startMs"];
 } & CalendarRowConfig &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem">;
+  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
 
 const CalendarRow = ({
   events,
@@ -20,6 +20,7 @@ const CalendarRow = ({
   endMin: calendarRowEndMin,
   label,
   handleSelectItem,
+  handleKeyDown,
   calendarDayStartMs,
 }: CalendarRowProps) => {
   const calendarItems = getCalendarItems(
@@ -28,6 +29,7 @@ const CalendarRow = ({
     calendarRowStartMin,
     calendarRowEndMin,
     handleSelectItem,
+    handleKeyDown,
     calendarDayStartMs
   );
 

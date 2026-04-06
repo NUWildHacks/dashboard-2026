@@ -1,0 +1,35 @@
+# How We Calculate Scores
+
+Round 1 scores are normalized so teams are compared fairly, even when judges have different scoring tendencies.
+
+## Why We Normalize
+
+Some judges are naturally stricter and some are naturally more lenient. Without normalization, two equally strong projects
+could receive meaningfully different raw scores depending on which judges they were assigned.
+
+Normalization reduces that bias so rankings better reflect project quality instead of judge severity.
+
+## High-Level Process
+
+1. Judges score each project using the [Project Evaluation Criteria](/guide/judging-and-awards/project-evaluation).
+2. Raw criterion scores are combined with criterion weights to produce a raw Round 1 score.
+3. Scores are standardized relative to each judge's scoring distribution.
+4. Standardized scores are aggregated and rescaled to produce a final normalized score out of 100.
+
+A common standardization form is:
+
+`z = (x - judgeMean) / judgeStdDev`
+
+where `x` is a raw score from a judge.
+
+## What This Means for Teams
+
+- Your score is still based on the same rubric categories and weights.
+- Normalization only adjusts for differences in judge scoring patterns.
+- This improves consistency across judging pools and reduces luck from judge assignment.
+
+## Related Pages
+
+- [Project Evaluation Criteria](/guide/judging-and-awards/project-evaluation)
+- [Understanding Your Scores](/guide/judging-and-awards/understanding-your-scores)
+- [Judging Rounds](/guide/judging-and-awards/how-judging-works)

@@ -6,3 +6,5 @@ export { useEditAdminProfileForm } from "./use-edit-admin-profile-form";
 export type { UseEditAdminProfileFormReturn } from "./use-edit-admin-profile-form";
 export { useEventWithdraw } from "./use-event-withdraw";
 export type { UseEventWithdrawReturn } from "./use-event-withdraw";
+export { useEditWildhacksConfigForm } from "./use-edit-wildhacks-config-form";
+export type { UseEditWildhacksConfigFormReturn } from "./use-edit-wildhacks-config-form";

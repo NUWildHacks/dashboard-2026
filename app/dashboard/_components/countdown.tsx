@@ -21,7 +21,7 @@ const Countdown = ({ start_time, end_time }: CountdownProps) => {
   }
 
   return (
-    <Card className="shadow-xs md:col-span-2">
+    <Card className="shadow-xs h-full">
       <CardHeader>
         <CardTitle>Time Remaining</CardTitle>
         <CardDescription>{descriptionText}</CardDescription>

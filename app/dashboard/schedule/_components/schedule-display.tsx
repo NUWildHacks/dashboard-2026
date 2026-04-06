@@ -16,9 +16,7 @@ import { useEventFormDialog, useEvents, useEventsTable, useScheduleDisplay } fro
 import { EVENT_CATEGORIES } from "../constants";
 import { EventCategory, Event } from "../types";
 
-import EventsTable from "./_events/events-table";
-
-import { Calendar, ConfirmDeleteEventsDialog, EventDialog, EventFormDialog } from ".";
+import { Calendar, ConfirmDeleteEventsDialog, EventDialog, EventFormDialog, EventsTable } from ".";
 
 type ScheduleDisplayProps = {
   userRole: User["role"];
@@ -111,7 +109,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
           </div>
           <InputGroup className="lg:max-w-[350px] w-full">
             <InputGroupInput
-              id="search"
+              id="search-events"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search events..."

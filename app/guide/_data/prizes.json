@@ -1,0 +1,65 @@
+{
+  "notices": {
+    "info": "Prizes may be distributed in-person or shipped post-hackathon. Each member of each winning team will get the prize. Prizes will be distributed during closing ceremony.",
+    "warning": "A team may not win more than one prize total from the Grand Prizes and Track Prizes. They may win multiple prizes from Challenge Prizes, even in addition to a grand or track prize."
+  },
+  "grandPrizes": [
+    {
+      "title": "1st Place Overall",
+      "description": "This prize is awarded to the first-place project across all tracks.",
+      "award": "To be announced!",
+      "emoji": "🥇"
+    },
+    {
+      "title": "2nd Place Overall",
+      "description": "This prize is awarded to the second-place project across all tracks.",
+      "award": "To be announced!",
+      "emoji": "🥈"
+    },
+    {
+      "title": "3rd Place Overall",
+      "description": "This prize is awarded to the third-place project across all tracks.",
+      "award": "To be announced!",
+      "emoji": "🥉"
+    }
+  ],
+  "trackPrizes": [
+    {
+      "title": "Track 1",
+      "award": "To be announced!",
+      "emoji": "1️⃣"
+    },
+    {
+      "title": "Track 2",
+      "award": "To be announced!",
+      "emoji": "2️⃣"
+    },
+    {
+      "title": "Track 3",
+      "award": "To be announced!",
+      "emoji": "3️⃣"
+    }
+  ],
+  "mlhPrizes": [
+    {
+      "title": "Prize 1!",
+      "award": "To be announced!",
+      "emoji": "💻"
+    },
+    {
+      "title": "Prize 2!",
+      "award": "To be announced!",
+      "emoji": "💻"
+    },
+    {
+      "title": "Prize 3!",
+      "award": "To be announced!",
+      "emoji": "💻"
+    }
+  ],
+  "crowdFavorite": {
+    "title": "Crowd Favorite",
+    "award": "To be announced!",
+    "emoji": "😄"
+  }
+}

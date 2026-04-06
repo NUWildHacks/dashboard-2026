@@ -1,4 +1,3 @@
-import { Project } from "@/app/dashboard/project/types";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -11,9 +10,10 @@ import {
   TSHIRT_SIZES,
   ADMIN,
   JUDGE,
-  MENTOR,
   MODALITIES,
   PARTICIPANT,
+  JUDGE_AND_MENTOR,
+  MENTORING_TIMESLOTS,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -27,6 +27,8 @@ export type Gender = (typeof GENDERS)[number];
 export type Race = (typeof RACES)[number];
 export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
 export type Modality = (typeof MODALITIES)[number];
+
+export type MentoringTimeslot = (typeof MENTORING_TIMESLOTS)[number];
 
 export type Role = (typeof ROLES)[number];
 
@@ -58,9 +60,6 @@ export type ParticipantUser = BaseUser & {
   mlh_code_of_conduct: boolean;
   mlh_privacy_policy: boolean;
   mlh_marketing: boolean;
-
-  project_id?: Project["id"];
-  joined_project_at?: number;
 };
 
 export type AdminUser = BaseUser & {
@@ -73,14 +72,20 @@ export type JudgeUser = BaseUser & {
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  onboarded?: boolean;
 };
 
-export type MentorUser = BaseUser & {
-  role: typeof MENTOR;
+export type JudgeAndMentorUser = BaseUser & {
+  role: typeof JUDGE_AND_MENTOR;
 
   affiliated_company: string;
   modality: Modality;
   other_modality: string;
+
+  mentoring_timeslot?: MentoringTimeslot;
+
+  onboarded?: boolean;
 };
 
-export type User = ParticipantUser | AdminUser | JudgeUser | MentorUser;
+export type User = ParticipantUser | AdminUser | JudgeUser | JudgeAndMentorUser;
