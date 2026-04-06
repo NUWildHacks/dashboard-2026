@@ -52,16 +52,16 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
-    title: "Judging",
-    url: DASHBOARD_JUDGING_PATH,
-    icon: BookOpenCheck,
-    visibleTo: [JUDGE, JUDGE_AND_MENTOR],
-  },
-  {
     title: "Mentoring",
     url: DASHBOARD_MENTORING_PATH,
     icon: GraduationCap,
     visibleTo: [JUDGE_AND_MENTOR],
+  },
+  {
+    title: "Judging",
+    url: DASHBOARD_JUDGING_PATH,
+    icon: BookOpenCheck,
+    visibleTo: [JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Devpost",
