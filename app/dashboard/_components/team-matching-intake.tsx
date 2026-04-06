@@ -64,7 +64,7 @@ const GENDER_PREFERENCE_OPTIONS = [
 ] as const;
 
 const WHERE_STAYING_OPTIONS = [
-  { value: "prefer_not_to_say", label: "Prefer not to say"},
+  { value: "prefer_not_to_say", label: "Prefer not to say" },
   { value: "on_site", label: "On-site (staying at the venue)" },
   { value: "on_campus", label: "On-campus housing (dorm)" },
   { value: "off_campus", label: "Off-campus accommodation" },
@@ -476,7 +476,10 @@ const TeamMatchingIntake = ({
                         <FieldLabel htmlFor="gender_preference">
                           Gender preference <span className="text-muted-foreground font-normal">(optional)</span>
                         </FieldLabel>
-                        <Select value={form.gender_preference} onValueChange={(v) => handleChange("gender_preference", v)}>
+                        <Select
+                          value={form.gender_preference}
+                          onValueChange={(v) => handleChange("gender_preference", v)}
+                        >
                           <SelectTrigger id="gender_preference" className="w-full">
                             <SelectValue placeholder="Select a preference" />
                           </SelectTrigger>

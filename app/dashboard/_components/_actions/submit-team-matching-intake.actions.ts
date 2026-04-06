@@ -2,7 +2,13 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { TEAM_MATCHING_INTAKE_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
+import {
+  TEAM_MATCHING_INTAKE_COLLECTION,
+  USERS_COLLECTION,
+  LOGIN_PATH,
+  DASHBOARD_PATH,
+  PARTICIPANT,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -91,11 +97,17 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
       return { success: false, error: "Invalid work style." };
     }
 
-    if (data.gender_preference && !VALID_GENDER_PREFERENCES.includes(data.gender_preference as (typeof VALID_GENDER_PREFERENCES)[number])) {
+    if (
+      data.gender_preference &&
+      !VALID_GENDER_PREFERENCES.includes(data.gender_preference as (typeof VALID_GENDER_PREFERENCES)[number])
+    ) {
       return { success: false, error: "Invalid gender preference." };
     }
 
-    if (data.where_staying && !VALID_WHERE_STAYING.includes(data.where_staying as (typeof VALID_WHERE_STAYING)[number])) {
+    if (
+      data.where_staying &&
+      !VALID_WHERE_STAYING.includes(data.where_staying as (typeof VALID_WHERE_STAYING)[number])
+    ) {
       return { success: false, error: "Invalid where staying value." };
     }
 

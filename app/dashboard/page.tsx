@@ -59,7 +59,6 @@ const DashboardPage = async () => {
             eventStartTime={wildhacksConfig.start_time}
           />
         </div>
-        
       )}
       <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>
         <UpcomingEvents />
