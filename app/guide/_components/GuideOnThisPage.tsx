@@ -140,7 +140,7 @@ const GuideOnThisPage = () => {
       return;
     }
 
-    const headings = Array.from(article.querySelectorAll("h2, h3")) as HTMLHeadingElement[];
+    const headings = Array.from(article.querySelectorAll("h1, h2, h3")) as HTMLHeadingElement[];
     const seenIds = new Map<string, number>();
 
     const nextItems: TocItem[] = headings
@@ -172,6 +172,16 @@ const GuideOnThisPage = () => {
 
     const frame = window.requestAnimationFrame(() => {
       setItems(nextItems);
+
+      const requestedId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      if (!requestedId) {
+        return;
+      }
+
+      const target = document.getElementById(requestedId);
+      if (target) {
+        target.scrollIntoView({ block: "start" });
+      }
     });
 
     return () => {
