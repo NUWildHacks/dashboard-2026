@@ -64,14 +64,10 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
     const fullName = `${scannedUser.first_name} ${scannedUser.last_name}`.trim();
 
     if (normalizedEventId !== WILDHACKS_EVENT_ID) {
-      const wildhacksCheckInSnapshot = await db
-        .collection(EVENT_CHECK_INS_COLLECTION)
-        .where("event_id", "==", WILDHACKS_EVENT_ID)
-        .where("user_id", "==", payload.user_id)
-        .limit(1)
-        .get();
+      const wildhacksDocId = `${WILDHACKS_EVENT_ID}_${payload.user_id}`;
+      const wildhacksCheckInDoc = await db.collection(EVENT_CHECK_INS_COLLECTION).doc(wildhacksDocId).get();
 
-      if (wildhacksCheckInSnapshot.empty) {
+      if (!wildhacksCheckInDoc.exists) {
         return {
           success: false,
           error: "This attendee must check in to WildHacks before checking in to other events.",
@@ -82,41 +78,13 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
 
     const dietaryRestrictions = isFoodEvent ? scannedUser.dietary_restrictions : undefined;
 
-    const existingCheckInSnapshot = await db
-      .collection(EVENT_CHECK_INS_COLLECTION)
-      .where("event_id", "==", normalizedEventId)
-      .where("user_id", "==", payload.user_id)
-      .limit(1)
-      .get();
-
-    if (!existingCheckInSnapshot.empty) {
-      const existingCheckInDoc = existingCheckInSnapshot.docs[0];
-      const existingCheckInData = {
-        id: existingCheckInDoc.id,
-        ...existingCheckInDoc.data(),
-      } as EventCheckIn;
-
-      const existingCheckIn: EventCheckIn = {
-        ...existingCheckInData,
-        scan_payload: {
-          ...existingCheckInData.scan_payload,
-          full_name: existingCheckInData.scan_payload.full_name ?? (fullName || undefined),
-          email: existingCheckInData.scan_payload.email ?? scannedUser.email,
-          role: existingCheckInData.scan_payload.role ?? scannedUser.role,
-        },
-      };
-
-      return {
-        success: true,
-        check_in: existingCheckIn,
-        already_checked_in: true,
-        dietary_restrictions: dietaryRestrictions,
-      };
-    }
-
-    const checkInDocRef = db.collection(EVENT_CHECK_INS_COLLECTION).doc();
+    // Deterministic ID makes the write idempotent-safe: create() fails atomically
+    // if another concurrent scan already wrote the record, eliminating the
+    // check-then-set race condition.
+    const checkInDocId = `${normalizedEventId}_${payload.user_id}`;
+    const checkInDocRef = db.collection(EVENT_CHECK_INS_COLLECTION).doc(checkInDocId);
     const checkInRecord: EventCheckIn = {
-      id: checkInDocRef.id,
+      id: checkInDocId,
       event_id: normalizedEventId,
       user_id: payload.user_id,
       checked_in_at: now,
@@ -131,7 +99,31 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       updated_at: now,
     };
 
-    await checkInDocRef.set(checkInRecord);
+    try {
+      await checkInDocRef.create(checkInRecord);
+    } catch (createError) {
+      // Error code 6 = ALREADY_EXISTS — a concurrent scan won the race
+      if ((createError as { code?: number }).code === 6) {
+        const existingDoc = await checkInDocRef.get();
+        const existingData = { id: existingDoc.id, ...existingDoc.data() } as EventCheckIn;
+        const existingCheckIn: EventCheckIn = {
+          ...existingData,
+          scan_payload: {
+            ...existingData.scan_payload,
+            full_name: existingData.scan_payload.full_name ?? (fullName || undefined),
+            email: existingData.scan_payload.email ?? scannedUser.email,
+            role: existingData.scan_payload.role ?? scannedUser.role,
+          },
+        };
+        return {
+          success: true,
+          check_in: existingCheckIn,
+          already_checked_in: true,
+          dietary_restrictions: dietaryRestrictions,
+        };
+      }
+      throw createError;
+    }
 
     return {
       success: true,
