@@ -57,6 +57,18 @@ const WORK_STYLE_OPTIONS = [
   { value: "in_between", label: "In between: I try my best, without the pressure to win" },
 ] as const;
 
+const GENDER_PREFERENCE_OPTIONS = [
+  { value: "no_preference", label: "No preference" },
+  { value: "prefer_mixed", label: "Prefer a mixed-gender team" },
+  { value: "prefer_same", label: "Prefer a same-gender team" },
+] as const;
+
+const WHERE_STAYING_OPTIONS = [
+  { value: "staying_overnight", label: "Staying overnight" },
+  { value: "commuting", label: "Commuting (not staying overnight)" },
+  { value: "unsure", label: "Not sure yet" },
+] as const;
+
 const MAX_REQUIRED_TEAMMATES = 3;
 
 type TeammateEntry = {
@@ -73,6 +85,8 @@ type FormState = {
   preferred_team_size: number;
   work_style: string;
   required_teammates: TeammateEntry[];
+  gender_preference: string;
+  where_staying: string;
 };
 
 const INITIAL_FORM_STATE: FormState = {
@@ -83,6 +97,8 @@ const INITIAL_FORM_STATE: FormState = {
   preferred_team_size: 4,
   work_style: "",
   required_teammates: [],
+  gender_preference: "",
+  where_staying: "",
 };
 
 type TeamMatchingIntakeProps = {
@@ -190,6 +206,8 @@ const TeamMatchingIntake = ({
     if (form.preferred_roles.length === 0) missing.push("Preferred roles");
     if (Object.values(form.skills).every((v) => v === 0)) missing.push("Skills");
     if (!form.work_style) missing.push("Work style");
+    if (!form.gender_preference) missing.push("Team gender preference");
+    if (!form.where_staying) missing.push("Overnight stay");
     if (!consentChecked) missing.push("Consent");
 
     if (missing.length > 0) {
@@ -209,7 +227,14 @@ const TeamMatchingIntake = ({
     setIsSubmitting(true);
 
     const result = await submitTeamMatchingIntake({
-      ...form,
+      experience_level: form.experience_level,
+      preferred_roles: form.preferred_roles,
+      skills: form.skills,
+      additional_notes: form.additional_notes,
+      preferred_team_size: form.preferred_team_size,
+      work_style: form.work_style,
+      gender_preference: form.gender_preference,
+      where_staying: form.where_staying,
       required_teammates: form.required_teammates.map((t) => t.userId),
       consent: consentChecked,
     });
@@ -443,6 +468,45 @@ const TeamMatchingIntake = ({
                           </SelectTrigger>
                           <SelectContent>
                             {WORK_STYLE_OPTIONS.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <FieldLabel htmlFor="gender_preference">
+                          Team gender preference <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <Select
+                          value={form.gender_preference}
+                          onValueChange={(v) => handleChange("gender_preference", v)}
+                        >
+                          <SelectTrigger id="gender_preference" className="w-full">
+                            <SelectValue placeholder="Select a preference" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {GENDER_PREFERENCE_OPTIONS.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <FieldLabel htmlFor="where_staying">
+                          Are you staying overnight? <span className="text-destructive">*</span>
+                        </FieldLabel>
+                        <Select value={form.where_staying} onValueChange={(v) => handleChange("where_staying", v)}>
+                          <SelectTrigger id="where_staying" className="w-full">
+                            <SelectValue placeholder="Select an option" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {WHERE_STAYING_OPTIONS.map(({ value, label }) => (
                               <SelectItem key={value} value={value}>
                                 {label}
                               </SelectItem>

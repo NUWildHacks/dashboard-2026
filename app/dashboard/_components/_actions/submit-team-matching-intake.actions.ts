@@ -31,6 +31,8 @@ const VALID_SKILLS = [
   "AWS / Cloud",
   "Docker / DevOps",
 ] as const;
+const VALID_GENDER_PREFERENCES = ["no_preference", "prefer_mixed", "prefer_same"] as const;
+const VALID_WHERE_STAYING = ["staying_overnight", "commuting", "unsure"] as const;
 const MAX_REQUIRED_TEAMMATES = 3;
 
 export type TeamMatchingIntakeData = {
@@ -42,6 +44,8 @@ export type TeamMatchingIntakeData = {
   work_style: string;
   required_teammates: string[];
   consent: boolean;
+  gender_preference: string;
+  where_staying: string;
 };
 
 export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Promise<ActionResult> => {
@@ -74,7 +78,7 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     if (
       typeof data.skills !== "object" ||
       Object.keys(data.skills).some((k) => !VALID_SKILLS.includes(k as (typeof VALID_SKILLS)[number])) ||
-      Object.values(data.skills).some((v) => typeof v !== "number" || v < 0 || v > 100)
+      Object.values(data.skills).some((v) => typeof v !== "number" || v < 0 || v > 5)
     ) {
       return { success: false, error: "Invalid skills data." };
     }
@@ -85,6 +89,14 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
 
     if (!VALID_WORK_STYLES.includes(data.work_style as (typeof VALID_WORK_STYLES)[number])) {
       return { success: false, error: "Invalid work style." };
+    }
+
+    if (!VALID_GENDER_PREFERENCES.includes(data.gender_preference as (typeof VALID_GENDER_PREFERENCES)[number])) {
+      return { success: false, error: "Invalid gender preference." };
+    }
+
+    if (!VALID_WHERE_STAYING.includes(data.where_staying as (typeof VALID_WHERE_STAYING)[number])) {
+      return { success: false, error: "Invalid where staying value." };
     }
 
     if (
