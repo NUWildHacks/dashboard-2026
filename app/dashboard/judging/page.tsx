@@ -14,7 +14,13 @@ const JudgingPage = async () => {
 
   const projectsWithMetadata = await getProjectsWithMetadata(user.id);
 
-  return <JudgingDisplay projectsWithMetadata={projectsWithMetadata} modality={user.modality} otherModality={user.other_modality} />;
+  return (
+    <JudgingDisplay
+      projectsWithMetadata={projectsWithMetadata}
+      modality={user.modality}
+      otherModality={user.other_modality}
+    />
+  );
 };
 
 export default JudgingPage;

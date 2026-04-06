@@ -24,5 +24,6 @@ export type {
   School,
   TShirtSize,
   User,
+  Modality,
 } from "./user.types";
 export type { WildHacksConfig, WildHacksStatistics } from "./wildhacks.types";
