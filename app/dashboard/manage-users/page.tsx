@@ -9,7 +9,7 @@ import { getUsers } from "./_lib";
 const ManageUsersPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_MANAGE_USERS_PATH)}`;
 
-  const { role } = await getAuthenticatedUser(redirectPath);
+  const { role, id } = await getAuthenticatedUser(redirectPath);
   if (role !== ADMIN) redirect(DASHBOARD_PATH);
 
   const [users] = await Promise.all([getUsers()]);
@@ -18,7 +18,7 @@ const ManageUsersPage = async () => {
     <div className="flex-1 flex flex-col gap-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Users</h2>
-        <UsersTable users={users} />
+        <UsersTable userId={id} users={users} />
       </div>
     </div>
   );

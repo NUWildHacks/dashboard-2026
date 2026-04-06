@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock, Loader2Icon, MapPin } from "lucide-react";
+import { Clock, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,18 +14,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ADMIN, PARTICIPANT } from "@/constants";
-import type { UseItemDialogReturn } from "@/hooks";
+import type { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
-import { deleteEvents } from "../../_actions";
 import { UseEventFormDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
 type EventDialogProps = {
   userRole?: User["role"];
+  handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"];
   handleOpenEventFormDialog?: UseEventFormDialogReturn["handleOpenEventFormDialog"];
-} & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
+ } & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
 
 const EventDialog = ({
   userRole = PARTICIPANT,
@@ -33,7 +33,7 @@ const EventDialog = ({
   setIsOpen,
   selectedItem,
   isDeleting,
-  handleDeleteItem,
+  handleOpenConfirmDeleteDialog,
   handleOpenEventFormDialog,
 }: EventDialogProps) => {
   if (!selectedItem) return null;
@@ -67,9 +67,17 @@ const EventDialog = ({
         <DialogFooter>
           {userRole === ADMIN && (
             <>
-              <Button variant="destructive" onClick={() => handleDeleteItem(deleteEvents)} disabled={isDeleting}>
-                {isDeleting ? <Loader2Icon className="size-4 animate-spin" aria-hidden="true" /> : "Delete event"}
-              </Button>
+              {handleOpenConfirmDeleteDialog && (
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleOpenConfirmDeleteDialog([selectedItem.id]);
+                  }}
+                >
+                  Delete event
+                </Button>
+              )}
               {handleOpenEventFormDialog && (
                 <Button
                   variant="outline"
@@ -83,6 +91,8 @@ const EventDialog = ({
                 </Button>
               )}
             </>
+
+            
           )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>

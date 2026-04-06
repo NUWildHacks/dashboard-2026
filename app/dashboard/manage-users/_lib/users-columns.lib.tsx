@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
+import { UseConfirmDeleteDialogReturn } from "@/hooks";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 import type { User } from "@/types";
 
@@ -23,16 +24,16 @@ import type { User } from "@/types";
  * Returns different columns for different user roles.
  *
  * @param role - The user role to determine which columns to show
- * @param handleDeleteUsers - Callback function to handle user deletion
+ * @param handleOpenConfirmDeleteDialog - Callback function to handle user deletion
  * @returns Array of column definitions for the users table
  * @example
  * ```ts
- * const columns = getUsersColumns(PARTICIPANT, handleDeleteUsers);
+ * const columns = getUsersColumns(PARTICIPANT, handleOpenConfirmDeleteDialog);
  * ```
  */
 export const getUsersColumns = (
   role: User["role"],
-  handleDeleteUsers: (userIds: User["id"][]) => Promise<void>
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<User>["handleOpenConfirmDeleteDialog"]
 ): ColumnDef<User>[] => {
   const identificationColumns: ColumnDef<User>[] = [
     {
@@ -269,7 +270,7 @@ export const getUsersColumns = (
                 Copy email
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteUsers([row.original.id])}>
+              <DropdownMenuItem variant="destructive" onClick={() => handleOpenConfirmDeleteDialog([row.original.id])}>
                 Delete user
               </DropdownMenuItem>
             </DropdownMenuContent>
