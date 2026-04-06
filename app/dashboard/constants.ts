@@ -7,6 +7,7 @@ import {
   GraduationCap,
   Headset,
   SquareCode,
+  QrCode,
 } from "lucide-react";
 
 import {
@@ -14,6 +15,7 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
+  DASHBOARD_CHECK_IN_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -75,12 +77,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: Headset,
     visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
   },
+  {
+    title: "Check-in",
+    url: DASHBOARD_CHECK_IN_PATH,
+    icon: QrCode,
+    visibleTo: [ADMIN],
+  },
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
   schedule: "Schedule",
   settings: "Settings",
   "manage-users": "Manage users",
+  "check-in": "Check-in",
   guide: "Guide",
   judging: "Judging",
   mentoring: "Mentoring",
