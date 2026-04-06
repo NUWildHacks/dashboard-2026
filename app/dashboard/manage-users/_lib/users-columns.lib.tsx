@@ -135,7 +135,24 @@ export const getUsersColumns = (
           return null;
         },
         enableHiding: false,
-      }
+      },
+      ...(role === JUDGE_AND_MENTOR
+        ? [
+            {
+              accessorKey: "mentoring_timeslot",
+              header: "Mentoring Timeslot",
+              cell: ({ row }: { row: { original: User } }) => {
+                const user = row.original;
+                if (user.role === JUDGE_AND_MENTOR) {
+                  return (
+                    <div className="text-left text-muted-foreground">{user.mentoring_timeslot ?? "Not selected"}</div>
+                  );
+                }
+                return null;
+              },
+            } as ColumnDef<User>,
+          ]
+        : [])
     );
 
     roleSpecificMetadataColumns.push({
