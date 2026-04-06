@@ -71,10 +71,7 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
 
     const url = await getDownloadURL(fileRef);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fileName;
-    a.click();
+    window.open(url, "_blank");
   };
 
   return {
