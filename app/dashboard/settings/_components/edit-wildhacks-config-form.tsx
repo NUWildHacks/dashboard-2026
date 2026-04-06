@@ -109,6 +109,26 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                   )}
                 />
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Controller
+                  name="crowd_favorite_password"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}>Crowd Favorite Voting Password</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type="text"
+                        placeholder="Enter voting password"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                    </Field>
+                  )}
+                />
+              </div>
             </FieldSet>
           </FieldGroup>
         </form>

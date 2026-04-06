@@ -20,7 +20,8 @@ export type UseEditWildhacksConfigFormReturn = {
 };
 
 export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
-  const { max_team_size, max_participants, registration_deadline, start_time, end_time } = wildhacksConfig;
+  const { max_team_size, max_participants, registration_deadline, start_time, end_time, crowd_favorite_password } =
+    wildhacksConfig;
 
   const {
     control,
@@ -36,6 +37,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       registration_deadline,
       start_time,
       end_time,
+      crowd_favorite_password: crowd_favorite_password || "",
     },
   });
 
@@ -74,6 +76,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       registration_deadline,
       start_time,
       end_time,
+      crowd_favorite_password: crowd_favorite_password || "",
     });
   };
 

@@ -15,6 +15,11 @@ export const editWildhacksConfigFormSchema = z
     registration_deadline: z.number().min(1, { message: "Registration deadline must be milliseconds since epoch" }),
     start_time: z.number().min(1, { message: "Start time must be milliseconds since epoch" }),
     end_time: z.number().min(1, { message: "End time must be milliseconds since epoch" }),
+    crowd_favorite_password: z
+      .string()
+      .min(1, "Crowd favorite password is required")
+      .min(4, "Password must be at least 4 characters")
+      .max(50, "Password must be at most 50 characters"),
   })
   .refine((data) => data.registration_deadline < data.start_time, {
     message: "Registration deadline must be before event start time",
