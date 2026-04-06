@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { DASHBOARD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, LOGIN_PATH } from "@/constants";
+import { DASHBOARD_JUDGING_PATH, DASHBOARD_PATH, JUDGE, JUDGE_AND_MENTOR, LOGIN_PATH } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
 import { JudgingDisplay } from "./_components";
@@ -10,7 +10,7 @@ const JudgingPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_JUDGING_PATH)}`;
 
   const user = await getAuthenticatedUser(redirectPath);
-  if (user.role !== JUDGE) redirect(DASHBOARD_PATH);
+  if (user.role !== JUDGE && user.role !== JUDGE_AND_MENTOR) redirect(DASHBOARD_PATH);
 
   const projectsWithMetadata = await getProjectsWithMetadata(user.id);
 

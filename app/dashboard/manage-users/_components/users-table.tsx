@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JUDGE, MENTOR, PARTICIPANT, ROLES } from "@/constants";
+import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT, ROLES } from "@/constants";
 import { User } from "@/types";
 
 import { useUsersTable } from "../_hooks";
@@ -39,7 +39,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
           <div className="flex flex-col md:flex-row gap-4">
-            {(role === PARTICIPANT || role === JUDGE || role === MENTOR) && (
+            {(role === PARTICIPANT || role === JUDGE || role === JUDGE_AND_MENTOR) && (
               <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
                 Download CSV
               </Button>
@@ -47,7 +47,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
             <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
               <SelectTrigger
                 id="role-filter"
-                className="min-w-[125px] md:w-[125px] w-full"
+                className="min-w-[150px] md:w-[150px] w-full"
                 aria-label="Filter users by role"
               >
                 <SelectValue placeholder="Select role" />

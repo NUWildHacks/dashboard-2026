@@ -13,10 +13,10 @@ export type RegisterUserResult = ActionResult<RegistrationFormSchema>;
 
 export const registerUser = async (
   data: RegistrationFormSchema,
-  start_time: WildHacksConfig["start_time"],
+  _start_time: WildHacksConfig["start_time"],
   end_time: WildHacksConfig["end_time"],
   max_participants: WildHacksConfig["max_participants"],
-  registration_deadline: WildHacksConfig["registration_deadline"]
+  _registration_deadline: WildHacksConfig["registration_deadline"]
 ): Promise<RegisterUserResult> => {
   const userInfo = await verifySession();
   if (!userInfo) redirect(`${LOGIN_PATH}?redirect=${encodeURIComponent(REGISTRATION_PATH)}`);

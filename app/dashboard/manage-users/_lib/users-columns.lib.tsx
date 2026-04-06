@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { JUDGE, MENTOR, PARTICIPANT } from "@/constants";
+import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
 import { getDateFromMilliseconds, getTimeFromMilliseconds } from "@/lib";
 import type { User } from "@/types";
 
@@ -110,14 +110,14 @@ export const getUsersColumns = (
       },
       enableHiding: false,
     });
-  } else if (role === JUDGE || role === MENTOR) {
+  } else if (role === JUDGE || role === JUDGE_AND_MENTOR) {
     roleSpecificColumns.push(
       {
         accessorKey: "affiliated_company",
         header: "Affiliated Company",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === JUDGE || user.role === MENTOR) {
+          if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
             return <div className="text-left text-muted-foreground">{user.affiliated_company}</div>;
           }
           return null;
@@ -129,13 +129,30 @@ export const getUsersColumns = (
         header: "Modality",
         cell: ({ row }) => {
           const user = row.original;
-          if (user.role === JUDGE || user.role === MENTOR) {
+          if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
             return <Badge variant="secondary">{user.modality}</Badge>;
           }
           return null;
         },
         enableHiding: false,
-      }
+      },
+      ...(role === JUDGE_AND_MENTOR
+        ? [
+            {
+              accessorKey: "mentoring_timeslot",
+              header: "Mentoring Timeslot",
+              cell: ({ row }: { row: { original: User } }) => {
+                const user = row.original;
+                if (user.role === JUDGE_AND_MENTOR) {
+                  return (
+                    <div className="text-left text-muted-foreground">{user.mentoring_timeslot ?? "Not selected"}</div>
+                  );
+                }
+                return null;
+              },
+            } as ColumnDef<User>,
+          ]
+        : [])
     );
 
     roleSpecificMetadataColumns.push({
@@ -150,7 +167,7 @@ export const getUsersColumns = (
       },
       cell: ({ row }) => {
         const user = row.original;
-        if (user.role === JUDGE || user.role === MENTOR) {
+        if (user.role === JUDGE || user.role === JUDGE_AND_MENTOR) {
           if (user.onboarded) {
             return (
               <Badge

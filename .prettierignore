@@ -8,6 +8,7 @@ dist
 pnpm-lock.yaml
 .env
 .env.local
+*.mdx
 
 # Don't format images and icons
 public/**/*.svg

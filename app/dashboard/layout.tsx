@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-import { DASHBOARD_PATH, JUDGE, LOGIN_PATH, MENTOR } from "@/constants";
+import { DASHBOARD_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR } from "@/constants";
 import { getAuthenticatedUser, onboardUser } from "@/lib";
 
 import { DashboardSidebar, OnboardingDialog } from "./_components";
@@ -14,12 +14,12 @@ const DashboardLayout = async ({ children }: DashboardLayoutProps) => {
   const { id: userId, role } = await getAuthenticatedUser(redirectPath);
   if (!userId) redirect(redirectPath);
 
-  const onboarded = role === JUDGE || role === MENTOR ? await onboardUser(userId) : true;
+  const onboarded = role === JUDGE || role === JUDGE_AND_MENTOR ? await onboardUser(userId) : true;
 
   return (
     <>
       <DashboardSidebar role={role}>{children}</DashboardSidebar>
-      {(role === JUDGE || role === MENTOR) && <OnboardingDialog role={role} onboarded={onboarded} />}
+      {(role === JUDGE || role === JUDGE_AND_MENTOR) && <OnboardingDialog role={role} onboarded={onboarded} />}
     </>
   );
 };

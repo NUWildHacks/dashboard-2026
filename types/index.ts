@@ -9,10 +9,11 @@ export type {
 export type { ErrorPageProps } from "./error-page.types";
 export type {
   AdminUser,
-  MentorUser,
+  JudgeAndMentorUser,
   BaseUser,
   Country,
   DietaryRestriction,
+  MentoringTimeslot,
   FieldOfStudy,
   Gender,
   JudgeUser,
