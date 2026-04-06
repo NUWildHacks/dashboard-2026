@@ -982,6 +982,27 @@
   color: var(--body-color);
 }
 
+.guide-content {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.guide-content a,
+.guide-content code,
+.guide-content pre,
+.guide-content p,
+.guide-content li,
+.guide-content blockquote,
+.guide-content h1,
+.guide-content h2,
+.guide-content h3,
+.guide-content h4,
+.guide-content h5,
+.guide-content h6 {
+  min-width: 0;
+}
+
 .guide-content p {
   margin: 0 0 1rem;
 }
