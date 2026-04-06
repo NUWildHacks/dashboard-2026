@@ -9,6 +9,7 @@ export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
 export const GUIDE_PATH = "/guide" as const;
 export const DASHBOARD_JUDGING_PATH = "/dashboard/judging" as const;
 export const DASHBOARD_MENTORING_PATH = "/dashboard/mentoring" as const;
+export const DASHBOARD_TEAM_MATCHING_PATH = "/dashboard/team-matching" as const;
 
 export const LOGIN_PATH = "/login" as const;
 
@@ -20,6 +21,7 @@ export const PROTECTED_ROUTES = [
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
   DASHBOARD_SETTINGS_PATH,
+  DASHBOARD_TEAM_MATCHING_PATH,
 ] as const satisfies readonly string[];
 
 export const WILDHACKS_HOME = "/wildhacks-home" as const;
