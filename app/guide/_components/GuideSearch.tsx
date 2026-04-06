@@ -25,7 +25,8 @@ const matchQuery = (entry: GuideSearchEntry, q: string): boolean => {
   const nq = normalize(q);
   const nTitle = normalize(entry.title);
   const nHref = normalize(entry.href);
-  return nTitle.includes(nq) || nHref.includes(nq);
+  const nSearchText = normalize(entry.searchText);
+  return nTitle.includes(nq) || nHref.includes(nq) || nSearchText.includes(nq);
 };
 
 const GuideSearch = ({ entries }: GuideSearchProps) => {
