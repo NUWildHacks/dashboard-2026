@@ -25,7 +25,7 @@ type EventDialogProps = {
   userRole?: User["role"];
   handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"];
   handleOpenEventFormDialog?: UseEventFormDialogReturn["handleOpenEventFormDialog"];
- } & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
+} & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
 
 const EventDialog = ({
   userRole = PARTICIPANT,
@@ -91,8 +91,6 @@ const EventDialog = ({
                 </Button>
               )}
             </>
-
-            
           )}
           <DialogClose asChild>
             <Button variant="outline">Go back</Button>

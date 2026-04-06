@@ -24,8 +24,7 @@ const DashboardPage = async () => {
   const fileName = resumeMetadata?.file_name;
 
   let hasSubmittedTeamMatching = false;
-  // if (role === PARTICIPANT) {
-  if (role === ADMIN) {
+  if (role === PARTICIPANT) {
     const db = getFirestore();
     const doc = await db.collection(TEAM_MATCHING_INTAKE_COLLECTION).doc(userId).get();
     hasSubmittedTeamMatching = doc.exists;
@@ -48,40 +47,22 @@ const DashboardPage = async () => {
       </div>
 
       {role === PARTICIPANT && (
-        <div>
+        <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
+          <TeamMatchingIntake
+            hasSubmitted={hasSubmittedTeamMatching}
+            firstName={first_name}
+            lastName={last_name}
+            email={email}
+            school={school as string}
+            fieldOfStudy={field_of_study as string}
+            eventStartTime={wildhacksConfig.start_time}
+          />
         </div>
       )}
-      {/* <div className={cn("grid grid-cols-1 gap-4", (wildHacksStatistics || role === PARTICIPANT) && "lg:grid-cols-2")}>
+      <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
-        {role === PARTICIPANT && (
-          <TeamMatchingIntake
-            hasSubmitted={hasSubmittedTeamMatching}
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
-        )}
-      </div> */}
-
-      <div className={cn("grid grid-cols-1 gap-4", role === ADMIN && "lg:grid-cols-3")}>
-        <UpcomingEvents />
-        {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
-        {role === ADMIN && (
-          <TeamMatchingIntake
-            hasSubmitted={hasSubmittedTeamMatching}
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
-        )}
       </div>
     </>
   );
