@@ -91,16 +91,13 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 }) => {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const activeCameraIdRef = useRef<string | null>(null);
-  const successCallbackRef = useRef<(decodedText: string) => void>(() => {});
-  const errorCallbackRef = useRef<(errorMessage: string) => void>(() => {});
   const onScanRef = useRef(onScan);
   const onErrorRef = useRef(onError);
   const lastScanTimeRef = useRef<number>(0);
-  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<{ type: QRScannerError; message: string } | null>(null);
-  const [isCameraAvailable, setIsCameraAvailable] = useState(true);
   const reactId = useId();
   const scannerElementId = `qr-scanner-${reactId.replaceAll(":", "")}`;
 
@@ -128,7 +125,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       }
 
       try {
-        await scanner.clear();
+        scanner.clear();
       } catch {
         // Clear may fail if scanner was never fully initialized; ignore cleanup clear errors.
       }
@@ -175,7 +172,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       try {
         setIsInitializing(true);
         setError(null);
-        setIsCameraAvailable(true);
 
         if (cancelled) return;
 
@@ -230,9 +226,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             console.debug("[QRScanner] Scan error (expected if no code in frame):", errorMessage);
           }
         };
-
-        successCallbackRef.current = handleQrCodeSuccess;
-        errorCallbackRef.current = handleQrCodeError;
 
         if (cancelled) return;
 

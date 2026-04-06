@@ -10,7 +10,7 @@ import type { ErrorPageProps } from "@/types";
 
 const CheckInError = ({ error, reset }: ErrorPageProps) => {
   useEffect(() => {
-    console.log(error);
+    console.error(error);
   }, [error]);
 
   return (

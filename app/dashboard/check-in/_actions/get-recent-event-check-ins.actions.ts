@@ -45,21 +45,21 @@ export const getRecentEventCheckIns = async ({
       }
     }
 
+    // Requires a composite index on (event_id ASC, checked_in_at DESC)
     const checkInsSnapshot = await db
       .collection(EVENT_CHECK_INS_COLLECTION)
       .where("event_id", "==", normalizedEventId)
+      .orderBy("checked_in_at", "desc")
+      .limit(normalizeLimit(limitCount))
       .get();
 
-    const rawCheckIns = checkInsSnapshot.docs
-      .map(
-        (doc) =>
-          ({
-            id: doc.id,
-            ...doc.data(),
-          }) as EventCheckIn
-      )
-      .sort((a, b) => b.checked_in_at - a.checked_in_at)
-      .slice(0, normalizeLimit(limitCount));
+    const rawCheckIns = checkInsSnapshot.docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        }) as EventCheckIn
+    );
 
     const userIds = Array.from(new Set(rawCheckIns.map((checkIn) => checkIn.user_id).filter(Boolean)));
     const usersById = new Map<string, User>();
