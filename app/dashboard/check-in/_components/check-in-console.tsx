@@ -33,6 +33,27 @@ type RecentActivityItem = {
 const DUPLICATE_SCAN_WINDOW_MS = 1500;
 const RECENT_ACTIVITY_LIMIT = 12;
 
+const cToast = {
+  success: (title: string, opts: { description?: string } = {}) =>
+    toast.success(title, {
+      ...opts,
+      style: { background: "#16a34a", color: "white", border: "1px solid #15803d" },
+      classNames: { description: "text-green-100!" },
+    }),
+  error: (title: string, opts: { description?: string } = {}) =>
+    toast.error(title, {
+      ...opts,
+      style: { background: "#dc2626", color: "white", border: "1px solid #b91c1c" },
+      classNames: { description: "text-red-100!" },
+    }),
+  warning: (title: string, opts: { description?: string } = {}) =>
+    toast.warning(title, {
+      ...opts,
+      style: { background: "#d97706", color: "white", border: "1px solid #b45309" },
+      classNames: { description: "text-amber-100!" },
+    }),
+};
+
 const formatRoleLabel = (role: Role | undefined): string => {
   if (!role) return "Unknown role";
 
@@ -97,7 +118,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
 
       if (!result.success) {
         setRecentActivity([]);
-        toast.error("Unable to load recent check-ins", {
+        cToast.error("Unable to load recent check-ins", {
           description: result.error ?? "Please try refreshing recent activity.",
         });
         return;
@@ -115,7 +136,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       setRecentActivity(activity);
     } catch (error) {
       setRecentActivity([]);
-      toast.error("Unable to load recent activity", {
+      cToast.error("Unable to load recent activity", {
         description: error instanceof Error ? error.message : "An unknown error occurred while loading activity.",
       });
     } finally {
@@ -129,7 +150,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
       if (!normalizedPayload) return;
 
       if (!effectiveEventId) {
-        toast.error("Select an event or mode first", {
+        cToast.error("Select an event or mode first", {
           description: "Please choose a check-in mode and event before scanning QR codes.",
         });
         return;
@@ -161,13 +182,13 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
 
         if (!result.success || !result.check_in) {
           if (result.requires_wildhacks_check_in) {
-            toast.warning("WildHacks check-in required", {
+            cToast.warning("WildHacks check-in required", {
               description: errorMessage,
             });
             return;
           }
 
-          toast.error("Check-in failed", {
+          cToast.error("Check-in failed", {
             description: errorMessage,
           });
           return;
@@ -182,18 +203,18 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
             : "";
 
         if (result.already_checked_in) {
-          toast.warning("Already checked in", {
+          cToast.warning("Already checked in", {
             description: `${userDisplay} was already checked in.${dietaryRestrictionsText}`,
           });
         } else {
-          toast.success("Check-in successful", {
+          cToast.success("Check-in successful", {
             description: `${userDisplay} has been checked in successfully.${dietaryRestrictionsText}`,
           });
         }
 
         await refreshRecentActivity(effectiveEventId);
       } catch (error) {
-        toast.error("Unable to process scan", {
+        cToast.error("Unable to process scan", {
           description: error instanceof Error ? error.message : "An unknown error occurred while processing the scan.",
         });
       } finally {
@@ -207,7 +228,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
   const handleScannerError = useCallback((scannerError: QRScannerError, message: string) => {
     const title = scannerError === "PERMISSION_DENIED" ? "Camera permission required" : "Scanner unavailable";
 
-    toast.error(title, {
+    cToast.error(title, {
       description: message,
     });
   }, []);
@@ -294,7 +315,7 @@ const CheckInConsole = ({ events }: CheckInConsoleProps) => {
               </Alert>
             )}
 
-            {events.length > 0 && (
+            {(events.length > 0 || checkInMode === "wildhacks") && (
               <>
                 <div className="flex flex-col gap-2 rounded-lg border bg-muted/40 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
                   <p className="text-xs text-muted-foreground">
