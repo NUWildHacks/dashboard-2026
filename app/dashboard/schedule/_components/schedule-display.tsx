@@ -31,7 +31,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
   const useEventsReturn = useEvents({ category, search, selectedDay });
   const { events } = useEventsReturn;
 
-  const useEventDialogReturn = useItemDialog<Event>(events);
+  const useEventDialogReturn = useItemDialog<Event>(events, "event");
   const { handleSelectItem } = useEventDialogReturn;
 
   const useEventFormDialogReturn = useEventFormDialog(start_time, end_time, availableDays);
@@ -135,6 +135,7 @@ const ScheduleDisplay = ({ userRole, start_time, end_time }: ScheduleDisplayProp
       <EventDialog
         userRole={userRole}
         handleOpenConfirmDeleteDialog={handleOpenConfirmDeleteDialog}
+        handleOpenEventFormDialog={userRole === ADMIN ? handleOpenEventFormDialog : undefined}
         {...useEventDialogReturn}
       />
       {userRole === ADMIN && (

@@ -18,13 +18,13 @@ import type { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks"
 import { getEventTimeRange } from "@/lib";
 import { User } from "@/types";
 
-import { deleteEvents } from "../../_actions";
 import { UseEventFormDialogReturn } from "../../_hooks";
 import type { Event } from "../../types";
 
-type EventDialogProps = { 
+type EventDialogProps = {
   userRole?: User["role"];
   handleOpenConfirmDeleteDialog?: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"];
+  handleOpenEventFormDialog?: UseEventFormDialogReturn["handleOpenEventFormDialog"];
  } & Pick<UseItemDialogReturn<Event>, "isOpen" | "setIsOpen" | "selectedItem" | "isDeleting" | "handleDeleteItem">;
 
 const EventDialog = ({
@@ -32,6 +32,7 @@ const EventDialog = ({
   isOpen,
   setIsOpen,
   selectedItem,
+  isDeleting,
   handleOpenConfirmDeleteDialog,
   handleOpenEventFormDialog,
 }: EventDialogProps) => {

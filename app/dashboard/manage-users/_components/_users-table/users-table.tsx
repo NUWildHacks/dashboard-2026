@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JUDGE, MENTOR, PARTICIPANT, ROLES } from "@/constants";
+import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT, ROLES } from "@/constants";
 import { useConfirmDeleteDialog } from "@/hooks";
 import { User } from "@/types";
 
@@ -56,7 +56,7 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
                   ))}
                 </SelectContent>
               </Select>
-              {(role === PARTICIPANT || role === JUDGE || role === MENTOR) && (
+              {(role === PARTICIPANT || role === JUDGE || role === JUDGE_AND_MENTOR) && (
                 <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
                   Download CSV
                 </Button>
