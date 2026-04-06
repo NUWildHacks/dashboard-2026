@@ -1,6 +1,5 @@
 "use client";
-
-import { ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -36,16 +35,19 @@ const renderLeaf = (item: GuideNavItem, pathname: string, depth: number, onNavig
 
   const active = isActiveHref(pathname, item.href);
   const levelClass = `guide-nav-link-level-${getLevel(depth)}`;
+  const utilityClass = item.utility ? " guide-nav-utility-link" : "";
+  const utilityIcon = item.utility ? <ArrowLeft className="guide-nav-utility-icon" aria-hidden /> : null;
 
   if (item.external) {
     return (
       <a
-        className={`guide-nav-link ${levelClass}${active ? " guide-nav-link-active" : ""}`}
+        className={`guide-nav-link ${levelClass}${utilityClass}${active ? " guide-nav-link-active" : ""}`}
         href={item.href}
         onClick={onNavigate}
         rel="noopener noreferrer"
         target="_blank"
       >
+        {utilityIcon}
         {item.title}
       </a>
     );
@@ -53,11 +55,12 @@ const renderLeaf = (item: GuideNavItem, pathname: string, depth: number, onNavig
 
   return (
     <Link
-      className={`guide-nav-link ${levelClass}${active ? " guide-nav-link-active" : ""}`}
+      className={`guide-nav-link ${levelClass}${utilityClass}${active ? " guide-nav-link-active" : ""}`}
       href={item.href}
       onClick={onNavigate}
       prefetch
     >
+      {utilityIcon}
       {item.title}
     </Link>
   );

@@ -4,12 +4,14 @@ export type GuideNavItem = {
   readonly external?: boolean;
   readonly children?: GuideNavItem[];
   readonly hidden?: boolean;
+  readonly utility?: boolean;
 };
 
 export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
   {
     title: "Back to Dashboard",
     href: "/dashboard",
+    utility: true,
   },
   {
     title: "Overview",

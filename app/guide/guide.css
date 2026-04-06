@@ -935,6 +935,39 @@
   transform: translateX(2px);
 }
 
+.guide-nav-utility-link {
+  margin: 0 0 0.5rem;
+  padding: 0.35rem 0.15rem 0.55rem;
+  border-bottom: 1px solid var(--surface-border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--heading-color);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.guide-nav-utility-link:hover {
+  background: rgba(var(--secondary-rgb), 0.04);
+  border-bottom-color: rgba(var(--secondary-rgb), 0.26);
+  transform: translateX(2px);
+}
+
+.guide-nav-utility-link.guide-nav-link-active {
+  color: var(--secondary-color);
+  background: rgba(var(--secondary-rgb), 0.04);
+  border-bottom-color: rgba(var(--secondary-rgb), 0.32);
+}
+
+.guide-nav-utility-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  opacity: 0.75;
+}
+
 .guide-nav-link-active {
   color: var(--secondary-color);
 }
