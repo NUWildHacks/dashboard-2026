@@ -61,6 +61,15 @@ export const scheduleEvents: CalendarEvent[] = [
     zoom: "https://northwestern.zoom.us/j/93439784644",
   },
   {
+    title: "Blossoms X WildHacks Informational Session",
+    description:
+      "Yufan will share what it's actually like working with AI at Google — including how teams measure and think about AI adoption internally. He'll talk about what separates the students who stand out in interviews from those who don't, and why hackathon projects, when framed right, can be one of the most powerful things on your resume. Expect honest, practical advice from someone who's been on both sides of the table.",
+    start: new Date("2026-04-10T19:00:00-05:00"),
+    end: new Date("2026-04-10T20:00:00-05:00"),
+    url: "/guide/workshops#emco-x-wildhacks-frontend-web-dev-workshop",
+    zoom: "https://us06web.zoom.us/j/2881519829",
+  },
+  {
     title: "Check-In",
     description: "Check-in for WildHacks 2026. Have your student ID and WildHacker Code ready.",
     start: new Date("2026-04-11T08:30:00-05:00"),
@@ -138,9 +147,9 @@ export const scheduleEvents: CalendarEvent[] = [
   {
     title: "Sunrise Walk Around the Lakefill",
     description: "Touch grass, see the sun, and enjoy the Evanston shoreline!",
-    start: new Date("2026-04-12T06:00:00-05:00"),
+    start: new Date("2026-04-12T06:15:00-05:00"),
     end: new Date("2026-04-12T00:00:00-05:00"),
-    location: "Lakefill",
+    location: "Meet in Mudd 1st Floor",
   },
   {
     title: "Breakfast from Einstein Bros. Bagels",
