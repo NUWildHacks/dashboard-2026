@@ -1,11 +1,12 @@
 import { getFirestore } from "firebase-admin/firestore";
 
-import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap } from "@/app/dashboard/_components";
+import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap, ResumeUpload } from "@/app/dashboard/_components";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, TEAM_MATCHING_INTAKE_COLLECTION } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
 import TeamMatchingIntake from "./_components/team-matching-intake";
+import { getResumeMetadata } from "./_lib/resume";
 
 const DashboardPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
@@ -18,6 +19,9 @@ const DashboardPage = async () => {
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
 
   const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
+
+  const resumeMetadata = await getResumeMetadata(userId);
+  const fileName = resumeMetadata?.file_name;
 
   let hasSubmittedTeamMatching = false;
   // if (role === PARTICIPANT) {
@@ -42,6 +46,13 @@ const DashboardPage = async () => {
           <VenueMap />
         </div>
       </div>
+
+      {/* TODO: Switch back to PARTICIPANT after testing */}
+      {role === ADMIN && (
+        <div>
+          <ResumeUpload fileName={fileName} />
+        </div>
+      )}
       {/* <div className={cn("grid grid-cols-1 gap-4", (wildHacksStatistics || role === PARTICIPANT) && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}

@@ -85,3 +85,7 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   judging: "Judging",
   mentoring: "Mentoring",
 };
+
+export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+export const RESUME_MIME_TYPE = "application/pdf";
