@@ -47,8 +47,7 @@ const DashboardPage = async () => {
         </div>
       </div>
 
-      {/* TODO: Switch back to PARTICIPANT after testing */}
-      {role === ADMIN && (
+      {role === PARTICIPANT && (
         <div>
           <ResumeUpload fileName={fileName} />
         </div>
