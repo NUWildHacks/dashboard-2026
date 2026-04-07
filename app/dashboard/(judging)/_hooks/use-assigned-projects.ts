@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
-import { UseFiltersReturn } from "@/hooks";
+import { UseFiltersReturnWithoutAll } from "@/hooks";
 
 import { ProjectWithMetadata, Track } from "../types";
 
 export type UseAssignedProjectsSettings = {
-  category?: UseFiltersReturn<Track>["category"];
-  search?: UseFiltersReturn<Track>["search"];
+  category?: UseFiltersReturnWithoutAll<Track>["category"];
+  search?: UseFiltersReturnWithoutAll<Track>["search"];
 };
 
 export type UseAssignedProjectsReturn = {
@@ -22,7 +22,7 @@ export const useAssignedProjects = (
   const filteredProjectsWithMetadata = useMemo(() => {
     let result = projectsWithMetadata;
 
-    if (category && category !== "all") {
+    if (category) {
       result = result.filter((projectWithMetadata) => projectWithMetadata.track === category);
     }
 

@@ -33,7 +33,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     title: "Home",
     hasSubItems: false,
-    hasSubItems: false,
     url: DASHBOARD_PATH,
     icon: Home,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
@@ -81,6 +80,27 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         url: DASHBOARD_JUDGING_ROUND_2_PATH,
       },
     ],
+  },
+  {
+    title: "Devpost",
+    hasSubItems: false,
+    url: DEVPOST_PATH,
+    icon: SquareCode,
+    visibleTo: [PARTICIPANT, ADMIN],
+  },
+  {
+    title: "Virtual Judging Zoom",
+    hasSubItems: false,
+    url: VIRTUAL_ZOOM_JUDGING_PATH,
+    icon: Headset,
+    visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
+  },
+  {
+    title: "Check-in",
+    hasSubItems: false,
+    url: DASHBOARD_CHECK_IN_PATH,
+    icon: QrCode,
+    visibleTo: [ADMIN],
   },
 ];
 

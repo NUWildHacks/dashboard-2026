@@ -129,7 +129,6 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
             <p className="flex-1">{headerText}</p>
-            <p className="flex-1">{headerText}</p>
           </div>
           <main className="flex-1 flex flex-col gap-4 p-4">{children}</main>
         </div>

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CategoryWithAll, useFilters } from "@/hooks";
-import type { Modality } from "@/types";
+import type { JudgeUser } from "@/types";
 
 import { TRACKS } from "../constants";
 import type { ProjectWithMetadata, Track } from "../types";
@@ -16,11 +16,10 @@ import { AssignedProjectGrid } from ".";
 
 type JudgingDisplayProps = {
   projectsWithMetadata: ProjectWithMetadata[];
-  modality: Modality;
-  otherModality: string;
-};
+  currentPath: string;
+} & Pick<JudgeUser, "modality" | "other_modality">;
 
-const JudgingDisplay = ({ projectsWithMetadata, modality, otherModality }: JudgingDisplayProps) => {
+const JudgingDisplay = ({ projectsWithMetadata, modality, other_modality }: JudgingDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<Track>();
 
   return (
@@ -61,7 +60,7 @@ const JudgingDisplay = ({ projectsWithMetadata, modality, otherModality }: Judgi
             <span>
               Your modality:{" "}
               <Badge className="border-yellow-600/40 bg-yellow-600/20 text-yellow-700 dark:border-yellow-400/40 dark:bg-yellow-400/20 dark:text-yellow-300">
-                {modality === "Other" ? otherModality : modality}
+                {modality === "Other" ? other_modality : modality}
               </Badge>
             </span>
             <span className="font-normal">
