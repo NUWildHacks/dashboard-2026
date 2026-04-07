@@ -20,7 +20,8 @@ import {
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
   GUIDE_PATH,
-  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_JUDGING_ROUND_1_PATH,
+  DASHBOARD_JUDGING_ROUND_2_PATH,
   DASHBOARD_MENTORING_PATH,
   VIRTUAL_ZOOM_JUDGING_PATH,
   DEVPOST_PATH,
@@ -31,18 +32,21 @@ import type { SidebarItem } from "./types";
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     title: "Home",
+    hasSubItems: false,
     url: DASHBOARD_PATH,
     icon: Home,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Schedule",
+    hasSubItems: false,
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Manage users",
+    hasSubItems: false,
     url: DASHBOARD_MANAGE_USERS_PATH,
     icon: Users,
     visibleTo: [ADMIN],
@@ -61,27 +65,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     title: "Judging",
-    url: DASHBOARD_JUDGING_PATH,
+    hasSubItems: true,
     icon: BookOpenCheck,
     visibleTo: [JUDGE, JUDGE_AND_MENTOR],
-  },
-  {
-    title: "Devpost",
-    url: DEVPOST_PATH,
-    icon: SquareCode,
-    visibleTo: [PARTICIPANT, ADMIN],
-  },
-  {
-    title: "Virtual Judging Zoom",
-    url: VIRTUAL_ZOOM_JUDGING_PATH,
-    icon: Headset,
-    visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
-  },
-  {
-    title: "Check-in",
-    url: DASHBOARD_CHECK_IN_PATH,
-    icon: QrCode,
-    visibleTo: [ADMIN],
+    subItems: [
+      {
+        title: "Round 1",
+        url: DASHBOARD_JUDGING_ROUND_1_PATH,
+      },
+      {
+        title: "Round 2",
+        url: DASHBOARD_JUDGING_ROUND_2_PATH,
+      },
+    ],
   },
 ];
 
@@ -91,7 +87,8 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   "manage-users": "Manage users",
   "check-in": "Check-in",
   guide: "Guide",
-  judging: "Judging",
+  "judging-round-1": "Judging Round 1",
+  "judging-round-2": "Judging Round 2",
   mentoring: "Mentoring",
 };
 

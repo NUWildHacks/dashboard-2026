@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const JudgingLoading = async () => {
+const JudgingRound1Loading = async () => {
   return (
     <div
       role="status"
@@ -21,4 +21,4 @@ const JudgingLoading = async () => {
   );
 };
 
-export default JudgingLoading;
+export default JudgingRound1Loading;

@@ -6,7 +6,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { ProjectWithMetadata } from "../../judging/types";
+import { ProjectWithMetadata } from "../../(judging)/types";
 
 /**
  * Get projects table columns.
@@ -42,23 +42,22 @@ export const getProjectsColumns = (): ColumnDef<ProjectWithMetadata>[] => {
       },
     },
     {
-      accessorKey: "project_url",
+      accessorKey: "devpost_url",
       header: "Project URL",
       cell: ({ row }) => {
         return (
           <a
-            href={row.original.project_url}
+            href={row.original.devpost_url}
             target="_blank"
             rel="noreferrer"
             className="underline-offset-4 hover:underline"
           >
-            {row.original.project_url}
+            {row.original.devpost_url}
           </a>
         );
       },
     },
     {
-      accessorKey: "Status",
       header: "Status",
       cell: ({ row }) => {
         if (!row.original.judging_form) {

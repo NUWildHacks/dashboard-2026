@@ -1,11 +1,10 @@
-import type { JudgingAssignment, JudgingForm, Project } from "./types";
+import { JudgingAssignment, JudgingForm, Project } from "./types";
 
-export const AI_TRACK = "Artificial Intelligence";
-export const WEB_TRACK = "Web Development";
-export const FINTECH_TRACK = "Fintech";
-export const PRODUCTIVITY_TRACK = "Productivity";
+export const PAST_TRACK = "Past" as const;
+export const PRESENT_TRACK = "Present" as const;
+export const FUTURE_TRACK = "Future" as const;
 
-export const TRACKS = [AI_TRACK, WEB_TRACK, FINTECH_TRACK, PRODUCTIVITY_TRACK] as const;
+export const TRACKS = [PAST_TRACK, PRESENT_TRACK, FUTURE_TRACK] as const;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",
@@ -21,7 +20,8 @@ export const JUDGING_FORM_FIELDS = {
 export const PROJECT_FIELDS = {
   name: "name",
   track: "track",
-  project_url: "project_url",
+  devpost_url: "devpost_url",
+  order: "order",
 } as const satisfies Record<keyof Omit<Project, "id">, string>;
 
 export const JUDGING_ASSIGNMENT_FIELDS = {

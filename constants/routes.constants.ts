@@ -9,7 +9,8 @@ export const DASHBOARD_CHECK_IN_PATH = "/dashboard/check-in" as const;
 export const DASHBOARD_SUPPORT_PATH = "/dashboard/support" as const;
 export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
 export const GUIDE_PATH = "/guide" as const;
-export const DASHBOARD_JUDGING_PATH = "/dashboard/judging" as const;
+export const DASHBOARD_JUDGING_ROUND_1_PATH = "/dashboard/judging-round-1" as const;
+export const DASHBOARD_JUDGING_ROUND_2_PATH = "/dashboard/judging-round-2" as const;
 export const DASHBOARD_MENTORING_PATH = "/dashboard/mentoring" as const;
 
 export const LOGIN_PATH = "/login" as const;
@@ -20,7 +21,10 @@ export const PROTECTED_ROUTES = [
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
   GUIDE_PATH,
-  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_CHECK_IN_PATH,
+  DASHBOARD_MENTORING_PATH,
+  DASHBOARD_JUDGING_ROUND_1_PATH,
+  DASHBOARD_JUDGING_ROUND_2_PATH,
   DASHBOARD_SETTINGS_PATH,
 ] as const satisfies readonly string[];
 
