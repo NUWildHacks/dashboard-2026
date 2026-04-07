@@ -15,6 +15,7 @@ export type Project = {
   name: string;
   track: Track;
   devpost_url: string;
+  order: number;
 };
 
 export type JudgingAssignment = {
