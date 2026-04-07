@@ -120,7 +120,7 @@ export const useJudgingAssignmentsTable = (
         return (
           projectWithMetadata.name.toLowerCase().includes(searchLower) ||
           projectWithMetadata.track.toLowerCase().includes(searchLower) ||
-          projectWithMetadata.project_url.toLowerCase().includes(searchLower)
+          projectWithMetadata.devpost_url.toLowerCase().includes(searchLower)
         );
       });
     }

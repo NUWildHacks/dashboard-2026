@@ -39,7 +39,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
     const seenProjectIds = new Set<Project["id"]>();
 
     for (const assignment of data) {
-      const { judge_id, project_id, project_name, track, project_url } = assignment;
+      const { judge_id, project_id, project_name, track, devpost_url } = assignment;
 
       if (!seenProjectIds.has(project_id)) {
         seenProjectIds.add(project_id);
@@ -48,7 +48,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
         projectBatch.set(projectDocRef, {
           name: project_name,
           track,
-          project_url,
+          devpost_url,
         } as Partial<Project>);
       }
 

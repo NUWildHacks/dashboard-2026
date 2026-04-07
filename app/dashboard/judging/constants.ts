@@ -21,7 +21,7 @@ export const JUDGING_FORM_FIELDS = {
 export const PROJECT_FIELDS = {
   name: "name",
   track: "track",
-  project_url: "project_url",
+  devpost_url: "devpost_url",
 } as const satisfies Record<keyof Omit<Project, "id">, string>;
 
 export const JUDGING_ASSIGNMENT_FIELDS = {

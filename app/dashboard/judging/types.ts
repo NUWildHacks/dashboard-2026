@@ -14,7 +14,7 @@ export type Project = {
   id: string;
   name: string;
   track: Track;
-  project_url: string;
+  devpost_url: string;
 };
 
 export type JudgingAssignment = {

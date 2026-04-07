@@ -36,7 +36,7 @@ const JudgingFormSheet = ({
 }: JudgingFormSheetProps) => {
   if (!selectedProjectWithMetadata) return null;
 
-  const { name, track, project_url } = selectedProjectWithMetadata;
+  const { name, track, devpost_url } = selectedProjectWithMetadata;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -51,7 +51,7 @@ const JudgingFormSheet = ({
               <p>
                 <span className="font-medium">Track:</span> {track}
               </p>
-              <a href={project_url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+              <a href={devpost_url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
                 View Devpost
               </a>
             </div>

@@ -20,7 +20,7 @@ export const judgingAssignmentsCsvSchema = z.object({
   project_name: plainTextSingleLineSchema
     .min(1, "Project name is required")
     .max(100, "Project name must be 100 characters or less"),
-  project_url: secureUrlSchema,
+  devpost_url: secureUrlSchema,
 });
 
 export const judgingAssignmentsCsvArraySchema = z.array(judgingAssignmentsCsvSchema);
