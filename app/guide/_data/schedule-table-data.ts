@@ -103,17 +103,23 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Fair — IMC + MLH" }],
+    event: [
+      { content: "Sponsor Fair — IMC + MLH" },
+    ],
     location: "Tech A110",
   },
   {
     time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Fair — Claude" }],
+    event: [
+      { content: "Sponsor Fair — Claude" },
+    ],
     location: "Tech L170",
   },
   {
     time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Fair — Blossoms + Redbull" }],
+    event: [
+      { content: "Sponsor Fair — Blossoms + Redbull" },
+    ],
     location: "Tech L168",
   },
   {
@@ -132,7 +138,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "11:00 - 11:30 AM",
-    event: [{ content: "Team Formation Event" }],
+    event: [{ content: "Team Formation Event"}],
     location: "LR2",
   },
   {
