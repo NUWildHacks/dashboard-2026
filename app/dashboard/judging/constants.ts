@@ -1,11 +1,10 @@
 import type { JudgingAssignment, JudgingForm, Project } from "./types";
 
-export const AI_TRACK = "Artificial Intelligence" as const;
-export const WEB_TRACK = "Web Development" as const;
-export const FINTECH_TRACK = "Fintech" as const;
-export const PRODUCTIVITY_TRACK = "Productivity" as const;
+export const PAST_TRACK = "Past" as const;
+export const PRESENT_TRACK = "Present" as const;
+export const FUTURE_TRACK = "Future" as const;
 
-export const TRACKS = [AI_TRACK, WEB_TRACK, FINTECH_TRACK, PRODUCTIVITY_TRACK] as const;
+export const TRACKS = [PAST_TRACK, PRESENT_TRACK, FUTURE_TRACK] as const;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",
