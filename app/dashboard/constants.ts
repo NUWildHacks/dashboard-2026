@@ -1,5 +1,6 @@
 import {
   Calendar,
+  Trophy,
   Home,
   Users,
   TableCellsMerge,
@@ -12,13 +13,14 @@ import {
 
 import {
   ADMIN,
+  DASHBOARD_CROWD_FAVORITE_PATH,
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
   DASHBOARD_CHECK_IN_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
-  DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
+  DASHBOARD_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
   DASHBOARD_MENTORING_PATH,
@@ -72,6 +74,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [PARTICIPANT, ADMIN],
   },
   {
+    title: "Crowd Favorite",
+    url: DASHBOARD_CROWD_FAVORITE_PATH,
+    icon: Trophy,
+    visibleTo: [PARTICIPANT],
+  },
+  {
     title: "Virtual Judging Zoom",
     url: VIRTUAL_ZOOM_JUDGING_PATH,
     icon: Headset,
@@ -90,6 +98,7 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   settings: "Settings",
   "manage-users": "Manage users",
   "check-in": "Check-in",
+  "crowd-favorite": "Crowd Favorite",
   guide: "Guide",
   judging: "Judging",
   mentoring: "Mentoring",
