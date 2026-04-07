@@ -5,10 +5,11 @@ import { revalidatePath } from "next/cache";
 
 import {
   LOGIN_PATH,
-  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_JUDGING_ROUND_1_PATH,
   JUDGE,
   PROJECTS_COLLECTION,
   JUDGING_ASSIGNMENTS_COLLECTION,
+  DASHBOARD_JUDGING_ROUND_2_PATH,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
@@ -21,13 +22,21 @@ export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 export const submitJudging = async (
   data: JudgingFormSchema,
   projectId: Project["id"],
-  judgeId: JudgeUser["id"]
+  judgeId: JudgeUser["id"],
+  currentPath: string
 ): Promise<SubmitJudgingResult> => {
   const db = getFirestore();
   const now = Date.now();
 
+  if (currentPath !== DASHBOARD_JUDGING_ROUND_1_PATH && currentPath !== DASHBOARD_JUDGING_ROUND_2_PATH) {
+    return {
+      success: false,
+      error: "Invalid path",
+    };
+  }
+
   try {
-    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_JUDGING_PATH)}`;
+    const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(currentPath)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
     const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
@@ -73,7 +82,7 @@ export const submitJudging = async (
         } as Partial<JudgingForm>,
       } as Partial<JudgingAssignment>);
 
-    revalidatePath(DASHBOARD_JUDGING_PATH);
+    revalidatePath(currentPath);
 
     return { success: true };
   } catch (error) {

@@ -14,7 +14,7 @@ import { getAuthenticatedUser, requireRole } from "@/lib";
 import { ActionResult } from "@/types";
 
 import { JudgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, Project } from "../../judging/types";
+import { JudgingAssignment, Project } from "../../(judging)/types";
 
 export type UploadAssignmentsResult = ActionResult<JudgingAssignmentsCsvArraySchema>;
 

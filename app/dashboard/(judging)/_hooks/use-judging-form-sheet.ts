@@ -23,7 +23,7 @@ export type UseJudgingFormSheetReturn = {
   isSubmitting: boolean;
 };
 
-export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormSheetReturn => {
+export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: string): UseJudgingFormSheetReturn => {
   const [selectedProjectWithMetadata, setSelectedProjectWithMetadata] = useState<ProjectWithMetadata | undefined>(
     undefined
   );
@@ -51,7 +51,7 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"]): UseJudgingFormShe
     if (!selectedProjectWithMetadata) return;
 
     try {
-      const result = await submitJudging(data, selectedProjectWithMetadata.id, judgeId);
+      const result = await submitJudging(data, selectedProjectWithMetadata.id, judgeId, currentPath);
       const { success } = result;
 
       if (!success) {

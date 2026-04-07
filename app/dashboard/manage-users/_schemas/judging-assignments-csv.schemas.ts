@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { firestoreUserIdSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
 
-import { TRACKS } from "../../judging/constants";
+import { TRACKS } from "../../(judging)/constants";
 
 export const judgingAssignmentsCsvSchema = z.object({
   judge_id: firestoreUserIdSchema,

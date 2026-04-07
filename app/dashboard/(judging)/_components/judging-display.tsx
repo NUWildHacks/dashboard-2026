@@ -2,7 +2,6 @@
 
 import { SearchIcon } from "lucide-react";
 
-import { Alert, AlertTitle } from "@/components/ui/alert";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CategoryWithAll, useFilters } from "@/hooks";
@@ -17,15 +16,15 @@ import { AssignedProjectGrid, JudgingFormSheet } from ".";
 type JudgingDisplayProps = {
   judgeId: JudgeUser["id"];
   projectsWithMetadata: ProjectWithMetadata[];
+  currentPath: string;
 };
 
-const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) => {
+const JudgingDisplay = ({ judgeId, projectsWithMetadata, currentPath }: JudgingDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<Track>();
 
   const { filteredProjectsWithMetadata } = useAssignedProjects(projectsWithMetadata, { category, search });
 
-  const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId);
-  const { handleOpenJudgingForm } = useJudgingFormSheetReturn;
+  const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath);
 
   return (
     <>
@@ -60,23 +59,7 @@ const JudgingDisplay = ({ judgeId, projectsWithMetadata }: JudgingDisplayProps) 
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <Alert className="rounded-md border-yellow-600 bg-yellow-600/10 text-yellow-600 dark:border-yellow-400 dark:bg-yellow-400/10 dark:text-yellow-400">
-          {/* <ExternalLinkIcon /> */}
-          <AlertTitle>
-            {/* <a
-              href={JUDGING_GUIDE_PATH}
-              target="_blank"
-              rel="noreferrer"
-              className="underline-offset-4 hover:underline"
-            > */}
-            Judging Guide coming soon...
-            {/* </a> */}
-          </AlertTitle>
-        </Alert>
-        <AssignedProjectGrid
-          {...useJudgingFormSheetReturn}
-          projectsWithMetadata={filteredProjectsWithMetadata}
-        />
+        <AssignedProjectGrid {...useJudgingFormSheetReturn} projectsWithMetadata={filteredProjectsWithMetadata} />
       </div>
       <JudgingFormSheet {...useJudgingFormSheetReturn} />
     </>

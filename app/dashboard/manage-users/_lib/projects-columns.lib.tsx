@@ -6,7 +6,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { ProjectWithMetadata } from "../../judging/types";
+import { ProjectWithMetadata } from "../../(judging)/types";
 
 /**
  * Get projects table columns.

@@ -10,7 +10,11 @@ type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgi
   projectWithMetadata: ProjectWithMetadata;
 };
 
-const AssignedProjectItem = ({ handleOpenJudgingForm, handleKeyDown, projectWithMetadata }: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({
+  handleOpenJudgingForm,
+  handleKeyDown,
+  projectWithMetadata,
+}: AssignedProjectItemProps) => {
   const { name, track, judging_form } = projectWithMetadata;
 
   return (

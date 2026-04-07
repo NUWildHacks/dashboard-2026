@@ -11,7 +11,11 @@ type AssignedProjectGridProps = {
   projectsWithMetadata: ProjectWithMetadata[];
 } & Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown">;
 
-const AssignedProjectGrid = ({ handleOpenJudgingForm, handleKeyDown, projectsWithMetadata }: AssignedProjectGridProps) => {
+const AssignedProjectGrid = ({
+  handleOpenJudgingForm,
+  handleKeyDown,
+  projectsWithMetadata,
+}: AssignedProjectGridProps) => {
   if (projectsWithMetadata.length === 0) {
     return (
       <Empty role="status" aria-live="polite">

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { ADMIN, DASHBOARD_PATH, DASHBOARD_MANAGE_USERS_PATH, LOGIN_PATH, JUDGE } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 
-import { getProjectsWithMetadata } from "../judging/lib";
+import { getProjectsWithMetadata } from "../(judging)/lib";
 
 import { JudgingAssignmentsTable, PermissionCodesTable, UsersTable } from "./_components";
 import { getJudgingAssignments, getPermissionCodes, getUsers } from "./_lib";

@@ -1,4 +1,4 @@
-import type { JudgingAssignment, JudgingForm, Project } from "./types";
+import { JudgingAssignment, JudgingForm, Project } from "./types";
 
 export const PAST_TRACK = "Past" as const;
 export const PRESENT_TRACK = "Present" as const;

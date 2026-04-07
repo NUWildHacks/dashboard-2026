@@ -20,7 +20,7 @@ import { JudgeUser } from "@/types";
 import { uploadAssignments } from "../_actions";
 import { getProjectsColumns } from "../_lib/client";
 import { judgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
+import { JudgingAssignment, ProjectWithMetadata } from "../../(judging)/types";
 
 export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | null;
