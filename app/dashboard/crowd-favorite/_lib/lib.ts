@@ -30,4 +30,15 @@ const getAllParticipantUsers = async (): Promise<ParticipantUser[]> => {
     }));
 };
 
-export { getAllParticipantUsers, getCrowdFavoriteProject };
+const getAllCrowdFavoriteProjects = async (): Promise<CrowdFavoriteProject[]> => {
+  const db = getFirestore();
+
+  const crowdFavoriteDocSnapshots = await db.collection(CROWD_FAVORITES_COLLECTION).get();
+
+  return crowdFavoriteDocSnapshots.docs.map((doc) => ({
+    id: doc.id,
+    ...(doc.data() as Omit<CrowdFavoriteProject, "id">),
+  }));
+};
+
+export { getAllCrowdFavoriteProjects, getAllParticipantUsers, getCrowdFavoriteProject };

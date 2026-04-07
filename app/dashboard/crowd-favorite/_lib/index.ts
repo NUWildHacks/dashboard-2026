@@ -1,1 +1,1 @@
-export { getAllParticipantUsers, getCrowdFavoriteProject } from "./lib";
+export { getAllCrowdFavoriteProjects, getAllParticipantUsers, getCrowdFavoriteProject } from "./lib";

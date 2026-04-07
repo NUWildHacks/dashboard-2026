@@ -4,9 +4,14 @@ import { DASHBOARD_CROWD_FAVORITE_PATH, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT 
 import { getAuthenticatedUser } from "@/lib";
 import type { ParticipantUser } from "@/types";
 
-import { CrowdFavoriteOptInForm, CrowdFavoriteOptedInView } from "./_components";
-import { getAllParticipantUsers, getCrowdFavoriteProject } from "./_lib";
-import { isCrowdFavoriteOptInOpen } from "./constants";
+import { CrowdFavoriteOptInForm, CrowdFavoriteOptedInView, CrowdFavoriteVoteForm } from "./_components";
+import { getAllCrowdFavoriteProjects, getAllParticipantUsers, getCrowdFavoriteProject } from "./_lib";
+import {
+  isCrowdFavoriteOptInOpen,
+  isCrowdFavoritePresentationPhase,
+  isCrowdFavoriteVotingClosed,
+  isCrowdFavoriteVotingOpen,
+} from "./constants";
 
 const CrowdFavoritePage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_CROWD_FAVORITE_PATH)}`;
@@ -17,9 +22,13 @@ const CrowdFavoritePage = async () => {
   const participantUser = user as ParticipantUser;
   const crowdFavoriteProjectId = participantUser.crowd_favorite_project_id;
   const optInOpen = isCrowdFavoriteOptInOpen();
+  const inPresentationPhase = isCrowdFavoritePresentationPhase();
+  const votingOpen = isCrowdFavoriteVotingOpen();
+  const votingClosed = isCrowdFavoriteVotingClosed();
 
   const crowdFavoriteProject = crowdFavoriteProjectId ? await getCrowdFavoriteProject(crowdFavoriteProjectId) : null;
-  const participantUsers = crowdFavoriteProject ? null : await getAllParticipantUsers();
+  const participantUsers = !crowdFavoriteProject && !votingOpen ? await getAllParticipantUsers() : null;
+  const crowdFavoriteProjects = votingOpen ? await getAllCrowdFavoriteProjects() : [];
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -49,12 +58,35 @@ const CrowdFavoritePage = async () => {
         </div>
       </section>
 
-      {crowdFavoriteProject ? (
+      {votingOpen ? (
+        <CrowdFavoriteVoteForm
+          projects={crowdFavoriteProjects.map((project) => ({
+            id: project.id,
+            project_name: project.project_name,
+          }))}
+          initialVotedProjectId={participantUser.voted_for_project_id}
+        />
+      ) : crowdFavoriteProject ? (
         <CrowdFavoriteOptedInView crowdFavoriteProject={crowdFavoriteProject} canOptOut={optInOpen} />
       ) : (
         <>
           {optInOpen ? (
             <CrowdFavoriteOptInForm callerFirstName={participantUser.first_name} callerEmail={participantUser.email} />
+          ) : inPresentationPhase ? (
+            <section className="flex flex-col gap-3 rounded-lg border bg-card p-6 shadow-sm">
+              <p className="text-sm font-semibold">Presentation phase instructions</p>
+              <p className="text-sm text-muted-foreground">
+                Your team is not opted in. If you want to vote for crowd favorite, be in LR4 by 2:15 PM and stay for
+                presentations until voting opens.
+              </p>
+            </section>
+          ) : votingClosed ? (
+            <section className="flex flex-col gap-3 rounded-lg border bg-card p-6 shadow-sm">
+              <p className="text-sm font-semibold">Voting is closed</p>
+              <p className="text-sm text-muted-foreground">
+                The crowd favorite voting window has ended. Final tally is now locked.
+              </p>
+            </section>
           ) : (
             <section className="flex flex-col gap-4 rounded-lg border bg-card p-6 shadow-sm">
               <div>
