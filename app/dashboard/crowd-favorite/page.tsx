@@ -4,7 +4,9 @@ import { DASHBOARD_CROWD_FAVORITE_PATH, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT 
 import { getAuthenticatedUser } from "@/lib";
 import type { CrowdFavoriteProject, ParticipantUser } from "@/types";
 
+import { CrowdFavoriteOptInForm } from "./_components";
 import { getAllParticipantUsers, getCrowdFavoriteProject } from "./_lib";
+import { isCrowdFavoriteOptInOpen } from "./constants";
 
 const formatTeamMember = (member: CrowdFavoriteProject["team_members"][number]) => {
   return `${member.first_name} <${member.email}>`;
@@ -18,6 +20,7 @@ const CrowdFavoritePage = async () => {
 
   const participantUser = user as ParticipantUser;
   const crowdFavoriteProjectId = participantUser.crowd_favorite_project_id;
+  const optInOpen = isCrowdFavoriteOptInOpen();
 
   const crowdFavoriteProject = crowdFavoriteProjectId ? await getCrowdFavoriteProject(crowdFavoriteProjectId) : null;
   const participantUsers = crowdFavoriteProject ? null : await getAllParticipantUsers();
@@ -76,17 +79,23 @@ const CrowdFavoritePage = async () => {
           </div>
         </section>
       ) : (
-        <section className="flex flex-col gap-4 rounded-lg border bg-card p-6 shadow-sm">
-          <div>
-            <p className="text-sm font-semibold">No crowd favorite project yet</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              When opt-in opens, this route will show the participant form and your team status.
-            </p>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Loaded {participantUsers?.length ?? 0} participant users for the opt-in flow.
-          </p>
-        </section>
+        <>
+          {optInOpen ? (
+            <CrowdFavoriteOptInForm callerFirstName={participantUser.first_name} callerEmail={participantUser.email} />
+          ) : (
+            <section className="flex flex-col gap-4 rounded-lg border bg-card p-6 shadow-sm">
+              <div>
+                <p className="text-sm font-semibold">Crowd favorite opt-in is closed</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  The opt-in form is only available during the configured phase window.
+                </p>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Loaded {participantUsers?.length ?? 0} participant users for downstream voting flow.
+              </p>
+            </section>
+          )}
+        </>
       )}
     </div>
   );
