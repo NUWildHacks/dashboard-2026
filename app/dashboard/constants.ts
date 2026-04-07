@@ -33,6 +33,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     title: "Home",
     hasSubItems: false,
+    hasSubItems: false,
     url: DASHBOARD_PATH,
     icon: Home,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
@@ -53,12 +54,14 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     title: "Guide",
+    hasSubItems: false,
     url: GUIDE_PATH,
     icon: TableCellsMerge,
     visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
   },
   {
     title: "Mentoring",
+    hasSubItems: false,
     url: DASHBOARD_MENTORING_PATH,
     icon: GraduationCap,
     visibleTo: [JUDGE_AND_MENTOR],
