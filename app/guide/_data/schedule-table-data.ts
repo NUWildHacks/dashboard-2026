@@ -32,7 +32,7 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     time: "6:00 PM - 7:00 PM",
     event: [
       {
-        content: "ColorStack X WildHacks SQL & Databases Workshop",
+        content: "CANCELLED — ColorStack X WildHacks SQL & Databases Workshop",
         href: "/guide/workshops#colorstack-x-wildhacks-sql-databases-workshop",
       },
     ],
@@ -103,8 +103,24 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Expo" }],
-    location: "Tech M120",
+    event: [
+      { content: "Sponsor Fair — IMC + MLH" },
+    ],
+    location: "Tech A110",
+  },
+  {
+    time: "8:30 - 10:00 AM",
+    event: [
+      { content: "Sponsor Fair — Claude" },
+    ],
+    location: "Tech L170",
+  },
+  {
+    time: "8:30 - 10:00 AM",
+    event: [
+      { content: "Sponsor Fair — Blossoms + Redbull" },
+    ],
+    location: "Tech L168",
   },
   {
     time: "10:00 - 11:00 AM",
@@ -112,13 +128,18 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
     location: "LR2",
   },
   {
+    time: "10:00 - 11:00 AM",
+    event: [{ content: "Zoom Overflow" }],
+    location: "LR4",
+  },
+  {
     time: "11:00 AM",
     event: [{ content: "Hacking Starts", bold: true }],
   },
   {
     time: "11:00 - 11:30 AM",
-    event: [{ content: "Team Formation Event" }],
-    location: "LR4",
+    event: [{ content: "Team Formation Event"}],
+    location: "LR2",
   },
   {
     time: "12:30 PM",

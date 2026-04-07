@@ -12,7 +12,7 @@ export const scheduleEvents: CalendarEvent[] = [
     zoom: "https://northwestern.zoom.us/j/92894172756",
   },
   {
-    title: "Colorstack X WildHacks SQL & Databases Workshop",
+    title: "CANCELLED — Colorstack X WildHacks SQL & Databases Workshop",
     description:
       "Join us on April 7th from 6:00–7:00 PM in TCHM166 for a beginner-friendly workshop designed to get you querying with confidence! We'll walk you through how to design tables, write queries, and extract meaningful insights from data. By the end of the session, you'll have a solid understanding of how databases work and how to put them to use in your own projects.",
     start: new Date("2026-04-07T18:00:00-05:00"),
@@ -78,11 +78,25 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/logistics/checking-in",
   },
   {
-    title: "Sponsor Expo",
+    title: "Sponsor Fair — IMC + MLH" ,
     description: "Meet with sponsors and learn about opportunities",
     start: new Date("2026-04-11T08:30:00-05:00"),
     end: new Date("2026-04-11T10:00:00-05:00"),
-    location: "Tech M120",
+    location: "Tech A110",
+  },
+  {
+    title: "Sponsor Fair — Claude" ,
+    description: "Meet with sponsors and learn about opportunities",
+    start: new Date("2026-04-11T08:30:00-05:00"),
+    end: new Date("2026-04-11T10:00:00-05:00"),
+    location: "Tech L170",
+  },
+  {
+    title: "Sponsor Fair — Blossoms + Redbull" ,
+    description: "Meet with sponsors and learn about opportunities",
+    start: new Date("2026-04-11T08:30:00-05:00"),
+    end: new Date("2026-04-11T10:00:00-05:00"),
+    location: "Tech L168",
   },
   {
     title: "Opening Ceremony",
