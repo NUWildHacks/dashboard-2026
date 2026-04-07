@@ -32,9 +32,10 @@ const DashboardPage = async () => {
 
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
-  const showAdminCrowdFavoriteLink = role === ADMIN && hasCrowdFavoriteOptInStarted();
-  const showParticipantCrowdFavoriteLink = role === PARTICIPANT && hasCrowdFavoriteOptInStarted();
-  const participantVotingStarted = hasCrowdFavoriteVotingStarted();
+  const showAdminCrowdFavoriteLink = role === ADMIN && (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
+  const showParticipantCrowdFavoriteLink =
+    role === PARTICIPANT && (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
+  const participantVotingStarted = await hasCrowdFavoriteVotingStarted(wildhacksConfig);
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT) {

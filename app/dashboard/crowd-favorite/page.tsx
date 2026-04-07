@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 import { ADMIN, DASHBOARD_CROWD_FAVORITE_PATH, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
-import { getAuthenticatedUser } from "@/lib";
-import type { ParticipantUser } from "@/types";
+import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
+import type { ParticipantUser, WildHacksConfig } from "@/types";
 
 import {
   CrowdFavoriteAdminProjectList,
@@ -30,8 +30,12 @@ const CrowdFavoritePage = async () => {
   const user = await getAuthenticatedUser(redirectPath);
   if (user.role !== PARTICIPANT && user.role !== ADMIN) redirect(DASHBOARD_PATH);
 
+  // Fetch config once to pass to all helpers
+  const configDocSnapshot = await getConfigDocSnapshot();
+  const config = configDocSnapshot.data() as WildHacksConfig;
+
   if (user.role === ADMIN) {
-    const showVoteCount = hasCrowdFavoriteVotingStarted();
+    const showVoteCount = await hasCrowdFavoriteVotingStarted(config);
     const projects = await getCrowdFavoriteProjectsWithVoteCount(showVoteCount);
 
     return (
@@ -53,10 +57,10 @@ const CrowdFavoritePage = async () => {
 
   const participantUser = user as ParticipantUser;
   const crowdFavoriteProjectId = participantUser.crowd_favorite_project_id;
-  const optInOpen = isCrowdFavoriteOptInOpen();
-  const inPresentationPhase = isCrowdFavoritePresentationPhase();
-  const votingOpen = isCrowdFavoriteVotingOpen();
-  const votingClosed = isCrowdFavoriteVotingClosed();
+  const optInOpen = await isCrowdFavoriteOptInOpen(config);
+  const inPresentationPhase = await isCrowdFavoritePresentationPhase(config);
+  const votingOpen = await isCrowdFavoriteVotingOpen(config);
+  const votingClosed = await isCrowdFavoriteVotingClosed(config);
 
   const crowdFavoriteProject = crowdFavoriteProjectId ? await getCrowdFavoriteProject(crowdFavoriteProjectId) : null;
   const participantUsers = !crowdFavoriteProject && !votingOpen ? await getAllParticipantUsers() : null;

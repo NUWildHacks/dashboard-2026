@@ -11,8 +11,8 @@ import {
   PARTICIPANT,
   USERS_COLLECTION,
 } from "@/constants";
-import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult, CrowdFavoriteProject, ParticipantUser } from "@/types";
+import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
+import type { ActionResult, CrowdFavoriteProject, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
@@ -28,7 +28,11 @@ const optOutOfCrowdFavorite = async (): Promise<CrowdFavoriteOptOutResult> => {
 
     const participantCaller = caller as ParticipantUser;
 
-    if (!isCrowdFavoriteOptInOpen()) {
+    // Fetch config once to pass to all helpers
+    const configDocSnapshot = await getConfigDocSnapshot();
+    const config = configDocSnapshot.data() as WildHacksConfig;
+
+    if (!(await isCrowdFavoriteOptInOpen(config))) {
       return { success: false, error: "Crowd favorite opt-out is currently closed" };
     }
 

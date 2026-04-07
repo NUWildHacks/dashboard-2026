@@ -20,8 +20,18 @@ export type UseEditWildhacksConfigFormReturn = {
 };
 
 export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
-  const { max_team_size, max_participants, registration_deadline, start_time, end_time, crowd_favorite_password } =
-    wildhacksConfig;
+  const {
+    max_team_size,
+    max_participants,
+    registration_deadline,
+    start_time,
+    end_time,
+    crowd_favorite_password,
+    crowd_favorite_opt_in_start,
+    crowd_favorite_opt_in_end,
+    crowd_favorite_voting_start,
+    crowd_favorite_voting_end,
+  } = wildhacksConfig;
 
   const {
     control,
@@ -38,6 +48,10 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       start_time,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
+      crowd_favorite_opt_in_start,
+      crowd_favorite_opt_in_end,
+      crowd_favorite_voting_start,
+      crowd_favorite_voting_end,
     },
   });
 
@@ -77,6 +91,10 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       start_time,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
+      crowd_favorite_opt_in_start,
+      crowd_favorite_opt_in_end,
+      crowd_favorite_voting_start,
+      crowd_favorite_voting_end,
     });
   };
 

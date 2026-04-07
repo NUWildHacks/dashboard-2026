@@ -11,8 +11,8 @@ import {
   PARTICIPANT,
   USERS_COLLECTION,
 } from "@/constants";
-import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult, CrowdFavoriteProject, ParticipantUser } from "@/types";
+import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
+import type { ActionResult, CrowdFavoriteProject, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { crowdFavoriteOptInFormSchema, type CrowdFavoriteOptInFormSchema } from "../_schemas";
 import { isCrowdFavoriteOptInOpen } from "../constants";
@@ -34,7 +34,11 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
     const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck;
 
-    if (!isCrowdFavoriteOptInOpen()) {
+    // Fetch config once to pass to all helpers
+    const configDocSnapshot = await getConfigDocSnapshot();
+    const config = configDocSnapshot.data() as WildHacksConfig;
+
+    if (!(await isCrowdFavoriteOptInOpen(config))) {
       return { success: false, error: "Crowd favorite opt-in is currently closed" };
     }
 

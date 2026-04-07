@@ -30,7 +30,10 @@ const submitCrowdFavoriteVote = async (
     const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck;
 
-    if (!isCrowdFavoriteVotingOpen()) {
+    const configDocSnapshot = await getConfigDocSnapshot();
+    const config = configDocSnapshot.data() as WildHacksConfig;
+
+    if (!(await isCrowdFavoriteVotingOpen(config))) {
       return { success: false, error: "Voting is not open right now" };
     }
 
@@ -47,9 +50,6 @@ const submitCrowdFavoriteVote = async (
     }
 
     const data = parsed.data;
-
-    const configDocSnapshot = await getConfigDocSnapshot();
-    const config = configDocSnapshot.data() as WildHacksConfig;
 
     if (config.crowd_favorite_password !== data.crowd_favorite_password) {
       return {

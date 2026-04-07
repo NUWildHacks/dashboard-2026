@@ -20,6 +20,10 @@ export const editWildhacksConfigFormSchema = z
       .min(1, "Crowd favorite password is required")
       .min(4, "Password must be at least 4 characters")
       .max(50, "Password must be at most 50 characters"),
+    crowd_favorite_opt_in_start: z.number().min(1, { message: "Crowd favorite opt-in start time is required" }),
+    crowd_favorite_opt_in_end: z.number().min(1, { message: "Crowd favorite opt-in end time is required" }),
+    crowd_favorite_voting_start: z.number().min(1, { message: "Crowd favorite voting start time is required" }),
+    crowd_favorite_voting_end: z.number().min(1, { message: "Crowd favorite voting end time is required" }),
   })
   .refine((data) => data.registration_deadline < data.start_time, {
     message: "Registration deadline must be before event start time",
@@ -32,6 +36,18 @@ export const editWildhacksConfigFormSchema = z
   .refine((data) => data.end_time - data.start_time >= ONE_DAY, {
     message: "Event duration must be at least one day",
     path: ["end_time"],
+  })
+  .refine((data) => data.crowd_favorite_opt_in_start < data.crowd_favorite_opt_in_end, {
+    message: "Crowd favorite opt-in start must be before opt-in end",
+    path: ["crowd_favorite_opt_in_start"],
+  })
+  .refine((data) => data.crowd_favorite_opt_in_end < data.crowd_favorite_voting_start, {
+    message: "Crowd favorite opt-in end must be before voting start",
+    path: ["crowd_favorite_opt_in_end"],
+  })
+  .refine((data) => data.crowd_favorite_voting_start < data.crowd_favorite_voting_end, {
+    message: "Crowd favorite voting start must be before voting end",
+    path: ["crowd_favorite_voting_start"],
   });
 
 export type EditWildhacksConfigFormSchema = z.infer<typeof editWildhacksConfigFormSchema>;

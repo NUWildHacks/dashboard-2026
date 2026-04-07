@@ -66,48 +66,104 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Controller
-                  name="max_team_size"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Max Team Size</FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        type="number"
-                        step={1}
-                        disabled
-                        readOnly
-                        aria-invalid={fieldState.invalid}
-                        className="bg-muted cursor-not-allowed"
+              <div className="mt-6 pt-6 border-t">
+                <h3 className="text-sm font-semibold mb-4">Crowd Favorite Timing</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Controller
+                    name="crowd_favorite_opt_in_start"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <DateTimePickerField
+                        label="Opt-in Start"
+                        fieldName={field.name}
+                        field={field}
+                        fieldState={fieldState}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
+                    )}
+                  />
+                  <Controller
+                    name="crowd_favorite_opt_in_end"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <DateTimePickerField
+                        label="Opt-in End"
+                        fieldName={field.name}
+                        field={field}
+                        fieldState={fieldState}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="crowd_favorite_voting_start"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <DateTimePickerField
+                        label="Voting Start"
+                        fieldName={field.name}
+                        field={field}
+                        fieldState={fieldState}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="crowd_favorite_voting_end"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <DateTimePickerField
+                        label="Voting End"
+                        fieldName={field.name}
+                        field={field}
+                        fieldState={fieldState}
+                      />
+                    )}
+                  />
+                </div>
+              </div>
 
-                <Controller
-                  name="max_participants"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Max Participants</FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        type="number"
-                        step={1}
-                        disabled
-                        readOnly
-                        aria-invalid={fieldState.invalid}
-                        className="bg-muted cursor-not-allowed"
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
-                    </Field>
-                  )}
-                />
+              <div className="mt-6 pt-6 border-t">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Controller
+                    name="max_team_size"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>Max Team Size</FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="number"
+                          step={1}
+                          disabled
+                          readOnly
+                          aria-invalid={fieldState.invalid}
+                          className="bg-muted cursor-not-allowed"
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+
+                  <Controller
+                    name="max_participants"
+                    control={control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}>Max Participants</FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="number"
+                          step={1}
+                          disabled
+                          readOnly
+                          aria-invalid={fieldState.invalid}
+                          className="bg-muted cursor-not-allowed"
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      </Field>
+                    )}
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

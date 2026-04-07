@@ -7,6 +7,10 @@ export type WildHacksConfig = {
   end_time: number;
 
   crowd_favorite_password: string;
+  crowd_favorite_opt_in_start: number;
+  crowd_favorite_opt_in_end: number;
+  crowd_favorite_voting_start: number;
+  crowd_favorite_voting_end: number;
 
   updated_at: number;
 };
