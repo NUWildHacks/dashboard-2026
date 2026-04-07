@@ -77,7 +77,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Crowd Favorite",
     url: DASHBOARD_CROWD_FAVORITE_PATH,
     icon: Trophy,
-    visibleTo: [PARTICIPANT],
+    visibleTo: [PARTICIPANT, ADMIN],
   },
   {
     title: "Virtual Judging Zoom",

@@ -11,8 +11,16 @@ export const isCrowdFavoriteOptInOpen = (now = Date.now()) => {
   return now >= CROWD_FAVORITE_OPT_IN_START && now <= CROWD_FAVORITE_OPT_IN_END;
 };
 
+export const hasCrowdFavoriteOptInStarted = (now = Date.now()) => {
+  return now >= CROWD_FAVORITE_OPT_IN_START;
+};
+
 export const isCrowdFavoriteVotingOpen = (now = Date.now()) => {
   return now >= CROWD_FAVORITE_VOTING_START && now <= CROWD_FAVORITE_VOTING_END;
+};
+
+export const hasCrowdFavoriteVotingStarted = (now = Date.now()) => {
+  return now >= CROWD_FAVORITE_VOTING_START;
 };
 
 export const isCrowdFavoriteVotingClosed = (now = Date.now()) => {

@@ -1,6 +1,15 @@
 import { getFirestore } from "firebase-admin/firestore";
 
-import { QRCode, Statistics, Countdown, UpcomingEvents, VenueMap, ResumeUpload } from "@/app/dashboard/_components";
+import {
+  CrowdFavoriteAdminLink,
+  QRCode,
+  Statistics,
+  Countdown,
+  UpcomingEvents,
+  VenueMap,
+  ResumeUpload,
+} from "@/app/dashboard/_components";
+import { hasCrowdFavoriteOptInStarted } from "@/app/dashboard/crowd-favorite/constants";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, TEAM_MATCHING_INTAKE_COLLECTION } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
@@ -22,6 +31,7 @@ const DashboardPage = async () => {
 
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
+  const showAdminCrowdFavoriteLink = role === ADMIN && hasCrowdFavoriteOptInStarted();
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT) {
@@ -41,9 +51,14 @@ const DashboardPage = async () => {
             <QRCode userId={userId} />
           </div>
         )}
-        <div className={cn(role === PARTICIPANT ? "md:col-span-1" : "md:col-span-2")}>
+        <div className={cn(role === PARTICIPANT || showAdminCrowdFavoriteLink ? "md:col-span-1" : "md:col-span-2")}>
           <VenueMap />
         </div>
+        {showAdminCrowdFavoriteLink && (
+          <div className="md:col-span-1">
+            <CrowdFavoriteAdminLink />
+          </div>
+        )}
       </div>
 
       {role === PARTICIPANT && (

@@ -1,4 +1,5 @@
 export { default as DashboardSidebar } from "./_sidebar/dashboard-sidebar";
+export { default as CrowdFavoriteAdminLink } from "./crowd-favorite-admin-link";
 export { default as QRCode } from "./qr-code";
 export { default as SidebarLogoutButton } from "./_sidebar/sidebar-logout-button";
 export { default as Statistics } from "./statistics";

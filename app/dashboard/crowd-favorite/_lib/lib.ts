@@ -2,8 +2,17 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { CROWD_FAVORITES_COLLECTION, PARTICIPANT, USERS_COLLECTION } from "@/constants";
+import {
+  CROWD_FAVORITES_COLLECTION,
+  CROWD_FAVORITE_VOTES_SUBCOLLECTION,
+  PARTICIPANT,
+  USERS_COLLECTION,
+} from "@/constants";
 import type { CrowdFavoriteProject, ParticipantUser } from "@/types";
+
+type CrowdFavoriteProjectWithVotes = CrowdFavoriteProject & {
+  vote_count: number;
+};
 
 const getCrowdFavoriteProject = async (projectId: string): Promise<CrowdFavoriteProject | null> => {
   const db = getFirestore();
@@ -41,4 +50,49 @@ const getAllCrowdFavoriteProjects = async (): Promise<CrowdFavoriteProject[]> =>
   }));
 };
 
-export { getAllCrowdFavoriteProjects, getAllParticipantUsers, getCrowdFavoriteProject };
+const getCrowdFavoriteProjectsWithVoteCount = async (
+  includeVotes: boolean
+): Promise<CrowdFavoriteProjectWithVotes[]> => {
+  const projects = await getAllCrowdFavoriteProjects();
+  if (!includeVotes) {
+    return projects
+      .map((project) => ({
+        ...project,
+        vote_count: 0,
+      }))
+      .sort((a, b) => a.created_at - b.created_at);
+  }
+
+  const db = getFirestore();
+
+  const projectVoteCounts = await Promise.all(
+    projects.map(async (project) => {
+      const voteSnapshot = await db
+        .collection(CROWD_FAVORITES_COLLECTION)
+        .doc(project.id)
+        .collection(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
+        .get();
+
+      return {
+        ...project,
+        vote_count: voteSnapshot.size,
+      };
+    })
+  );
+
+  return projectVoteCounts.sort((a, b) => {
+    if (b.vote_count !== a.vote_count) {
+      return b.vote_count - a.vote_count;
+    }
+
+    return a.created_at - b.created_at;
+  });
+};
+
+export {
+  getAllCrowdFavoriteProjects,
+  getAllParticipantUsers,
+  getCrowdFavoriteProject,
+  getCrowdFavoriteProjectsWithVoteCount,
+};
+export type { CrowdFavoriteProjectWithVotes };
