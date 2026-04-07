@@ -2,6 +2,7 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import {
   CrowdFavoriteAdminLink,
+  CrowdFavoriteParticipantLink,
   QRCode,
   Statistics,
   Countdown,
@@ -9,7 +10,7 @@ import {
   VenueMap,
   ResumeUpload,
 } from "@/app/dashboard/_components";
-import { hasCrowdFavoriteOptInStarted } from "@/app/dashboard/crowd-favorite/constants";
+import { hasCrowdFavoriteOptInStarted, hasCrowdFavoriteVotingStarted } from "@/app/dashboard/crowd-favorite/constants";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, TEAM_MATCHING_INTAKE_COLLECTION } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
@@ -32,6 +33,8 @@ const DashboardPage = async () => {
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
   const showAdminCrowdFavoriteLink = role === ADMIN && hasCrowdFavoriteOptInStarted();
+  const showParticipantCrowdFavoriteLink = role === PARTICIPANT && hasCrowdFavoriteOptInStarted();
+  const participantVotingStarted = hasCrowdFavoriteVotingStarted();
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT) {
@@ -64,15 +67,19 @@ const DashboardPage = async () => {
       {role === PARTICIPANT && (
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
-          <TeamMatchingIntake
-            hasSubmitted={hasSubmittedTeamMatching}
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
+          {showParticipantCrowdFavoriteLink ? (
+            <CrowdFavoriteParticipantLink votingStarted={participantVotingStarted} />
+          ) : (
+            <TeamMatchingIntake
+              hasSubmitted={hasSubmittedTeamMatching}
+              firstName={first_name}
+              lastName={last_name}
+              email={email}
+              school={school as string}
+              fieldOfStudy={field_of_study as string}
+              eventStartTime={wildhacksConfig.start_time}
+            />
+          )}
         </div>
       )}
       <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>

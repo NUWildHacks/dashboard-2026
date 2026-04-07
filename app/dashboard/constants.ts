@@ -1,6 +1,5 @@
 import {
   Calendar,
-  Trophy,
   Home,
   Users,
   TableCellsMerge,
@@ -13,7 +12,6 @@ import {
 
 import {
   ADMIN,
-  DASHBOARD_CROWD_FAVORITE_PATH,
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
@@ -71,12 +69,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     title: "Devpost",
     url: DEVPOST_PATH,
     icon: SquareCode,
-    visibleTo: [PARTICIPANT, ADMIN],
-  },
-  {
-    title: "Crowd Favorite",
-    url: DASHBOARD_CROWD_FAVORITE_PATH,
-    icon: Trophy,
     visibleTo: [PARTICIPANT, ADMIN],
   },
   {
