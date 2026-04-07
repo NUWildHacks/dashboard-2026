@@ -2,15 +2,11 @@ import { redirect } from "next/navigation";
 
 import { DASHBOARD_CROWD_FAVORITE_PATH, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
-import type { CrowdFavoriteProject, ParticipantUser } from "@/types";
+import type { ParticipantUser } from "@/types";
 
-import { CrowdFavoriteOptInForm } from "./_components";
+import { CrowdFavoriteOptInForm, CrowdFavoriteOptedInView } from "./_components";
 import { getAllParticipantUsers, getCrowdFavoriteProject } from "./_lib";
 import { isCrowdFavoriteOptInOpen } from "./constants";
-
-const formatTeamMember = (member: CrowdFavoriteProject["team_members"][number]) => {
-  return `${member.first_name} <${member.email}>`;
-};
 
 const CrowdFavoritePage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_CROWD_FAVORITE_PATH)}`;
@@ -54,30 +50,7 @@ const CrowdFavoritePage = async () => {
       </section>
 
       {crowdFavoriteProject ? (
-        <section className="flex flex-col gap-4 rounded-lg border bg-card p-6 shadow-sm">
-          <div>
-            <p className="text-sm font-semibold">Your team is opted in</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Your current crowd favorite project details are loaded below.
-            </p>
-          </div>
-          <div className="grid gap-2 text-sm">
-            <p>
-              <span className="font-medium">Project:</span> {crowdFavoriteProject.project_name}
-            </p>
-            <p className="break-all">
-              <span className="font-medium">Devpost:</span> {crowdFavoriteProject.devpost_url}
-            </p>
-            <div>
-              <p className="font-medium">Team members</p>
-              <ul className="mt-2 space-y-1 text-muted-foreground">
-                {crowdFavoriteProject.team_members.map((member) => (
-                  <li key={member.id}>{formatTeamMember(member)}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
+        <CrowdFavoriteOptedInView crowdFavoriteProject={crowdFavoriteProject} canOptOut={optInOpen} />
       ) : (
         <>
           {optInOpen ? (
