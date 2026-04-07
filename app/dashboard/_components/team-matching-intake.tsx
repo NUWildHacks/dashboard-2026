@@ -60,13 +60,14 @@ const WORK_STYLE_OPTIONS = [
 const GENDER_PREFERENCE_OPTIONS = [
   { value: "no_preference", label: "No preference" },
   { value: "prefer_mixed", label: "Prefer a mixed-gender team" },
-  { value: "prefer_same", label: "Prefer a same-gender team" },
+  { value: "prefer_same", label: "Prefer same-gender teammates" },
 ] as const;
 
 const WHERE_STAYING_OPTIONS = [
-  { value: "staying_overnight", label: "Staying overnight" },
-  { value: "commuting", label: "Commuting (not staying overnight)" },
-  { value: "unsure", label: "Not sure yet" },
+  { value: "prefer_not_to_say", label: "Prefer not to say" },
+  { value: "on_site", label: "On-site (staying at the venue)" },
+  { value: "on_campus", label: "On-campus housing (dorm)" },
+  { value: "off_campus", label: "Off-campus accommodation" },
 ] as const;
 
 const MAX_REQUIRED_TEAMMATES = 3;
@@ -92,7 +93,7 @@ type FormState = {
 const INITIAL_FORM_STATE: FormState = {
   experience_level: "",
   preferred_roles: [],
-  skills: {},
+  skills: Object.fromEntries(SKILL_OPTIONS.map((skill) => [skill, 0])),
   additional_notes: "",
   preferred_team_size: 4,
   work_style: "",
@@ -227,14 +228,9 @@ const TeamMatchingIntake = ({
     setIsSubmitting(true);
 
     const result = await submitTeamMatchingIntake({
-      experience_level: form.experience_level,
-      preferred_roles: form.preferred_roles,
-      skills: form.skills,
-      additional_notes: form.additional_notes,
-      preferred_team_size: form.preferred_team_size,
-      work_style: form.work_style,
-      gender_preference: form.gender_preference,
-      where_staying: form.where_staying,
+      ...form,
+      gender_preference: form.gender_preference || "no_preference",
+      where_staying: form.where_staying || "prefer_not_to_say",
       required_teammates: form.required_teammates.map((t) => t.userId),
       consent: consentChecked,
     });
@@ -516,6 +512,45 @@ const TeamMatchingIntake = ({
                       </Field>
 
                       <FieldSeparator />
+
+                      <Field>
+                        <FieldLabel htmlFor="gender_preference">
+                          Gender preference <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FieldLabel>
+                        <Select
+                          value={form.gender_preference}
+                          onValueChange={(v) => handleChange("gender_preference", v)}
+                        >
+                          <SelectTrigger id="gender_preference" className="w-full">
+                            <SelectValue placeholder="Select a preference" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {GENDER_PREFERENCE_OPTIONS.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
+
+                      <Field>
+                        <FieldLabel htmlFor="where_staying">
+                          Where are you staying? <span className="text-muted-foreground font-normal">(optional)</span>
+                        </FieldLabel>
+                        <Select value={form.where_staying} onValueChange={(v) => handleChange("where_staying", v)}>
+                          <SelectTrigger id="where_staying" className="w-full">
+                            <SelectValue placeholder="Select where you're staying" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {WHERE_STAYING_OPTIONS.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>
+                                {label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
 
                       <Field>
                         <FieldLabel>

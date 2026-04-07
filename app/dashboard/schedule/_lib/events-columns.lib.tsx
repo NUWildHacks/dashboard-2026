@@ -14,26 +14,29 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UseItemDialogReturn } from "@/hooks";
+import { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
 import { getEventTimeRange } from "@/lib";
 
-import { UseEventFormDialogReturn, UseEventsReturn } from "../_hooks";
+import { UseEventFormDialogReturn } from "../_hooks";
 import type { Event } from "../types";
 
 /**
  * Get events table columns.
  * Returns columns for displaying events in a table format.
  *
+ * @param handleSelectItem - Callback function to handle item selection
+ * @param handleOpenEventFormDialog - Callback function to handle event form dialog
+ * @param handleOpenConfirmDeleteDialog - Callback function to handle event deletion
  * @returns Array of column definitions for the events table
  * @example
  * ```ts
- * const columns = getEventsColumns();
+ * const columns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleOpenConfirmDeleteDialog);
  * ```
  */
 export const getEventsColumns = (
   handleSelectItem: UseItemDialogReturn<Event>["handleSelectItem"],
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
-  handleDeleteEvents: UseEventsReturn["handleDeleteEvents"]
+  handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"]
 ): ColumnDef<Event>[] => {
   return [
     {
@@ -132,7 +135,7 @@ export const getEventsColumns = (
                 Copy event location
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem variant="destructive" onClick={() => handleDeleteEvents([row.original.id])}>
+              <DropdownMenuItem variant="destructive" onClick={() => handleOpenConfirmDeleteDialog([row.original.id])}>
                 Delete event
               </DropdownMenuItem>
             </DropdownMenuContent>

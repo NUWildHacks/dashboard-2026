@@ -82,6 +82,17 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     ],
     location: "Tech M177",
   },
+  {
+    date: "April 10, 2026",
+    time: "7:00 PM - 8:00 PM",
+    event: [
+      {
+        content: "Blossoms X WildHacks Informational Session",
+        href: "/guide/workshops#blossoms-x-wildhacks-informational-session",
+      },
+    ],
+    location: "Virtual",
+  },
 ];
 
 export const saturdayScheduleRows: DayScheduleRow[] = [
@@ -175,9 +186,9 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     location: "Mudd 2nd Floor",
   },
   {
-    time: "6:00 AM",
+    time: "6:15 AM",
     event: [{ content: "Sunrise Walk Around the Lakefill" }],
-    location: "Lakefill",
+    location: "Meet in Mudd 1st Floor",
   },
   {
     time: "8:30 AM",

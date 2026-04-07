@@ -2,12 +2,20 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { TEAM_MATCHING_INTAKE_COLLECTION, USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
+import {
+  TEAM_MATCHING_INTAKE_COLLECTION,
+  USERS_COLLECTION,
+  LOGIN_PATH,
+  DASHBOARD_PATH,
+  PARTICIPANT,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
 const VALID_EXPERIENCE_LEVELS = ["beginner", "intermediate", "experienced"] as const;
 const VALID_WORK_STYLES = ["competitive", "casual", "in_between"] as const;
+const VALID_GENDER_PREFERENCES = ["no_preference", "prefer_mixed", "prefer_same"] as const;
+const VALID_WHERE_STAYING = ["prefer_not_to_say", "on_site", "on_campus", "off_campus"] as const;
 const VALID_ROLES = [
   "Frontend Engineer",
   "Backend Engineer",
@@ -31,8 +39,6 @@ const VALID_SKILLS = [
   "AWS / Cloud",
   "Docker / DevOps",
 ] as const;
-const VALID_GENDER_PREFERENCES = ["no_preference", "prefer_mixed", "prefer_same"] as const;
-const VALID_WHERE_STAYING = ["staying_overnight", "commuting", "unsure"] as const;
 const MAX_REQUIRED_TEAMMATES = 3;
 
 export type TeamMatchingIntakeData = {
@@ -44,8 +50,8 @@ export type TeamMatchingIntakeData = {
   work_style: string;
   required_teammates: string[];
   consent: boolean;
-  gender_preference: string;
-  where_staying: string;
+  gender_preference?: string;
+  where_staying?: string;
 };
 
 export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Promise<ActionResult> => {
@@ -53,8 +59,8 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    // const roleCheck = requireRole(user, PARTICIPANT);
-    const roleCheck = requireRole(user, ADMIN);
+    const roleCheck = requireRole(user, PARTICIPANT);
+    // const roleCheck = requireRole(user, ADMIN);
     if (roleCheck) return roleCheck;
 
     const { id: userId } = user;
@@ -96,6 +102,20 @@ export const submitTeamMatchingIntake = async (data: TeamMatchingIntakeData): Pr
     }
 
     if (!VALID_WHERE_STAYING.includes(data.where_staying as (typeof VALID_WHERE_STAYING)[number])) {
+      return { success: false, error: "Invalid where staying value." };
+    }
+
+    if (
+      data.gender_preference &&
+      !VALID_GENDER_PREFERENCES.includes(data.gender_preference as (typeof VALID_GENDER_PREFERENCES)[number])
+    ) {
+      return { success: false, error: "Invalid gender preference." };
+    }
+
+    if (
+      data.where_staying &&
+      !VALID_WHERE_STAYING.includes(data.where_staying as (typeof VALID_WHERE_STAYING)[number])
+    ) {
       return { success: false, error: "Invalid where staying value." };
     }
 

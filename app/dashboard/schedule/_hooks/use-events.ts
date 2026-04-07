@@ -2,19 +2,17 @@
 
 import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
-import { toast } from "sonner";
 
 import { db } from "@/config/firebase-client";
 import { EVENTS_COLLECTION } from "@/constants";
-import type { UseFiltersReturn } from "@/hooks";
+import type { UseFiltersReturnWithAll } from "@/hooks";
 
-import { deleteEvents } from "../_actions";
 import { EVENT_FIELDS } from "../constants";
 import type { CalendarDay, Event, EventCategory } from "../types";
 
 export type UseEventsSettings = {
-  category?: UseFiltersReturn<EventCategory>["category"];
-  search?: UseFiltersReturn<EventCategory>["search"];
+  category?: UseFiltersReturnWithAll<EventCategory>["category"];
+  search?: UseFiltersReturnWithAll<EventCategory>["search"];
   selectedDay?: CalendarDay;
   limitCount?: number;
 };
@@ -22,7 +20,6 @@ export type UseEventsSettings = {
 export type UseEventsReturn = {
   events: Event[];
   isLoading: boolean;
-  handleDeleteEvents: (eventIds: Event["id"][]) => Promise<void>;
 };
 
 export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
@@ -87,27 +84,5 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     return result;
   }, [allEvents, category, search, selectedDay]);
 
-  const handleDeleteEvents = async (eventIds: Event["id"][]) => {
-    try {
-      const result = await deleteEvents(eventIds);
-      const { success } = result;
-
-      if (!success) {
-        const { field, error } = result;
-
-        if (!field) {
-          throw new Error(error);
-        }
-
-        return;
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Delete events error:", errorMessage);
-
-      toast.error("Failed to delete events", { description: errorMessage });
-    }
-  };
-
-  return { events, isLoading, handleDeleteEvents };
+  return { events, isLoading };
 };

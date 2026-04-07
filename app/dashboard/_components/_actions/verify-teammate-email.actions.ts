@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, ADMIN } from "@/constants";
+import { USERS_COLLECTION, LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 
 export type VerifyTeammateEmailResult =
@@ -16,8 +16,7 @@ export const verifyTeammateEmail = async (email: string): Promise<VerifyTeammate
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const caller = await getAuthenticatedUser(redirectPath);
 
-    // const roleCheck = requireRole(caller, PARTICIPANT);
-    const roleCheck = requireRole(caller, ADMIN);
+    const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck as { success: false; error: string };
 
     const snapshot = await db
