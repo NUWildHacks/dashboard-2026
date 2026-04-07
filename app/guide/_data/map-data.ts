@@ -304,17 +304,6 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
       },
     ],
-    description: "Wilkinson Computing Lab",
-    capacity: "TBD",
-  },
-  {
-    name: text("Collaboration 21"),
-    location: [
-      {
-        content: "Tech M338",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
-      },
-    ],
     description: "Collaboration Space",
     capacity: "22",
   },
