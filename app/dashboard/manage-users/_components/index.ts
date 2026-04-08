@@ -3,3 +3,4 @@ export { default as PermissionCodesTable } from "./_permission-codes-table/permi
 export { default as UsersTable } from "./_users-table/users-table";
 export { default as ConfirmDeletePermissionCodesDialog } from "./_permission-codes-table/confirm-delete-permission-codes-dialog";
 export { default as ConfirmDeleteUsersDialog } from "./_users-table/confirm-delete-users-dialog";
+export { default as JudgingAssignmentsTable } from "./judging-assignments-table";

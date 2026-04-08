@@ -13,18 +13,21 @@ import {
 } from "@/components/ui/combobox";
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { JudgeUser } from "@/types";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
-import { JudgingAssignmentWithProject } from "../../judging/types";
+import type { JudgingAssignment, Project } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
-  judgingAssignmentsWithProject: JudgingAssignmentWithProject[];
-  judges: JudgeUser[];
+  judgingAssignments: JudgingAssignment[];
+  projects: Project[];
+  judges: (JudgeUser | JudgeAndMentorUser)[];
 };
 
 const JudgingAssignmentsTable = ({
-  judgingAssignmentsWithProject,
+  judgingAssignments,
+  projects,
   judges,
 }: JudgingAssignmentsTableProps) => {
   const {
@@ -32,12 +35,14 @@ const JudgingAssignmentsTable = ({
     setSelectedJudge,
     search,
     setSearch,
+    round,
+    setRound,
     table,
     judgingAssignmentsColumns,
     fileInputRef,
     handleUploadAssignments,
     handleFileChange,
-  } = useJudgingAssignmentsTable(judgingAssignmentsWithProject);
+  } = useJudgingAssignmentsTable(judgingAssignments, projects);
 
   return (
     <div className="flex-1 space-y-4">
@@ -72,6 +77,23 @@ const JudgingAssignmentsTable = ({
               </ComboboxList>
             </ComboboxContent>
           </Combobox>
+          <Select value={round} onValueChange={(value) => setRound(value as "Round 1" | "Round 2")}>
+            <SelectTrigger
+              id="round-filter"
+              className="min-w-[125px] md:w-[125px] w-full"
+              aria-label="Filter users by round"
+            >
+              <SelectValue placeholder="Select round" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem key="Round 1" value="Round 1">
+                Round 1
+              </SelectItem>
+              <SelectItem key="Round 2" value="Round 2">
+                Round 2
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
