@@ -3,17 +3,29 @@
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
+import { UseJudgingFormSheetReturn } from "../_hooks";
 import { ProjectWithMetadata } from "../types";
 
-type AssignedProjectItemProps = {
+type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
   projectWithMetadata: ProjectWithMetadata;
 };
 
-const AssignedProjectItem = ({ projectWithMetadata }: AssignedProjectItemProps) => {
+const AssignedProjectItem = ({
+  handleOpenJudgingForm,
+  handleKeyDown,
+  projectWithMetadata,
+}: AssignedProjectItemProps) => {
   const { name, track, judging_form } = projectWithMetadata;
 
   return (
-    <Item variant="outline" aria-label={`Project: ${name}`} className="w-full shadow-xs">
+    <Item
+      variant="outline"
+      tabIndex={0}
+      aria-label={`Judge project: ${name}`}
+      onClick={() => handleOpenJudgingForm(projectWithMetadata)}
+      onKeyDown={(event) => handleKeyDown(event, projectWithMetadata)}
+      className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
+    >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{name}</span>

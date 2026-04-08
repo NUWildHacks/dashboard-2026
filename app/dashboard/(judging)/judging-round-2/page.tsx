@@ -12,14 +12,11 @@ const JudgingRound2Page = async () => {
   const user = await getAuthenticatedUser(redirectPath);
   if (user.role !== JUDGE && user.role !== JUDGE_AND_MENTOR) redirect(DASHBOARD_PATH);
 
-  const { id, modality, other_modality } = user;
-
-  const projectsWithMetadata = await getProjectsWithMetadata(id);
+  const projectsWithMetadata = await getProjectsWithMetadata(user.id);
 
   return (
     <JudgingDisplay
-      modality={modality}
-      other_modality={other_modality}
+      {...user}
       projectsWithMetadata={projectsWithMetadata}
       currentPath={DASHBOARD_JUDGING_ROUND_2_PATH}
     />
