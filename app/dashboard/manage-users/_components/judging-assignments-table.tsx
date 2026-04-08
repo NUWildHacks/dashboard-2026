@@ -16,7 +16,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
-import { JudgingAssignment, ProjectWithMetadata } from "../../(judging)/types";
+import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
   projectsWithMetadata: ProjectWithMetadata[];
