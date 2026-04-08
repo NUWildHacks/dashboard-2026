@@ -18,7 +18,9 @@ import { JudgingAssignment, Project } from "../../(judging)/types";
 
 export type UploadAssignmentsResult = ActionResult<JudgingAssignmentsCsvArraySchema>;
 
-export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema): Promise<UploadAssignmentsResult> => {
+export const uploadAssignments = async (
+  data: JudgingAssignmentsCsvArraySchema
+): Promise<UploadAssignmentsResult> => {
   const db = getFirestore();
 
   try {
@@ -39,7 +41,7 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
     const seenProjectIds = new Set<Project["id"]>();
 
     for (const assignment of data) {
-      const { judge_id, project_id, project_name, track, devpost_url } = assignment;
+      const { judge_id, project_id, project_name, track, devpost_url, order, judging_round } = assignment;
 
       if (!seenProjectIds.has(project_id)) {
         seenProjectIds.add(project_id);
@@ -52,10 +54,12 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
         } as Partial<Project>);
       }
 
-      const assignmentDocRef = judgingAssignmentsCollectionRef.doc(`${judge_id}_${project_id}`);
+      const assignmentDocRef = judgingAssignmentsCollectionRef.doc();
       judgingAssignmentBatch.set(assignmentDocRef, {
         judge_id,
         project_id,
+        order,
+        judging_round,
       } as Partial<JudgingAssignment>);
     }
 

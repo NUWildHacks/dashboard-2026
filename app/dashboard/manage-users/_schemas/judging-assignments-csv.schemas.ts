@@ -4,7 +4,7 @@ import { firestoreUserIdSchema, plainTextSingleLineSchema, secureUrlSchema } fro
 
 import { TRACKS } from "../../(judging)/constants";
 
-export const judgingAssignmentsCsvSchema = z.object({
+const judgingAssignmentsCsvSchema = z.object({
   judge_id: firestoreUserIdSchema,
   judge_email: z.email("Invalid email address"),
   judge_first_name: plainTextSingleLineSchema
@@ -21,9 +21,10 @@ export const judgingAssignmentsCsvSchema = z.object({
     .min(1, "Project name is required")
     .max(100, "Project name must be 100 characters or less"),
   devpost_url: secureUrlSchema,
+  order: z.number(),
+  judging_round: z.number().min(1, "Judging round is required").max(2, "Judging round must be 2 or less"),
 });
 
 export const judgingAssignmentsCsvArraySchema = z.array(judgingAssignmentsCsvSchema);
 
-export type JudgingAssignmentsCsvSchema = z.infer<typeof judgingAssignmentsCsvSchema>;
 export type JudgingAssignmentsCsvArraySchema = z.infer<typeof judgingAssignmentsCsvArraySchema>;

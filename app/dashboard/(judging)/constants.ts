@@ -21,11 +21,12 @@ export const PROJECT_FIELDS = {
   name: "name",
   track: "track",
   devpost_url: "devpost_url",
-  order: "order",
 } as const satisfies Record<keyof Omit<Project, "id">, string>;
 
 export const JUDGING_ASSIGNMENT_FIELDS = {
   judge_id: "judge_id",
   project_id: "project_id",
   judging_form: "judging_form",
+  order: "order",
+  judging_round: "judging_round",
 } as const satisfies Record<keyof Omit<JudgingAssignment, "id">, string>;

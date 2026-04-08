@@ -15,13 +15,15 @@ export type Project = {
   name: string;
   track: Track;
   devpost_url: string;
-  order: number;
 };
 
 export type JudgingAssignment = {
   id: string;
   judge_id: JudgeUser["id"];
   project_id: Project["id"];
+
+  order: number;
+  judging_round: number;
 
   judging_form?: JudgingForm;
 };
