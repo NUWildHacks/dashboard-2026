@@ -93,6 +93,17 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     ],
     location: "Virtual",
   },
+  {
+    date: "April 11, 2026",
+    time: "1:30 PM - 2:15 PM",
+    event: [
+      {
+        content: "Finding Your Path in Tech with Women in Computing",
+        href: "/guide/workshops#finding-your-path-in-tech-with-women-in-computing",
+      },
+    ],
+    location: "Tech LR5",
+  },
 ];
 
 export const saturdayScheduleRows: DayScheduleRow[] = [
@@ -229,16 +240,6 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     highlight: "deadline",
   },
   {
-    id: "crowd-favorite-sign-up",
-    time: "11:00 AM",
-    event: [
-      {
-        content: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
-        // href: "Coming Soon!",
-      },
-    ],
-  },
-  {
     time: "11:15 - 1:15 PM",
     event: [
       {
@@ -265,6 +266,16 @@ export const sundayScheduleRows: DayScheduleRow[] = [
       },
     ],
     location: "To Be Announced Per Team",
+  },
+  {
+    id: "crowd-favorite-sign-up",
+    time: "2:00 PM",
+    event: [
+      {
+        content: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
+        // href: "Coming Soon!",
+      },
+    ],
   },
   {
     id: "crowd-favorite-presentations",

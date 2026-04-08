@@ -129,7 +129,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG62&room-floor=0&room-id=853&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "20",
   },
   {
@@ -140,7 +140,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG66&room-floor=0&room-id=855&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "35",
   },
   {
@@ -151,7 +151,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG68&room-floor=0&room-id=850&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "23",
   },
   {
@@ -162,7 +162,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG72&room-floor=0&room-id=857&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "20",
   },
   {
@@ -173,7 +173,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=MG28&room-floor=0&room-id=971&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "35",
   },
   //
@@ -187,7 +187,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M128&room-floor=1&room-id=867&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "40",
   },
   {
@@ -198,7 +198,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M120&room-floor=1&room-id=867&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "28",
   },
   {
@@ -209,7 +209,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M166&room-floor=1&room-id=876&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "21",
   },
   {
@@ -220,7 +220,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M177&room-floor=1&room-id=877&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "40",
   },
   {
@@ -231,7 +231,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L158&room-floor=1&room-id=785&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "21",
   },
   //
@@ -245,7 +245,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F280&room-floor=2&room-id=1107&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "24",
   },
 
@@ -257,7 +257,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F281&room-floor=2&room-id=1108&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "28",
   },
   {
@@ -268,7 +268,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L211&room-floor=2&room-id=792&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "168",
   },
   {
@@ -279,7 +279,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L221&room-floor=2&room-id=796&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "43",
   },
   {
@@ -290,7 +290,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L251&room-floor=2&room-id=800&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "55",
   },
   //
@@ -304,7 +304,7 @@ export const saturdaySpaces: MapRow[] = [
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
       },
     ],
-    description: "Collaboration Space",
+    description: "Collaboration and Overnight Space",
     capacity: "22",
   },
 ];
