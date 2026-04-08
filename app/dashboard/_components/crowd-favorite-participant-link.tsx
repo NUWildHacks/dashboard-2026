@@ -4,14 +4,14 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { DASHBOARD_CROWD_FAVORITE_PATH } from "@/constants";
 
 type CrowdFavoriteParticipantLinkProps = {
-  votingStarted: boolean;
+  votingOpen: boolean;
 };
 
-const CrowdFavoriteParticipantLink = ({ votingStarted }: CrowdFavoriteParticipantLinkProps) => {
-  const title = votingStarted ? "Vote for Crowd Favorite" : "Opt In to Crowd Favorite";
-  const description = votingStarted
-    ? "Voting is open. Submit or edit your vote before the window closes."
-    : "Crowd favorite opt-in is open. Submit your team details to participate.";
+const CrowdFavoriteParticipantLink = ({ votingOpen }: CrowdFavoriteParticipantLinkProps) => {
+  const title = votingOpen ? "Crowd Favorite Voting" : "Crowd Favorite Opt-in";
+  const description = votingOpen
+    ? "Voting is currently active. Submit or edit your vote now."
+    : "Opt-in is currently active. Submit your team details to participate.";
 
   return (
     <Link href={DASHBOARD_CROWD_FAVORITE_PATH}>

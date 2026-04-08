@@ -12,7 +12,6 @@ import {
 } from "@/app/dashboard/_components";
 import {
   hasCrowdFavoriteOptInStarted,
-  hasCrowdFavoriteVotingStarted,
   isCrowdFavoriteOptInOpen,
   isCrowdFavoriteVotingOpen,
 } from "@/app/dashboard/crowd-favorite/constants";
@@ -41,7 +40,6 @@ const DashboardPage = async () => {
   const participantOptInOpen = await isCrowdFavoriteOptInOpen(wildhacksConfig);
   const participantVotingOpen = await isCrowdFavoriteVotingOpen(wildhacksConfig);
   const showParticipantCrowdFavoriteLink = role === PARTICIPANT && (participantOptInOpen || participantVotingOpen);
-  const participantVotingStarted = await hasCrowdFavoriteVotingStarted(wildhacksConfig);
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT) {
@@ -75,7 +73,7 @@ const DashboardPage = async () => {
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
           {showParticipantCrowdFavoriteLink ? (
-            <CrowdFavoriteParticipantLink votingStarted={participantVotingStarted} />
+            <CrowdFavoriteParticipantLink votingOpen={participantVotingOpen} />
           ) : (
             <TeamMatchingIntake
               hasSubmitted={hasSubmittedTeamMatching}
