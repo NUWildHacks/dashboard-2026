@@ -9,7 +9,8 @@ const JudgingRound2Loading = async () => {
       aria-label="Loading judging"
       className="flex-1 flex flex-col gap-4"
     >
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col gap-4">
+        <Skeleton className="w-full h-12" />
         <Skeleton className="w-full h-9" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
