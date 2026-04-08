@@ -110,8 +110,8 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   "manage-users": "Manage users",
   "check-in": "Check-in",
   guide: "Guide",
-  "judging-round-1": "Judging Round 1",
-  "judging-round-2": "Judging Round 2",
+  "round-1": "Judging Round 1",
+  "round-2": "Judging Round 2",
   mentoring: "Mentoring",
 };
 

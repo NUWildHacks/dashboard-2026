@@ -18,9 +18,7 @@ import { JudgingAssignment, Project } from "../../judging/types";
 
 export type UploadAssignmentsResult = ActionResult<JudgingAssignmentsCsvArraySchema>;
 
-export const uploadAssignments = async (
-  data: JudgingAssignmentsCsvArraySchema
-): Promise<UploadAssignmentsResult> => {
+export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema): Promise<UploadAssignmentsResult> => {
   const db = getFirestore();
 
   try {
