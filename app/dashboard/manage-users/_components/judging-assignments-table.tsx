@@ -16,17 +16,15 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
-import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
+import { JudgingAssignmentWithProject } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
-  projectsWithMetadata: ProjectWithMetadata[];
-  judgingAssignments: JudgingAssignment[];
+  judgingAssignmentsWithProject: JudgingAssignmentWithProject[];
   judges: JudgeUser[];
 };
 
 const JudgingAssignmentsTable = ({
-  projectsWithMetadata,
-  judgingAssignments,
+  judgingAssignmentsWithProject,
   judges,
 }: JudgingAssignmentsTableProps) => {
   const {
@@ -35,11 +33,11 @@ const JudgingAssignmentsTable = ({
     search,
     setSearch,
     table,
-    projectsColumns,
+    judgingAssignmentsColumns,
     fileInputRef,
     handleUploadAssignments,
     handleFileChange,
-  } = useJudgingAssignmentsTable(judgingAssignments, projectsWithMetadata);
+  } = useJudgingAssignmentsTable(judgingAssignmentsWithProject);
 
   return (
     <div className="flex-1 space-y-4">
@@ -77,19 +75,19 @@ const JudgingAssignmentsTable = ({
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput
-            id="search-projects"
+            id="search-judging-assignments"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search projects..."
+            placeholder="Search judging assignments..."
             className="truncate"
-            aria-label="Search projects"
+            aria-label="Search judging assignments"
           />
           <InputGroupAddon>
             <SearchIcon />
           </InputGroupAddon>
         </InputGroup>
       </div>
-      <DataTable columns={projectsColumns} table={table} />
+      <DataTable columns={judgingAssignmentsColumns} table={table} />
       <div className="flex justify-between items-center">
         <div className="text-muted-foreground text-sm">{table.getFilteredRowModel().rows.length} row(s)</div>
         <div className="flex items-center justify-end space-x-2">

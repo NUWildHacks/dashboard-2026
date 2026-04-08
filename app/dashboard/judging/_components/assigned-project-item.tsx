@@ -4,26 +4,27 @@ import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
-import { ProjectWithMetadata } from "../types";
+import type { JudgingAssignmentWithProject } from "../types";
 
 type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
-  projectWithMetadata: ProjectWithMetadata;
+  judgingAssignmentWithProject: JudgingAssignmentWithProject;
 };
 
 const AssignedProjectItem = ({
   handleOpenJudgingForm,
   handleKeyDown,
-  projectWithMetadata,
+  judgingAssignmentWithProject,
 }: AssignedProjectItemProps) => {
-  const { name, track, judging_form } = projectWithMetadata;
+  const { project, judging_form } = judgingAssignmentWithProject;
+  const { name, track } = project;
 
   return (
     <Item
       variant="outline"
       tabIndex={0}
       aria-label={`Judge project: ${name}`}
-      onClick={() => handleOpenJudgingForm(projectWithMetadata)}
-      onKeyDown={(event) => handleKeyDown(event, projectWithMetadata)}
+      onClick={() => handleOpenJudgingForm(judgingAssignmentWithProject)}
+      onKeyDown={(event) => handleKeyDown(event, judgingAssignmentWithProject)}
       className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
     >
       <ItemContent className="gap-2 min-w-0">

@@ -9,14 +9,14 @@ import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
 import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
-import type { ProjectWithMetadata } from "../types";
+import type { JudgingAssignmentWithProject } from "../types";
 
 export type UseJudgingFormSheetReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  selectedProjectWithMetadata: ProjectWithMetadata | undefined;
-  handleOpenJudgingForm: (projectWithMetadata?: ProjectWithMetadata) => void;
-  handleKeyDown: (event: KeyboardEvent, projectWithMetadata?: ProjectWithMetadata) => void;
+  selectedJudgingAssignmentWithProject: JudgingAssignmentWithProject | undefined;
+  handleOpenJudgingForm: (judgingAssignmentWithProject?: JudgingAssignmentWithProject) => void;
+  handleKeyDown: (event: KeyboardEvent, judgingAssignmentWithProject?: JudgingAssignmentWithProject) => void;
   control: Control<JudgingFormSchema>;
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
@@ -24,9 +24,9 @@ export type UseJudgingFormSheetReturn = {
 };
 
 export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: string): UseJudgingFormSheetReturn => {
-  const [selectedProjectWithMetadata, setSelectedProjectWithMetadata] = useState<ProjectWithMetadata | undefined>(
-    undefined
-  );
+  const [selectedJudgingAssignmentWithProject, setSelectedJudgingAssignmentWithProject] = useState<
+    JudgingAssignmentWithProject | undefined
+  >(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -48,10 +48,16 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: strin
   });
 
   const onSubmit = async (data: JudgingFormSchema) => {
-    if (!selectedProjectWithMetadata) return;
+    if (!selectedJudgingAssignmentWithProject) return;
 
     try {
-      const result = await submitJudging(data, selectedProjectWithMetadata.id, judgeId, currentPath);
+      const result = await submitJudging(
+        data,
+        selectedJudgingAssignmentWithProject.id,
+        selectedJudgingAssignmentWithProject.project.id,
+        judgeId,
+        currentPath
+      );
       const { success } = result;
 
       if (!success) {
@@ -78,31 +84,31 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: strin
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent, projectWithMetadata?: ProjectWithMetadata) => {
+  const handleKeyDown = (event: KeyboardEvent, judgingAssignmentWithProject?: JudgingAssignmentWithProject) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      handleOpenJudgingForm(projectWithMetadata);
+      handleOpenJudgingForm(judgingAssignmentWithProject);
     }
   };
 
-  const handleOpenJudgingForm = (projectWithMetadata?: ProjectWithMetadata) => {
-    setSelectedProjectWithMetadata(projectWithMetadata);
+  const handleOpenJudgingForm = (judgingAssignmentWithProject?: JudgingAssignmentWithProject) => {
+    setSelectedJudgingAssignmentWithProject(judgingAssignmentWithProject);
     setIsOpen(true);
 
     reset({
-      technical_complexity: projectWithMetadata?.judging_form?.technical_complexity ?? 0,
-      usefulness: projectWithMetadata?.judging_form?.usefulness ?? 0,
-      originality: projectWithMetadata?.judging_form?.originality ?? 0,
-      design: projectWithMetadata?.judging_form?.design ?? 0,
-      presentation: projectWithMetadata?.judging_form?.presentation ?? 0,
-      comments: projectWithMetadata?.judging_form?.comments ?? "",
+      technical_complexity: judgingAssignmentWithProject?.judging_form?.technical_complexity ?? 0,
+      usefulness: judgingAssignmentWithProject?.judging_form?.usefulness ?? 0,
+      originality: judgingAssignmentWithProject?.judging_form?.originality ?? 0,
+      design: judgingAssignmentWithProject?.judging_form?.design ?? 0,
+      presentation: judgingAssignmentWithProject?.judging_form?.presentation ?? 0,
+      comments: judgingAssignmentWithProject?.judging_form?.comments ?? "",
     });
   };
 
   return {
     isOpen,
     setIsOpen,
-    selectedProjectWithMetadata,
+    selectedJudgingAssignmentWithProject,
     handleOpenJudgingForm,
     handleKeyDown,
     control,

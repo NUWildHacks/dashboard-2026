@@ -10,17 +10,17 @@ import { useFilters } from "@/hooks";
 import type { JudgeUser } from "@/types";
 
 import { useAssignedProjects, useJudgingFormSheet } from "../_hooks";
-import type { ProjectWithMetadata, Track } from "../types";
+import type { JudgingAssignmentWithProject, Track } from "../types";
 
 import { AssignedProjectGrid, JudgingFormSheet } from ".";
 
 type JudgingDisplayProps = {
-  projectsWithMetadata: ProjectWithMetadata[];
+  judgingAssignmentsWithProject: JudgingAssignmentWithProject[];
   currentPath: string;
 } & Pick<JudgeUser, "id" | "modality" | "other_modality">;
 
 const JudgingDisplay = ({
-  projectsWithMetadata,
+  judgingAssignmentsWithProject,
   currentPath,
   id: judgeId,
   modality,
@@ -28,7 +28,7 @@ const JudgingDisplay = ({
 }: JudgingDisplayProps) => {
   const { search, setSearch } = useFilters<Track>();
 
-  const { filteredProjectsWithMetadata } = useAssignedProjects(projectsWithMetadata, { search });
+  const { filteredJudgingAssignmentsWithProject } = useAssignedProjects(judgingAssignmentsWithProject, { search });
 
   const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath);
 
@@ -66,7 +66,10 @@ const JudgingDisplay = ({
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <AssignedProjectGrid {...useJudgingFormSheetReturn} projectsWithMetadata={filteredProjectsWithMetadata} />
+        <AssignedProjectGrid
+          {...useJudgingFormSheetReturn}
+          judgingAssignmentsWithProjects={filteredJudgingAssignmentsWithProject}
+        />
       </div>
       <JudgingFormSheet {...useJudgingFormSheetReturn} />
     </>

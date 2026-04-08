@@ -28,5 +28,4 @@ export const JUDGING_ASSIGNMENT_FIELDS = {
   project_id: "project_id",
   judging_form: "judging_form",
   order: "order",
-  judging_round: "judging_round",
 } as const satisfies Record<keyof Omit<JudgingAssignment, "id">, string>;

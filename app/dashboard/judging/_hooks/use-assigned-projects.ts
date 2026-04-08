@@ -2,39 +2,39 @@ import { useMemo } from "react";
 
 import { UseFiltersReturnWithoutAll } from "@/hooks";
 
-import { ProjectWithMetadata, Track } from "../types";
+import { JudgingAssignmentWithProject, Track } from "../types";
 
 export type UseAssignedProjectsSettings = {
   search?: UseFiltersReturnWithoutAll<Track>["search"];
 };
 
 export type UseAssignedProjectsReturn = {
-  filteredProjectsWithMetadata: ProjectWithMetadata[];
+  filteredJudgingAssignmentsWithProject: JudgingAssignmentWithProject[];
 };
 
 export const useAssignedProjects = (
-  projectsWithMetadata: ProjectWithMetadata[],
+  judgingAssignmentsWithProject: JudgingAssignmentWithProject[],
   settings: UseAssignedProjectsSettings
 ): UseAssignedProjectsReturn => {
   const { search } = settings;
 
-  const filteredProjectsWithMetadata = useMemo(() => {
-    let result = projectsWithMetadata;
+  const filteredJudgingAssignmentsWithProject = useMemo(() => {
+    let result = judgingAssignmentsWithProject;
 
     if (search && search !== "") {
       const searchLower = search.toLowerCase();
-      result = result.filter((projectWithMetadata) => {
+      result = result.filter((judgingAssignmentWithProject) => {
         return (
-          projectWithMetadata.name.toLowerCase().includes(searchLower) ||
-          projectWithMetadata.track.toLowerCase().includes(searchLower)
+          judgingAssignmentWithProject.project.name.toLowerCase().includes(searchLower) ||
+          judgingAssignmentWithProject.project.track.toLowerCase().includes(searchLower)
         );
       });
     }
 
     return result;
-  }, [projectsWithMetadata, search]);
+  }, [judgingAssignmentsWithProject, search]);
 
   return {
-    filteredProjectsWithMetadata,
+    filteredJudgingAssignmentsWithProject,
   };
 };

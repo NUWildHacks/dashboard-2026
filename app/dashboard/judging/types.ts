@@ -23,11 +23,10 @@ export type JudgingAssignment = {
   project_id: Project["id"];
 
   order: number;
-  judging_round: number;
 
   judging_form?: JudgingForm;
 };
 
-export type ProjectWithMetadata = Project & {
-  judging_form?: JudgingAssignment["judging_form"];
+export type JudgingAssignmentWithProject = JudgingAssignment & {
+  project: Project;
 };

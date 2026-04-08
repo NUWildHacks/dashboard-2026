@@ -6,35 +6,47 @@ import { JUDGING_ASSIGNMENTS_COLLECTION, PROJECTS_COLLECTION } from "@/constants
 import { JudgeUser } from "@/types";
 
 import { JUDGING_ASSIGNMENT_FIELDS } from "./constants";
-import type { Project, ProjectWithMetadata } from "./types";
+import type { JudgingAssignment, JudgingAssignmentWithProject, Project } from "./types";
 
 /**
- * Retrieves projects with their judging metadata from Firestore.
+ * Retrieves judging assignments with their projects from Firestore.
  *
- * Fetches project documents based on judging assignments. When a judge ID is provided,
- * only returns projects assigned to that judge. When omitted, returns all projects
- * that have judging assignments. Each project includes its associated judging form
- * data if available.
+ * Fetches project documents based on judging assignments. When a judge ID and round are provided,
+ * only returns judging assignments with their projects assigned to that judge for that round. Each judging assignment includes its associated
+ * project and judging form data if available.
  *
- * @param judgeId - Optional judge ID to filter by. If provided, only returns projects
- *   assigned to this judge. If omitted, returns all projects with judging assignments.
- * @returns Promise that resolves to an array of ProjectWithMetadata objects, each
+ * @param judgeId - Judge ID to filter by.
+ * @param round - The judging round to get projects for. 1 for round 1, 2 for round 2.
+ * @returns Promise that resolves to an array of JudgingAssignmentWithProject objects, each
  *   containing project data and its associated judging form (if any)
  * @example
  * ```ts
- * // Get projects for a specific judge
- * const projects = await getProjectsWithMetadata("judge123");
- *
- * // Get all projects with judging assignments
- * const allProjects = await getProjectsWithMetadata();
+ * // Get judging assignments with their projects for a specific judge
+ * const round1Projects = await getJudgingAssignmentsWithProjectForRound("judge123", 1);
+ * const round2Projects = await getJudgingAssignmentsWithProjectForRound("judge123", 2);
  * ```
  */
-const getProjectsWithMetadata = async (judgeId?: JudgeUser["id"]): Promise<ProjectWithMetadata[]> => {
+const getJudgingAssignmentsWithProjectForRound = async (
+  judgeId: JudgeUser["id"],
+  round: 1 | 2
+): Promise<JudgingAssignmentWithProject[]> => {
   const db = getFirestore();
 
-  const judgingAssignmentQuerySnapshots = judgeId
-    ? await db.collection(JUDGING_ASSIGNMENTS_COLLECTION).where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId).get()
-    : await db.collection(JUDGING_ASSIGNMENTS_COLLECTION).get();
+  // round 1: all projects assigned to the judge with order 0
+  // round 2: all projects assigned to the judge ordered by order
+  const judgingAssignmentQuerySnapshots =
+    round === 1
+      ? await db
+          .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+          .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
+          .where(JUDGING_ASSIGNMENT_FIELDS.order, "==", 0)
+          .get()
+      : await db
+          .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+          .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
+          .where(JUDGING_ASSIGNMENT_FIELDS.order, ">=", 0)
+          .orderBy(JUDGING_ASSIGNMENT_FIELDS.order, "asc")
+          .get();
 
   if (judgingAssignmentQuerySnapshots.empty) return [];
 
@@ -42,18 +54,21 @@ const getProjectsWithMetadata = async (judgeId?: JudgeUser["id"]): Promise<Proje
   judgingAssignmentQuerySnapshots.docs.forEach((doc) => {
     projectIds.add(doc.data().project_id);
   });
-  const projectDocRefs = Array.from(projectIds).map((projectId) => db.collection(PROJECTS_COLLECTION).doc(projectId));
-  const projectDocSnapshots = await db.getAll(...projectDocRefs);
 
-  const result = projectDocSnapshots.map((snapshot) => {
-    const project = { id: snapshot.id, ...snapshot.data() } as Project;
-    const judgingForm = judgingAssignmentQuerySnapshots.docs
-      .find((doc) => doc.data().project_id === project.id)
-      ?.data().judging_form;
-    return { ...project, judging_form: judgingForm } as ProjectWithMetadata;
+  const projectDocRefs = Array.from(projectIds).map((projectId) => db.collection(PROJECTS_COLLECTION).doc(projectId));
+  const projectDocs = await db.getAll(...projectDocRefs);
+
+  const projectMap = new Map<Project["id"], Project>();
+  projectDocs.forEach((doc) => {
+    projectMap.set(doc.id, { id: doc.id, ...doc.data() } as Project);
+  });
+
+  const result: JudgingAssignmentWithProject[] = judgingAssignmentQuerySnapshots.docs.map((doc) => {
+    const project = projectMap.get(doc.data().project_id);
+    return { ...(doc.data() as Omit<JudgingAssignment, "id">), id: doc.id, project } as JudgingAssignmentWithProject;
   });
 
   return result;
 };
 
-export { getProjectsWithMetadata };
+export { getJudgingAssignmentsWithProjectForRound };

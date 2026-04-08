@@ -22,21 +22,29 @@ import { UseJudgingFormSheetReturn } from "../_hooks";
 
 type JudgingFormSheetProps = Pick<
   UseJudgingFormSheetReturn,
-  "isOpen" | "setIsOpen" | "selectedProjectWithMetadata" | "control" | "handleSubmit" | "onSubmit" | "isSubmitting"
+  | "isOpen"
+  | "setIsOpen"
+  | "selectedJudgingAssignmentWithProject"
+  | "control"
+  | "handleSubmit"
+  | "onSubmit"
+  | "isSubmitting"
 >;
 
 const JudgingFormSheet = ({
   isOpen,
   setIsOpen,
-  selectedProjectWithMetadata,
+  selectedJudgingAssignmentWithProject,
   control,
   handleSubmit,
   onSubmit,
   isSubmitting,
 }: JudgingFormSheetProps) => {
-  if (!selectedProjectWithMetadata) return null;
+  if (!selectedJudgingAssignmentWithProject) return null;
 
-  const { name, track, devpost_url } = selectedProjectWithMetadata;
+  const {
+    project: { name, track, devpost_url },
+  } = selectedJudgingAssignmentWithProject;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

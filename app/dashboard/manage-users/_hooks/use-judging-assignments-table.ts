@@ -18,25 +18,24 @@ import { toast } from "sonner";
 import { JudgeUser } from "@/types";
 
 import { uploadAssignments } from "../_actions";
-import { getProjectsColumns } from "../_lib/client";
+import { getJudgingAssignmentsColumns } from "../_lib/client";
 import { judgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, ProjectWithMetadata } from "../../judging/types";
+import { JudgingAssignmentWithProject } from "../../judging/types";
 
 export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | null;
   setSelectedJudge: (judgeUser: JudgeUser | null) => void;
   search: string;
   setSearch: (search: string) => void;
-  table: Table<ProjectWithMetadata>;
-  projectsColumns: ColumnDef<ProjectWithMetadata>[];
+  table: Table<JudgingAssignmentWithProject>;
+  judgingAssignmentsColumns: ColumnDef<JudgingAssignmentWithProject>[];
   fileInputRef: RefObject<HTMLInputElement | null>;
   handleUploadAssignments: () => void;
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const useJudgingAssignmentsTable = (
-  judgingAssignments: JudgingAssignment[],
-  projectsWithMetadata: ProjectWithMetadata[]
+  judgingAssignmentsWithProject: JudgingAssignmentWithProject[]
 ): UseJudgingAssignmentsTableReturn => {
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
   const [search, setSearch] = useState<string>("");
@@ -105,34 +104,34 @@ export const useJudgingAssignmentsTable = (
   const filteredProjects = useMemo(() => {
     if (!selectedJudge) return [];
 
-    const assignedProjectIdsForSelectedJudge = judgingAssignments
+    const assignedProjectIdsForSelectedJudge = judgingAssignmentsWithProject
       .filter((assignment) => assignment.judge_id === selectedJudge?.id)
       .map((assignment) => assignment.project_id);
 
-    let result = projectsWithMetadata;
-    result = result.filter((projectWithMetadata) =>
-      assignedProjectIdsForSelectedJudge.includes(projectWithMetadata.id)
+    let result = judgingAssignmentsWithProject;
+    result = result.filter((judgingAssignmentWithProject) =>
+      assignedProjectIdsForSelectedJudge.includes(judgingAssignmentWithProject.project.id)
     );
 
     if (search && search !== "") {
       const searchLower = search.toLowerCase();
-      result = result.filter((projectWithMetadata) => {
+      result = result.filter((judgingAssignmentWithProject) => {
         return (
-          projectWithMetadata.name.toLowerCase().includes(searchLower) ||
-          projectWithMetadata.track.toLowerCase().includes(searchLower) ||
-          projectWithMetadata.devpost_url.toLowerCase().includes(searchLower)
+          judgingAssignmentWithProject.project.name.toLowerCase().includes(searchLower) ||
+          judgingAssignmentWithProject.project.track.toLowerCase().includes(searchLower) ||
+          judgingAssignmentWithProject.project.devpost_url.toLowerCase().includes(searchLower)
         );
       });
     }
 
     return result;
-  }, [selectedJudge, judgingAssignments, projectsWithMetadata, search]);
+  }, [selectedJudge, judgingAssignmentsWithProject, search]);
 
-  const projectsColumns = getProjectsColumns();
+  const judgingAssignmentsColumns = getJudgingAssignmentsColumns();
 
   const table = useReactTable({
     data: filteredProjects,
-    columns: projectsColumns,
+    columns: judgingAssignmentsColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -156,7 +155,7 @@ export const useJudgingAssignmentsTable = (
     search,
     setSearch,
     table,
-    projectsColumns,
+    judgingAssignmentsColumns,
     fileInputRef,
     handleUploadAssignments,
     handleFileChange,
