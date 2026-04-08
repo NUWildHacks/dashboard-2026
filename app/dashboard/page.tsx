@@ -10,7 +10,12 @@ import {
   VenueMap,
   ResumeUpload,
 } from "@/app/dashboard/_components";
-import { hasCrowdFavoriteOptInStarted, hasCrowdFavoriteVotingStarted } from "@/app/dashboard/crowd-favorite/constants";
+import {
+  hasCrowdFavoriteOptInStarted,
+  hasCrowdFavoriteVotingStarted,
+  isCrowdFavoriteOptInOpen,
+  isCrowdFavoriteVotingOpen,
+} from "@/app/dashboard/crowd-favorite/constants";
 import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT, TEAM_MATCHING_INTAKE_COLLECTION } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
 import type { WildHacksConfig } from "@/types";
@@ -33,8 +38,9 @@ const DashboardPage = async () => {
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
   const showAdminCrowdFavoriteLink = role === ADMIN && (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
-  const showParticipantCrowdFavoriteLink =
-    role === PARTICIPANT && (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
+  const participantOptInOpen = await isCrowdFavoriteOptInOpen(wildhacksConfig);
+  const participantVotingOpen = await isCrowdFavoriteVotingOpen(wildhacksConfig);
+  const showParticipantCrowdFavoriteLink = role === PARTICIPANT && (participantOptInOpen || participantVotingOpen);
   const participantVotingStarted = await hasCrowdFavoriteVotingStarted(wildhacksConfig);
 
   let hasSubmittedTeamMatching = false;

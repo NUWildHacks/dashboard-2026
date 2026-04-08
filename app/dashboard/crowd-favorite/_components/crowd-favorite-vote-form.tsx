@@ -86,7 +86,7 @@ const CrowdFavoriteVoteForm = ({ projects, initialVotedProjectId }: CrowdFavorit
                       <Input
                         {...field}
                         id={field.name}
-                        type="password"
+                        type="text"
                         placeholder="Enter session password"
                         aria-invalid={fieldState.invalid}
                       />

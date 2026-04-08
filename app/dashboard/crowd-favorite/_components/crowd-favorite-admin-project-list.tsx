@@ -4,15 +4,21 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib";
 
 import type { CrowdFavoriteProjectWithVotes } from "../_lib";
 
 type CrowdFavoriteAdminProjectListProps = {
   projects: CrowdFavoriteProjectWithVotes[];
   showVoteCount: boolean;
+  highlightWinner?: boolean;
 };
 
-const CrowdFavoriteAdminProjectList = ({ projects, showVoteCount }: CrowdFavoriteAdminProjectListProps) => {
+const CrowdFavoriteAdminProjectList = ({
+  projects,
+  showVoteCount,
+  highlightWinner = false,
+}: CrowdFavoriteAdminProjectListProps) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -39,11 +45,14 @@ const CrowdFavoriteAdminProjectList = ({ projects, showVoteCount }: CrowdFavorit
   return (
     <div className="grid gap-4">
       {projects.map((project, index) => (
-        <Card key={project.id}>
+        <Card key={project.id} className={cn(highlightWinner && index === 0 && "ring-2 ring-white ring-offset-2")}>
           <CardHeader>
             <CardTitle className="flex items-center justify-between gap-2">
               <span>{project.project_name}</span>
-              {showVoteCount ? <span className="text-sm font-medium">Votes: {project.vote_count}</span> : null}
+              <span className="flex items-center gap-2 text-sm font-medium">
+                {highlightWinner && index === 0 ? "Winner" : null}
+                {showVoteCount ? `Votes: ${project.vote_count}` : null}
+              </span>
             </CardTitle>
             <CardDescription>
               Rank #{index + 1}

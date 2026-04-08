@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { Control } from "react-hook-form";
+import { UseFormGetValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { WildHacksConfig } from "@/types";
@@ -15,6 +16,9 @@ export type UseEditWildhacksConfigFormReturn = {
   isDirty: boolean;
   control: Control<EditWildhacksConfigFormSchema>;
   handleSubmit: UseFormHandleSubmit<EditWildhacksConfigFormSchema>;
+  watch: UseFormWatch<EditWildhacksConfigFormSchema>;
+  setValue: UseFormSetValue<EditWildhacksConfigFormSchema>;
+  getValues: UseFormGetValues<EditWildhacksConfigFormSchema>;
   onSubmit: SubmitHandler<EditWildhacksConfigFormSchema>;
   handleReset: () => void;
 };
@@ -27,15 +31,18 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
     start_time,
     end_time,
     crowd_favorite_password,
-    crowd_favorite_opt_in_start,
-    crowd_favorite_opt_in_end,
-    crowd_favorite_voting_start,
-    crowd_favorite_voting_end,
+    crowd_favorite_opt_in_started,
+    crowd_favorite_opt_in_open,
+    crowd_favorite_voting_started,
+    crowd_favorite_voting_open,
   } = wildhacksConfig;
 
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
+    getValues,
     reset,
     setError,
     formState: { isSubmitting, isDirty },
@@ -48,10 +55,10 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       start_time,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
-      crowd_favorite_opt_in_start,
-      crowd_favorite_opt_in_end,
-      crowd_favorite_voting_start,
-      crowd_favorite_voting_end,
+      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
     },
   });
 
@@ -91,16 +98,19 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       start_time,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
-      crowd_favorite_opt_in_start,
-      crowd_favorite_opt_in_end,
-      crowd_favorite_voting_start,
-      crowd_favorite_voting_end,
+      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
     });
   };
 
   return {
     control,
     handleSubmit,
+    watch,
+    setValue,
+    getValues,
     onSubmit,
     isSubmitting,
     isDirty,
