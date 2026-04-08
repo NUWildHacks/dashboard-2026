@@ -4,24 +4,28 @@
       "collectionGroup": "event_check_ins",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "event_id", "order": "ASCENDING" },
-        { "fieldPath": "checked_in_at", "order": "DESCENDING" }
+        {
+          "fieldPath": "event_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "checked_in_at",
+          "order": "DESCENDING"
+        }
       ]
     },
     {
-      "collectionGroup": "users",
+      "collectionGroup": "judging_assignments",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "project_id", "order": "ASCENDING" },
-        { "fieldPath": "joined_project_at", "order": "ASCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "users",
-      "queryScope": "COLLECTION",
-      "fields": [
-        { "fieldPath": "project_id", "order": "ASCENDING" },
-        { "fieldPath": "last_name", "order": "DESCENDING" }
+        {
+          "fieldPath": "judge_id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "order",
+          "order": "ASCENDING"
+        }
       ]
     }
   ],
