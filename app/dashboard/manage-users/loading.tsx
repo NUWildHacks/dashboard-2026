@@ -1,18 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-const PermissionCodesLoading = async () => {
+const ManageUsersLoading = async () => {
   return (
     <div
       className="flex-1 flex flex-col gap-6"
       role="status"
       aria-live="polite"
       aria-busy="true"
-      aria-label="Loading permission codes"
+      aria-label="Loading manage users"
     >
       <div className="flex flex-col gap-4">
-        <Skeleton className="w-full h-[24px]" />
-        <Skeleton className="w-full h-[36px]" />
-        <Skeleton className="h-[250px]" />
         <Skeleton className="w-full h-[24px]" />
         <Skeleton className="w-full h-[36px]" />
         <Skeleton className="h-[250px]" />
@@ -24,4 +21,4 @@ const PermissionCodesLoading = async () => {
   );
 };
 
-export default PermissionCodesLoading;
+export default ManageUsersLoading;
