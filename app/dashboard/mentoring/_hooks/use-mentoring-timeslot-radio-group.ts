@@ -11,7 +11,7 @@ import { TIMESLOT_CONFIRMATION_DEADLINE } from "../constants";
 export type UseMentoringTimeslotRadioGroupReturn = {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  selectedMentoringTimeslot: MentoringTimeslot | undefined;
+  selectedMentoringTimeslot: MentoringTimeslot;
   setSelectedMentoringTimeslot: (selectedMentoringTimeslot: MentoringTimeslot) => void;
   onSubmit: () => Promise<void>;
   isSubmitting: boolean;
@@ -21,7 +21,7 @@ export const useMentoringTimeslotRadioGroup = (
   mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"]
 ): UseMentoringTimeslotRadioGroupReturn => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot | undefined>(
+  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot>(
     mentoring_timeslot
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

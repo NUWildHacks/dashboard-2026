@@ -83,7 +83,7 @@ export type JudgeAndMentorUser = BaseUser & {
   modality: Modality;
   other_modality: string;
 
-  mentoring_timeslot?: MentoringTimeslot;
+  mentoring_timeslot: MentoringTimeslot;
 
   onboarded?: boolean;
 };
