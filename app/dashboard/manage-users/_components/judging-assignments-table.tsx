@@ -14,6 +14,7 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CategoryWithAll } from "@/hooks";
 import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
@@ -25,11 +26,7 @@ type JudgingAssignmentsTableProps = {
   judges: (JudgeUser | JudgeAndMentorUser)[];
 };
 
-const JudgingAssignmentsTable = ({
-  judgingAssignments,
-  projects,
-  judges,
-}: JudgingAssignmentsTableProps) => {
+const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: JudgingAssignmentsTableProps) => {
   const {
     selectedJudge,
     setSelectedJudge,
@@ -77,7 +74,7 @@ const JudgingAssignmentsTable = ({
               </ComboboxList>
             </ComboboxContent>
           </Combobox>
-          <Select value={round} onValueChange={(value) => setRound(value as "Round 1" | "Round 2")}>
+          <Select value={round} onValueChange={(value) => setRound(value as CategoryWithAll<"round-1" | "round-2">)}>
             <SelectTrigger
               id="round-filter"
               className="min-w-[125px] md:w-[125px] w-full"
@@ -86,12 +83,9 @@ const JudgingAssignmentsTable = ({
               <SelectValue placeholder="Select round" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem key="Round 1" value="Round 1">
-                Round 1
-              </SelectItem>
-              <SelectItem key="Round 2" value="Round 2">
-                Round 2
-              </SelectItem>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="round-1">Round 1</SelectItem>
+              <SelectItem value="round-2">Round 2</SelectItem>
             </SelectContent>
           </Select>
         </div>

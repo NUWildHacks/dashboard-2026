@@ -15,7 +15,7 @@ import Papa from "papaparse";
 import { ChangeEvent, RefObject, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
-import { useFilters, UseFiltersReturnWithoutAll } from "@/hooks";
+import { useFilters, UseFiltersReturnWithAll } from "@/hooks";
 import { JudgeUser } from "@/types";
 
 import { uploadAssignments } from "../_actions";
@@ -26,10 +26,10 @@ import { JudgingAssignment, JudgingAssignmentWithProject, Project } from "../../
 export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | null;
   setSelectedJudge: (judgeUser: JudgeUser | null) => void;
-  search: UseFiltersReturnWithoutAll<"Round 1" | "Round 2">["search"];
-  setSearch: UseFiltersReturnWithoutAll<"Round 1" | "Round 2">["setSearch"];
-  round: UseFiltersReturnWithoutAll<"Round 1" | "Round 2">["category"];
-  setRound: UseFiltersReturnWithoutAll<"Round 1" | "Round 2">["setCategory"];
+  search: UseFiltersReturnWithAll<"round-1" | "round-2">["search"];
+  setSearch: UseFiltersReturnWithAll<"round-1" | "round-2">["setSearch"];
+  round: UseFiltersReturnWithAll<"round-1" | "round-2">["category"];
+  setRound: UseFiltersReturnWithAll<"round-1" | "round-2">["setCategory"];
   table: Table<JudgingAssignmentWithProject>;
   judgingAssignmentsColumns: ColumnDef<JudgingAssignmentWithProject>[];
   fileInputRef: RefObject<HTMLInputElement | null>;
@@ -46,7 +46,7 @@ export const useJudgingAssignmentsTable = (
     setCategory: setRound,
     search,
     setSearch,
-  } = useFilters<"Round 1" | "Round 2">({ includeAll: false, defaultCategory: "Round 1" });
+  } = useFilters<"round-1" | "round-2">({ includeAll: true });
 
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
   const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }]);
@@ -119,6 +119,7 @@ export const useJudgingAssignmentsTable = (
     if (!selectedJudge) return [];
 
     let result: JudgingAssignmentWithProject[] = judgingAssignments
+      .filter((assignment) => (round === "round-1" ? assignment.order === 0 : assignment.order >= 0))
       .filter((assignment) => assignment.judge_id === selectedJudge?.id)
       .map((assignment) => ({
         ...assignment,
@@ -137,7 +138,7 @@ export const useJudgingAssignmentsTable = (
     }
 
     return result;
-  }, [selectedJudge, judgingAssignments, projectMap, search]);
+  }, [selectedJudge, judgingAssignments, projectMap, search, round]);
 
   const judgingAssignmentsColumns = getJudgingAssignmentsColumns();
 

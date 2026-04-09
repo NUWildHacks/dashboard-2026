@@ -43,7 +43,7 @@ export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithP
     },
     {
       accessorKey: "project.devpost_url",
-      header: "Project URL",
+      header: "Devpost URL",
       cell: ({ row }) => {
         return (
           <a
@@ -55,6 +55,27 @@ export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithP
             {row.original.project.devpost_url}
           </a>
         );
+      },
+    },
+    {
+      accessorKey: "order",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Order
+            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return <div className="text-left text-muted-foreground">{row.original.order}</div>;
+      },
+    },
+    {
+      accessorKey: "round",
+      header: "Round",
+      cell: ({ row }) => {
+        return <Badge variant="secondary">{row.original.order === 0 ? "Round 1" : "Round 2"}</Badge>;
       },
     },
     {
