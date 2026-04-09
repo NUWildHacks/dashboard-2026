@@ -106,16 +106,12 @@ const MentoringTimeslotRadioGroup = ({
             <Button type="button" onClick={() => setIsEditing(false)} variant="outline">
               Cancel
             </Button>
-            <Button
-              type="submit"
-              onClick={onSubmit}
-              disabled={isSubmitting}
-            >
+            <Button type="submit" onClick={onSubmit} disabled={isSubmitting}>
               {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
             </Button>
           </>
         ) : (
-          <Button type="button" onClick={() => setIsEditing(true)} disabled={isTimeslotConfirmationDeadlinePassed} >
+          <Button type="button" onClick={() => setIsEditing(true)} disabled={isTimeslotConfirmationDeadlinePassed}>
             Edit timeslot
           </Button>
         )}

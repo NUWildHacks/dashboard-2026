@@ -21,9 +21,7 @@ export const useMentoringTimeslotRadioGroup = (
   mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"]
 ): UseMentoringTimeslotRadioGroupReturn => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot>(
-    mentoring_timeslot
-  );
+  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot>(mentoring_timeslot);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = async () => {
