@@ -59,13 +59,21 @@ const MentoringTimeslotRadioGroup = ({
           <Info />
           <AlertTitle className="flex items-center gap-2">
             <p className="text-sm">Your modality: </p>
-            <Badge>{modality === "Other" ? other_modality : modality}</Badge>
+            <Badge>{modality === OTHER_MODALITY ? other_modality : modality}</Badge>
           </AlertTitle>
           <AlertDescription>
-            {modality === IN_PERSON_MODALITY &&
-              "Because you have selected to be in-person, we expect you to be present at the venue during your assigned timeslot."}
-            {modality === REMOTE_MODALITY &&
-              "Because you have selected to be remote, we expect you to be available via our Discord server during your assigned timeslot."}
+            {modality === IN_PERSON_MODALITY && (
+              <p>
+                Because you have selected to be in-person, we expect you to be present at the venue from{" "}
+                <span className="font-bold underline underline-offset-4">{mentoring_timeslot}</span>.
+              </p>
+            )}
+            {modality === REMOTE_MODALITY && (
+              <p>
+                Because you have selected to be remote, we expect you to be available via our Discord server from{" "}
+                <span className="font-bold underline underline-offset-4">{mentoring_timeslot}</span>.
+              </p>
+            )}
           </AlertDescription>
         </Alert>
         <RadioGroup
