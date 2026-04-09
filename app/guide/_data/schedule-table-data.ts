@@ -32,7 +32,7 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     time: "6:00 PM - 7:00 PM",
     event: [
       {
-        content: "ColorStack X WildHacks SQL & Databases Workshop",
+        content: "CANCELLED — ColorStack X WildHacks SQL & Databases Workshop",
         href: "/guide/workshops#colorstack-x-wildhacks-sql-databases-workshop",
       },
     ],
@@ -93,6 +93,17 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     ],
     location: "Virtual",
   },
+  {
+    date: "April 11, 2026",
+    time: "1:30 PM - 2:15 PM",
+    event: [
+      {
+        content: "Finding Your Path in Tech with Women in Computing",
+        href: "/guide/workshops#finding-your-path-in-tech-with-women-in-computing",
+      },
+    ],
+    location: "Tech LR5",
+  },
 ];
 
 export const saturdayScheduleRows: DayScheduleRow[] = [
@@ -103,8 +114,24 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Expo" }],
-    location: "Tech M120",
+    event: [
+      { content: "Sponsor Fair — IMC + MLH" },
+    ],
+    location: "Tech A110",
+  },
+  {
+    time: "8:30 - 10:00 AM",
+    event: [
+      { content: "Sponsor Fair — Claude" },
+    ],
+    location: "Tech L170",
+  },
+  {
+    time: "8:30 - 10:00 AM",
+    event: [
+      { content: "Sponsor Fair — Blossoms + Redbull" },
+    ],
+    location: "Tech L168",
   },
   {
     time: "10:00 - 11:00 AM",
@@ -112,13 +139,18 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
     location: "LR2",
   },
   {
+    time: "10:00 - 11:00 AM",
+    event: [{ content: "Zoom Overflow" }],
+    location: "LR4",
+  },
+  {
     time: "11:00 AM",
     event: [{ content: "Hacking Starts", bold: true }],
   },
   {
     time: "11:00 - 11:30 AM",
-    event: [{ content: "Team Formation Event" }],
-    location: "LR4",
+    event: [{ content: "Team Formation Event"}],
+    location: "LR2",
   },
   {
     time: "12:30 PM",
@@ -208,16 +240,6 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     highlight: "deadline",
   },
   {
-    id: "crowd-favorite-sign-up",
-    time: "11:00 AM",
-    event: [
-      {
-        content: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
-        // href: "Coming Soon!",
-      },
-    ],
-  },
-  {
     time: "11:15 - 1:15 PM",
     event: [
       {
@@ -244,6 +266,16 @@ export const sundayScheduleRows: DayScheduleRow[] = [
       },
     ],
     location: "To Be Announced Per Team",
+  },
+  {
+    id: "crowd-favorite-sign-up",
+    time: "2:00 PM",
+    event: [
+      {
+        content: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
+        // href: "Coming Soon!",
+      },
+    ],
   },
   {
     id: "crowd-favorite-presentations",
