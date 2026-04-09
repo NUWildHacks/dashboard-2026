@@ -31,7 +31,7 @@ const MentoringTimeslotRadioGroup = ({
   modality,
   mentoring_timeslot,
 }: MentoringTimeslotRadioGroupProps) => {
-  const { selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
+  const { isEditing, setIsEditing, selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
     useMentoringTimeslotRadioGroup(mentoring_timeslot);
 
   const isTimeslotConfirmationDeadlinePassed = new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE;
@@ -78,7 +78,7 @@ const MentoringTimeslotRadioGroup = ({
         </Alert>
         <RadioGroup
           value={selectedMentoringTimeslot}
-          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting}
+          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting || !isEditing}
           onValueChange={(value: string) => setSelectedMentoringTimeslot(value as MentoringTimeslot)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
@@ -101,13 +101,24 @@ const MentoringTimeslotRadioGroup = ({
             timeslot.
           </p>
         )}
-        <Button
-          type="button"
-          onClick={onSubmit}
-          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting || !selectedMentoringTimeslot}
-        >
-          {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
-        </Button>
+        {isEditing ? (
+          <>
+            <Button type="button" onClick={() => setIsEditing(false)} variant="outline">
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={onSubmit}
+              disabled={isSubmitting || !selectedMentoringTimeslot}
+            >
+              {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
+            </Button>
+          </>
+        ) : (
+          <Button type="button" variant="outline" onClick={() => setIsEditing(true)} disabled={isTimeslotConfirmationDeadlinePassed} >
+            Edit timeslot
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
