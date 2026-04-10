@@ -160,7 +160,7 @@ const DashboardPage = async () => {
         </div>
       )}
 
-      {role === ADMIN && (
+      {role === ADMIN && hasSubmittedTeamMatching && (
         <div className="md:col-span-1">
           <TeamMatchingGate
             hasSubmitted={hasSubmittedTeamMatching}
