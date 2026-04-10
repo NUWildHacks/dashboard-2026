@@ -98,7 +98,7 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
       >
         <div className="flex flex-col gap-1 min-w-0 flex-1">
           {/* Name row */}
-          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-2">
             {editing ? (
               <>
                 <Input
@@ -110,10 +110,10 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
                     if (e.key === "Escape") handleCancelEdit();
                   }}
                 />
-                <button onClick={handleSaveName} disabled={savingName} className="text-muted-foreground hover:text-foreground">
+                <button onClick={(e) => { e.stopPropagation(); handleSaveName(); }} disabled={savingName} className="text-muted-foreground hover:text-foreground">
                   {savingName ? <Loader2 className="size-3.5 animate-spin" /> : <Check className="size-3.5" />}
                 </button>
-                <button onClick={handleCancelEdit} className="text-muted-foreground hover:text-foreground">
+                <button onClick={(e) => { e.stopPropagation(); handleCancelEdit(); }} className="text-muted-foreground hover:text-foreground">
                   <X className="size-3.5" />
                 </button>
               </>
@@ -122,7 +122,7 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
                 <span className="text-sm font-medium truncate">{displayName}</span>
                 <button
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={() => setEditing(true)}
+                  onClick={(e) => { e.stopPropagation(); setEditing(true); }}
                   title="Rename"
                 >
                   <Pencil className="size-3" />
