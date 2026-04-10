@@ -3,7 +3,7 @@
 import { Info, SearchIcon } from "lucide-react";
 import Link from "next/link";
 
-import { Alert, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { useFilters } from "@/hooks";
@@ -35,17 +35,20 @@ const JudgingDisplay = ({
   return (
     <>
       <div className="h-full flex flex-col gap-4">
-        <Alert className="shadow-xs bg-yellow-500/10 border-yellow-500 text-yellow-500">
+        <Alert className="shadow-xs">
           <Info />
           <AlertTitle className="flex flex-wrap items-center gap-2">
+            Important reminder
+          </AlertTitle>
+          <AlertDescription>
             <span className="text-sm font-normal">
-              Please read the{" "}
-              <Link href="/guide/judging-guide" className="underline underline-offset-4">
+              You should be familiar with the {" "}
+              <Link href="/guide/judging-and-awards/how-judging-works" className="underline underline-offset-4">
                 judging guide
               </Link>{" "}
-              before you start.
+              before you begin looking at projects.
             </span>
-          </AlertTitle>
+          </AlertDescription>
         </Alert>
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div className="flex items-center gap-2">
@@ -66,7 +69,7 @@ const JudgingDisplay = ({
             </InputGroupAddon>
           </InputGroup>
         </div>
-        
+
         <AssignedProjectGrid
           {...useJudgingFormSheetReturn}
           judgingAssignmentsWithProjects={filteredJudgingAssignmentsWithProject}
