@@ -137,14 +137,14 @@ export const scheduleEvents: CalendarEvent[] = [
   },
   {
     title: "Mentors Block 1",
-    description: "Get advice from amazing mentorsn",
+    description: "Get advice from amazing mentors",
     start: new Date("2026-04-11T13:00:00-05:00"),
     end: new Date("2026-04-11T17:00:00-05:00"),
     location: "Mudd 2nd Floor",
   },
   {
     title: "Mentors Block 2",
-    description: "Get advice from amazing mentorsn",
+    description: "Get advice from amazing mentors",
     start: new Date("2026-04-11T17:00:00-05:00"),
     end: new Date("2026-04-11T21:00:00-05:00"),
     location: "Mudd 2nd Floor",
@@ -210,11 +210,11 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/project-guidelines/submission",
   },
   {
-    title: "Games! (+ T-Shirt Distribution",
+    title: "Games! (+ T-Shirt Distribution)",
     description: "Play games and meet new hackers. Also get free WildHacks T-Shirts!",
     start: new Date("2026-04-12T11:00:00-05:00"),
     end: new Date("2026-04-12T12:15:00-05:00"),
-    location: "Mudd 2nd Floor",
+    location: "Tech LR2",
   },
   {
     title: "Scavenger Hunt Check In",
