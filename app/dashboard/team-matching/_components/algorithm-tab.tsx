@@ -4,7 +4,6 @@ import { Loader2, Play, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,12 +49,10 @@ export const AlgorithmTab = ({
 }: AlgorithmTabProps) => {
   const [running, setRunning] = useState(false);
   const [runName, setRunName] = useState("");
-  const [preflightErrors, setPreflightErrors] = useState<string[]>([]);
   const [formationIndex, setFormationIndex] = useState<0 | 1 | 2>(0);
 
   const handleRun = async () => {
     setRunning(true);
-    setPreflightErrors([]);
     const result = await runMatching(runName || undefined);
     setRunning(false);
 
@@ -122,22 +119,6 @@ export const AlgorithmTab = ({
             </Button>
           </div>
         </div>
-
-        {preflightErrors.length > 0 && (
-          <Alert variant="destructive">
-            <TriangleAlert className="size-4" />
-            <AlertDescription>
-              <p className="font-medium mb-1">Pre-flight issues — resolve before running:</p>
-              <ul className="list-disc pl-4 space-y-0.5">
-                {preflightErrors.map((w, i) => (
-                  <li key={i} className="text-sm">
-                    {w}
-                  </li>
-                ))}
-              </ul>
-            </AlertDescription>
-          </Alert>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,400px)_1fr] gap-6 min-h-0">
