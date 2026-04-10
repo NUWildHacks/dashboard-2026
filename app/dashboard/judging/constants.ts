@@ -1,3 +1,5 @@
+import rooms from "@/data/rooms.json";
+
 import { JudgingAssignment, JudgingForm, Project } from "./types";
 
 export const PAST_TRACK = "Past" as const;
@@ -5,6 +7,8 @@ export const PRESENT_TRACK = "Present" as const;
 export const FUTURE_TRACK = "Future" as const;
 
 export const TRACKS = [PAST_TRACK, PRESENT_TRACK, FUTURE_TRACK] as const;
+
+export const ROOMS = rooms;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",
@@ -28,4 +32,6 @@ export const JUDGING_ASSIGNMENT_FIELDS = {
   project_id: "project_id",
   judging_form: "judging_form",
   order: "order",
+  judging_round: "judging_round",
+  room_id: "room_id",
 } as const satisfies Record<keyof Omit<JudgingAssignment, "id">, string>;

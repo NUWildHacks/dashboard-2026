@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { firestoreUserIdSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
 
-import { TRACKS } from "../../judging/constants";
+import { ROOMS, TRACKS } from "../../judging/constants";
 
 const judgingAssignmentsCsvSchema = z.object({
   judge_id: firestoreUserIdSchema,
@@ -23,6 +23,7 @@ const judgingAssignmentsCsvSchema = z.object({
   devpost_url: secureUrlSchema,
   order: z.number(),
   judging_round: z.number().min(1, "Judging round is required").max(2, "Judging round must be 2 or less"),
+  room_id: z.enum(ROOMS, { message: "Invalid room" }),
 });
 
 export const judgingAssignmentsCsvArraySchema = z.array(judgingAssignmentsCsvSchema);
