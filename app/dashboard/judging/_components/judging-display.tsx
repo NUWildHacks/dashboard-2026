@@ -12,7 +12,7 @@ import type { JudgeUser } from "@/types";
 import { useAssignedProjects, useJudgingFormSheet } from "../_hooks";
 import type { JudgingAssignmentWithProject, Track } from "../types";
 
-import { AssignedProjectGrid, JudgingFormSheet } from ".";
+import { AssignedProjectList, JudgingFormSheet } from ".";
 
 type JudgingDisplayProps = {
   judgingAssignmentsWithProject: JudgingAssignmentWithProject[];
@@ -37,12 +37,10 @@ const JudgingDisplay = ({
       <div className="h-full flex flex-col gap-4">
         <Alert className="shadow-xs">
           <Info />
-          <AlertTitle className="flex flex-wrap items-center gap-2">
-            Important reminder
-          </AlertTitle>
+          <AlertTitle className="flex flex-wrap items-center gap-2">Important reminder</AlertTitle>
           <AlertDescription>
             <span className="text-sm font-normal">
-              You should be familiar with the {" "}
+              You should be familiar with the{" "}
               <Link href="/guide/judging-and-awards/how-judging-works" className="underline underline-offset-4">
                 judging guide
               </Link>{" "}
@@ -69,8 +67,7 @@ const JudgingDisplay = ({
             </InputGroupAddon>
           </InputGroup>
         </div>
-
-        <AssignedProjectGrid
+        <AssignedProjectList
           {...useJudgingFormSheetReturn}
           judgingAssignmentsWithProjects={filteredJudgingAssignmentsWithProject}
         />

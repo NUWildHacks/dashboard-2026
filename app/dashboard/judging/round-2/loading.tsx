@@ -13,9 +13,9 @@ const JudgingRound2Loading = async () => {
         <Skeleton className="w-full h-12" />
         <Skeleton className="w-full h-9" />
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <Skeleton key={index} className="h-[85px]" />
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton key={index} className="w-full h-[85px]" />
         ))}
       </div>
     </div>

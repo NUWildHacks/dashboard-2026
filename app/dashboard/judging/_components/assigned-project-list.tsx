@@ -7,15 +7,15 @@ import type { JudgingAssignmentWithProject } from "../types";
 
 import { AssignedProjectItem } from ".";
 
-type AssignedProjectGridProps = {
+type AssignedProjectListProps = {
   judgingAssignmentsWithProjects: JudgingAssignmentWithProject[];
 } & Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown">;
 
-const AssignedProjectGrid = ({
+const AssignedProjectList = ({
   judgingAssignmentsWithProjects,
   handleOpenJudgingForm,
   handleKeyDown,
-}: AssignedProjectGridProps) => {
+}: AssignedProjectListProps) => {
   if (judgingAssignmentsWithProjects.length === 0) {
     return (
       <Empty role="status" aria-live="polite">
@@ -31,7 +31,7 @@ const AssignedProjectGrid = ({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="flex flex-col gap-4">
       {judgingAssignmentsWithProjects.map((judgingAssignmentWithProject) => (
         <AssignedProjectItem
           key={judgingAssignmentWithProject.id}
@@ -44,4 +44,4 @@ const AssignedProjectGrid = ({
   );
 };
 
-export default AssignedProjectGrid;
+export default AssignedProjectList;

@@ -1,5 +1,7 @@
 "use client";
 
+import { MapPin } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
@@ -15,7 +17,7 @@ const AssignedProjectItem = ({
   handleKeyDown,
   judgingAssignmentWithProject,
 }: AssignedProjectItemProps) => {
-  const { project, judging_form } = judgingAssignmentWithProject;
+  const { project, judging_form, room_id } = judgingAssignmentWithProject;
   const { name, track } = project;
 
   return (
@@ -41,6 +43,10 @@ const AssignedProjectItem = ({
               Submitted
             </Badge>
           )}
+          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+            <MapPin className="size-3 shrink-0" aria-hidden="true" />
+            {room_id}
+          </span>
         </ItemDescription>
       </ItemContent>
     </Item>
