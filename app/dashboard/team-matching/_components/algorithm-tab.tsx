@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Play, TriangleAlert } from "lucide-react";
+import { Loader2, Play } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
