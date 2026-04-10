@@ -18,8 +18,8 @@ import TeamMatchingResults from "./team-matching-results";
 
 type Props = {
   hasSubmitted: boolean;
-  initialReleased: boolean;
   initialSuggestions: TeamSuggestion[];
+  releasedField?: "results_released" | "results_released_dev";
   firstName: string;
   lastName: string;
   email: string;
@@ -30,20 +30,19 @@ type Props = {
 
 export const TeamMatchingGate = ({
   hasSubmitted,
-  initialReleased,
   initialSuggestions,
+  releasedField = "results_released",
   ...intakeProps
 }: Props) => {
-  const [released, setReleased] = useState(initialReleased);
+  const [released, setReleased] = useState(false);
   const [suggestions, setSuggestions] = useState<TeamSuggestion[]>(initialSuggestions);
-  // Track whether we've already fetched so we don't re-fetch on every snapshot
   const fetchedRef = useRef(initialSuggestions.length > 0);
 
   useEffect(() => {
     const unsub = onSnapshot(
       doc(db, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC),
       async (snap) => {
-        const newReleased: boolean = snap.data()?.results_released ?? false;
+        const newReleased: boolean = snap.data()?.[releasedField] ?? false;
         setReleased(newReleased);
 
         if (newReleased && hasSubmitted && !fetchedRef.current) {
@@ -59,7 +58,7 @@ export const TeamMatchingGate = ({
       }
     );
     return unsub;
-  }, [hasSubmitted]);
+  }, [hasSubmitted, releasedField]);
 
   if (hasSubmitted && released && suggestions.length > 0) {
     return <TeamMatchingResults suggestions={suggestions} />;

@@ -5,11 +5,17 @@ import { getFirestore } from "firebase-admin/firestore";
 import {
   DASHBOARD_PATH,
   LOGIN_PATH,
+  TEAM_MATCHING_FORMATIONS_COLLECTION,
+  TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
   TEAM_MATCHING_RUNS_COLLECTION,
-  TEAM_MATCHING_SUGGESTIONS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
+  TEAM_MATCHING_TEAMS_COLLECTION,
+  TEAM_MATCHING_TEAMS_COLLECTION_PROD,
+  WILDHACKS_COLLECTION,
+  WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
-import type { TeamMatchingRun, TeamSuggestion, UserSuggestions } from "@/types";
+import type { MatchedTeam, TeamFormation, TeamMatchingRun, TeamSuggestion, WildHacksConfig } from "@/types";
 
 export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => {
   try {
@@ -18,35 +24,66 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
 
     const db = getFirestore();
 
+    const configSnap = await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).get();
+    const mode = (configSnap.data() as WildHacksConfig | undefined)?.team_matching_mode ?? "dev";
+
+    const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+
     const topRunsSnap = await db
-      .collection(TEAM_MATCHING_RUNS_COLLECTION)
+      .collection(runsCollection)
       .where("is_top", "==", true)
       .orderBy("run_at", "desc")
       .get();
-    const topRuns = topRunsSnap.docs.map((d) => d.data() as TeamMatchingRun);
+    const topRuns = topRunsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as TeamMatchingRun);
 
+    const results: TeamSuggestion[] = [];
     const seen = new Set<string>();
-    const suggestions: TeamSuggestion[] = [];
+
+    const tryAdd = (team: MatchedTeam & { id: string }) => {
+      if (results.length >= 3) return;
+      const key = team.members.map((m) => m.user_id).sort().join(",");
+      if (seen.has(key)) return;
+      seen.add(key);
+      results.push({
+        rank: (results.length + 1) as 1 | 2 | 3,
+        team_id: team.id,
+        members: team.members,
+        score: team.score,
+        match_reasons: team.match_reasons,
+        where_to_meet: team.where_to_meet,
+      });
+    };
 
     for (const run of topRuns) {
-      if (suggestions.length >= 3) break;
-      const snap = await db
-        .collection(TEAM_MATCHING_SUGGESTIONS_COLLECTION)
-        .doc(`${run.id}_${userId}`)
+      if (results.length >= 3) break;
+
+      // Primary formation
+      const teamsSnap = await db
+        .collection(teamsCollection)
+        .where("run_id", "==", run.id)
         .get();
-      if (!snap.exists) continue;
-      const data = snap.data() as UserSuggestions;
-      for (const s of data.suggestions) {
-        if (suggestions.length >= 3) break;
-        const key = s.members.map((m) => m.user_id).sort().join(",");
-        if (!seen.has(key)) {
-          seen.add(key);
-          suggestions.push(s);
-        }
+      const primary = teamsSnap.docs
+        .map((d) => ({ id: d.id, ...d.data() }) as MatchedTeam)
+        .find((t) => t.members.some((m) => m.user_id === userId));
+      if (primary) tryAdd(primary);
+
+      if (results.length >= 3) break;
+
+      // Alternative formations (alt1, alt2)
+      const altDocs = await Promise.all(
+        [1, 2].map((i) => db.collection(formationsCollection).doc(`${run.id}_alt${i}`).get())
+      );
+      for (const altDoc of altDocs) {
+        if (!altDoc.exists || results.length >= 3) continue;
+        const formation = altDoc.data() as TeamFormation;
+        const altTeam = formation.teams.find((t) => t.members.some((m) => m.user_id === userId));
+        if (altTeam) tryAdd(altTeam);
       }
     }
 
-    return suggestions;
+    return results;
   } catch {
     return [];
   }

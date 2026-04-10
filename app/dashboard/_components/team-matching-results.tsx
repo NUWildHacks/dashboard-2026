@@ -65,7 +65,7 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
         ) : (
           <>
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Match {index + 1}
+              {index === 0 ? "Your Team" : `Suggestion ${index}`}
             </p>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
@@ -121,7 +121,7 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
               key={i}
               onClick={() => setIndex(i)}
               className={`size-2 rounded-full transition-colors ${i === index ? "bg-primary" : "bg-muted-foreground/30"}`}
-              aria-label={i === suggestions.length ? "Discord fallback" : `Match ${i + 1}`}
+              aria-label={i === suggestions.length ? "Discord fallback" : i === 0 ? "Your Team" : `Suggestion ${i}`}
             />
           ))}
         </div>
