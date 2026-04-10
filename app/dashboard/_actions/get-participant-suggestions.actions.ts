@@ -29,8 +29,10 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
     const mode = (configSnap.data() as WildHacksConfig | undefined)?.team_matching_mode ?? "dev";
     const effectiveMode = role === ADMIN ? mode : "prod";
 
-    const runsCollection = effectiveMode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
-    const teamsCollection = effectiveMode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+    const runsCollection =
+      effectiveMode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const teamsCollection =
+      effectiveMode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
     const formationsCollection =
       effectiveMode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
 

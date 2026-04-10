@@ -1,4 +1,11 @@
-import { DEFAULT_TEAM_MATCHING_SETTINGS, type IntakeRecord, type MatchedTeam, type TeamMatchingRunWarning, type TeamMatchingSettings, type TeamMember } from "@/types";
+import {
+  DEFAULT_TEAM_MATCHING_SETTINGS,
+  type IntakeRecord,
+  type MatchedTeam,
+  type TeamMatchingRunWarning,
+  type TeamMatchingSettings,
+  type TeamMember,
+} from "@/types";
 
 import { generateProsCons, scoreTeam } from "./score";
 import { UnionFind } from "./union-find";
@@ -15,9 +22,9 @@ export type AlgorithmResult = {
   fingerprint: string;
 };
 
-// Utilities 
+// Utilities
 
-// Seeded Fisher-Yates 
+// Seeded Fisher-Yates
 function seededShuffle<T>(arr: T[], seed: number): T[] {
   const result = [...arr];
   let s = (seed ^ 0x9e3779b9) >>> 0;
