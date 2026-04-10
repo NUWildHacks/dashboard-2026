@@ -79,6 +79,9 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
         doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown",
       ])
     );
+    const genderMap = new Map(
+      userDocs.map((doc) => [doc.id, doc.exists ? (doc.data()?.gender as string | undefined) : undefined])
+    );
 
     // Build IntakeRecord array
     const intakes: IntakeRecord[] = intakeSnaps.docs.map((doc) => {
@@ -93,6 +96,7 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
         preferred_team_size: d.preferred_team_size ?? 4,
         required_teammates: d.required_teammates ?? [],
         additional_notes: d.additional_notes ?? "",
+        gender: genderMap.get(doc.id),
         gender_preference: d.gender_preference ?? "no_preference",
         where_staying: d.where_staying ?? "unsure",
       };

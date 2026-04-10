@@ -47,20 +47,31 @@ function scoreExperienceMix(members: IntakeRecord[]): number {
 }
 
 // Fraction of members whose gender preference is satisfied.
-// "no_preference" is always satisfied; "prefer_mixed"/"prefer_same" depends on team composition.
+// "no_preference" is always satisfied.
+// "prefer_mixed": satisfied if the team has more than one distinct known gender.
+// "prefer_same": satisfied if at least one other member shares this member's gender.
+// Members with "Prefer not to answer" / "Prefer to self-describe" get a neutral 0.5 for prefer_same.
 function scoreGenderPreference(members: IntakeRecord[]): number {
   if (members.length === 0) return 1;
-  // We don't have actual gender data — use where_staying as a proxy for group composition.
-  // Treat all "no_preference" as fully satisfied. For prefer_same/prefer_mixed,
-  // score by whether team has diversity in where_staying (rough proxy).
-  // In production this would use actual gender identity if collected.
-  const satisfied = members.filter((m) => m.gender_preference === "no_preference").length;
-  const mixed = new Set(members.map((m) => m.where_staying)).size > 1;
-  const preferMixed = members.filter((m) => m.gender_preference === "prefer_mixed").length;
-  const preferSame = members.filter((m) => m.gender_preference === "prefer_same").length;
-  const mixedSat = mixed ? preferMixed : 0;
-  const sameSat = mixed ? 0 : preferSame;
-  return (satisfied + mixedSat + sameSat) / members.length;
+  const UNDETERMINED = new Set(["Prefer not to answer", "Prefer to self-describe"]);
+  const knownGenders = members.map((m) => m.gender).filter((g): g is string => !!g && !UNDETERMINED.has(g));
+  const isMixed = new Set(knownGenders).size > 1;
+  let satisfied = 0;
+  for (const m of members) {
+    if (m.gender_preference === "no_preference") {
+      satisfied += 1;
+    } else if (m.gender_preference === "prefer_mixed") {
+      satisfied += isMixed ? 1 : 0;
+    } else if (m.gender_preference === "prefer_same") {
+      const g = m.gender;
+      if (!g || UNDETERMINED.has(g)) {
+        satisfied += 0.5;
+      } else {
+        satisfied += members.some((o) => o.user_id !== m.user_id && o.gender === g) ? 1 : 0;
+      }
+    }
+  }
+  return satisfied / members.length;
 }
 
 // Fraction of members with the same where_staying value — rewards logistical alignment.

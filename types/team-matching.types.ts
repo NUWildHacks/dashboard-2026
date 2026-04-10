@@ -106,6 +106,7 @@ export type IntakeRecord = {
   preferred_team_size: number;
   required_teammates: string[];
   additional_notes: string;
+  gender: string | undefined;
   gender_preference: string;
   where_staying: string;
 };

@@ -41,6 +41,9 @@ export const getIntakeEntries = async (mode: TeamMatchingMode = "dev"): Promise<
       doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown",
     ])
   );
+  const genderMap = new Map(
+    userDocs.map((doc) => [doc.id, doc.exists ? (doc.data()?.gender as string | undefined) : undefined])
+  );
 
   // Collect all required teammate IDs not already in nameMap
   const allRequiredIds = snaps.docs.flatMap((doc) => (doc.data().required_teammates ?? []) as string[]);
@@ -70,6 +73,7 @@ export const getIntakeEntries = async (mode: TeamMatchingMode = "dev"): Promise<
       required_teammates: requiredTeammates,
       required_teammate_names: requiredTeammates.map((id) => nameMap.get(id) ?? id),
       additional_notes: d.additional_notes ?? "",
+      gender: genderMap.get(doc.id),
       gender_preference: d.gender_preference ?? "no_preference",
       where_staying: d.where_staying ?? "unsure",
       submitted_at: d.created_at ?? 0,
