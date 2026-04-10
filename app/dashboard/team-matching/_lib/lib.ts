@@ -13,7 +13,7 @@ import {
 import type { IntakeRecord, MatchedTeam, TeamMatchingRun, TeamMatchingSettings } from "@/types";
 import { DEFAULT_TEAM_MATCHING_SETTINGS } from "@/types";
 
-export type IntakeEntry = IntakeRecord & { submitted_at: number };
+export type IntakeEntry = IntakeRecord & { submitted_at: number; required_teammate_names: string[] };
 
 export const getIntakeEntries = async (): Promise<IntakeEntry[]> => {
   const db = getFirestore();
@@ -29,8 +29,23 @@ export const getIntakeEntries = async (): Promise<IntakeEntry[]> => {
     ])
   );
 
+  // Collect all required teammate IDs not already in nameMap
+  const allRequiredIds = snaps.docs.flatMap((doc) => (doc.data().required_teammates ?? []) as string[]);
+  const unknownIds = [...new Set(allRequiredIds)].filter((id) => !nameMap.has(id));
+  if (unknownIds.length > 0) {
+    const extraRefs = unknownIds.map((id) => db.collection(USERS_COLLECTION).doc(id));
+    const extraDocs = await db.getAll(...extraRefs);
+    for (const doc of extraDocs) {
+      nameMap.set(
+        doc.id,
+        doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown",
+      );
+    }
+  }
+
   return snaps.docs.map((doc) => {
     const d = doc.data();
+    const requiredTeammates: string[] = d.required_teammates ?? [];
     return {
       user_id: doc.id,
       name: nameMap.get(doc.id) ?? "Unknown",
@@ -39,7 +54,8 @@ export const getIntakeEntries = async (): Promise<IntakeEntry[]> => {
       skills: d.skills ?? {},
       work_style: d.work_style ?? "in_between",
       preferred_team_size: d.preferred_team_size ?? 4,
-      required_teammates: d.required_teammates ?? [],
+      required_teammates: requiredTeammates,
+      required_teammate_names: requiredTeammates.map((id) => nameMap.get(id) ?? id),
       additional_notes: d.additional_notes ?? "",
       gender_preference: d.gender_preference ?? "no_preference",
       where_staying: d.where_staying ?? "unsure",

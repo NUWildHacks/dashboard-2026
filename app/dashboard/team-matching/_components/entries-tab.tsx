@@ -59,9 +59,20 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
   {
     accessorKey: "required_teammates",
     header: "Required",
-    cell: ({ row }) => (
-      <span className="text-sm text-muted-foreground">{row.original.required_teammates.length}</span>
-    ),
+    cell: ({ row }) => {
+      const names = row.original.required_teammate_names;
+      if (!names || names.length === 0)
+        return <span className="text-sm text-muted-foreground">—</span>;
+      return (
+        <div className="flex flex-wrap gap-1">
+          {names.map((name) => (
+            <Badge key={name} variant="outline" className="text-xs">
+              {name}
+            </Badge>
+          ))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "gender_preference",

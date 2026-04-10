@@ -5,6 +5,7 @@ import { UnionFind } from "./union-find";
 
 const MAX_TEAM_SIZE = 4;
 const TOP_K = 10;
+const TECH_ROLES = ["Frontend Engineer", "Backend Engineer", "Full Stack Engineer", "Mobile Engineer"];
 
 export type AlgorithmResult = {
   teams: Omit<MatchedTeam, "id">[];
@@ -121,11 +122,18 @@ function pickBestAdditions(
   return selected;
 }
 
+// Returns true if any member of `team` has a required partner not present in the same team.
+function splitsPair(team: IntakeRecord[], requiredWith: Map<string, string[]>): boolean {
+  const ids = new Set(team.map((m) => m.user_id));
+  return team.some((m) => (requiredWith.get(m.user_id) ?? []).some((reqId) => !ids.has(reqId)));
+}
+
 // Run 1-3 passes of local swap optimisation between teams.
 function swapOptimize(
   teams: IntakeRecord[][],
   unmatched: IntakeRecord[],
-  settings: TeamMatchingSettings
+  settings: TeamMatchingSettings,
+  requiredWith: Map<string, string[]>
 ): { teams: IntakeRecord[][]; unmatched: IntakeRecord[] } {
   for (let pass = 0; pass < 3; pass++) {
     let improved = false;
@@ -142,6 +150,9 @@ function swapOptimize(
 
             const newT1 = [...t1.slice(0, mi), m2, ...t1.slice(mi + 1)];
             const newT2 = [...t2.slice(0, mj), m1, ...t2.slice(mj + 1)];
+
+            // Never split a required pair
+            if (splitsPair(newT1, requiredWith) || splitsPair(newT2, requiredWith)) continue;
 
             if (
               scoreTeam(newT1, settings) + scoreTeam(newT2, settings) >
@@ -173,7 +184,7 @@ function swapOptimize(
         }
       }
 
-      if (bestTeamIdx >= 0 && bestScore > scoreTeam(teams[bestTeamIdx], settings)) {
+      if (bestTeamIdx >= 0) {
         teams[bestTeamIdx] = [...teams[bestTeamIdx], u];
         improved = true;
         absorbed = true;
@@ -189,7 +200,7 @@ function swapOptimize(
   return { teams, unmatched };
 }
 
-// Generate up to 3 diverse candidate suggestions for a user, all containing them from the start.
+// Generate up to 3 suggestions for a user. Each external person appears in at most one suggestion.
 function generateSuggestions(
   userId: string,
   lockedGroup: string[],
@@ -198,65 +209,57 @@ function generateSuggestions(
   settings: TeamMatchingSettings
 ): { members: IntakeRecord[]; score: number; match_reasons: string[] }[] {
   const locked = lockedGroup.map((id) => intakeMap.get(id)!);
-  const peers = (topK.get(userId) ?? [])
+  const allPeers = (topK.get(userId) ?? [])
     .filter((id) => !lockedGroup.includes(id))
     .map((id) => intakeMap.get(id))
     .filter((r): r is IntakeRecord => !!r);
 
-  const candidates: { members: IntakeRecord[]; score: number }[] = [];
+  const selected: { members: IntakeRecord[]; score: number; match_reasons: string[] }[] = [];
+  // Track external IDs already used in a suggestion — hard constraint: no duplicates
+  const usedExternalIds = new Set<string>();
 
-  for (const size of [4, 3, 2]) {
-    const needed = size - locked.length;
-    if (needed < 0) continue;
+  while (selected.length < 3) {
+    const availablePeers = allPeers.filter((p) => !usedExternalIds.has(p.user_id));
+    const candidates: { members: IntakeRecord[]; score: number }[] = [];
 
-    if (needed === 0) {
-      if (hasTechnicalMember(locked)) {
-        candidates.push({ members: locked, score: scoreTeam(locked, settings) });
+    for (const size of [4, 3, 2]) {
+      const needed = size - locked.length;
+      if (needed < 0) continue;
+
+      if (needed === 0) {
+        if (hasTechnicalMember(locked)) {
+          candidates.push({ members: locked, score: scoreTeam(locked, settings) });
+        }
+        break; // locked group fills this size; smaller sizes have negative needed
       }
-      continue;
+
+      const subsets = getSubsets(availablePeers, needed);
+      for (const subset of subsets) {
+        const group = [...locked, ...subset];
+        if (!hasTechnicalMember(group)) continue;
+        candidates.push({ members: group, score: scoreTeam(group, settings) });
+      }
+
+      if (candidates.length > 0) break; // found valid teams at this size; prefer larger over smaller
     }
 
-    // Enumerate subsets of size `needed` from peers
-    const subsets = getSubsets(peers, needed);
-    for (const subset of subsets) {
-      const group = [...locked, ...subset];
-      if (!hasTechnicalMember(group)) continue;
-      candidates.push({ members: group, score: scoreTeam(group, settings) });
+    if (candidates.length === 0) break; // no more valid teams possible
+
+    const best = candidates.reduce((a, b) => (b.score > a.score ? b : a));
+
+    selected.push({
+      members: best.members,
+      score: best.score,
+      match_reasons: generateMatchReasons(best.members, settings),
+    });
+
+    // Mark all external members as used so they don't appear in a later suggestion
+    for (const m of best.members) {
+      if (!lockedGroup.includes(m.user_id)) usedExternalIds.add(m.user_id);
     }
   }
 
-  // Deduplicate by sorted member ID set
-  const seen = new Set<string>();
-  const unique = candidates.filter(({ members }) => {
-    const key = members.map((m) => m.user_id).sort().join(",");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-
-  unique.sort((a, b) => b.score - a.score);
-
-  // Diversity filter: <75% overlap with any already-selected suggestion
-  const selected: typeof unique = [];
-  for (const candidate of unique) {
-    if (selected.length >= 3) break;
-    if (selected.length === 0) {
-      selected.push(candidate);
-      continue;
-    }
-    const maxOverlap = Math.max(
-      ...selected.map((s) => {
-        const intersection = candidate.members.filter((m) => s.members.some((sm) => sm.user_id === m.user_id)).length;
-        return intersection / candidate.members.length;
-      })
-    );
-    if (maxOverlap < 0.75) selected.push(candidate);
-  }
-
-  return selected.map((s) => ({
-    ...s,
-    match_reasons: generateMatchReasons(s.members, settings),
-  }));
+  return selected;
 }
 
 function getSubsets<T>(arr: T[], size: number): T[][] {
@@ -301,12 +304,10 @@ export function runMatchingAlgorithm(
 
   const lockedClusters: string[][] = [];
   const singletons: string[] = [];
-  let requiredClusterCount = 0;
 
   for (const [, members] of groups) {
     if (members.length > 1) {
       lockedClusters.push(members);
-      requiredClusterCount++;
     } else {
       singletons.push(members[0]);
     }
@@ -335,9 +336,22 @@ export function runMatchingAlgorithm(
     const spots = MAX_TEAM_SIZE - clusterMembers.length;
     if (spots > 0) {
       const available = unassignedPool.filter((r) => !assigned.has(r.user_id));
-      const additions = pickBestAdditions(clusterMembers, available, spots, settings, topK);
+      const toAdd: IntakeRecord[] = [];
+
+      // If cluster has no tech member, prioritise adding one first
+      if (!hasTechnicalMember(clusterMembers) && available.length > 0) {
+        const techFirst = available.find((r) => r.preferred_roles.some((role) => TECH_ROLES.includes(role)));
+        if (techFirst) {
+          toAdd.push(techFirst);
+          assigned.add(techFirst.user_id);
+        }
+      }
+
+      // Fill remaining spots greedily
+      const stillAvailable = available.filter((r) => !assigned.has(r.user_id));
+      const additions = pickBestAdditions([...clusterMembers, ...toAdd], stillAvailable, spots - toAdd.length, settings, topK);
       additions.forEach((r) => assigned.add(r.user_id));
-      teamMemberLists.push([...clusterMembers, ...additions]);
+      teamMemberLists.push([...clusterMembers, ...toAdd, ...additions]);
     } else {
       teamMemberLists.push(clusterMembers);
     }
@@ -351,29 +365,34 @@ export function runMatchingAlgorithm(
     const seed = remainingPool.shift()!;
     assigned.add(seed.user_id);
 
-    const target = Math.min(MAX_TEAM_SIZE, remainingPool.length + 1);
+    // Prefer a size that does not leave exactly 1 person stranded
+    let target = Math.min(MAX_TEAM_SIZE, remainingPool.length + 1);
+    if (remainingPool.length - (target - 1) === 1 && target > 2) target--;
+
+    const team: IntakeRecord[] = [seed];
+
+    // If seed has no tech role, try to grab a tech member first (before filling)
+    if (!hasTechnicalMember(team) && target > 1) {
+      const techFirst = remainingPool.find(
+        (r) => !assigned.has(r.user_id) && r.preferred_roles.some((role) => TECH_ROLES.includes(role))
+      );
+      if (techFirst) {
+        team.push(techFirst);
+        assigned.add(techFirst.user_id);
+        const idx = remainingPool.findIndex((p) => p.user_id === techFirst.user_id);
+        if (idx >= 0) remainingPool.splice(idx, 1);
+      }
+    }
+
+    // Fill remaining spots greedily
     const available = remainingPool.filter((r) => !assigned.has(r.user_id));
-    const additions = pickBestAdditions([seed], available, target - 1, settings, topK);
+    const additions = pickBestAdditions(team, available, target - team.length, settings, topK);
     additions.forEach((r) => {
       assigned.add(r.user_id);
       const idx = remainingPool.findIndex((p) => p.user_id === r.user_id);
       if (idx >= 0) remainingPool.splice(idx, 1);
     });
-
-    const team = [seed, ...additions];
-
-    // Enforce at-least-1-technical
-    if (!hasTechnicalMember(team)) {
-      const techCandidate = remainingPool.find(
-        (r) => !assigned.has(r.user_id) && r.preferred_roles.some((role) => ["Frontend Engineer", "Backend Engineer", "Full Stack Engineer", "Mobile Engineer"].includes(role))
-      );
-      if (techCandidate) {
-        assigned.add(techCandidate.user_id);
-        const idx = remainingPool.findIndex((p) => p.user_id === techCandidate.user_id);
-        if (idx >= 0) remainingPool.splice(idx, 1);
-        team.push(techCandidate);
-      }
-    }
+    team.push(...additions);
 
     teamMemberLists.push(team);
   }
@@ -382,8 +401,17 @@ export function runMatchingAlgorithm(
     unmatchedRecords.push(remainingPool[0]);
   }
 
+  // Build required-pair lookup from confirmed mutual edges
+  const requiredWith = new Map<string, string[]>();
+  for (const [a, b] of mutualEdges) {
+    if (!requiredWith.has(a)) requiredWith.set(a, []);
+    if (!requiredWith.has(b)) requiredWith.set(b, []);
+    requiredWith.get(a)!.push(b);
+    requiredWith.get(b)!.push(a);
+  }
+
   // Phase D: Swap optimisation
-  const { teams: optimizedTeams, unmatched: finalUnmatched } = swapOptimize(teamMemberLists, unmatchedRecords, settings);
+  const { teams: optimizedTeams, unmatched: finalUnmatched } = swapOptimize(teamMemberLists, unmatchedRecords, settings, requiredWith);
   unmatchedRecords = finalUnmatched;
 
   // Post-flight: flag teams missing technical members
