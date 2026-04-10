@@ -6,12 +6,14 @@ import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { OTHER_MODALITY } from "@/constants";
-import { useFilters } from "@/hooks";
+import { CategoryWithAll, useFilters } from "@/hooks";
 import type { JudgeUser } from "@/types";
 
 import { useAssignedProjects, useJudgingFormSheet } from "../_hooks";
-import type { JudgingAssignmentWithProject, Track } from "../types";
+import { SUBMISSION_STATUSES } from "../constants";
+import type { JudgingAssignmentWithProject, SubmissionStatus } from "../types";
 
 import { AssignedProjectList, JudgingFormSheet } from ".";
 
@@ -27,9 +29,12 @@ const JudgingDisplay = ({
   modality,
   other_modality,
 }: JudgingDisplayProps) => {
-  const { search, setSearch } = useFilters<Track>();
+  const { category, setCategory, search, setSearch } = useFilters<CategoryWithAll<SubmissionStatus>>();
 
-  const { filteredJudgingAssignmentsWithProject } = useAssignedProjects(judgingAssignmentsWithProject, { search });
+  const { filteredJudgingAssignmentsWithProject } = useAssignedProjects(judgingAssignmentsWithProject, {
+    category,
+    search,
+  });
 
   const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath);
 
@@ -44,7 +49,7 @@ const JudgingDisplay = ({
           </AlertTitle>
           <AlertDescription>
             <span className="text-sm font-normal">
-              You should be familiar with the{" "}
+              Please familiarize yourself with the{" "}
               <Link href="/guide/judging-and-awards/how-judging-works" className="underline underline-offset-4">
                 judging guide
               </Link>{" "}
@@ -53,10 +58,19 @@ const JudgingDisplay = ({
           </AlertDescription>
         </Alert>
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div className="flex items-center gap-2">
-            <p className="text-sm">Your modality: </p>
-            <Badge>{modality === "Other" ? other_modality : modality}</Badge>
-          </div>
+          <Select value={category} onValueChange={(value) => setCategory(value as CategoryWithAll<SubmissionStatus>)}>
+            <SelectTrigger className="min-w-[150px] lg:w-[150px] w-full">
+              <SelectValue placeholder="Select submission status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All projects</SelectItem>
+              {SUBMISSION_STATUSES.map((status) => (
+                <SelectItem key={status} value={status}>
+                  {status}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <InputGroup className="lg:max-w-[350px] w-full">
             <InputGroupInput
               id="search-projects"

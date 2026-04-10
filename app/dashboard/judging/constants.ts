@@ -5,10 +5,13 @@ import { JudgingAssignment, JudgingForm, Project } from "./types";
 export const PAST_TRACK = "Past" as const;
 export const PRESENT_TRACK = "Present" as const;
 export const FUTURE_TRACK = "Future" as const;
-
 export const TRACKS = [PAST_TRACK, PRESENT_TRACK, FUTURE_TRACK] as const;
 
 export const ROOMS = rooms;
+
+export const SUBMITTED_STATUS = "Submitted" as const;
+export const NOT_SUBMITTED_STATUS = "Not submitted" as const;
+export const SUBMISSION_STATUSES = [SUBMITTED_STATUS, NOT_SUBMITTED_STATUS] as const;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",

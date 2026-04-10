@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 
-import { UseFiltersReturnWithoutAll } from "@/hooks";
+import { CategoryWithAll, UseFiltersReturnWithoutAll } from "@/hooks";
 
-import { JudgingAssignmentWithProject, Track } from "../types";
+import { SUBMITTED_STATUS, NOT_SUBMITTED_STATUS } from "../constants";
+import { JudgingAssignmentWithProject, SubmissionStatus } from "../types";
 
 export type UseAssignedProjectsSettings = {
-  search?: UseFiltersReturnWithoutAll<Track>["search"];
+  category?: UseFiltersReturnWithoutAll<CategoryWithAll<SubmissionStatus>>["category"];
+  search?: UseFiltersReturnWithoutAll<CategoryWithAll<SubmissionStatus>>["search"];
 };
 
 export type UseAssignedProjectsReturn = {
@@ -16,10 +18,16 @@ export const useAssignedProjects = (
   judgingAssignmentsWithProject: JudgingAssignmentWithProject[],
   settings: UseAssignedProjectsSettings
 ): UseAssignedProjectsReturn => {
-  const { search } = settings;
+  const { category, search } = settings;
 
   const filteredJudgingAssignmentsWithProject = useMemo(() => {
     let result = judgingAssignmentsWithProject;
+
+    if (category === SUBMITTED_STATUS) {
+      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form !== undefined);
+    } else if (category === NOT_SUBMITTED_STATUS) {
+      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form === undefined);
+    }
 
     if (search && search !== "") {
       const searchLower = search.toLowerCase();
@@ -32,7 +40,7 @@ export const useAssignedProjects = (
     }
 
     return result;
-  }, [judgingAssignmentsWithProject, search]);
+  }, [judgingAssignmentsWithProject, category, search]);
 
   return {
     filteredJudgingAssignmentsWithProject,
