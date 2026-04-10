@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { OTHER_MODALITY } from "@/constants";
 import { useFilters } from "@/hooks";
 import type { JudgeUser } from "@/types";
 
@@ -37,7 +38,10 @@ const JudgingDisplay = ({
       <div className="h-full flex flex-col gap-4">
         <Alert className="shadow-xs">
           <Info />
-          <AlertTitle className="flex flex-wrap items-center gap-2">Important reminder</AlertTitle>
+          <AlertTitle className="flex items-center gap-2">
+            <p className="text-sm">Your modality: </p>
+            <Badge>{modality === OTHER_MODALITY ? other_modality : modality}</Badge>
+          </AlertTitle>
           <AlertDescription>
             <span className="text-sm font-normal">
               You should be familiar with the{" "}
