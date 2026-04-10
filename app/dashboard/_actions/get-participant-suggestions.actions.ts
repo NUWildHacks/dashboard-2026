@@ -3,6 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import {
+  ADMIN,
   DASHBOARD_PATH,
   LOGIN_PATH,
   TEAM_MATCHING_FORMATIONS_COLLECTION,
@@ -20,17 +21,18 @@ import type { MatchedTeam, TeamFormation, TeamMatchingRun, TeamSuggestion, WildH
 export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
-    const { id: userId } = await getAuthenticatedUser(redirectPath);
+    const { id: userId, role } = await getAuthenticatedUser(redirectPath);
 
     const db = getFirestore();
 
     const configSnap = await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).get();
     const mode = (configSnap.data() as WildHacksConfig | undefined)?.team_matching_mode ?? "dev";
+    const effectiveMode = role === ADMIN ? mode : "prod";
 
-    const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
-    const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+    const runsCollection = effectiveMode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const teamsCollection = effectiveMode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
     const formationsCollection =
-      mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+      effectiveMode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
 
     const topRunsSnap = await db.collection(runsCollection).where("is_top", "==", true).orderBy("run_at", "desc").get();
     const topRuns = topRunsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as TeamMatchingRun);
