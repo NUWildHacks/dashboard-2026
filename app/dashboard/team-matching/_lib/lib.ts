@@ -3,21 +3,27 @@
 import { getFirestore } from "firebase-admin/firestore";
 
 import {
+  TEAM_MATCHING_FORMATIONS_COLLECTION,
+  TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
+  TEAM_MATCHING_INTAKE_COLLECTION,
   TEAM_MATCHING_INTAKE_COLLECTION_DEV,
   TEAM_MATCHING_RUNS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
   TEAM_MATCHING_SETTINGS_DOC,
   TEAM_MATCHING_TEAMS_COLLECTION,
+  TEAM_MATCHING_TEAMS_COLLECTION_PROD,
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
 } from "@/constants";
-import type { IntakeRecord, MatchedTeam, TeamMatchingRun, TeamMatchingSettings } from "@/types";
+import type { IntakeRecord, MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun, TeamMatchingSettings } from "@/types";
 import { DEFAULT_TEAM_MATCHING_SETTINGS } from "@/types";
 
 export type IntakeEntry = IntakeRecord & { submitted_at: number; required_teammate_names: string[] };
 
-export const getIntakeEntries = async (): Promise<IntakeEntry[]> => {
+export const getIntakeEntries = async (mode: TeamMatchingMode = "dev"): Promise<IntakeEntry[]> => {
   const db = getFirestore();
-  const snaps = await db.collection(TEAM_MATCHING_INTAKE_COLLECTION_DEV).get();
+  const collection = mode === "prod" ? TEAM_MATCHING_INTAKE_COLLECTION : TEAM_MATCHING_INTAKE_COLLECTION_DEV;
+  const snaps = await db.collection(collection).get();
 
   const userIds = snaps.docs.map((d) => d.id);
   const userRefs = userIds.map((id) => db.collection(USERS_COLLECTION).doc(id));
@@ -64,22 +70,38 @@ export const getIntakeEntries = async (): Promise<IntakeEntry[]> => {
   });
 };
 
-export const getRuns = async (): Promise<TeamMatchingRun[]> => {
+export const getRuns = async (mode: TeamMatchingMode = "dev"): Promise<TeamMatchingRun[]> => {
   const db = getFirestore();
-  const snaps = await db.collection(TEAM_MATCHING_RUNS_COLLECTION).orderBy("run_at", "desc").get();
+  const collection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+  const snaps = await db.collection(collection).orderBy("run_at", "desc").get();
   return snaps.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as TeamMatchingRun);
 };
 
-export const getRunTeams = async (runId: string): Promise<MatchedTeam[]> => {
+export const getRunTeams = async (runId: string, mode: TeamMatchingMode = "dev"): Promise<MatchedTeam[]> => {
   const db = getFirestore();
-  const snaps = await db.collection(TEAM_MATCHING_TEAMS_COLLECTION).where("run_id", "==", runId).get();
+  const collection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+  const snaps = await db.collection(collection).where("run_id", "==", runId).get();
   return snaps.docs
     .map((doc) => ({ id: doc.id, ...doc.data() }) as MatchedTeam)
     .sort((a, b) => b.score - a.score);
 };
 
+export const getRunFormations = async (runId: string, mode: TeamMatchingMode = "dev"): Promise<TeamFormation[]> => {
+  const db = getFirestore();
+  const collection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+  const docs = await Promise.all(
+    [1, 2].map((i) => db.collection(collection).doc(`${runId}_alt${i}`).get())
+  );
+  return docs
+    .filter((d) => d.exists)
+    .map((d) => d.data() as TeamFormation)
+    .sort((a, b) => a.formation_index - b.formation_index);
+};
+
 export const getSettings = async (): Promise<TeamMatchingSettings> => {
   const db = getFirestore();
   const snap = await db.collection(WILDHACKS_COLLECTION).doc(TEAM_MATCHING_SETTINGS_DOC).get();
-  return snap.exists ? (snap.data() as TeamMatchingSettings) : DEFAULT_TEAM_MATCHING_SETTINGS;
+  return snap.exists
+    ? { ...DEFAULT_TEAM_MATCHING_SETTINGS, ...(snap.data() as Partial<TeamMatchingSettings>) }
+    : DEFAULT_TEAM_MATCHING_SETTINGS;
 };

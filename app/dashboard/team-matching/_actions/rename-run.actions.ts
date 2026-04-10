@@ -2,11 +2,11 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_RUNS_COLLECTION } from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_RUNS_COLLECTION, TEAM_MATCHING_RUNS_COLLECTION_PROD } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const renameRun = async (runId: string, name: string): Promise<ActionResult> => {
+export const renameRun = async (runId: string, name: string, mode: TeamMatchingMode = "dev"): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -17,7 +17,8 @@ export const renameRun = async (runId: string, name: string): Promise<ActionResu
     if (!trimmed) return { success: false, error: "Name cannot be empty." };
 
     const db = getFirestore();
-    const ref = db.collection(TEAM_MATCHING_RUNS_COLLECTION).doc(runId);
+    const collection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const ref = db.collection(collection).doc(runId);
     const snap = await ref.get();
     if (!snap.exists) return { success: false, error: "Run not found." };
 

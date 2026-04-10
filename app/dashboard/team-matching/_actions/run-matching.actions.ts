@@ -1,23 +1,26 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { revalidatePath } from "next/cache";
 
 import {
   ADMIN,
   DASHBOARD_PATH,
-  DASHBOARD_TEAM_MATCHING_PATH,
   LOGIN_PATH,
+  TEAM_MATCHING_FORMATIONS_COLLECTION,
+  TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
+  TEAM_MATCHING_INTAKE_COLLECTION,
   TEAM_MATCHING_INTAKE_COLLECTION_DEV,
   TEAM_MATCHING_RUNS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
   TEAM_MATCHING_SETTINGS_DOC,
-  TEAM_MATCHING_SUGGESTIONS_COLLECTION,
   TEAM_MATCHING_TEAMS_COLLECTION,
+  TEAM_MATCHING_TEAMS_COLLECTION_PROD,
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
+  WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult, IntakeRecord, TeamMatchingRun, TeamMatchingRunStats, TeamMatchingSettings } from "@/types";
+import type { ActionResult, IntakeRecord, TeamMatchingRun, TeamMatchingRunStats, TeamMatchingSettings, WildHacksConfig } from "@/types";
 import { DEFAULT_TEAM_MATCHING_SETTINGS } from "@/types";
 
 import { runMatchingAlgorithm } from "../algorithm/matcher";
@@ -38,14 +41,25 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
 
     const db = getFirestore();
 
-    // Fetch settings
-    const settingsSnap = await db.collection(WILDHACKS_COLLECTION).doc(TEAM_MATCHING_SETTINGS_DOC).get();
+    // Fetch config and settings in parallel
+    const [configSnap, settingsSnap] = await Promise.all([
+      db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).get(),
+      db.collection(WILDHACKS_COLLECTION).doc(TEAM_MATCHING_SETTINGS_DOC).get(),
+    ]);
+
+    const config = configSnap.data() as WildHacksConfig | undefined;
+    const mode = config?.team_matching_mode ?? "dev";
+    const intakeCollection = mode === "prod" ? TEAM_MATCHING_INTAKE_COLLECTION : TEAM_MATCHING_INTAKE_COLLECTION_DEV;
+    const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+
     const settings: TeamMatchingSettings = settingsSnap.exists
-      ? (settingsSnap.data() as TeamMatchingSettings)
+      ? { ...DEFAULT_TEAM_MATCHING_SETTINGS, ...(settingsSnap.data() as Partial<TeamMatchingSettings>) }
       : DEFAULT_TEAM_MATCHING_SETTINGS;
 
-    // Fetch all intake docs
-    const intakeSnaps = await db.collection(TEAM_MATCHING_INTAKE_COLLECTION_DEV).get();
+    // Fetch all intake docs from the active collection
+    const intakeSnaps = await db.collection(intakeCollection).get();
 
     // Fetch user display names
     const userIds = intakeSnaps.docs.map((d) => d.id);
@@ -78,7 +92,9 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       };
     });
 
-    const result = runMatchingAlgorithm(intakes, settings, settings.where_to_meet);
+    // Use a timestamp-based seed so each run explores a different random ordering.
+    const baseSeed = Date.now() & 0xffffffff;
+    const result = runMatchingAlgorithm(intakes, settings, settings.where_to_meet, baseSeed);
 
     if (result.preflightFailed) {
       return {
@@ -89,7 +105,7 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     }
 
     const now = Date.now();
-    const runRef = db.collection(TEAM_MATCHING_RUNS_COLLECTION).doc();
+    const runRef = db.collection(runsCollection).doc();
     const runId = runRef.id;
 
     const stats: TeamMatchingRunStats = {
@@ -104,34 +120,26 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       invalid_cluster_count: result.warnings.filter((w) => w.type === "oversized_cluster").length,
     };
 
-    // Build team docs with stable IDs
+    // Build primary team docs with stable IDs
     const teamDocs: { id: string; data: object }[] = result.teams.map((team) => {
-      const teamRef = db.collection(TEAM_MATCHING_TEAMS_COLLECTION).doc();
+      const teamRef = db.collection(teamsCollection).doc();
       return { id: teamRef.id, data: { ...team, id: teamRef.id, run_id: runId } };
     });
 
-    // Build a member-set → teamId lookup for suggestions
-    const teamIdByMembers = new Map<string, string>();
-    for (const { id, data } of teamDocs) {
-      const key = (data as { members: { user_id: string }[] }).members
-        .map((m) => m.user_id)
-        .sort()
-        .join(",");
-      teamIdByMembers.set(key, id);
-    }
-
-    // Resolve team_id in suggestion entries
-    const suggestionDocs = result.suggestions.map((s) => ({
-      userId: s.user_id,
-      data: {
-        user_id: s.user_id,
-        run_id: runId,
-        suggestions: s.suggestions.map((sug) => {
-          const key = sug.members.map((m) => m.user_id).sort().join(",");
-          return { ...sug, team_id: teamIdByMembers.get(key) ?? "" };
-        }),
-      },
-    }));
+    // Build alternative formation docs (up to 2 runner-up results)
+    const formationDocs: { ref: FirebaseFirestore.DocumentReference; data: object }[] =
+      result.alternatives.slice(0, 2).map((alt, i) => {
+        const formationIndex = (i + 1) as 1 | 2;
+        const teams = alt.teams.map((team, j) => ({
+          ...team,
+          id: `${runId}_alt${formationIndex}_${j}`,
+          run_id: runId,
+        }));
+        return {
+          ref: db.collection(formationsCollection).doc(`${runId}_alt${formationIndex}`),
+          data: { run_id: runId, formation_index: formationIndex, teams, fingerprint: alt.fingerprint },
+        };
+      });
 
     // Batch-write in chunks of 400
     const allWrites: { ref: FirebaseFirestore.DocumentReference; data: object }[] = [
@@ -143,6 +151,7 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
           run_by: user.id,
           name: name?.trim() || null,
           is_top: false,
+          fingerprint: result.fingerprint,
           status: "draft",
           settings_snapshot: settings,
           warnings: result.warnings,
@@ -150,13 +159,10 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
         },
       },
       ...teamDocs.map(({ id, data }) => ({
-        ref: db.collection(TEAM_MATCHING_TEAMS_COLLECTION).doc(id),
+        ref: db.collection(teamsCollection).doc(id),
         data,
       })),
-      ...suggestionDocs.map(({ userId, data }) => ({
-        ref: db.collection(TEAM_MATCHING_SUGGESTIONS_COLLECTION).doc(`${runId}_${userId}`),
-        data,
-      })),
+      ...formationDocs,
     ];
 
     const CHUNK_SIZE = 400;
@@ -168,13 +174,13 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       await batch.commit();
     }
 
-    revalidatePath(DASHBOARD_TEAM_MATCHING_PATH);
     const run: TeamMatchingRun = {
       id: runId,
       run_at: now,
       run_by: user.id,
       name: name?.trim() || undefined,
       is_top: false,
+      fingerprint: result.fingerprint,
       status: "draft",
       settings_snapshot: settings,
       warnings: result.warnings,

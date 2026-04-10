@@ -1,21 +1,21 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { revalidatePath } from "next/cache";
-
 import {
   ADMIN,
   DASHBOARD_PATH,
-  DASHBOARD_TEAM_MATCHING_PATH,
   LOGIN_PATH,
+  TEAM_MATCHING_FORMATIONS_COLLECTION,
+  TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
   TEAM_MATCHING_RUNS_COLLECTION,
-  TEAM_MATCHING_SUGGESTIONS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
   TEAM_MATCHING_TEAMS_COLLECTION,
+  TEAM_MATCHING_TEAMS_COLLECTION_PROD,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const deleteRun = async (runId: string): Promise<ActionResult> => {
+export const deleteRun = async (runId: string, mode: TeamMatchingMode = "dev"): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -23,20 +23,25 @@ export const deleteRun = async (runId: string): Promise<ActionResult> => {
     if (roleCheck) return roleCheck;
 
     const db = getFirestore();
-    const runRef = db.collection(TEAM_MATCHING_RUNS_COLLECTION).doc(runId);
+    const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
+    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+
+    const runRef = db.collection(runsCollection).doc(runId);
     const runSnap = await runRef.get();
 
     if (!runSnap.exists) return { success: false, error: "Run not found." };
     if (runSnap.data()?.is_top === true) {
-      return { success: false, error: "Cannot delete a run marked as top 3. Unmark it first." };
+      return { success: false, error: "Cannot delete a run marked as top choice. Unmark it first." };
     }
 
-    const [teamsSnap, suggestionsSnap] = await Promise.all([
-      db.collection(TEAM_MATCHING_TEAMS_COLLECTION).where("run_id", "==", runId).get(),
-      db.collection(TEAM_MATCHING_SUGGESTIONS_COLLECTION).where("run_id", "==", runId).get(),
-    ]);
+    const teamsSnap = await db.collection(teamsCollection).where("run_id", "==", runId).get();
 
-    const allRefs = [runRef, ...teamsSnap.docs.map((d) => d.ref), ...suggestionsSnap.docs.map((d) => d.ref)];
+    const formationRefs = [1, 2].map((i) =>
+      db.collection(formationsCollection).doc(`${runId}_alt${i}`)
+    );
+
+    const allRefs = [runRef, ...teamsSnap.docs.map((d) => d.ref), ...formationRefs];
 
     const CHUNK_SIZE = 400;
     for (let i = 0; i < allRefs.length; i += CHUNK_SIZE) {
@@ -45,7 +50,6 @@ export const deleteRun = async (runId: string): Promise<ActionResult> => {
       await batch.commit();
     }
 
-    revalidatePath(DASHBOARD_TEAM_MATCHING_PATH);
     return { success: true };
   } catch (error) {
     const msg = error instanceof Error ? error.message : "An unknown error occurred";

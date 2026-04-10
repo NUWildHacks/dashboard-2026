@@ -2,11 +2,11 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_RUNS_COLLECTION, TEAM_MATCHING_RUNS_COLLECTION_PROD } from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const toggleTopRun = async (runId: string, isTop: boolean, mode: TeamMatchingMode = "dev"): Promise<ActionResult> => {
+export const setTeamMatchingMode = async (mode: TeamMatchingMode): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -14,12 +14,10 @@ export const toggleTopRun = async (runId: string, isTop: boolean, mode: TeamMatc
     if (roleCheck) return roleCheck;
 
     const db = getFirestore();
-    const collection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
-    const ref = db.collection(collection).doc(runId);
-    const snap = await ref.get();
-    if (!snap.exists) return { success: false, error: "Run not found." };
+    await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).update({
+      team_matching_mode: mode,
+    });
 
-    await ref.update({ is_top: isTop });
     return { success: true };
   } catch (error) {
     const msg = error instanceof Error ? error.message : "An unknown error occurred";

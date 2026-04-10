@@ -1,12 +1,9 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import { revalidatePath } from "next/cache";
-
 import {
   ADMIN,
   DASHBOARD_PATH,
-  DASHBOARD_TEAM_MATCHING_PATH,
   LOGIN_PATH,
   TEAM_MATCHING_SETTINGS_DOC,
   WILDHACKS_COLLECTION,
@@ -42,7 +39,6 @@ export const saveSettings = async (data: SaveSettingsData): Promise<ActionResult
       .doc(TEAM_MATCHING_SETTINGS_DOC)
       .set({ ...data, updated_at: Date.now() });
 
-    revalidatePath(DASHBOARD_TEAM_MATCHING_PATH);
     return { success: true };
   } catch (error) {
     const msg = error instanceof Error ? error.message : "An unknown error occurred";

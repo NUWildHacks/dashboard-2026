@@ -6,16 +6,16 @@ import { revalidatePath } from "next/cache";
 import {
   ADMIN,
   DASHBOARD_PATH,
-  DASHBOARD_TEAM_MATCHING_PATH,
   LOGIN_PATH,
   TEAM_MATCHING_RUNS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
   WILDHACKS_COLLECTION,
   WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const publishRun = async (runId: string): Promise<ActionResult> => {
+export const publishRun = async (runId: string, mode: TeamMatchingMode = "dev"): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -23,7 +23,8 @@ export const publishRun = async (runId: string): Promise<ActionResult> => {
     if (roleCheck) return roleCheck;
 
     const db = getFirestore();
-    const runRef = db.collection(TEAM_MATCHING_RUNS_COLLECTION).doc(runId);
+    const collection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
+    const runRef = db.collection(collection).doc(runId);
     const runSnap = await runRef.get();
 
     if (!runSnap.exists) return { success: false, error: "Run not found." };
@@ -36,7 +37,6 @@ export const publishRun = async (runId: string): Promise<ActionResult> => {
     });
     await batch.commit();
 
-    revalidatePath(DASHBOARD_TEAM_MATCHING_PATH);
     revalidatePath(DASHBOARD_PATH);
     return { success: true };
   } catch (error) {

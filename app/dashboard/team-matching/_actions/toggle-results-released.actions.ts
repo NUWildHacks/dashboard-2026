@@ -6,15 +6,16 @@ import { revalidatePath } from "next/cache";
 import {
   ADMIN,
   DASHBOARD_PATH,
-  DASHBOARD_TEAM_MATCHING_PATH,
   LOGIN_PATH,
   WILDHACKS_COLLECTION,
   WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult } from "@/types";
+import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const setResultsReleased = async (released: boolean): Promise<ActionResult> => {
+// Dev mode: sets results_released_dev (only admins see this; participants are unaffected).
+// Prod mode: sets results_released (participants see results via the real-time listener).
+export const setResultsReleased = async (released: boolean, mode: TeamMatchingMode): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -22,12 +23,13 @@ export const setResultsReleased = async (released: boolean): Promise<ActionResul
     if (roleCheck) return roleCheck;
 
     const db = getFirestore();
+    const field = mode === "prod" ? "results_released" : "results_released_dev";
     await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).update({
-      results_released: released,
+      [field]: released,
     });
 
-    revalidatePath(DASHBOARD_TEAM_MATCHING_PATH);
-    revalidatePath(DASHBOARD_PATH);
+    // Only revalidate the participant-facing page in prod mode.
+    if (mode === "prod") revalidatePath(DASHBOARD_PATH);
     return { success: true };
   } catch (error) {
     const msg = error instanceof Error ? error.message : "An unknown error occurred";
