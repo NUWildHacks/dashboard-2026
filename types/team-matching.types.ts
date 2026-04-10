@@ -2,8 +2,11 @@ export type TeamMatchingRunStatus = "draft" | "published";
 
 export type TeamMatchingSettings = {
   default_team_size: 4;
+  // Hard constraints — strictly enforced during team formation
   enforce_mutual_requirement: boolean;
+  enforce_tech_member: boolean;
   where_to_meet: string;
+  // Soft constraint weights — must sum to 1.0
   weight_role_diversity: number;
   weight_work_style: number;
   weight_skills_complementarity: number;
@@ -17,6 +20,7 @@ export type TeamMatchingSettings = {
 export const DEFAULT_TEAM_MATCHING_SETTINGS: TeamMatchingSettings = {
   default_team_size: 4,
   enforce_mutual_requirement: true,
+  enforce_tech_member: true,
   where_to_meet: "",
   weight_role_diversity: 0.25,
   weight_work_style: 0.2,
@@ -48,6 +52,7 @@ export type TeamMatchingRun = {
   run_by: string;
   name?: string;
   is_top?: boolean;
+  fingerprint?: string;
   status: TeamMatchingRunStatus;
   settings_snapshot: TeamMatchingSettings;
   warnings: TeamMatchingRunWarning[];
@@ -84,10 +89,11 @@ export type TeamSuggestion = {
   where_to_meet: string;
 };
 
-export type UserSuggestions = {
-  user_id: string;
+export type TeamFormation = {
   run_id: string;
-  suggestions: TeamSuggestion[];
+  formation_index: 1 | 2;
+  teams: MatchedTeam[];
+  fingerprint: string;
 };
 
 export type IntakeRecord = {
