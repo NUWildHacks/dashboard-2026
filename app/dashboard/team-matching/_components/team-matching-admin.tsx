@@ -21,7 +21,7 @@ import type { MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun, Tea
 import { setTeamMatchingMode } from "../_actions/set-mode.actions";
 import { setResultsReleased } from "../_actions/toggle-results-released.actions";
 import type { IntakeEntry } from "../_lib/lib";
-import { getRuns, getRunFormations, getRunTeams, getIntakeEntries } from "../_lib/lib";
+import { getRuns, getRunFormations, getRunTeams, getIntakeEntries, getResultsReleased } from "../_lib/lib";
 
 import { AlgorithmTab } from "./algorithm-tab";
 import { EntriesTab } from "./entries-tab";
@@ -106,17 +106,18 @@ export const TeamMatchingAdmin = ({
 
   const handleModeChange = async (next: TeamMatchingMode) => {
     setChangingMode(true);
-    const [result, newRuns, newEntries] = await Promise.all([
+    const [result, newRuns, newEntries, newReleased] = await Promise.all([
       setTeamMatchingMode(next),
       getRuns(next),
       getIntakeEntries(next),
+      getResultsReleased(next),
     ]);
     setChangingMode(false);
     if (result.success) {
       setMode(next);
       setCurrentEntries(newEntries);
       setCurrentRuns(newRuns);
-      setReleased(false);
+      setReleased(newReleased);
       setSelectedRunId(null);
       setSelectedRunTeams([]);
       setSelectedRunFormations([]);

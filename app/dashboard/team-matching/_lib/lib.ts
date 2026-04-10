@@ -14,6 +14,7 @@ import {
   TEAM_MATCHING_TEAMS_COLLECTION_PROD,
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
+  WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import type {
   IntakeRecord,
@@ -103,6 +104,13 @@ export const getRunFormations = async (runId: string, mode: TeamMatchingMode = "
     .filter((d) => d.exists)
     .map((d) => d.data() as TeamFormation)
     .sort((a, b) => a.formation_index - b.formation_index);
+};
+
+export const getResultsReleased = async (mode: TeamMatchingMode): Promise<boolean> => {
+  const db = getFirestore();
+  const snap = await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).get();
+  const data = snap.data();
+  return mode === "prod" ? (data?.results_released ?? false) : (data?.results_released_dev ?? false);
 };
 
 export const getSettings = async (): Promise<TeamMatchingSettings> => {

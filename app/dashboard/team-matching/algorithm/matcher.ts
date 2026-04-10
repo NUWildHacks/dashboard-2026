@@ -1,11 +1,11 @@
-import type { IntakeRecord, MatchedTeam, TeamMatchingRunWarning, TeamMatchingSettings, TeamMember } from "@/types";
+import { DEFAULT_TEAM_MATCHING_SETTINGS, type IntakeRecord, type MatchedTeam, type TeamMatchingRunWarning, type TeamMatchingSettings, type TeamMember } from "@/types";
 
 import { generateProsCons, scoreTeam } from "./score";
 import { UnionFind } from "./union-find";
 
-const MAX_TEAM_SIZE = 4;
+const MAX_TEAM_SIZE = DEFAULT_TEAM_MATCHING_SETTINGS.default_team_size;
 const TECH_ROLES = new Set(["Frontend Engineer", "Backend Engineer", "Full Stack Engineer", "Mobile Engineer"]);
-// Number of random restarts per call — picks the best result by hard violations then soft score.
+// picks the best result by hard violations then soft score
 const RESTARTS = 8;
 
 export type AlgorithmResult = {
@@ -15,9 +15,9 @@ export type AlgorithmResult = {
   fingerprint: string;
 };
 
-// ── Utilities ──────────────────────────────────────────────────────────────────
+// Utilities 
 
-// Seeded Fisher-Yates. seed=0 is NOT identity — every seed produces a genuine shuffle.
+// Seeded Fisher-Yates 
 function seededShuffle<T>(arr: T[], seed: number): T[] {
   const result = [...arr];
   let s = (seed ^ 0x9e3779b9) >>> 0;
@@ -39,11 +39,11 @@ function splitsPair(team: IntakeRecord[], requiredWith: Map<string, string[]>): 
   return team.some((m) => (requiredWith.get(m.user_id) ?? []).some((id) => !ids.has(id)));
 }
 
-// ── HARD CONSTRAINT: preflight ─────────────────────────────────────────────────
-// Validates required-teammate edges and detects oversized clusters.
-// Returns { blocked: true } if an oversized cluster is found — run must not proceed.
+// HARD CONSTRAINTS
+// Validates required-teammate edges and detects oversized clusters
+// Returns { blocked: true } if an oversized cluster is found -> run can not proceed
 // When enforce_mutual_requirement is false, warnings are still emitted but mutualEdges
-// is returned empty so no clusters are locked.
+// is returned empty so no clusters are locked
 function preflight(
   intakes: IntakeRecord[],
   enforceRequiredTeammates: boolean
