@@ -56,7 +56,9 @@ export const TeamResultCard = ({ team }: { team: MatchedTeam }) => {
               {team.match_reasons.length > 0 ? (
                 <ul className="list-disc pl-3.5 space-y-0.5">
                   {team.match_reasons.map((reason, i) => (
-                    <li key={i} className="text-xs text-muted-foreground">{reason}</li>
+                    <li key={i} className="text-xs text-muted-foreground">
+                      {reason}
+                    </li>
                   ))}
                 </ul>
               ) : (
@@ -68,7 +70,9 @@ export const TeamResultCard = ({ team }: { team: MatchedTeam }) => {
               {team.notes.length > 0 ? (
                 <ul className="list-disc pl-3.5 space-y-0.5">
                   {team.notes.map((note, i) => (
-                    <li key={i} className="text-xs text-yellow-800 dark:text-yellow-300">{note}</li>
+                    <li key={i} className="text-xs text-yellow-800 dark:text-yellow-300">
+                      {note}
+                    </li>
                   ))}
                 </ul>
               ) : (

@@ -32,8 +32,7 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
   return result;
 }
 
-const isTech = (r: IntakeRecord) =>
-  r.preferred_roles.some((role) => TECH_ROLES.has(role));
+const isTech = (r: IntakeRecord) => r.preferred_roles.some((role) => TECH_ROLES.has(role));
 
 function splitsPair(team: IntakeRecord[], requiredWith: Map<string, string[]>): boolean {
   const ids = new Set(team.map((m) => m.user_id));
@@ -45,7 +44,10 @@ function splitsPair(team: IntakeRecord[], requiredWith: Map<string, string[]>): 
 // Returns { blocked: true } if an oversized cluster is found — run must not proceed.
 // When enforce_mutual_requirement is false, warnings are still emitted but mutualEdges
 // is returned empty so no clusters are locked.
-function preflight(intakes: IntakeRecord[], enforceRequiredTeammates: boolean): {
+function preflight(
+  intakes: IntakeRecord[],
+  enforceRequiredTeammates: boolean
+): {
   warnings: TeamMatchingRunWarning[];
   mutualEdges: [string, string][];
   blocked: boolean;
@@ -106,13 +108,16 @@ function preflight(intakes: IntakeRecord[], enforceRequiredTeammates: boolean): 
 function pickBest(
   team: IntakeRecord[],
   pool: IntakeRecord[],
-  settings: TeamMatchingSettings,
+  settings: TeamMatchingSettings
 ): IntakeRecord | undefined {
   let best: IntakeRecord | undefined;
   let bestScore = -Infinity;
   for (const candidate of pool) {
     const s = scoreTeam([...team, candidate], settings);
-    if (s > bestScore) { bestScore = s; best = candidate; }
+    if (s > bestScore) {
+      bestScore = s;
+      best = candidate;
+    }
   }
   return best;
 }
@@ -126,7 +131,7 @@ function greedyAssign(
   intakeMap: Map<string, IntakeRecord>,
   settings: TeamMatchingSettings,
   seed: number,
-  enforceTech: boolean,
+  enforceTech: boolean
 ): { teams: IntakeRecord[][]; unmatched: IntakeRecord[] } {
   const assigned = new Set<string>();
   const teams: IntakeRecord[][] = [];
@@ -213,7 +218,7 @@ function greedyAssign(
 function repairTechConstraint(
   teams: IntakeRecord[][],
   unmatched: IntakeRecord[],
-  requiredWith: Map<string, string[]>,
+  requiredWith: Map<string, string[]>
 ): { teams: IntakeRecord[][]; unmatched: IntakeRecord[]; warnings: TeamMatchingRunWarning[] } {
   const warnings: TeamMatchingRunWarning[] = [];
 
@@ -277,7 +282,7 @@ function swapOptimize(
   unmatched: IntakeRecord[],
   settings: TeamMatchingSettings,
   requiredWith: Map<string, string[]>,
-  enforceTech: boolean,
+  enforceTech: boolean
 ): { teams: IntakeRecord[][]; unmatched: IntakeRecord[] } {
   for (let pass = 0; pass < 3; pass++) {
     let improved = false;
@@ -320,7 +325,10 @@ function swapOptimize(
       for (let i = 0; i < teams.length; i++) {
         if (teams[i].length >= MAX_TEAM_SIZE) continue;
         const s = scoreTeam([...teams[i], u], settings);
-        if (s > bestScore) { bestScore = s; bestIdx = i; }
+        if (s > bestScore) {
+          bestScore = s;
+          bestIdx = i;
+        }
       }
       if (bestIdx >= 0) {
         teams[bestIdx] = [...teams[bestIdx], u];
@@ -352,7 +360,12 @@ function intakeToMember(intake: IntakeRecord): TeamMember {
 
 function candidateFingerprint(teams: IntakeRecord[][]): string {
   return teams
-    .map((t) => t.map((m) => m.user_id).sort().join(","))
+    .map((t) =>
+      t
+        .map((m) => m.user_id)
+        .sort()
+        .join(",")
+    )
     .sort()
     .join("|");
 }
@@ -361,7 +374,7 @@ function candidateToResult(
   candidate: { teams: IntakeRecord[][]; unmatched: IntakeRecord[]; repairWarnings: TeamMatchingRunWarning[] },
   preflightWarnings: TeamMatchingRunWarning[],
   settings: TeamMatchingSettings,
-  whereToMeet: string,
+  whereToMeet: string
 ): AlgorithmResult {
   const fp = candidateFingerprint(candidate.teams);
   const teams: Omit<MatchedTeam, "id">[] = candidate.teams.map((members) => {
@@ -391,13 +404,20 @@ export function runMatchingAlgorithm(
   intakes: IntakeRecord[],
   settings: TeamMatchingSettings,
   whereToMeet: string,
-  baseSeed = 0,
+  baseSeed = 0
 ): AlgorithmResult & { preflightFailed: boolean; alternatives: AlgorithmResult[] } {
   const enforceTech = settings.enforce_tech_member ?? true;
   const { warnings: preflightWarnings, mutualEdges, blocked } = preflight(intakes, settings.enforce_mutual_requirement);
 
   if (blocked) {
-    return { teams: [], unmatched: [], warnings: preflightWarnings, fingerprint: "", preflightFailed: true, alternatives: [] };
+    return {
+      teams: [],
+      unmatched: [],
+      warnings: preflightWarnings,
+      fingerprint: "",
+      preflightFailed: true,
+      alternatives: [],
+    };
   }
 
   const intakeMap = new Map(intakes.map((r) => [r.user_id, r]));
@@ -438,11 +458,18 @@ export function runMatchingAlgorithm(
     const seed = (baseSeed ^ (r * 0x9e3779b9)) >>> 0;
 
     const { teams, unmatched } = greedyAssign(lockedClusters, singletons, intakeMap, settings, seed, enforceTech);
-    const { teams: repairedTeams, unmatched: repairedUnmatched, warnings: repairWarnings } = enforceTech
-      ? repairTechConstraint(teams, unmatched, requiredWith)
-      : { teams, unmatched, warnings: [] };
-    const { teams: optimizedTeams, unmatched: finalUnmatched } =
-      swapOptimize(repairedTeams, repairedUnmatched, settings, requiredWith, enforceTech);
+    const {
+      teams: repairedTeams,
+      unmatched: repairedUnmatched,
+      warnings: repairWarnings,
+    } = enforceTech ? repairTechConstraint(teams, unmatched, requiredWith) : { teams, unmatched, warnings: [] };
+    const { teams: optimizedTeams, unmatched: finalUnmatched } = swapOptimize(
+      repairedTeams,
+      repairedUnmatched,
+      settings,
+      requiredWith,
+      enforceTech
+    );
 
     const fp = candidateFingerprint(optimizedTeams);
     if (seen.has(fp)) continue;
@@ -451,9 +478,16 @@ export function runMatchingAlgorithm(
     const hardViolations = repairWarnings.length;
     const softScore = optimizedTeams.reduce((sum, t) => sum + scoreTeam(t, settings), 0);
 
-    topCandidates.push({ teams: optimizedTeams, unmatched: finalUnmatched, hardViolations, softScore, repairWarnings, fingerprint: fp });
+    topCandidates.push({
+      teams: optimizedTeams,
+      unmatched: finalUnmatched,
+      hardViolations,
+      softScore,
+      repairWarnings,
+      fingerprint: fp,
+    });
     topCandidates.sort((a, b) =>
-      a.hardViolations !== b.hardViolations ? a.hardViolations - b.hardViolations : b.softScore - a.softScore,
+      a.hardViolations !== b.hardViolations ? a.hardViolations - b.hardViolations : b.softScore - a.softScore
     );
     if (topCandidates.length > 3) topCandidates.pop();
   }

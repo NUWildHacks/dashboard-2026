@@ -15,7 +15,14 @@ import {
   USERS_COLLECTION,
   WILDHACKS_COLLECTION,
 } from "@/constants";
-import type { IntakeRecord, MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun, TeamMatchingSettings } from "@/types";
+import type {
+  IntakeRecord,
+  MatchedTeam,
+  TeamFormation,
+  TeamMatchingMode,
+  TeamMatchingRun,
+  TeamMatchingSettings,
+} from "@/types";
 import { DEFAULT_TEAM_MATCHING_SETTINGS } from "@/types";
 
 export type IntakeEntry = IntakeRecord & { submitted_at: number; required_teammate_names: string[] };
@@ -44,7 +51,7 @@ export const getIntakeEntries = async (mode: TeamMatchingMode = "dev"): Promise<
     for (const doc of extraDocs) {
       nameMap.set(
         doc.id,
-        doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown",
+        doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown"
       );
     }
   }
@@ -81,17 +88,13 @@ export const getRunTeams = async (runId: string, mode: TeamMatchingMode = "dev")
   const db = getFirestore();
   const collection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
   const snaps = await db.collection(collection).where("run_id", "==", runId).get();
-  return snaps.docs
-    .map((doc) => ({ id: doc.id, ...doc.data() }) as MatchedTeam)
-    .sort((a, b) => b.score - a.score);
+  return snaps.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as MatchedTeam).sort((a, b) => b.score - a.score);
 };
 
 export const getRunFormations = async (runId: string, mode: TeamMatchingMode = "dev"): Promise<TeamFormation[]> => {
   const db = getFirestore();
   const collection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
-  const docs = await Promise.all(
-    [1, 2].map((i) => db.collection(collection).doc(`${runId}_alt${i}`).get())
-  );
+  const docs = await Promise.all([1, 2].map((i) => db.collection(collection).doc(`${runId}_alt${i}`).get()));
   return docs
     .filter((d) => d.exists)
     .map((d) => d.data() as TeamFormation)

@@ -82,9 +82,7 @@ export const AlgorithmTab = ({
   };
 
   const visibleTeams: MatchedTeam[] =
-    formationIndex === 0
-      ? teams
-      : (formations.find((f) => f.formation_index === formationIndex)?.teams ?? []);
+    formationIndex === 0 ? teams : (formations.find((f) => f.formation_index === formationIndex)?.teams ?? []);
 
   const formationLabels = ["Primary", "Alternative 1", "Alternative 2"] as const;
 
@@ -95,7 +93,9 @@ export const AlgorithmTab = ({
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <p className="text-sm font-medium">Run matching algorithm</p>
-              <Badge variant="outline" className="text-xs font-mono">{mode.toUpperCase()}</Badge>
+              <Badge variant="outline" className="text-xs font-mono">
+                {mode.toUpperCase()}
+              </Badge>
             </div>
             <p className="text-xs text-muted-foreground">{entryCount} intake submissions in pool</p>
           </div>
@@ -130,7 +130,9 @@ export const AlgorithmTab = ({
               <p className="font-medium mb-1">Pre-flight issues — resolve before running:</p>
               <ul className="list-disc pl-4 space-y-0.5">
                 {preflightErrors.map((w, i) => (
-                  <li key={i} className="text-sm">{w}</li>
+                  <li key={i} className="text-sm">
+                    {w}
+                  </li>
                 ))}
               </ul>
             </AlertDescription>
@@ -141,9 +143,7 @@ export const AlgorithmTab = ({
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,400px)_1fr] gap-6 min-h-0">
         {/* Left: run list */}
         <div className="flex flex-col gap-2 lg:overflow-y-auto lg:max-h-[65vh] lg:pr-1">
-          <p className="text-sm font-medium lg:sticky lg:top-0 bg-background pb-1">
-            Run history
-          </p>
+          <p className="text-sm font-medium lg:sticky lg:top-0 bg-background pb-1">Run history</p>
           {runs.length === 0 ? (
             <p className="text-sm text-muted-foreground">No runs yet.</p>
           ) : (

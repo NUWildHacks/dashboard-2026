@@ -1,7 +1,14 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { redirect } from "next/navigation";
 
-import { ADMIN, DASHBOARD_PATH, DASHBOARD_TEAM_MATCHING_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
+import {
+  ADMIN,
+  DASHBOARD_PATH,
+  DASHBOARD_TEAM_MATCHING_PATH,
+  LOGIN_PATH,
+  WILDHACKS_COLLECTION,
+  WILDHACKS_CONFIG_DOC,
+} from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 import type { TeamMatchingMode, WildHacksConfig } from "@/types";
 
@@ -18,15 +25,10 @@ const TeamMatchingPage = async () => {
   const config = configSnap.data() as WildHacksConfig | undefined;
   const mode: TeamMatchingMode = config?.team_matching_mode ?? "dev";
 
-  const [runs, settings, entries] = await Promise.all([
-    getRuns(mode),
-    getSettings(),
-    getIntakeEntries(mode),
-  ]);
+  const [runs, settings, entries] = await Promise.all([getRuns(mode), getSettings(), getIntakeEntries(mode)]);
 
-  const resultsReleased = mode === "prod"
-    ? (config?.results_released ?? false)
-    : (config?.results_released_dev ?? false);
+  const resultsReleased =
+    mode === "prod" ? (config?.results_released ?? false) : (config?.results_released_dev ?? false);
 
   return (
     <div className="flex-1 flex flex-col gap-6">

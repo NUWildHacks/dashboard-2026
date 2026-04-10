@@ -3,13 +3,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
-import {
-  ADMIN,
-  DASHBOARD_PATH,
-  LOGIN_PATH,
-  WILDHACKS_COLLECTION,
-  WILDHACKS_CONFIG_DOC,
-} from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, TeamMatchingMode } from "@/types";
 
@@ -24,9 +18,12 @@ export const setResultsReleased = async (released: boolean, mode: TeamMatchingMo
 
     const db = getFirestore();
     const field = mode === "prod" ? "results_released" : "results_released_dev";
-    await db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_CONFIG_DOC).update({
-      [field]: released,
-    });
+    await db
+      .collection(WILDHACKS_COLLECTION)
+      .doc(WILDHACKS_CONFIG_DOC)
+      .update({
+        [field]: released,
+      });
 
     // Only revalidate the participant-facing page in prod mode.
     if (mode === "prod") revalidatePath(DASHBOARD_PATH);

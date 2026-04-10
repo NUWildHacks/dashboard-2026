@@ -43,9 +43,7 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
     accessorKey: "work_style",
     header: "Work style",
     cell: ({ row }) => (
-      <span className="capitalize text-sm text-muted-foreground">
-        {row.original.work_style.replace("_", " ")}
-      </span>
+      <span className="capitalize text-sm text-muted-foreground">{row.original.work_style.replace("_", " ")}</span>
     ),
   },
   {
@@ -58,8 +56,7 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
     header: "Required",
     cell: ({ row }) => {
       const names = row.original.required_teammate_names;
-      if (!names || names.length === 0)
-        return <span className="text-sm text-muted-foreground">—</span>;
+      if (!names || names.length === 0) return <span className="text-sm text-muted-foreground">—</span>;
       return (
         <div className="flex flex-wrap gap-1">
           {names.map((name) => (

@@ -20,7 +20,14 @@ import {
   WILDHACKS_CONFIG_DOC,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import type { ActionResult, IntakeRecord, TeamMatchingRun, TeamMatchingRunStats, TeamMatchingSettings, WildHacksConfig } from "@/types";
+import type {
+  ActionResult,
+  IntakeRecord,
+  TeamMatchingRun,
+  TeamMatchingRunStats,
+  TeamMatchingSettings,
+  WildHacksConfig,
+} from "@/types";
 import { DEFAULT_TEAM_MATCHING_SETTINGS } from "@/types";
 
 import { runMatchingAlgorithm } from "../algorithm/matcher";
@@ -52,7 +59,8 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     const intakeCollection = mode === "prod" ? TEAM_MATCHING_INTAKE_COLLECTION : TEAM_MATCHING_INTAKE_COLLECTION_DEV;
     const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
     const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
-    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+    const formationsCollection =
+      mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
 
     const settings: TeamMatchingSettings = settingsSnap.exists
       ? { ...DEFAULT_TEAM_MATCHING_SETTINGS, ...(settingsSnap.data() as Partial<TeamMatchingSettings>) }
@@ -68,9 +76,7 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     const nameMap = new Map(
       userDocs.map((doc) => [
         doc.id,
-        doc.exists
-          ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim()
-          : "Unknown",
+        doc.exists ? `${doc.data()?.first_name ?? ""} ${doc.data()?.last_name ?? ""}`.trim() : "Unknown",
       ])
     );
 
@@ -113,9 +119,7 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       total_teams: result.teams.length,
       unmatched_count: result.unmatched.length,
       required_cluster_count: result.teams.filter((t) =>
-        t.members.some(
-          (m) => (intakes.find((i) => i.user_id === m.user_id)?.required_teammates.length ?? 0) > 0
-        )
+        t.members.some((m) => (intakes.find((i) => i.user_id === m.user_id)?.required_teammates.length ?? 0) > 0)
       ).length,
       invalid_cluster_count: result.warnings.filter((w) => w.type === "oversized_cluster").length,
     };
@@ -127,8 +131,9 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     });
 
     // Build alternative formation docs (up to 2 runner-up results)
-    const formationDocs: { ref: FirebaseFirestore.DocumentReference; data: object }[] =
-      result.alternatives.slice(0, 2).map((alt, i) => {
+    const formationDocs: { ref: FirebaseFirestore.DocumentReference; data: object }[] = result.alternatives
+      .slice(0, 2)
+      .map((alt, i) => {
         const formationIndex = (i + 1) as 1 | 2;
         const teams = alt.teams.map((team, j) => ({
           ...team,

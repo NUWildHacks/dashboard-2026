@@ -2,7 +2,13 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_RUNS_COLLECTION, TEAM_MATCHING_RUNS_COLLECTION_PROD } from "@/constants";
+import {
+  ADMIN,
+  DASHBOARD_PATH,
+  LOGIN_PATH,
+  TEAM_MATCHING_RUNS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, TeamMatchingMode } from "@/types";
 

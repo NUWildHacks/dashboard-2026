@@ -44,7 +44,11 @@ const WEIGHT_KEYS: WeightKey[] = [
   "weight_size_preference",
 ];
 
-const HARD_CONSTRAINTS: { key: "enforce_mutual_requirement" | "enforce_tech_member"; label: string; description: string }[] = [
+const HARD_CONSTRAINTS: {
+  key: "enforce_mutual_requirement" | "enforce_tech_member";
+  label: string;
+  description: string;
+}[] = [
   {
     key: "enforce_mutual_requirement",
     label: "Enforce mutual teammate requirements",
@@ -53,7 +57,8 @@ const HARD_CONSTRAINTS: { key: "enforce_mutual_requirement" | "enforce_tech_memb
   {
     key: "enforce_tech_member",
     label: "Require at least 1 technical member per team",
-    description: "Every team must have a Frontend, Backend, Full Stack, or Mobile engineer. Teams are repaired if possible; a warning is shown if not.",
+    description:
+      "Every team must have a Frontend, Backend, Full Stack, or Mobile engineer. Teams are repaired if possible; a warning is shown if not.",
   },
 ];
 
@@ -106,7 +111,9 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
       <div className="flex flex-col gap-3">
         <div>
           <p className="text-sm font-medium">Hard constraints</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Strictly enforced during team formation. Violations are repaired or flagged as warnings.</p>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Strictly enforced during team formation. Violations are repaired or flagged as warnings.
+          </p>
         </div>
         <div className="flex flex-col gap-3">
           {HARD_CONSTRAINTS.map(({ key, label, description }) => (
@@ -114,9 +121,7 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
               <Checkbox
                 id={key}
                 checked={hardConstraints[key]}
-                onCheckedChange={(checked) =>
-                  setHardConstraints((prev) => ({ ...prev, [key]: !!checked }))
-                }
+                onCheckedChange={(checked) => setHardConstraints((prev) => ({ ...prev, [key]: !!checked }))}
                 className="mt-0.5"
               />
               <label htmlFor={key} className="flex flex-col gap-0.5 cursor-pointer">
@@ -133,7 +138,9 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium">Soft constraint weights</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Must sum to 1.0. Higher weight = stronger influence on team scoring.</p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Must sum to 1.0. Higher weight = stronger influence on team scoring.
+            </p>
           </div>
           <span className={`text-xs font-mono ${totalOk ? "text-muted-foreground" : "text-destructive"}`}>
             sum = {total.toFixed(3)}

@@ -29,13 +29,10 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
 
     const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
     const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
-    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+    const formationsCollection =
+      mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
 
-    const topRunsSnap = await db
-      .collection(runsCollection)
-      .where("is_top", "==", true)
-      .orderBy("run_at", "desc")
-      .get();
+    const topRunsSnap = await db.collection(runsCollection).where("is_top", "==", true).orderBy("run_at", "desc").get();
     const topRuns = topRunsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as TeamMatchingRun);
 
     const results: TeamSuggestion[] = [];
@@ -43,7 +40,10 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
 
     const tryAdd = (team: MatchedTeam & { id: string }) => {
       if (results.length >= 3) return;
-      const key = team.members.map((m) => m.user_id).sort().join(",");
+      const key = team.members
+        .map((m) => m.user_id)
+        .sort()
+        .join(",");
       if (seen.has(key)) return;
       seen.add(key);
       results.push({
@@ -60,10 +60,7 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
       if (results.length >= 3) break;
 
       // Primary formation
-      const teamsSnap = await db
-        .collection(teamsCollection)
-        .where("run_id", "==", run.id)
-        .get();
+      const teamsSnap = await db.collection(teamsCollection).where("run_id", "==", run.id).get();
       const primary = teamsSnap.docs
         .map((d) => ({ id: d.id, ...d.data() }) as MatchedTeam)
         .find((t) => t.members.some((m) => m.user_id === userId));

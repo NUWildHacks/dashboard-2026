@@ -19,11 +19,7 @@ export function EntriesTab({ entries }: { entries: IntakeEntry[] }) {
           {entries.length} submission{entries.length !== 1 ? "s" : ""}
         </p>
         <InputGroup className="max-w-xs">
-          <InputGroupInput
-            placeholder="Search entries..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <InputGroupInput placeholder="Search entries..." value={search} onChange={(e) => setSearch(e.target.value)} />
           <InputGroupAddon>
             <SearchIcon className="size-4" />
           </InputGroupAddon>

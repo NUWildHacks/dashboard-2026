@@ -6,7 +6,14 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun, TeamMatchingSettings } from "@/types";
@@ -28,7 +35,13 @@ type TeamMatchingAdminProps = {
   initialMode: TeamMatchingMode;
 };
 
-export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: initialReleased, initialMode }: TeamMatchingAdminProps) => {
+export const TeamMatchingAdmin = ({
+  entries,
+  runs,
+  settings,
+  resultsReleased: initialReleased,
+  initialMode,
+}: TeamMatchingAdminProps) => {
   const [currentEntries, setCurrentEntries] = useState(entries);
   const [currentRuns, setCurrentRuns] = useState<TeamMatchingRun[]>(runs);
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
@@ -58,7 +71,7 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
     for (const run of group) {
       fingerprintDuplicates.set(
         run.id,
-        group.filter((r) => r.id !== run.id).map((r) => r.name || new Date(r.run_at).toLocaleString("en-US")),
+        group.filter((r) => r.id !== run.id).map((r) => r.name || new Date(r.run_at).toLocaleString("en-US"))
       );
     }
   }
@@ -93,7 +106,11 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
 
   const handleModeChange = async (next: TeamMatchingMode) => {
     setChangingMode(true);
-    const [result, newRuns, newEntries] = await Promise.all([setTeamMatchingMode(next), getRuns(next), getIntakeEntries(next)]);
+    const [result, newRuns, newEntries] = await Promise.all([
+      setTeamMatchingMode(next),
+      getRuns(next),
+      getIntakeEntries(next),
+    ]);
     setChangingMode(false);
     if (result.success) {
       setMode(next);
@@ -103,7 +120,9 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
       setSelectedRunId(null);
       setSelectedRunTeams([]);
       setSelectedRunFormations([]);
-      toast.success(next === "prod" ? "Switched to prod — using live intake data" : "Switched to dev — using test intake data");
+      toast.success(
+        next === "prod" ? "Switched to prod — using live intake data" : "Switched to dev — using test intake data"
+      );
     } else {
       toast.error("Failed to switch mode", { description: result.error });
     }
@@ -145,12 +164,8 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">
                 <p className="text-sm font-medium">Participant results</p>
-                <Badge variant={released ? "default" : "secondary"}>
-                  {released ? "Released" : "Hidden"}
-                </Badge>
-                {topCount > 0 && (
-                  <span className="text-xs text-muted-foreground">top choice marked</span>
-                )}
+                <Badge variant={released ? "default" : "secondary"}>{released ? "Released" : "Hidden"}</Badge>
+                {topCount > 0 && <span className="text-xs text-muted-foreground">top choice marked</span>}
               </div>
               <p className="text-xs text-muted-foreground">
                 {mode === "dev"
@@ -163,7 +178,11 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
               </p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <Select value={mode} onValueChange={(v) => handleModeChange(v as TeamMatchingMode)} disabled={changingMode}>
+              <Select
+                value={mode}
+                onValueChange={(v) => handleModeChange(v as TeamMatchingMode)}
+                disabled={changingMode}
+              >
                 <SelectTrigger className="w-24 h-9">
                   {changingMode ? <Loader2 className="size-3.5 animate-spin" /> : <SelectValue />}
                 </SelectTrigger>
@@ -183,11 +202,7 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
                 }}
                 disabled={togglingRelease || (!released && topCount === 0)}
               >
-                {togglingRelease ? (
-                  <Loader2 className="size-4 animate-spin" />
-                ) : (
-                  <Radio className="size-4" />
-                )}
+                {togglingRelease ? <Loader2 className="size-4 animate-spin" /> : <Radio className="size-4" />}
                 {released ? "Unrelease" : "Release results"}
               </Button>
 
@@ -196,7 +211,8 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
                   <DialogHeader>
                     <DialogTitle>Release results to participants?</DialogTitle>
                     <DialogDescription>
-                      This will make team suggestions visible to all participants using the top choice run. Make sure the top choice run is finalized before releasing.
+                      This will make team suggestions visible to all participants using the top choice run. Make sure
+                      the top choice run is finalized before releasing.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
@@ -204,7 +220,10 @@ export const TeamMatchingAdmin = ({ entries, runs, settings, resultsReleased: in
                       Cancel
                     </Button>
                     <Button
-                      onClick={() => { setShowReleaseConfirm(false); handleToggleRelease(); }}
+                      onClick={() => {
+                        setShowReleaseConfirm(false);
+                        handleToggleRelease();
+                      }}
                       disabled={togglingRelease}
                     >
                       Release

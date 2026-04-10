@@ -25,7 +25,8 @@ export const deleteRun = async (runId: string, mode: TeamMatchingMode = "dev"): 
     const db = getFirestore();
     const runsCollection = mode === "prod" ? TEAM_MATCHING_RUNS_COLLECTION_PROD : TEAM_MATCHING_RUNS_COLLECTION;
     const teamsCollection = mode === "prod" ? TEAM_MATCHING_TEAMS_COLLECTION_PROD : TEAM_MATCHING_TEAMS_COLLECTION;
-    const formationsCollection = mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
+    const formationsCollection =
+      mode === "prod" ? TEAM_MATCHING_FORMATIONS_COLLECTION_PROD : TEAM_MATCHING_FORMATIONS_COLLECTION;
 
     const runRef = db.collection(runsCollection).doc(runId);
     const runSnap = await runRef.get();
@@ -37,9 +38,7 @@ export const deleteRun = async (runId: string, mode: TeamMatchingMode = "dev"): 
 
     const teamsSnap = await db.collection(teamsCollection).where("run_id", "==", runId).get();
 
-    const formationRefs = [1, 2].map((i) =>
-      db.collection(formationsCollection).doc(`${runId}_alt${i}`)
-    );
+    const formationRefs = [1, 2].map((i) => db.collection(formationsCollection).doc(`${runId}_alt${i}`));
 
     const allRefs = [runRef, ...teamsSnap.docs.map((d) => d.ref), ...formationRefs];
 

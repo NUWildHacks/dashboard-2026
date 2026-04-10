@@ -19,7 +19,7 @@ const AVATAR_COLORS = [
   { bg: "bg-amber-100", text: "text-amber-800" },
   { bg: "bg-rose-100", text: "text-rose-800" },
 ];
- 
+
 const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] }) => {
   const [revealed, setRevealed] = useState(false);
   const [index, setIndex] = useState(0);
@@ -37,14 +37,10 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
           <CardDescription className="text-sm text-muted-foreground">Open to find your top 3 groups!</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
-          <Button onClick={() => setRevealed(true)}>
-            See your results
-          </Button>
+          <Button onClick={() => setRevealed(true)}>See your results</Button>
         </CardContent>
         <CardFooter className="flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">
-            Results available until Sunday 11AM (submission deadline)
-          </p>
+          <p className="text-xs text-muted-foreground">Results available until Sunday 11AM (submission deadline)</p>
         </CardFooter>
       </Card>
     );
@@ -53,11 +49,13 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
   return (
     <Card className="shadow-xs h-full flex flex-col">
       <CardHeader className="flex items-center justify-between">
-          <div className="flex flex-col gap-2">
-            <CardTitle className="text-base">Team Matching Results</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">Open to find your top 3 groups!</CardDescription>
-          </div>
-          <CardDescription className="text-xs text-muted-foreground shrink-0">{index + 1} / {total}</CardDescription>
+        <div className="flex flex-col gap-2">
+          <CardTitle className="text-base">Team Matching Results</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">Open to find your top 3 groups!</CardDescription>
+        </div>
+        <CardDescription className="text-xs text-muted-foreground shrink-0">
+          {index + 1} / {total}
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col gap-4">
@@ -81,12 +79,15 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
           <Card className="shadow-md flex flex-col gap-4">
             <CardHeader className="flex items-center justify-between">
               <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Match {index + 1} 
+                Match {index + 1}
               </CardTitle>
-              <Badge variant="secondary" className="inline-flex items-baseline gap-0.5 bg-green-50 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full">
+              <Badge
+                variant="secondary"
+                className="inline-flex items-baseline gap-0.5 bg-green-50 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full"
+              >
                 {current.score}
                 <span className="text-green-600 font-normal">/ 100</span>
-                </Badge>
+              </Badge>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
@@ -94,7 +95,9 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
                 {current.members.map((member, i) => (
                   <div key={member.user_id} className="flex gap-2 items-start">
                     <Avatar>
-                      <AvatarFallback className={`text-sm font-medium w-10 h-10 rounded-full flex items-center justify-center ${AVATAR_COLORS[i % AVATAR_COLORS.length].bg} ${AVATAR_COLORS[i % AVATAR_COLORS.length].text}`}>
+                      <AvatarFallback
+                        className={`text-sm font-medium w-10 h-10 rounded-full flex items-center justify-center ${AVATAR_COLORS[i % AVATAR_COLORS.length].bg} ${AVATAR_COLORS[i % AVATAR_COLORS.length].text}`}
+                      >
                         {member.name.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
@@ -110,7 +113,6 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
                       </div>
                     </div>
                   </div>
-
                 ))}
               </div>
 
@@ -118,7 +120,9 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
 
               {current.match_reasons.length > 0 && (
                 <div className="flex flex-col gap-2">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Why we matched you</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                    Why we matched you
+                  </p>
                   <div className="flex flex-wrap gap-1.5">
                     {current.match_reasons.map((reason, i) => (
                       <span
@@ -149,12 +153,7 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
       </CardContent>
 
       <CardFooter className="flex items-center justify-between pt-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIndex((i) => Math.max(0, i - 1))}
-          disabled={index === 0}
-        >
+        <Button variant="outline" size="sm" onClick={() => setIndex((i) => Math.max(0, i - 1))} disabled={index === 0}>
           <ChevronLeft className="size-4" />
           Previous
         </Button>

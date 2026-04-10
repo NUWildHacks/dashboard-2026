@@ -1,13 +1,7 @@
 "use server";
 
 import { getFirestore } from "firebase-admin/firestore";
-import {
-  ADMIN,
-  DASHBOARD_PATH,
-  LOGIN_PATH,
-  TEAM_MATCHING_SETTINGS_DOC,
-  WILDHACKS_COLLECTION,
-} from "@/constants";
+import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_SETTINGS_DOC, WILDHACKS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, TeamMatchingSettings } from "@/types";
 

@@ -27,14 +27,10 @@ async function fetchTopSuggestions(
     runs: string;
     teams: string;
     formations: string;
-  },
+  }
 ): Promise<TeamSuggestion[]> {
   const db = getFirestore();
-  const topRunsSnap = await db
-    .collection(collections.runs)
-    .where("is_top", "==", true)
-    .orderBy("run_at", "desc")
-    .get();
+  const topRunsSnap = await db.collection(collections.runs).where("is_top", "==", true).orderBy("run_at", "desc").get();
   const topRuns = topRunsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as TeamMatchingRun);
 
   const results: TeamSuggestion[] = [];
@@ -42,7 +38,10 @@ async function fetchTopSuggestions(
 
   const tryAdd = (team: MatchedTeam & { id: string }) => {
     if (results.length >= 3) return;
-    const key = team.members.map((m) => m.user_id).sort().join(",");
+    const key = team.members
+      .map((m) => m.user_id)
+      .sort()
+      .join(",");
     if (seen.has(key)) return;
     seen.add(key);
     results.push({
@@ -58,10 +57,7 @@ async function fetchTopSuggestions(
   for (const run of topRuns) {
     if (results.length >= 3) break;
 
-    const teamsSnap = await db
-      .collection(collections.teams)
-      .where("run_id", "==", run.id)
-      .get();
+    const teamsSnap = await db.collection(collections.teams).where("run_id", "==", run.id).get();
     const primary = teamsSnap.docs
       .map((d) => ({ id: d.id, ...d.data() }) as MatchedTeam)
       .find((t) => t.members.some((m) => m.user_id === userId));
@@ -110,13 +106,27 @@ const DashboardPage = async () => {
   }
 
   const adminMode = wildhacksConfig.team_matching_mode ?? "dev";
-  const suggestionCollections = role === PARTICIPANT
-    ? { runs: TEAM_MATCHING_RUNS_COLLECTION_PROD, teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD, formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD }
-    : adminMode === "prod"
-      ? { runs: TEAM_MATCHING_RUNS_COLLECTION_PROD, teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD, formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD }
-      : { runs: TEAM_MATCHING_RUNS_COLLECTION, teams: TEAM_MATCHING_TEAMS_COLLECTION, formations: TEAM_MATCHING_FORMATIONS_COLLECTION };
+  const suggestionCollections =
+    role === PARTICIPANT
+      ? {
+          runs: TEAM_MATCHING_RUNS_COLLECTION_PROD,
+          teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD,
+          formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
+        }
+      : adminMode === "prod"
+        ? {
+            runs: TEAM_MATCHING_RUNS_COLLECTION_PROD,
+            teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD,
+            formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
+          }
+        : {
+            runs: TEAM_MATCHING_RUNS_COLLECTION,
+            teams: TEAM_MATCHING_TEAMS_COLLECTION,
+            formations: TEAM_MATCHING_FORMATIONS_COLLECTION,
+          };
 
-  const initialSuggestions = (role === ADMIN || role === PARTICIPANT) ? await fetchTopSuggestions(userId, suggestionCollections) : [];
+  const initialSuggestions =
+    role === ADMIN || role === PARTICIPANT ? await fetchTopSuggestions(userId, suggestionCollections) : [];
 
   return (
     <>
@@ -129,7 +139,7 @@ const DashboardPage = async () => {
             <QRCode userId={userId} />
           </div>
         )}
-        <div className={cn((role === PARTICIPANT) ? "md:col-span-1" : "md:col-span-2")}>
+        <div className={cn(role === PARTICIPANT ? "md:col-span-1" : "md:col-span-2")}>
           <VenueMap />
         </div>
       </div>

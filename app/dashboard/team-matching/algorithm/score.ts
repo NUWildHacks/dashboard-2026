@@ -6,12 +6,7 @@ const EXPERIENCE_MAP: Record<string, number> = {
   experienced: 3,
 };
 
-const TECHNICAL_ROLES = new Set([
-  "Frontend Engineer",
-  "Backend Engineer",
-  "Full Stack Engineer",
-  "Mobile Engineer",
-]);
+const TECHNICAL_ROLES = new Set(["Frontend Engineer", "Backend Engineer", "Full Stack Engineer", "Mobile Engineer"]);
 
 export function hasTechnicalMember(members: IntakeRecord[]): boolean {
   return members.some((m) => m.preferred_roles.some((r) => TECHNICAL_ROLES.has(r)));
@@ -86,14 +81,15 @@ function scoreSizePreference(members: IntakeRecord[]): number {
 export function scoreTeam(members: IntakeRecord[], settings: TeamMatchingSettings): number {
   if (members.length === 0) return 0;
   return (
-    settings.weight_role_diversity * scoreRoleDiversity(members) +
-    settings.weight_work_style * scoreWorkStyle(members) +
-    settings.weight_skills_complementarity * scoreSkillsComplementarity(members) +
-    settings.weight_experience_mix * scoreExperienceMix(members) +
-    settings.weight_gender_preference * scoreGenderPreference(members) +
-    settings.weight_proximity * scoreProximity(members) +
-    settings.weight_size_preference * scoreSizePreference(members)
-  ) * 100;
+    (settings.weight_role_diversity * scoreRoleDiversity(members) +
+      settings.weight_work_style * scoreWorkStyle(members) +
+      settings.weight_skills_complementarity * scoreSkillsComplementarity(members) +
+      settings.weight_experience_mix * scoreExperienceMix(members) +
+      settings.weight_gender_preference * scoreGenderPreference(members) +
+      settings.weight_proximity * scoreProximity(members) +
+      settings.weight_size_preference * scoreSizePreference(members)) *
+    100
+  );
 }
 
 export function generateProsCons(
@@ -107,7 +103,9 @@ export function generateProsCons(
   const roleDiversity = scoreRoleDiversity(members);
   if (roleDiversity >= 0.75) {
     const roles = [...new Set(members.flatMap((m) => m.preferred_roles))];
-    pros.push(`Complementary roles: ${roles.slice(0, 3).join(", ")}${roles.length > 3 ? `, +${roles.length - 3} more` : ""}`);
+    pros.push(
+      `Complementary roles: ${roles.slice(0, 3).join(", ")}${roles.length > 3 ? `, +${roles.length - 3} more` : ""}`
+    );
   } else {
     cons.push("Role overlap — limited specialization diversity");
   }
@@ -195,7 +193,9 @@ export function generateMatchReasons(members: IntakeRecord[], settings: TeamMatc
   const roleDiversity = scoreRoleDiversity(members);
   if (roleDiversity >= 0.75) {
     const roles = [...new Set(members.flatMap((m) => m.preferred_roles))];
-    reasons.push(`Complementary roles: ${roles.slice(0, 3).join(", ")}${roles.length > 3 ? `, +${roles.length - 3} more` : ""}`);
+    reasons.push(
+      `Complementary roles: ${roles.slice(0, 3).join(", ")}${roles.length > 3 ? `, +${roles.length - 3} more` : ""}`
+    );
   }
 
   const workStyle = scoreWorkStyle(members);

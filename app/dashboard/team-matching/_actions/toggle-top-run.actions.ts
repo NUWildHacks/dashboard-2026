@@ -2,11 +2,21 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, TEAM_MATCHING_RUNS_COLLECTION, TEAM_MATCHING_RUNS_COLLECTION_PROD } from "@/constants";
+import {
+  ADMIN,
+  DASHBOARD_PATH,
+  LOGIN_PATH,
+  TEAM_MATCHING_RUNS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, TeamMatchingMode } from "@/types";
 
-export const toggleTopRun = async (runId: string, isTop: boolean, mode: TeamMatchingMode = "dev"): Promise<ActionResult> => {
+export const toggleTopRun = async (
+  runId: string,
+  isTop: boolean,
+  mode: TeamMatchingMode = "dev"
+): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);

@@ -26,7 +26,17 @@ type RunHistoryItemProps = {
   duplicateRunNames?: string[];
 };
 
-export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onUpdated, resultsReleased, atTopLimit, duplicateRunNames = [] }: RunHistoryItemProps) => {
+export const RunHistoryItem = ({
+  run,
+  mode,
+  isSelected,
+  onSelect,
+  onDeleted,
+  onUpdated,
+  resultsReleased,
+  atTopLimit,
+  duplicateRunNames = [],
+}: RunHistoryItemProps) => {
   const [deleting, setDeleting] = useState(false);
   const [togglingTop, setTogglingTop] = useState(false);
   const [showWarnings, setShowWarnings] = useState(false);
@@ -86,7 +96,7 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
       className={cn(
         "flex flex-col rounded-lg border transition-colors",
         isSelected && "border-primary bg-accent/30",
-        onSelect && !isSelected && "cursor-pointer hover:bg-accent/20",
+        onSelect && !isSelected && "cursor-pointer hover:bg-accent/20"
       )}
     >
       <div
@@ -94,7 +104,13 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
         role={onSelect ? "button" : undefined}
         tabIndex={onSelect ? 0 : undefined}
         onClick={onSelect}
-        onKeyDown={onSelect ? (e) => { if (e.key === "Enter" || e.key === " ") onSelect(); } : undefined}
+        onKeyDown={
+          onSelect
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") onSelect();
+              }
+            : undefined
+        }
       >
         <div className="flex flex-col gap-1 min-w-0 flex-1">
           {/* Name row */}
@@ -110,10 +126,23 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
                     if (e.key === "Escape") handleCancelEdit();
                   }}
                 />
-                <button onClick={(e) => { e.stopPropagation(); handleSaveName(); }} disabled={savingName} className="text-muted-foreground hover:text-foreground">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSaveName();
+                  }}
+                  disabled={savingName}
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   {savingName ? <Loader2 className="size-3.5 animate-spin" /> : <Check className="size-3.5" />}
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); handleCancelEdit(); }} className="text-muted-foreground hover:text-foreground">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCancelEdit();
+                  }}
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   <X className="size-3.5" />
                 </button>
               </>
@@ -122,7 +151,10 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
                 <span className="text-sm font-medium truncate">{displayName}</span>
                 <button
                   className="text-muted-foreground hover:text-foreground"
-                  onClick={(e) => { e.stopPropagation(); setEditing(true); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setEditing(true);
+                  }}
                   title="Rename"
                 >
                   <Pencil className="size-3" />
@@ -143,14 +175,21 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
               </Badge>
             )}
             {duplicateRunNames.length > 0 && (
-              <Badge variant="outline" className="text-orange-600 border-orange-400" title={`Identical results to: ${duplicateRunNames.join(", ")}`}>
+              <Badge
+                variant="outline"
+                className="text-orange-600 border-orange-400"
+                title={`Identical results to: ${duplicateRunNames.join(", ")}`}
+              >
                 Duplicate
               </Badge>
             )}
             {warningCount > 0 && (
               <button
                 className="inline-flex items-center gap-1 text-xs text-yellow-600 border border-yellow-400 rounded-full px-2 py-0.5 hover:bg-yellow-50"
-                onClick={(e) => { e.stopPropagation(); setShowWarnings((v) => !v); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowWarnings((v) => !v);
+                }}
               >
                 <TriangleAlert className="size-3" />
                 {warningCount} warning{warningCount !== 1 ? "s" : ""}
@@ -172,9 +211,20 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
           <Button
             size="sm"
             variant={run.is_top ? "default" : "outline"}
-            onClick={(e) => { e.stopPropagation(); handleToggleTop(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleTop();
+            }}
             disabled={togglingTop || deleting || resultsReleased || (atTopLimit && !run.is_top)}
-            title={resultsReleased ? "Unrelease results to change top choice" : (atTopLimit && !run.is_top) ? "A run is already marked as top choice" : run.is_top ? "Remove top choice" : "Mark as top choice"}
+            title={
+              resultsReleased
+                ? "Unrelease results to change top choice"
+                : atTopLimit && !run.is_top
+                  ? "A run is already marked as top choice"
+                  : run.is_top
+                    ? "Remove top choice"
+                    : "Mark as top choice"
+            }
           >
             {togglingTop ? (
               <Loader2 className="size-4 animate-spin" />
@@ -186,7 +236,10 @@ export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onU
           <Button
             size="sm"
             variant="outline"
-            onClick={(e) => { e.stopPropagation(); handleDelete(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete();
+            }}
             disabled={togglingTop || deleting || resultsReleased}
             title={resultsReleased ? "Unrelease results to delete" : undefined}
           >

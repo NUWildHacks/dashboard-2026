@@ -33,9 +33,7 @@ export const ResultsTab = ({ runs, teams, loadingTeams, onSelectRun }: ResultsTa
         {loadingTeams && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
       </div>
 
-      {runs.length === 0 && (
-        <p className="text-sm text-muted-foreground">No runs yet. Run the algorithm first.</p>
-      )}
+      {runs.length === 0 && <p className="text-sm text-muted-foreground">No runs yet. Run the algorithm first.</p>}
 
       {!loadingTeams && teams.length > 0 && (
         <>
