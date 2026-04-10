@@ -46,6 +46,8 @@ export type TeamMatchingRun = {
   id: string;
   run_at: number;
   run_by: string;
+  name?: string;
+  is_top?: boolean;
   status: TeamMatchingRunStatus;
   settings_snapshot: TeamMatchingSettings;
   warnings: TeamMatchingRunWarning[];

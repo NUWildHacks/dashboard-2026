@@ -7,6 +7,7 @@ export type WildHacksConfig = {
   end_time: number;
 
   updated_at: number;
+  results_released?: boolean;
 };
 
 export type WildHacksStatistics = {
