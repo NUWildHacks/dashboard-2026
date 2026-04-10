@@ -218,7 +218,7 @@ const TeamMatchingIntake = ({
       return;
     }
 
-    if (form.required_teammates.length + 2 >= form.preferred_team_size) {
+    if (form.required_teammates.length + 1 >= form.preferred_team_size) {
       toast.error("Your required teammates already fill your preferred team size", {
         description: "You don't need team matching — close this and connect with your teammates directly.",
       });
@@ -255,7 +255,7 @@ const TeamMatchingIntake = ({
     }
   };
 
-  const hasFullTeam = form.required_teammates.length >= MAX_REQUIRED_TEAMMATES;
+  const hasFullTeam = form.required_teammates.length + 1 >= form.preferred_team_size;
 
   return (
     <>
@@ -278,6 +278,7 @@ const TeamMatchingIntake = ({
           <p className="text-muted-foreground text-xs">
             Available until{" "}
             {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            {" "}10:30AM
           </p>
         </CardFooter>
       </Card>
@@ -464,45 +465,6 @@ const TeamMatchingIntake = ({
                           </SelectTrigger>
                           <SelectContent>
                             {WORK_STYLE_OPTIONS.map(({ value, label }) => (
-                              <SelectItem key={value} value={value}>
-                                {label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </Field>
-
-                      <Field>
-                        <FieldLabel htmlFor="gender_preference">
-                          Team gender preference <span className="text-destructive">*</span>
-                        </FieldLabel>
-                        <Select
-                          value={form.gender_preference}
-                          onValueChange={(v) => handleChange("gender_preference", v)}
-                        >
-                          <SelectTrigger id="gender_preference" className="w-full">
-                            <SelectValue placeholder="Select a preference" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {GENDER_PREFERENCE_OPTIONS.map(({ value, label }) => (
-                              <SelectItem key={value} value={value}>
-                                {label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </Field>
-
-                      <Field>
-                        <FieldLabel htmlFor="where_staying">
-                          Are you staying overnight? <span className="text-destructive">*</span>
-                        </FieldLabel>
-                        <Select value={form.where_staying} onValueChange={(v) => handleChange("where_staying", v)}>
-                          <SelectTrigger id="where_staying" className="w-full">
-                            <SelectValue placeholder="Select an option" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {WHERE_STAYING_OPTIONS.map(({ value, label }) => (
                               <SelectItem key={value} value={value}>
                                 {label}
                               </SelectItem>
