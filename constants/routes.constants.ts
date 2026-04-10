@@ -31,5 +31,6 @@ export const JUDGE_REGISTRATION_PATH = "/judge-registration" as const;
 export const TECH_ROOM_FINDER_PATH = "/tech-room-finder" as const;
 export const JUDGING_GUIDE_PATH = "/judging-guide" as const;
 export const DISCORD_INVITE_PATH = "/discord-invite" as const;
+export const DISCORD_TEAM_PATH = "/discord-team" as const;
 export const DEVPOST_PATH = "/devpost" as const;
 export const VIRTUAL_ZOOM_JUDGING_PATH = "/virtual-zoom-judging" as const;

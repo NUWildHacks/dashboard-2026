@@ -129,22 +129,7 @@ const DashboardPage = async () => {
             <QRCode userId={userId} />
           </div>
         )}
-        {role === ADMIN && (
-          <div className="md:col-span-1">
-            <TeamMatchingGate
-              hasSubmitted={hasSubmittedTeamMatching}
-              initialSuggestions={initialSuggestions}
-              releasedField="results_released_dev"
-              firstName={first_name}
-              lastName={last_name}
-              email={email}
-              school={school as string}
-              fieldOfStudy={field_of_study as string}
-              eventStartTime={wildhacksConfig.start_time}
-            />
-          </div>
-        )}
-        <div className={cn((role === PARTICIPANT || role === ADMIN) ? "md:col-span-1" : "md:col-span-2")}>
+        <div className={cn((role === PARTICIPANT) ? "md:col-span-1" : "md:col-span-2")}>
           <VenueMap />
         </div>
       </div>
@@ -162,15 +147,22 @@ const DashboardPage = async () => {
             fieldOfStudy={field_of_study as string}
             eventStartTime={wildhacksConfig.start_time}
           />
-          {/* <TeamMatchingIntake
+        </div>
+      )}
+
+      {role === ADMIN && (
+        <div className="md:col-span-1">
+          <TeamMatchingGate
             hasSubmitted={hasSubmittedTeamMatching}
+            initialSuggestions={initialSuggestions}
+            releasedField="results_released_dev"
             firstName={first_name}
             lastName={last_name}
             email={email}
             school={school as string}
             fieldOfStudy={field_of_study as string}
             eventStartTime={wildhacksConfig.start_time}
-          /> */}
+          />
         </div>
       )}
 

@@ -7,7 +7,7 @@ import Discord from "@/components/icon/discord";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { db } from "@/config/firebase-client";
-import { DISCORD_INVITE_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
+import { DISCORD_TEAM_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
 import type { TeamSuggestion } from "@/types";
 
 import { getParticipantSuggestions } from "../_actions/get-participant-suggestions.actions";
@@ -75,9 +75,9 @@ export const TeamMatchingGate = ({
           </CardHeader>
           <CardContent className="flex-1 flex items-center justify-center">
             <Button variant="outline" className="w-fit gap-2" asChild>
-              <a href={DISCORD_INVITE_PATH} target="_blank" rel="noopener noreferrer">
+              <a href={DISCORD_TEAM_PATH} target="_blank" rel="noopener noreferrer">
                 <Discord className="size-4" />
-                #team-formation
+                #find-teammates
               </a>
             </Button>
           </CardContent>
