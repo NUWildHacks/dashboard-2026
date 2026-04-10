@@ -28,25 +28,20 @@ import type { JudgingAssignment, JudgingAssignmentWithProject, Project } from ".
  */
 const getJudgingAssignmentsWithProjectForRound = async (
   judgeId: JudgeUser["id"],
-  round: 1 | 2
+  judgingRound: JudgingAssignment["judging_round"]
 ): Promise<JudgingAssignmentWithProject[]> => {
   const db = getFirestore();
 
-  // round 1: all projects assigned to the judge with order 0
-  // round 2: all projects assigned to the judge ordered by order
-  const judgingAssignmentQuerySnapshots =
-    round === 1
-      ? await db
-          .collection(JUDGING_ASSIGNMENTS_COLLECTION)
-          .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
-          .where(JUDGING_ASSIGNMENT_FIELDS.order, "==", 0)
-          .get()
-      : await db
-          .collection(JUDGING_ASSIGNMENTS_COLLECTION)
-          .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
-          .where(JUDGING_ASSIGNMENT_FIELDS.order, ">=", 0)
-          .orderBy(JUDGING_ASSIGNMENT_FIELDS.order, "asc")
-          .get();
+  let query = db
+    .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+    .where(JUDGING_ASSIGNMENT_FIELDS.judge_id, "==", judgeId)
+    .where(JUDGING_ASSIGNMENT_FIELDS.judging_round, "==", judgingRound);
+
+  if (judgingRound !== 1) {
+    query = query.orderBy(JUDGING_ASSIGNMENT_FIELDS.order, "asc");
+  }
+
+  const judgingAssignmentQuerySnapshots = await query.get();
 
   if (judgingAssignmentQuerySnapshots.empty) return [];
 

@@ -119,7 +119,7 @@ export const useJudgingAssignmentsTable = (
     if (!selectedJudge) return [];
 
     let result: JudgingAssignmentWithProject[] = judgingAssignments
-      .filter((assignment) => (round === "round-1" ? assignment.order === 0 : assignment.order >= 0))
+      .filter((assignment) => (round === "round-1" ? assignment.judging_round === 1 : assignment.judging_round === 2))
       .filter((assignment) => assignment.judge_id === selectedJudge?.id)
       .map((assignment) => ({
         ...assignment,

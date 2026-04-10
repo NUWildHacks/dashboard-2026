@@ -72,10 +72,10 @@ export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithP
       },
     },
     {
-      accessorKey: "round",
-      header: "Round",
+      accessorKey: "judging_round",
+      header: "Judging Round",
       cell: ({ row }) => {
-        return <Badge variant="secondary">{row.original.order === 0 ? "Round 1" : "Round 2"}</Badge>;
+        return <Badge variant="secondary">{row.original.judging_round === 1 ? "Round 1" : "Round 2"}</Badge>;
       },
     },
     {
