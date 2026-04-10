@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -43,7 +44,24 @@ const WEIGHT_KEYS: WeightKey[] = [
   "weight_size_preference",
 ];
 
+const HARD_CONSTRAINTS: { key: "enforce_mutual_requirement" | "enforce_tech_member"; label: string; description: string }[] = [
+  {
+    key: "enforce_mutual_requirement",
+    label: "Enforce mutual teammate requirements",
+    description: "Participants who mutually listed each other are guaranteed to be on the same team.",
+  },
+  {
+    key: "enforce_tech_member",
+    label: "Require at least 1 technical member per team",
+    description: "Every team must have a Frontend, Backend, Full Stack, or Mobile engineer. Teams are repaired if possible; a warning is shown if not.",
+  },
+];
+
 export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) => {
+  const [hardConstraints, setHardConstraints] = useState({
+    enforce_mutual_requirement: settings.enforce_mutual_requirement,
+    enforce_tech_member: settings.enforce_tech_member ?? true,
+  });
   const [weights, setWeights] = useState<Record<WeightKey, number>>(
     Object.fromEntries(WEIGHT_KEYS.map((k) => [k, settings[k]])) as Record<WeightKey, number>
   );
@@ -59,14 +77,19 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
       return;
     }
     setSaving(true);
-    const result = await saveSettings({ ...settings, ...weights, where_to_meet: whereToMeet });
+    const result = await saveSettings({
+      ...settings,
+      ...hardConstraints,
+      ...weights,
+      where_to_meet: whereToMeet,
+    });
     setSaving(false);
     if (result.success) toast.success("Settings saved");
     else toast.error("Failed to save", { description: result.error });
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-lg">
+    <div className="flex flex-col gap-8 max-w-lg">
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="where_to_meet">Where to meet</FieldLabel>
@@ -79,14 +102,43 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
         </Field>
       </FieldGroup>
 
+      {/* Hard constraints */}
+      <div className="flex flex-col gap-3">
+        <div>
+          <p className="text-sm font-medium">Hard constraints</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Strictly enforced during team formation. Violations are repaired or flagged as warnings.</p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {HARD_CONSTRAINTS.map(({ key, label, description }) => (
+            <div key={key} className="flex items-start gap-3">
+              <Checkbox
+                id={key}
+                checked={hardConstraints[key]}
+                onCheckedChange={(checked) =>
+                  setHardConstraints((prev) => ({ ...prev, [key]: !!checked }))
+                }
+                className="mt-0.5"
+              />
+              <label htmlFor={key} className="flex flex-col gap-0.5 cursor-pointer">
+                <span className="text-sm">{label}</span>
+                <span className="text-xs text-muted-foreground">{description}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Soft constraint weights */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium">Scoring weights</p>
+          <div>
+            <p className="text-sm font-medium">Soft constraint weights</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Must sum to 1.0. Higher weight = stronger influence on team scoring.</p>
+          </div>
           <span className={`text-xs font-mono ${totalOk ? "text-muted-foreground" : "text-destructive"}`}>
             sum = {total.toFixed(3)}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground">Must sum to 1.0.</p>
 
         {WEIGHT_KEYS.map((key) => (
           <div key={key} className="grid grid-cols-[1fr_2fr_auto] items-center gap-3">

@@ -9,7 +9,7 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -88,25 +88,29 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
   },
   {
     accessorKey: "where_staying",
-    header: "Overnight",
+    header: "Stay",
     cell: ({ row }) => {
       const v = row.original.where_staying;
       return (
         <span className="text-sm text-muted-foreground">
-          {v === "staying_overnight" ? "Yes" : v === "commuting" ? "No" : "Unsure"}
+          {v === "on_site" ? "On-site" : v ==="off_campus" ? "Off Campus" : "On Campus"}
         </span>
       );
     },
   },
 ];
 
-export const EntriesTab = ({ entries }: { entries: IntakeEntry[] }) => {
+export const EntriesTab = memo(function EntriesTab({ entries }: { entries: IntakeEntry[] }) {
   const [search, setSearch] = useState("");
 
-  const filtered = entries.filter(
-    (e) =>
-      e.name.toLowerCase().includes(search.toLowerCase()) ||
-      e.preferred_roles.some((r) => r.toLowerCase().includes(search.toLowerCase()))
+  const filtered = useMemo(
+    () =>
+      entries.filter(
+        (e) =>
+          e.name.toLowerCase().includes(search.toLowerCase()) ||
+          e.preferred_roles.some((r) => r.toLowerCase().includes(search.toLowerCase()))
+      ),
+    [entries, search]
   );
 
   const table = useReactTable({
@@ -147,4 +151,4 @@ export const EntriesTab = ({ entries }: { entries: IntakeEntry[] }) => {
       </div>
     </div>
   );
-};
+});

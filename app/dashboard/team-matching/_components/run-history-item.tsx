@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib";
-import type { TeamMatchingRun } from "@/types";
+import type { TeamMatchingMode, TeamMatchingRun } from "@/types";
 
 import { deleteRun } from "../_actions/delete-run.actions";
 import { renameRun } from "../_actions/rename-run.actions";
@@ -16,13 +16,17 @@ import { toggleTopRun } from "../_actions/toggle-top-run.actions";
 
 type RunHistoryItemProps = {
   run: TeamMatchingRun;
+  mode: TeamMatchingMode;
   isSelected?: boolean;
   onSelect?: () => void;
   onDeleted: (runId: string) => void;
   onUpdated: (runId: string, patch: Partial<TeamMatchingRun>) => void;
+  resultsReleased?: boolean;
+  atTopLimit?: boolean;
+  duplicateRunNames?: string[];
 };
 
-export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated }: RunHistoryItemProps) => {
+export const RunHistoryItem = ({ run, mode, isSelected, onSelect, onDeleted, onUpdated, resultsReleased, atTopLimit, duplicateRunNames = [] }: RunHistoryItemProps) => {
   const [deleting, setDeleting] = useState(false);
   const [togglingTop, setTogglingTop] = useState(false);
   const [showWarnings, setShowWarnings] = useState(false);
@@ -33,7 +37,7 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
 
   const handleDelete = async () => {
     setDeleting(true);
-    const result = await deleteRun(run.id);
+    const result = await deleteRun(run.id, mode);
     setDeleting(false);
     if (result.success) {
       toast.success("Run deleted");
@@ -46,11 +50,11 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
   const handleToggleTop = async () => {
     setTogglingTop(true);
     const next = !run.is_top;
-    const result = await toggleTopRun(run.id, next);
+    const result = await toggleTopRun(run.id, next, mode);
     setTogglingTop(false);
     if (result.success) {
       onUpdated(run.id, { is_top: next });
-      toast.success(next ? "Marked as top 3" : "Removed from top 3");
+      toast.success(next ? "Marked as top choice" : "Removed from top choice");
     } else {
       toast.error("Failed to update", { description: result.error });
     }
@@ -58,7 +62,7 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
 
   const handleSaveName = async () => {
     setSavingName(true);
-    const result = await renameRun(run.id, nameInput);
+    const result = await renameRun(run.id, nameInput, mode);
     setSavingName(false);
     if (result.success) {
       onUpdated(run.id, { name: nameInput.trim() });
@@ -75,7 +79,7 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
   };
 
   const warningCount = run.warnings?.length ?? 0;
-  const displayName = run.name || new Date(run.run_at).toLocaleString();
+  const displayName = run.name || new Date(run.run_at).toLocaleString("en-US");
 
   return (
     <div
@@ -98,7 +102,6 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
             {editing ? (
               <>
                 <Input
-                  autoFocus
                   className="h-6 text-sm py-0 px-2 w-40"
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
@@ -136,7 +139,12 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
             {run.is_top && (
               <Badge variant="outline" className="text-amber-600 border-amber-400 gap-1">
                 <Star className="size-3 fill-amber-500 text-amber-500" />
-                Top 3
+                Top
+              </Badge>
+            )}
+            {duplicateRunNames.length > 0 && (
+              <Badge variant="outline" className="text-orange-600 border-orange-400" title={`Identical results to: ${duplicateRunNames.join(", ")}`}>
+                Duplicate
               </Badge>
             )}
             {warningCount > 0 && (
@@ -165,21 +173,22 @@ export const RunHistoryItem = ({ run, isSelected, onSelect, onDeleted, onUpdated
             size="sm"
             variant={run.is_top ? "default" : "outline"}
             onClick={(e) => { e.stopPropagation(); handleToggleTop(); }}
-            disabled={togglingTop || deleting}
-            title={run.is_top ? "Remove from top 3" : "Mark as top 3"}
+            disabled={togglingTop || deleting || resultsReleased || (atTopLimit && !run.is_top)}
+            title={resultsReleased ? "Unrelease results to change top choice" : (atTopLimit && !run.is_top) ? "A run is already marked as top choice" : run.is_top ? "Remove top choice" : "Mark as top choice"}
           >
             {togglingTop ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
               <Star className={cn("size-4", run.is_top && "fill-current")} />
             )}
-            {run.is_top ? "Top 3" : "Mark top 3"}
+            {run.is_top ? "Top Choice" : "Mark Top Choice"}
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={(e) => { e.stopPropagation(); handleDelete(); }}
-            disabled={togglingTop || deleting}
+            disabled={togglingTop || deleting || resultsReleased}
+            title={resultsReleased ? "Unrelease results to delete" : undefined}
           >
             {deleting ? <Loader2 className="size-4 animate-spin" /> : "Delete"}
           </Button>

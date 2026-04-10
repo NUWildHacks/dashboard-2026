@@ -25,7 +25,7 @@ export const ResultsTab = ({ runs, teams, loadingTeams, onSelectRun }: ResultsTa
           <SelectContent>
             {runs.map((run) => (
               <SelectItem key={run.id} value={run.id}>
-                {new Date(run.run_at).toLocaleString()} — {run.status} ({run.stats.total_teams} teams)
+                {new Date(run.run_at).toLocaleString("en-US")} — {run.status} ({run.stats.total_teams} teams)
               </SelectItem>
             ))}
           </SelectContent>
