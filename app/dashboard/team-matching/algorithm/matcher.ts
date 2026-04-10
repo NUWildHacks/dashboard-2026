@@ -1,7 +1,7 @@
 import type { IntakeRecord, MatchedTeam, TeamMatchingRunWarning, TeamMatchingSettings, TeamMember, TeamSuggestion, UserSuggestions } from "@/types";
 
+import { generateMatchReasons, generateProsCons, hasTechnicalMember, scoreTeam } from "./score";
 import { UnionFind } from "./union-find";
-import { generateMatchReasons, hasTechnicalMember, scoreTeam } from "./score";
 
 const MAX_TEAM_SIZE = 4;
 const TOP_K = 10;
@@ -401,14 +401,17 @@ export function runMatchingAlgorithm(
   const allWarnings = [...warnings, ...postFlightWarnings];
 
   // Build MatchedTeam objects (without IDs — caller assigns those)
-  const teams: Omit<MatchedTeam, "id">[] = optimizedTeams.map((members) => ({
-    run_id: "",
-    members: members.map(intakeToMember),
-    score: Math.round(scoreTeam(members, settings)),
-    match_reasons: generateMatchReasons(members, settings),
-    where_to_meet: whereToMeet,
-    notes: [],
-  }));
+  const teams: Omit<MatchedTeam, "id">[] = optimizedTeams.map((members) => {
+    const { pros, cons } = generateProsCons(members, settings);
+    return {
+      run_id: "",
+      members: members.map(intakeToMember),
+      score: Math.round(scoreTeam(members, settings)),
+      match_reasons: pros,
+      where_to_meet: whereToMeet,
+      notes: cons,
+    };
+  });
 
   // Phase E: Generate suggestions per user
   const suggestions: Omit<UserSuggestions, "run_id">[] = [];
