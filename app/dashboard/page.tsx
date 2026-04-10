@@ -6,49 +6,81 @@ import {
   DASHBOARD_PATH,
   LOGIN_PATH,
   PARTICIPANT,
+  TEAM_MATCHING_FORMATIONS_COLLECTION,
+  TEAM_MATCHING_FORMATIONS_COLLECTION_PROD,
   TEAM_MATCHING_INTAKE_COLLECTION,
   TEAM_MATCHING_INTAKE_COLLECTION_DEV,
   TEAM_MATCHING_RUNS_COLLECTION,
-  TEAM_MATCHING_SUGGESTIONS_COLLECTION,
+  TEAM_MATCHING_RUNS_COLLECTION_PROD,
+  TEAM_MATCHING_TEAMS_COLLECTION,
+  TEAM_MATCHING_TEAMS_COLLECTION_PROD,
 } from "@/constants";
 import { calculateStatistics, cn, getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { TeamMatchingRun, TeamSuggestion, UserSuggestions, WildHacksConfig } from "@/types";
+import type { MatchedTeam, TeamFormation, TeamMatchingRun, TeamSuggestion, WildHacksConfig } from "@/types";
 
 import { TeamMatchingGate } from "./_components/team-matching-gate";
-import TeamMatchingIntake from "./_components/team-matching-intake";
 import { getResumeMetadata } from "./_lib/resume";
 
-async function fetchTopSuggestions(userId: string): Promise<TeamSuggestion[]> {
+async function fetchTopSuggestions(
+  userId: string,
+  collections: {
+    runs: string;
+    teams: string;
+    formations: string;
+  },
+): Promise<TeamSuggestion[]> {
   const db = getFirestore();
   const topRunsSnap = await db
-    .collection(TEAM_MATCHING_RUNS_COLLECTION)
+    .collection(collections.runs)
     .where("is_top", "==", true)
     .orderBy("run_at", "desc")
     .get();
-  const topRuns = topRunsSnap.docs.map((d) => d.data() as TeamMatchingRun);
+  const topRuns = topRunsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as TeamMatchingRun);
 
+  const results: TeamSuggestion[] = [];
   const seen = new Set<string>();
-  const suggestions: TeamSuggestion[] = [];
+
+  const tryAdd = (team: MatchedTeam & { id: string }) => {
+    if (results.length >= 3) return;
+    const key = team.members.map((m) => m.user_id).sort().join(",");
+    if (seen.has(key)) return;
+    seen.add(key);
+    results.push({
+      rank: (results.length + 1) as 1 | 2 | 3,
+      team_id: team.id,
+      members: team.members,
+      score: team.score,
+      match_reasons: team.match_reasons,
+      where_to_meet: team.where_to_meet,
+    });
+  };
 
   for (const run of topRuns) {
-    if (suggestions.length >= 3) break;
-    const snap = await db
-      .collection(TEAM_MATCHING_SUGGESTIONS_COLLECTION)
-      .doc(`${run.id}_${userId}`)
+    if (results.length >= 3) break;
+
+    const teamsSnap = await db
+      .collection(collections.teams)
+      .where("run_id", "==", run.id)
       .get();
-    if (!snap.exists) continue;
-    const data = snap.data() as UserSuggestions;
-    for (const s of data.suggestions) {
-      if (suggestions.length >= 3) break;
-      const key = s.members.map((m) => m.user_id).sort().join(",");
-      if (!seen.has(key)) {
-        seen.add(key);
-        suggestions.push(s);
-      }
+    const primary = teamsSnap.docs
+      .map((d) => ({ id: d.id, ...d.data() }) as MatchedTeam)
+      .find((t) => t.members.some((m) => m.user_id === userId));
+    if (primary) tryAdd(primary);
+
+    if (results.length >= 3) break;
+
+    const altDocs = await Promise.all(
+      [1, 2].map((i) => db.collection(collections.formations).doc(`${run.id}_alt${i}`).get())
+    );
+    for (const altDoc of altDocs) {
+      if (!altDoc.exists || results.length >= 3) continue;
+      const formation = altDoc.data() as TeamFormation;
+      const altTeam = formation.teams.find((t) => t.members.some((m) => m.user_id === userId));
+      if (altTeam) tryAdd(altTeam);
     }
   }
 
-  return suggestions;
+  return results;
 }
 
 const DashboardPage = async () => {
@@ -60,8 +92,6 @@ const DashboardPage = async () => {
 
   const configDocSnapshot = await getConfigDocSnapshot();
   const wildhacksConfig = configDocSnapshot.data() as WildHacksConfig;
-  const resultsReleased = wildhacksConfig.results_released ?? false;
-
   const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
 
   const resumeMetadata = await getResumeMetadata(userId);
@@ -79,9 +109,14 @@ const DashboardPage = async () => {
     hasSubmittedTeamMatching = doc.exists;
   }
 
+  const adminMode = wildhacksConfig.team_matching_mode ?? "dev";
+  const suggestionCollections = role === PARTICIPANT
+    ? { runs: TEAM_MATCHING_RUNS_COLLECTION_PROD, teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD, formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD }
+    : adminMode === "prod"
+      ? { runs: TEAM_MATCHING_RUNS_COLLECTION_PROD, teams: TEAM_MATCHING_TEAMS_COLLECTION_PROD, formations: TEAM_MATCHING_FORMATIONS_COLLECTION_PROD }
+      : { runs: TEAM_MATCHING_RUNS_COLLECTION, teams: TEAM_MATCHING_TEAMS_COLLECTION, formations: TEAM_MATCHING_FORMATIONS_COLLECTION };
 
-  // Only admins get the real-time results preview tile.
-  const initialSuggestions = role === ADMIN ? await fetchTopSuggestions(userId) : [];
+  const initialSuggestions = (role === ADMIN || role === PARTICIPANT) ? await fetchTopSuggestions(userId, suggestionCollections) : [];
 
   return (
     <>
@@ -95,19 +130,19 @@ const DashboardPage = async () => {
           </div>
         )}
         {role === ADMIN && (
-        <div className="md:col-span-1">
-          <TeamMatchingGate
-            hasSubmitted={hasSubmittedTeamMatching}
-            initialReleased={resultsReleased}
-            initialSuggestions={initialSuggestions}
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
-        </div>
+          <div className="md:col-span-1">
+            <TeamMatchingGate
+              hasSubmitted={hasSubmittedTeamMatching}
+              initialSuggestions={initialSuggestions}
+              releasedField="results_released_dev"
+              firstName={first_name}
+              lastName={last_name}
+              email={email}
+              school={school as string}
+              fieldOfStudy={field_of_study as string}
+              eventStartTime={wildhacksConfig.start_time}
+            />
+          </div>
         )}
         <div className={cn((role === PARTICIPANT || role === ADMIN) ? "md:col-span-1" : "md:col-span-2")}>
           <VenueMap />
@@ -117,8 +152,9 @@ const DashboardPage = async () => {
       {role === PARTICIPANT && (
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
-          <TeamMatchingIntake
+          <TeamMatchingGate
             hasSubmitted={hasSubmittedTeamMatching}
+            initialSuggestions={initialSuggestions}
             firstName={first_name}
             lastName={last_name}
             email={email}
@@ -126,6 +162,15 @@ const DashboardPage = async () => {
             fieldOfStudy={field_of_study as string}
             eventStartTime={wildhacksConfig.start_time}
           />
+          {/* <TeamMatchingIntake
+            hasSubmitted={hasSubmittedTeamMatching}
+            firstName={first_name}
+            lastName={last_name}
+            email={email}
+            school={school as string}
+            fieldOfStudy={field_of_study as string}
+            eventStartTime={wildhacksConfig.start_time}
+          /> */}
         </div>
       )}
 
