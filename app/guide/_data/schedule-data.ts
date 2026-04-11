@@ -12,7 +12,7 @@ export const scheduleEvents: CalendarEvent[] = [
     zoom: "https://northwestern.zoom.us/j/92894172756",
   },
   {
-    title: "Colorstack X WildHacks SQL & Databases Workshop",
+    title: "CANCELLED — Colorstack X WildHacks SQL & Databases Workshop",
     description:
       "Join us on April 7th from 6:00–7:00 PM in TCHM166 for a beginner-friendly workshop designed to get you querying with confidence! We'll walk you through how to design tables, write queries, and extract meaningful insights from data. By the end of the session, you'll have a solid understanding of how databases work and how to put them to use in your own projects.",
     start: new Date("2026-04-07T18:00:00-05:00"),
@@ -70,6 +70,14 @@ export const scheduleEvents: CalendarEvent[] = [
     zoom: "https://us06web.zoom.us/j/2881519829",
   },
   {
+    title: "Finding Your Path in Tech with Women in Computing",
+    description:
+      "Join Women in Computing (WiC) and WildHacks for an engaging panel featuring three inspiring students sharing their journey through computer science, design, and beyond. Hear from Laura Felix, Sydney Hoppenworth, and Melanie Cuenca as they reflect on how they found their paths in tech, navigated internships at companies like Duolingo, Visa, Disney, and international research institutions, and grew through both challenges and leadership experiences.",
+    start: new Date("2026-04-11T13:30:00-05:00"),
+    end: new Date("2026-04-10T14:15:00-05:00"),
+    url: "/guide/workshops#finding-your-path-in-tech-with-women-in-computing",
+  },
+  {
     title: "Check-In",
     description: "Check-in for WildHacks 2026. Have your student ID and WildHacker Code ready.",
     start: new Date("2026-04-11T08:30:00-05:00"),
@@ -78,11 +86,25 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/logistics/checking-in",
   },
   {
-    title: "Sponsor Expo",
+    title: "Sponsor Fair — IMC + MLH",
     description: "Meet with sponsors and learn about opportunities",
     start: new Date("2026-04-11T08:30:00-05:00"),
     end: new Date("2026-04-11T10:00:00-05:00"),
-    location: "Tech M120",
+    location: "Tech A110",
+  },
+  {
+    title: "Sponsor Fair — Claude",
+    description: "Meet with sponsors and learn about opportunities",
+    start: new Date("2026-04-11T08:30:00-05:00"),
+    end: new Date("2026-04-11T10:00:00-05:00"),
+    location: "Tech L170",
+  },
+  {
+    title: "Sponsor Fair — Blossoms + Redbull",
+    description: "Meet with sponsors and learn about opportunities",
+    start: new Date("2026-04-11T08:30:00-05:00"),
+    end: new Date("2026-04-11T10:00:00-05:00"),
+    location: "Tech L168",
   },
   {
     title: "Opening Ceremony",
@@ -112,6 +134,20 @@ export const scheduleEvents: CalendarEvent[] = [
     end: new Date("2026-04-11T13:00:00-05:00"),
     location: "Mudd 1st Floor",
     url: "/guide/logistics/food-and-drinks#saturday-lunch-from-tomate",
+  },
+  {
+    title: "Mentors Block 1",
+    description: "Get advice from amazing mentors",
+    start: new Date("2026-04-11T13:00:00-05:00"),
+    end: new Date("2026-04-11T17:00:00-05:00"),
+    location: "Mudd 2nd Floor",
+  },
+  {
+    title: "Mentors Block 2",
+    description: "Get advice from amazing mentors",
+    start: new Date("2026-04-11T17:00:00-05:00"),
+    end: new Date("2026-04-11T21:00:00-05:00"),
+    location: "Mudd 2nd Floor",
   },
   {
     title: "Dinner from Papa John's Pizza",
@@ -160,6 +196,13 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/logistics/food-and-drinks#sunday-breakfast-from-einstein-bros-bagels",
   },
   {
+    title: "Blanket Donation",
+    description: "Come drop off your blanket if you'd like to donate it!",
+    start: new Date("2026-04-12T10:30:00-05:00"),
+    end: new Date("2026-04-12T12:15:00-05:00"),
+    location: "Mudd 2nd Floor",
+  },
+  {
     title: "Submissions Due and Hacking Ends",
     description: "All project submissions must be submitted by this time. Hacking officially ends.",
     start: new Date("2026-04-12T11:00:00-05:00"),
@@ -167,11 +210,18 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/project-guidelines/submission",
   },
   {
-    title: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
-    description: "Deadline to sign up for Crowd Favorite",
+    title: "Games! (+ T-Shirt Distribution)",
+    description: "Play games and meet new hackers. Also get free WildHacks T-Shirts!",
     start: new Date("2026-04-12T11:00:00-05:00"),
-    end: new Date("2026-04-12T11:00:00-05:00"),
-    // url: "",
+    end: new Date("2026-04-12T12:15:00-05:00"),
+    location: "Tech LR2",
+  },
+  {
+    title: "Scavenger Hunt Check In",
+    description: "Did you find anything? Come to the second floor of Mudd to get a prize",
+    start: new Date("2026-04-12T11:00:00-05:00"),
+    end: new Date("2026-04-12T12:15:00-05:00"),
+    location: "Mudd 2nd Floor",
   },
   {
     title: "Round 1 of Track Judging",
@@ -197,6 +247,13 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
   },
   {
+    title: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
+    description: "Deadline to sign up for Crowd Favorite",
+    start: new Date("2026-04-12T14:00:00-05:00"),
+    end: new Date("2026-04-12T14:00:00-05:00"),
+    // url: "",
+  },
+  {
     title: "Crowd Favorite Presentations",
     description: "Crowd Favorite project presentations",
     start: new Date("2026-04-12T14:00:00-05:00"),
@@ -205,8 +262,8 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/judging-and-awards/how-judging-works#crowd-favorite",
   },
   {
-    title: "Closing Keynote Speaker and Ceremony",
-    description: "WildHacks 2026 Closing Keynote Speaker, Ceremony, and Awards",
+    title: "Closing Ceremony",
+    description: "WildHacks 2026 Closing Ceremony and Awards",
     start: new Date("2026-04-12T15:45:00-05:00"),
     end: new Date("2026-04-12T17:00:00-05:00"),
     location: "LR2",
