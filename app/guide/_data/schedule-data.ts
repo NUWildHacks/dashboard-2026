@@ -70,14 +70,6 @@ export const scheduleEvents: CalendarEvent[] = [
     zoom: "https://us06web.zoom.us/j/2881519829",
   },
   {
-    title: "Finding Your Path in Tech with Women in Computing",
-    description:
-      "Join Women in Computing (WiC) and WildHacks for an engaging panel featuring three inspiring students sharing their journey through computer science, design, and beyond. Hear from Laura Felix, Sydney Hoppenworth, and Melanie Cuenca as they reflect on how they found their paths in tech, navigated internships at companies like Duolingo, Visa, Disney, and international research institutions, and grew through both challenges and leadership experiences.",
-    start: new Date("2026-04-11T13:30:00-05:00"),
-    end: new Date("2026-04-10T14:15:00-05:00"),
-    url: "/guide/workshops#finding-your-path-in-tech-with-women-in-computing",
-  },
-  {
     title: "Check-In",
     description: "Check-in for WildHacks 2026. Have your student ID and WildHacker Code ready.",
     start: new Date("2026-04-11T08:30:00-05:00"),
@@ -141,6 +133,28 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-11T13:00:00-05:00"),
     end: new Date("2026-04-11T17:00:00-05:00"),
     location: "Mudd 2nd Floor",
+  },
+  {
+    title: "Finding Your Path in Tech with Women in Computing",
+    description:
+      "Join Women in Computing (WiC) and WildHacks for an engaging panel featuring three inspiring students sharing their journey through computer science, design, and beyond. Hear from Laura Felix, Sydney Hoppenworth, and Melanie Cuenca as they reflect on how they found their paths in tech, navigated internships at companies like Duolingo, Visa, Disney, and international research institutions, and grew through both challenges and leadership experiences.",
+    start: new Date("2026-04-11T13:30:00-05:00"),
+    end: new Date("2026-04-10T14:15:00-05:00"),
+    url: "/guide/workshops#finding-your-path-in-tech-with-women-in-computing",
+  },
+  {
+    title: "GitHub Copilot Session",
+    description:
+      "Come learn more about GitHub Copilot in this session!",
+    start: new Date("2026-04-11T15:15:00-05:00"),
+    end: new Date("2026-04-10T15:45:00-05:00"),
+  },
+  {
+    title: "Google AI Studio",
+    description:
+      "Come learn more about Google AI in this session!",
+    start: new Date("2026-04-11T15:45:00-05:00"),
+    end: new Date("2026-04-10T16:30:00-05:00"),
   },
   {
     title: "Mentors Block 2",
@@ -229,6 +243,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-12T11:15:00-05:00"),
     end: new Date("2026-04-12T13:15:00-05:00"),
     url: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
+    location: "LR5"
   },
   {
     title: "Lunch from 10Q Chicken",
