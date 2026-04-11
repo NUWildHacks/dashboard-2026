@@ -156,9 +156,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "1:00 - 5:00 PM",
-    event: [
-      { content: "Mentors Block 1" },
-    ],
+    event: [{ content: "Mentors Block 1" }],
     location: "Mudd 2nd Floor",
   },
   // {
@@ -185,9 +183,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   // },
   {
     time: "5:00 - 9:00 PM",
-    event: [
-      { content: "Mentors Block 2" },
-    ],
+    event: [{ content: "Mentors Block 2" }],
     location: "Mudd 2nd Floor",
   },
   {
