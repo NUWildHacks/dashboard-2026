@@ -39,7 +39,8 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
     const seenProjectIds = new Set<Project["id"]>();
 
     for (const assignment of data) {
-      const { judge_id, project_id, project_name, track, devpost_url, order, judging_round, room_id } = assignment;
+      const { room_id, ...rest } = assignment;
+      const { project_id, project_name, track, devpost_url } = rest;
 
       if (!seenProjectIds.has(project_id)) {
         seenProjectIds.add(project_id);
@@ -52,14 +53,15 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
         } as Omit<Project, "id">);
       }
 
+      const assignmentData: Omit<JudgingAssignment, "id"> = room_id
+        ? {
+            ...rest,
+            room_id,
+          }
+        : rest;
+
       const assignmentDocRef = judgingAssignmentsCollectionRef.doc();
-      judgingAssignmentBatch.set(assignmentDocRef, {
-        judge_id,
-        project_id,
-        order,
-        judging_round,
-        room_id,
-      } as Omit<JudgingAssignment, "id">);
+      judgingAssignmentBatch.set(assignmentDocRef, assignmentData);
     }
 
     await Promise.all([judgingAssignmentBatch.commit(), projectBatch.commit()]);

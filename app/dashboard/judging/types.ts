@@ -26,7 +26,7 @@ export type JudgingAssignment = {
 
   order: number;
   judging_round: number;
-  room_id: Room;
+  room_id?: Room;
 
   judging_form?: JudgingForm;
 };

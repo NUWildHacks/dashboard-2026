@@ -67,6 +67,8 @@ export const useJudgingAssignmentsTable = (
         complete: async (results) => {
           const parseResult = judgingAssignmentsCsvArraySchema.safeParse(results.data);
 
+          console.error(parseResult.error);
+
           if (!parseResult.success) {
             toast.error("Invalid CSV file. Please check the columns and try again.");
             if (fileInputRef.current) {
