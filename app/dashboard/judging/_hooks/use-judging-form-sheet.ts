@@ -53,7 +53,6 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: strin
     try {
       const result = await submitJudging(
         data,
-        selectedJudgingAssignmentWithProject.id,
         selectedJudgingAssignmentWithProject.project.id,
         judgeId,
         currentPath

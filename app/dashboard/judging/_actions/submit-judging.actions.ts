@@ -21,7 +21,6 @@ export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
 export const submitJudging = async (
   data: JudgingFormSchema,
-  assignmentId: JudgingAssignment["id"],
   projectId: Project["id"],
   judgeId: JudgeUser["id"],
   currentPath: string
