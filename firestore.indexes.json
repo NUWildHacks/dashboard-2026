@@ -23,6 +23,22 @@
         { "fieldPath": "project_id", "order": "ASCENDING" },
         { "fieldPath": "last_name", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "team_matching_runs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "is_top", "order": "ASCENDING" },
+        { "fieldPath": "run_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "team_matching_runs_prod",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "is_top", "order": "ASCENDING" },
+        { "fieldPath": "run_at", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

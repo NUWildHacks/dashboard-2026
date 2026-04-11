@@ -9,12 +9,14 @@ import {
   TECH_ROOM_FINDER_PATH,
   JUDGING_GUIDE_PATH,
   DISCORD_INVITE_PATH,
+  DISCORD_TEAM_PATH,
   DEVPOST_PATH,
   VIRTUAL_ZOOM_JUDGING_PATH,
 } from "./constants/routes.constants";
 
 const isDev = process.env.APP_ENV !== "production";
 const discordInviteDestination = process.env.DISCORD_INVITE_URL as string;
+const discordTeamDestination = process.env.DISCORD_TEAM_URL as string;
 const virtualZoomJudgingDestination = process.env.VIRTUAL_ZOOM_JUDGING_URL as string;
 
 const cspHeader = `
@@ -88,6 +90,12 @@ const nextConfig: NextConfig = {
       {
         source: DISCORD_INVITE_PATH,
         destination: discordInviteDestination,
+        basePath: false,
+        permanent: false,
+      },
+      {
+        source: DISCORD_TEAM_PATH,
+        destination: discordTeamDestination,
         basePath: false,
         permanent: false,
       },

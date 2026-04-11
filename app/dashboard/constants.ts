@@ -8,6 +8,7 @@ import {
   Headset,
   SquareCode,
   QrCode,
+  UsersRound,
 } from "lucide-react";
 
 import {
@@ -19,6 +20,7 @@ import {
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
+  DASHBOARD_TEAM_MATCHING_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
   DASHBOARD_MENTORING_PATH,
@@ -83,6 +85,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: QrCode,
     visibleTo: [ADMIN],
   },
+  {
+    title: "Team Matching",
+    url: DASHBOARD_TEAM_MATCHING_PATH,
+    icon: UsersRound,
+    visibleTo: [ADMIN],
+  },
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {
@@ -93,6 +101,7 @@ export const HEADER_TEXT_MAP: Record<string, string> = {
   guide: "Guide",
   judging: "Judging",
   mentoring: "Mentoring",
+  "team-matching": "Team Matching",
 };
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB

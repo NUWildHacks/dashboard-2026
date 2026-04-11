@@ -1,3 +1,5 @@
+export type TeamMatchingMode = "dev" | "prod";
+
 export type WildHacksConfig = {
   max_team_size: number;
   max_participants: number;
@@ -7,6 +9,9 @@ export type WildHacksConfig = {
   end_time: number;
 
   updated_at: number;
+  results_released?: boolean;
+  results_released_dev?: boolean;
+  team_matching_mode?: TeamMatchingMode;
 };
 
 export type WildHacksStatistics = {
