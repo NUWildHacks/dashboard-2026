@@ -43,10 +43,12 @@ const AssignedProjectItem = ({
               Submitted
             </Badge>
           )}
-          <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-            <MapPin className="size-3 shrink-0" aria-hidden="true" />
-            {room_id}
-          </span>
+          {room_id && (
+            <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+              <MapPin className="size-3 shrink-0" aria-hidden="true" />
+              {room_id}
+            </span>
+          )}
         </ItemDescription>
       </ItemContent>
     </Item>

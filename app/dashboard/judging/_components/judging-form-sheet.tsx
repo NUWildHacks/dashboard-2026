@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import Rating from "@/components/form/rating";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Separator } from "@/components/ui/separator";
@@ -50,15 +51,10 @@ const JudgingFormSheet = ({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent className="sm:max-w-[550px]">
         <SheetHeader className="pb-0">
-          <SheetTitle>Judging Form</SheetTitle>
-          <SheetDescription asChild className="space-y-1">
-            <div className="space-y-1">
-              <p>
-                <span className="font-medium">Project name:</span> {name}
-              </p>
-              <p>
-                <span className="font-medium">Track:</span> {track}
-              </p>
+          <SheetTitle>{name}</SheetTitle>
+          <SheetDescription asChild>
+            <div className="flex flex-row items-center gap-2">
+              <Badge variant="secondary">{track}</Badge>
               <a href={devpost_url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
                 View Devpost
               </a>
