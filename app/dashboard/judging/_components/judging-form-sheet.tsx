@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import Rating from "@/components/form/rating";
@@ -45,6 +45,8 @@ const JudgingFormSheet = ({
 
   const {
     project: { name, track, devpost_url },
+    judging_form,
+    room_id,
   } = selectedJudgingAssignmentWithProject;
 
   return (
@@ -55,7 +57,21 @@ const JudgingFormSheet = ({
           <SheetDescription asChild>
             <div className="flex flex-row items-center gap-2">
               <Badge variant="secondary">{track}</Badge>
-              <a href={devpost_url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">
+              {judging_form && (
+                <Badge
+                  variant="outline"
+                  className="border-none bg-green-600/10 text-green-600 focus-visible:ring-green-600/20 focus-visible:outline-none dark:bg-green-400/10 dark:text-green-400 dark:focus-visible:ring-green-400/40 [a&]:hover:bg-green-600/5 dark:[a&]:hover:bg-green-400/5"
+                >
+                  Submitted
+                </Badge>
+              )}
+              {room_id && (
+                <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+                  <MapPin className="size-3 shrink-0" aria-hidden="true" />
+                  {room_id}
+                </span>
+              )}
+              <a href={devpost_url} target="_blank" rel="noreferrer" className="text-xs underline-offset-4 hover:underline">
                 View Devpost
               </a>
             </div>
