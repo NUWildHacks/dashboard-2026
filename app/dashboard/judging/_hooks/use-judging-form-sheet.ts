@@ -51,7 +51,13 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: strin
     if (!selectedJudgingAssignmentWithProject) return;
 
     try {
-      const result = await submitJudging(data, selectedJudgingAssignmentWithProject.project.id, judgeId, currentPath);
+      const result = await submitJudging(
+        data,
+        selectedJudgingAssignmentWithProject.id,
+        selectedJudgingAssignmentWithProject.project.id,
+        judgeId,
+        currentPath
+      );
       const { success } = result;
 
       if (!success) {

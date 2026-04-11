@@ -10,6 +10,7 @@ import {
   PROJECTS_COLLECTION,
   JUDGING_ASSIGNMENTS_COLLECTION,
   DASHBOARD_JUDGING_ROUND_2_PATH,
+  JUDGE_AND_MENTOR,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
@@ -21,6 +22,7 @@ export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
 export const submitJudging = async (
   data: JudgingFormSchema,
+  assignmentId: JudgingAssignment["id"],
   projectId: Project["id"],
   judgeId: JudgeUser["id"],
   currentPath: string
@@ -39,7 +41,7 @@ export const submitJudging = async (
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(currentPath)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleError = requireRole(user, JUDGE, "You are not authorized to submit judging form");
+    const roleError = requireRole(user, [JUDGE, JUDGE_AND_MENTOR], "You are not authorized to submit judging form");
     if (roleError) return roleError;
 
     if (user.id !== judgeId) {
@@ -57,10 +59,7 @@ export const submitJudging = async (
       };
     }
 
-    const judgingAssignmentDocSnapshot = await db
-      .collection(JUDGING_ASSIGNMENTS_COLLECTION)
-      .doc(`${judgeId}_${projectId}`)
-      .get();
+    const judgingAssignmentDocSnapshot = await db.collection(JUDGING_ASSIGNMENTS_COLLECTION).doc(assignmentId).get();
     if (!judgingAssignmentDocSnapshot.exists) {
       return {
         success: false,
@@ -73,7 +72,7 @@ export const submitJudging = async (
 
     await db
       .collection(JUDGING_ASSIGNMENTS_COLLECTION)
-      .doc(`${judgeId}_${projectId}`)
+      .doc(assignmentId)
       .update({
         judging_form: {
           ...data,
