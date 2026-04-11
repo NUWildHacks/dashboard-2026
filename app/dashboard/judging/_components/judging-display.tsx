@@ -13,13 +13,14 @@ import type { JudgeUser } from "@/types";
 
 import { useAssignedProjects, useJudgingFormSheet } from "../_hooks";
 import { SUBMISSION_STATUSES } from "../constants";
-import type { JudgingAssignmentWithProject, SubmissionStatus } from "../types";
+import type { JudgingAssignmentWithProject, JudgingRound, SubmissionStatus } from "../types";
 
 import { AssignedProjectList, JudgingFormSheet } from ".";
 
 type JudgingDisplayProps = {
   judgingAssignmentsWithProject: JudgingAssignmentWithProject[];
   currentPath: string;
+  judgingRound: JudgingRound;
 } & Pick<JudgeUser, "id" | "modality" | "other_modality">;
 
 const JudgingDisplay = ({
@@ -28,6 +29,7 @@ const JudgingDisplay = ({
   id: judgeId,
   modality,
   other_modality,
+  judgingRound,
 }: JudgingDisplayProps) => {
   const { category, setCategory, search, setSearch } = useFilters<CategoryWithAll<SubmissionStatus>>();
 
@@ -36,7 +38,7 @@ const JudgingDisplay = ({
     search,
   });
 
-  const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath);
+  const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath, judgingRound);
 
   return (
     <>

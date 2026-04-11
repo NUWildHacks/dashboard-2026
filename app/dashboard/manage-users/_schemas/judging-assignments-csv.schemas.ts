@@ -2,11 +2,7 @@ import { z } from "zod";
 
 import { firestoreUserIdSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
 
-import { ROOMS, TRACKS } from "../../judging/constants";
-
-/** CSV parsers (e.g. Papa Parse) yield string cells; trim avoids Excel trailing spaces breaking Number(). */
-const csvNumber = (schema: z.ZodNumber) =>
-  z.preprocess((val) => (typeof val === "string" ? val.trim() : val), z.coerce.number().pipe(schema));
+import { ROOMS, ROUNDS, TRACKS } from "../../judging/constants";
 
 const judgingAssignmentsCsvSchema = z.object({
   judge_id: firestoreUserIdSchema,
@@ -25,14 +21,8 @@ const judgingAssignmentsCsvSchema = z.object({
     .min(1, "Project name is required")
     .max(100, "Project name must be 100 characters or less"),
   devpost_url: secureUrlSchema,
-  order: csvNumber(z.number()),
-  judging_round: csvNumber(
-    z
-      .number()
-      .int("Judging round must be a whole number")
-      .min(1, "Judging round is required")
-      .max(2, "Judging round must be 2 or less")
-  ),
+  order: z.preprocess((val) => (typeof val === "string" ? val.trim() : val), z.coerce.number().pipe(z.number())),
+  judging_round: z.enum(ROUNDS, { message: "Invalid judging round" }),
   room_id: z.union([z.literal(""), z.enum(ROOMS, { message: "Invalid room" })]),
 });
 

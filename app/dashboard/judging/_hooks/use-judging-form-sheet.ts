@@ -9,7 +9,7 @@ import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
 import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
-import type { JudgingAssignmentWithProject } from "../types";
+import type { JudgingAssignmentWithProject, JudgingRound } from "../types";
 
 export type UseJudgingFormSheetReturn = {
   isOpen: boolean;
@@ -23,7 +23,11 @@ export type UseJudgingFormSheetReturn = {
   isSubmitting: boolean;
 };
 
-export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: string): UseJudgingFormSheetReturn => {
+export const useJudgingFormSheet = (
+  judgeId: JudgeUser["id"],
+  currentPath: string,
+  judgingRound: JudgingRound
+): UseJudgingFormSheetReturn => {
   const [selectedJudgingAssignmentWithProject, setSelectedJudgingAssignmentWithProject] = useState<
     JudgingAssignmentWithProject | undefined
   >(undefined);
@@ -56,7 +60,8 @@ export const useJudgingFormSheet = (judgeId: JudgeUser["id"], currentPath: strin
         selectedJudgingAssignmentWithProject.id,
         selectedJudgingAssignmentWithProject.project.id,
         judgeId,
-        currentPath
+        currentPath,
+        judgingRound
       );
       const { success } = result;
 

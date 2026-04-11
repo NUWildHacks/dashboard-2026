@@ -14,19 +14,19 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CategoryWithAll } from "@/hooks";
 import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
-import type { JudgingAssignment, Project } from "../../judging/types";
+import { ROUND_1, ROUND_2, ROUNDS } from "../../judging/constants";
+import type { JudgingAssignment, JudgingRound, Project } from "../../judging/types";
 
 type JudgingAssignmentsTableProps = {
-  judgingAssignments: JudgingAssignment[];
-  projects: Project[];
+  judgingAssignmentsMap: Map<JudgingRound, JudgingAssignment[]>;
+  projectsMap: Map<JudgingRound, Project[]>;
   judges: (JudgeUser | JudgeAndMentorUser)[];
 };
 
-const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: JudgingAssignmentsTableProps) => {
+const JudgingAssignmentsTable = ({ judgingAssignmentsMap, projectsMap, judges }: JudgingAssignmentsTableProps) => {
   const {
     selectedJudge,
     setSelectedJudge,
@@ -39,14 +39,17 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
     fileInputRef,
     handleUploadAssignments,
     handleFileChange,
-  } = useJudgingAssignmentsTable(judgingAssignments, projects);
+  } = useJudgingAssignmentsTable(judgingAssignmentsMap, projectsMap);
 
   return (
     <div className="flex-1 space-y-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="w-full flex flex-col md:flex-row gap-4">
-          <Button onClick={handleUploadAssignments} className="w-full md:w-auto">
-            Upload CSV
+          <Button onClick={() => handleUploadAssignments(ROUND_1)} className="w-full md:w-auto">
+            Upload Round 1 CSV
+          </Button>
+          <Button onClick={() => handleUploadAssignments(ROUND_2)} className="w-full md:w-auto">
+            Upload Round 2 CSV
           </Button>
           <input
             ref={fileInputRef}
@@ -56,6 +59,22 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
             className="hidden"
             aria-label="Upload CSV file"
           />
+          <Select value={round} onValueChange={(value) => setRound(value as JudgingRound)}>
+            <SelectTrigger
+              id="round-filter"
+              className="min-w-[125px] md:w-[125px] w-full"
+              aria-label="Filter users by round"
+            >
+              <SelectValue placeholder="Select round" />
+            </SelectTrigger>
+            <SelectContent>
+              {ROUNDS.map((round) => (
+                <SelectItem key={round} value={round}>
+                  {round}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Combobox
             items={judges}
             value={selectedJudge}
@@ -74,20 +93,6 @@ const JudgingAssignmentsTable = ({ judgingAssignments, projects, judges }: Judgi
               </ComboboxList>
             </ComboboxContent>
           </Combobox>
-          <Select value={round} onValueChange={(value) => setRound(value as CategoryWithAll<"round-1" | "round-2">)}>
-            <SelectTrigger
-              id="round-filter"
-              className="min-w-[125px] md:w-[125px] w-full"
-              aria-label="Filter users by round"
-            >
-              <SelectValue placeholder="Select round" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="round-1">Round 1</SelectItem>
-              <SelectItem value="round-2">Round 2</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
         <InputGroup className="md:max-w-[350px] min-w-[200px] w-full">
           <InputGroupInput

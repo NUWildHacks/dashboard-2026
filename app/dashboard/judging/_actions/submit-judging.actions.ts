@@ -11,12 +11,16 @@ import {
   JUDGING_ASSIGNMENTS_COLLECTION,
   DASHBOARD_JUDGING_ROUND_2_PATH,
   JUDGE_AND_MENTOR,
+  PLACEHOLDER_DOC,
+  ROUND_1_COLLECTION,
+  ROUND_2_COLLECTION,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult, JudgeUser } from "@/types";
 
 import { type JudgingFormSchema } from "../_schemas";
-import type { JudgingAssignment, JudgingForm, Project } from "../types";
+import { ROUND_1 } from "../constants";
+import type { JudgingAssignment, JudgingForm, JudgingRound, Project } from "../types";
 
 export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
 
@@ -25,7 +29,8 @@ export const submitJudging = async (
   assignmentId: JudgingAssignment["id"],
   projectId: Project["id"],
   judgeId: JudgeUser["id"],
-  currentPath: string
+  currentPath: string,
+  judgingRound: JudgingRound
 ): Promise<SubmitJudgingResult> => {
   const db = getFirestore();
   const now = Date.now();
@@ -51,7 +56,12 @@ export const submitJudging = async (
       };
     }
 
-    const projectDocSnapshot = await db.collection(PROJECTS_COLLECTION).doc(projectId).get();
+    const projectDocSnapshot = await db
+      .collection(PROJECTS_COLLECTION)
+      .doc(PLACEHOLDER_DOC)
+      .collection(judgingRound === ROUND_1 ? ROUND_1_COLLECTION : ROUND_2_COLLECTION)
+      .doc(projectId)
+      .get();
     if (!projectDocSnapshot.exists) {
       return {
         success: false,
@@ -59,7 +69,12 @@ export const submitJudging = async (
       };
     }
 
-    const judgingAssignmentDocSnapshot = await db.collection(JUDGING_ASSIGNMENTS_COLLECTION).doc(assignmentId).get();
+    const judgingAssignmentDocSnapshot = await db
+      .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+      .doc(PLACEHOLDER_DOC)
+      .collection(judgingRound === ROUND_1 ? ROUND_1_COLLECTION : ROUND_2_COLLECTION)
+      .doc(assignmentId)
+      .get();
     if (!judgingAssignmentDocSnapshot.exists) {
       return {
         success: false,
@@ -72,6 +87,8 @@ export const submitJudging = async (
 
     await db
       .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+      .doc(PLACEHOLDER_DOC)
+      .collection(judgingRound === ROUND_1 ? ROUND_1_COLLECTION : ROUND_2_COLLECTION)
       .doc(assignmentId)
       .update({
         judging_form: {

@@ -4,6 +4,7 @@ import { DASHBOARD_JUDGING_ROUND_2_PATH, DASHBOARD_PATH, JUDGE, JUDGE_AND_MENTOR
 import { getAuthenticatedUser } from "@/lib";
 
 import { JudgingDisplay } from "../_components";
+import { ROUND_2 } from "../constants";
 import { getJudgingAssignmentsWithProjectForRound } from "../lib";
 
 const JudgingRound2Page = async () => {
@@ -12,13 +13,14 @@ const JudgingRound2Page = async () => {
   const user = await getAuthenticatedUser(redirectPath);
   if (user.role !== JUDGE && user.role !== JUDGE_AND_MENTOR) redirect(DASHBOARD_PATH);
 
-  const judgingAssignmentsWithProject = await getJudgingAssignmentsWithProjectForRound(user.id, 2);
+  const judgingAssignmentsWithProject = await getJudgingAssignmentsWithProjectForRound(user.id, ROUND_2);
 
   return (
     <JudgingDisplay
       {...user}
       judgingAssignmentsWithProject={judgingAssignmentsWithProject}
       currentPath={DASHBOARD_JUDGING_ROUND_2_PATH}
+      judgingRound={ROUND_2}
     />
   );
 };

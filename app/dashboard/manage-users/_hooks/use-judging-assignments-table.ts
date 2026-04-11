@@ -15,50 +15,55 @@ import Papa from "papaparse";
 import { ChangeEvent, RefObject, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
-import { useFilters, UseFiltersReturnWithAll } from "@/hooks";
+import { useFilters, UseFiltersReturnWithoutAll } from "@/hooks";
 import { JudgeUser } from "@/types";
 
 import { uploadAssignments } from "../_actions";
 import { getJudgingAssignmentsColumns } from "../_lib/client";
 import { judgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, JudgingAssignmentWithProject, Project } from "../../judging/types";
+import { ROUND_1 } from "../../judging/constants";
+import { JudgingAssignment, JudgingAssignmentWithProject, JudgingRound, Project } from "../../judging/types";
 
 export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | null;
   setSelectedJudge: (judgeUser: JudgeUser | null) => void;
-  search: UseFiltersReturnWithAll<"round-1" | "round-2">["search"];
-  setSearch: UseFiltersReturnWithAll<"round-1" | "round-2">["setSearch"];
-  round: UseFiltersReturnWithAll<"round-1" | "round-2">["category"];
-  setRound: UseFiltersReturnWithAll<"round-1" | "round-2">["setCategory"];
+  search: UseFiltersReturnWithoutAll<JudgingRound>["search"];
+  setSearch: UseFiltersReturnWithoutAll<JudgingRound>["setSearch"];
+  round: UseFiltersReturnWithoutAll<JudgingRound>["category"];
+  setRound: UseFiltersReturnWithoutAll<JudgingRound>["setCategory"];
   table: Table<JudgingAssignmentWithProject>;
   judgingAssignmentsColumns: ColumnDef<JudgingAssignmentWithProject>[];
   fileInputRef: RefObject<HTMLInputElement | null>;
-  handleUploadAssignments: () => void;
+  handleUploadAssignments: (round: JudgingRound) => void;
   handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const useJudgingAssignmentsTable = (
-  judgingAssignments: JudgingAssignment[],
-  projects: Project[]
+  judgingAssignmentsMap: Map<JudgingRound, JudgingAssignment[]>,
+  projectsMap: Map<JudgingRound, Project[]>
 ): UseJudgingAssignmentsTableReturn => {
   const {
     category: round,
     setCategory: setRound,
     search,
     setSearch,
-  } = useFilters<"round-1" | "round-2">({ includeAll: true });
+  } = useFilters<JudgingRound>({ includeAll: false, defaultCategory: ROUND_1 });
 
+  const [uploadRound, setUploadRound] = useState<JudgingRound | undefined>(undefined);
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
   const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleUploadAssignments = () => {
+  const handleUploadAssignments = (round: JudgingRound) => {
+    setUploadRound(round);
     fileInputRef.current?.click();
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!uploadRound) return;
+
     const file = event.target.files?.[0];
     if (file) {
       Papa.parse(file, {
@@ -66,8 +71,6 @@ export const useJudgingAssignmentsTable = (
         skipEmptyLines: true,
         complete: async (results) => {
           const parseResult = judgingAssignmentsCsvArraySchema.safeParse(results.data);
-
-          console.error(parseResult.error);
 
           if (!parseResult.success) {
             toast.error("Invalid CSV file. Please check the columns and try again.");
@@ -78,7 +81,7 @@ export const useJudgingAssignmentsTable = (
           }
 
           try {
-            const result = await uploadAssignments(parseResult.data);
+            const result = await uploadAssignments(parseResult.data, uploadRound);
             const { success } = result;
 
             if (!success) {
@@ -114,15 +117,15 @@ export const useJudgingAssignmentsTable = (
   };
 
   const projectMap: Map<Project["id"], Project> = useMemo(() => {
-    return new Map(projects.map((project) => [project.id, project]));
-  }, [projects]);
+    return new Map(projectsMap.get(round)?.map((project) => [project.id, project]) ?? []);
+  }, [projectsMap, round]);
 
   const judgingAssignmentsForSelectedJudge: JudgingAssignmentWithProject[] = useMemo(() => {
     if (!selectedJudge) return [];
 
-    let result: JudgingAssignmentWithProject[] = judgingAssignments
-      .filter((assignment) => (round === "all" ? true : (round === "round-1" ? assignment.judging_round === 1 : assignment.judging_round === 2)))
-      .filter((assignment) => assignment.judge_id === selectedJudge?.id)
+    let result: JudgingAssignmentWithProject[] = judgingAssignmentsMap
+      .get(round)
+      ?.filter((assignment) => assignment.judge_id === selectedJudge?.id)
       .map((assignment) => ({
         ...assignment,
         project: projectMap.get(assignment.project_id) as Project,
@@ -140,7 +143,7 @@ export const useJudgingAssignmentsTable = (
     }
 
     return result;
-  }, [selectedJudge, judgingAssignments, projectMap, search, round]);
+  }, [selectedJudge, judgingAssignmentsMap, projectMap, search, round]);
 
   const judgingAssignmentsColumns = getJudgingAssignmentsColumns();
 

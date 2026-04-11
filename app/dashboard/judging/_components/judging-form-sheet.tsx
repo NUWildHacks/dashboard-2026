@@ -71,7 +71,12 @@ const JudgingFormSheet = ({
                   {room_id}
                 </span>
               )}
-              <a href={devpost_url} target="_blank" rel="noreferrer" className="text-xs underline-offset-4 hover:underline">
+              <a
+                href={devpost_url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs underline-offset-4 hover:underline"
+              >
                 View Devpost
               </a>
             </div>

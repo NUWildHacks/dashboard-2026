@@ -8,17 +8,24 @@ import {
   DASHBOARD_MANAGE_USERS_PATH,
   JUDGING_ASSIGNMENTS_COLLECTION,
   LOGIN_PATH,
+  PLACEHOLDER_DOC,
   PROJECTS_COLLECTION,
+  ROUND_1_COLLECTION,
+  ROUND_2_COLLECTION,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import { ActionResult } from "@/types";
 
 import { JudgingAssignmentsCsvArraySchema } from "../_schemas";
-import { JudgingAssignment, Project } from "../../judging/types";
+import { ROUND_1 } from "../../judging/constants";
+import { JudgingAssignment, JudgingRound, Project } from "../../judging/types";
 
 export type UploadAssignmentsResult = ActionResult<JudgingAssignmentsCsvArraySchema>;
 
-export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema): Promise<UploadAssignmentsResult> => {
+export const uploadAssignments = async (
+  data: JudgingAssignmentsCsvArraySchema,
+  uploadRound: JudgingRound
+): Promise<UploadAssignmentsResult> => {
   const db = getFirestore();
 
   try {
@@ -28,8 +35,14 @@ export const uploadAssignments = async (data: JudgingAssignmentsCsvArraySchema):
     const roleError = requireRole(user, ADMIN, "You are not authorized to upload judging assignments");
     if (roleError) return roleError;
 
-    const projectsCollectionRef = db.collection(PROJECTS_COLLECTION);
-    const judgingAssignmentsCollectionRef = db.collection(JUDGING_ASSIGNMENTS_COLLECTION);
+    const projectsCollectionRef = db
+      .collection(PROJECTS_COLLECTION)
+      .doc(PLACEHOLDER_DOC)
+      .collection(uploadRound === ROUND_1 ? ROUND_1_COLLECTION : ROUND_2_COLLECTION);
+    const judgingAssignmentsCollectionRef = db
+      .collection(JUDGING_ASSIGNMENTS_COLLECTION)
+      .doc(PLACEHOLDER_DOC)
+      .collection(uploadRound === ROUND_1 ? ROUND_1_COLLECTION : ROUND_2_COLLECTION);
 
     await Promise.all([db.recursiveDelete(projectsCollectionRef), db.recursiveDelete(judgingAssignmentsCollectionRef)]);
 
