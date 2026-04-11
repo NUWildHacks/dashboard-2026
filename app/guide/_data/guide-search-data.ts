@@ -61,6 +61,46 @@ const stripInlineFormatting = (source: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
+const isSourceLikeLine = (line: string): boolean => {
+  const trimmed = line.trim();
+
+  if (!trimmed) {
+    return false;
+  }
+
+  if (/^(import|export)\s/i.test(trimmed)) {
+    return true;
+  }
+
+  // Ignore common MDX/JSX expression and comment wrappers.
+  if (/^\{\/\*/.test(trimmed) || /\*\/\}$/.test(trimmed)) {
+    return true;
+  }
+
+  if (/^\{.*\}$/.test(trimmed) || /^\{/.test(trimmed) || /\}$/.test(trimmed)) {
+    return true;
+  }
+
+  if (/^(const|let|var|type|interface)\s/i.test(trimmed)) {
+    return true;
+  }
+
+  if (/^<\/?[A-Z][\w.-]*/.test(trimmed)) {
+    return true;
+  }
+
+  // Skip lines that look like TS/JS iteration expressions embedded in MDX.
+  if (/(=>|\.map\(|\.filter\(|\.reduce\()/.test(trimmed)) {
+    return true;
+  }
+
+  if (/^[\[\]{}(),.;]+$/.test(trimmed)) {
+    return true;
+  }
+
+  return /@\/|from\s+["'][^"']+["'];?$/.test(trimmed);
+};
+
 const parseMdxRecords = (raw: string, href: string, title: string): GuideSearchRecord[] => {
   const lines = raw.split(/\r?\n/);
   const records: GuideSearchRecord[] = [];
@@ -71,6 +111,8 @@ const parseMdxRecords = (raw: string, href: string, title: string): GuideSearchR
   let sectionTitle = title;
   let sectionId: string | undefined;
   let contentCounter = 0;
+  let inCodeFence = false;
+  let inFrontmatter = false;
 
   const flushContentBlock = () => {
     if (contentCounter >= MAX_CONTENT_RECORDS_PER_PAGE || blockLines.length === 0) {
@@ -106,12 +148,38 @@ const parseMdxRecords = (raw: string, href: string, title: string): GuideSearchR
   for (const line of lines) {
     const trimmed = line.trim();
 
+    if (trimmed === "---") {
+      if (!inFrontmatter && records.length === 0 && fullTextParts.length === 0 && blockLines.length === 0) {
+        inFrontmatter = true;
+        continue;
+      }
+
+      if (inFrontmatter) {
+        inFrontmatter = false;
+        continue;
+      }
+    }
+
+    if (inFrontmatter) {
+      continue;
+    }
+
+    if (/^```/.test(trimmed)) {
+      inCodeFence = !inCodeFence;
+      flushContentBlock();
+      continue;
+    }
+
+    if (inCodeFence) {
+      continue;
+    }
+
     if (!trimmed) {
       flushContentBlock();
       continue;
     }
 
-    if (/^---$/.test(trimmed)) {
+    if (isSourceLikeLine(trimmed)) {
       continue;
     }
 
