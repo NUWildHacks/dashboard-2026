@@ -83,17 +83,6 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     location: "Tech M177",
   },
   {
-    date: "April 10, 2026",
-    time: "7:00 PM - 8:00 PM",
-    event: [
-      {
-        content: "Blossoms X WildHacks Informational Session",
-        href: "/guide/workshops#blossoms-x-wildhacks-informational-session",
-      },
-    ],
-    location: "Virtual",
-  },
-  {
     date: "April 11, 2026",
     time: "1:30 PM - 2:15 PM",
     event: [

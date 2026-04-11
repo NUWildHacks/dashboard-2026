@@ -311,18 +311,6 @@ export const sundaySpaces: MapRow[] = [
     notes: "Closing ceremony venue.",
   },
   {
-    name: text("Tech A110"),
-    location: [
-      {
-        content: "Tech A110",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=A110&room-floor=1&room-id=3&room-ingress=",
-      },
-    ],
-    description: "Overflow room for Closing Ceremony",
-    capacity: "43",
-    notes: "Ensure you arrive early to Closing Ceremony to claim a spot in the main room.",
-  },
-  {
     name: text("Crowd Favorite"),
     location: [
       {
@@ -560,17 +548,6 @@ export const sundaySpaces: MapRow[] = [
     name: text("Collaboration 20"),
     location: [
       {
-        content: "Tech M345",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M345&room-floor=3&room-id=935&room-ingress=",
-      },
-    ],
-    description: "Collaboration Space",
-    capacity: "100",
-  },
-  {
-    name: text("Collaboration 21"),
-    location: [
-      {
         content: "Tech L160",
         href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L160&room-floor=1&room-id=786&room-ingress=",
       },
@@ -579,7 +556,7 @@ export const sundaySpaces: MapRow[] = [
     capacity: "30",
   },
   {
-    name: text("Collaboration 22"),
+    name: text("Collaboration 21"),
     location: [
       {
         content: "Tech L168",
