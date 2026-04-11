@@ -91,10 +91,10 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
                 {current.members.map((member, i) => (
-                  <div key={member.user_id} className="flex gap-2 items-start">
-                    <Avatar>
+                  <div key={member.user_id} className="flex gap-2 items-start min-w-0">
+                    <Avatar className="shrink-0 w-10 h-10">
                       <AvatarFallback
                         className={`text-sm font-medium w-10 h-10 rounded-full flex items-center justify-center ${AVATAR_COLORS[i % AVATAR_COLORS.length].bg} ${AVATAR_COLORS[i % AVATAR_COLORS.length].text}`}
                       >
@@ -102,11 +102,11 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-1 min-w-0">
-                      <span className="text-sm font-medium leading-tight">{member.name}</span>
+                      <span className="text-sm font-medium leading-tight truncate">{member.name}</span>
 
                       <div className="flex flex-wrap gap-1">
                         {member.roles.map((role) => (
-                          <Badge key={role} variant="secondary" className="text-xs font-normal px-1.5 py-0">
+                          <Badge key={role} variant="secondary" className="md:text-xs font-normal px-1.5 py-0">
                             {role.replace(" Engineer", "").replace(" Scientist", "")}
                           </Badge>
                         ))}

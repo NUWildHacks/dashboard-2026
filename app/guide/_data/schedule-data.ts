@@ -128,15 +128,13 @@ export const scheduleEvents: CalendarEvent[] = [
   },
   {
     title: "GitHub Copilot Session",
-    description:
-      "Come learn more about GitHub Copilot in this session!",
+    description: "Come learn more about GitHub Copilot in this session!",
     start: new Date("2026-04-11T15:15:00-05:00"),
     end: new Date("2026-04-10T15:45:00-05:00"),
   },
   {
     title: "Google AI Studio",
-    description:
-      "Come learn more about Google AI in this session!",
+    description: "Come learn more about Google AI in this session!",
     start: new Date("2026-04-11T15:45:00-05:00"),
     end: new Date("2026-04-10T16:30:00-05:00"),
   },
@@ -227,7 +225,7 @@ export const scheduleEvents: CalendarEvent[] = [
     start: new Date("2026-04-12T11:15:00-05:00"),
     end: new Date("2026-04-12T13:15:00-05:00"),
     url: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
-    location: "LR5"
+    location: "LR5",
   },
   {
     title: "Lunch from 10Q Chicken",

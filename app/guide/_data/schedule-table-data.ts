@@ -140,30 +140,22 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "1:00 - 5:00 PM",
-    event: [
-      { content: "Mentors Block 1" },
-    ],
+    event: [{ content: "Mentors Block 1" }],
     location: "Mudd 2nd Floor",
   },
   {
     time: "1:30 - 2:15 PM",
-    event: [
-      { content: "Finding Your Path in Tech with Women in Computing" },
-    ],
+    event: [{ content: "Finding Your Path in Tech with Women in Computing" }],
     location: "LR5",
   },
   {
     time: "3:15 - 3:45 PM",
-    event: [
-      { content: "GitHub Copilot Session" },
-    ],
+    event: [{ content: "GitHub Copilot Session" }],
     location: "LR5",
   },
   {
     time: "3:45 - 4:30 PM",
-    event: [
-      { content: "Google AI Studio" },
-    ],
+    event: [{ content: "Google AI Studio" }],
     location: "LR5",
   },
   // {
@@ -190,9 +182,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   // },
   {
     time: "5:00 - 9:00 PM",
-    event: [
-      { content: "Mentors Block 2" },
-    ],
+    event: [{ content: "Mentors Block 2" }],
     location: "Mudd 2nd Floor",
   },
   {
@@ -275,7 +265,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
         href: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
       },
     ],
-    location: "LR5"
+    location: "LR5",
   },
   {
     time: "12:30 PM",
