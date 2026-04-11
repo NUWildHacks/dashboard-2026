@@ -66,7 +66,7 @@ const JudgingDisplay = ({ projectsWithMetadata, modality, otherModality }: Judgi
             </span>
             <span className="font-normal">
               &mdash; Read the{" "}
-              <a href="/guide/judging-and-awards/how-judging-works" className="underline">
+              <a href="/guide/judging-guide" className="underline">
                 judging guide
               </a>{" "}
               before you start.
