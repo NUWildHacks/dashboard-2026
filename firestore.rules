@@ -88,16 +88,6 @@ service cloud.firestore {
       // Note: Server actions use Admin SDK, but we keep this for defense in depth
       allow write: if isAdmin();
     }
-
-    // Permission codes collection
-    match /permission_codes/{document=**} {
-      // Only admins can read, create, update, and delete permission codes
-      // Note: Server actions use Admin SDK, but we keep this for defense in depth
-      allow read: if isAdmin();
-      allow create: if isAdmin();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
-    }
   }
 }
 

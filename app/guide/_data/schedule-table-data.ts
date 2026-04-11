@@ -154,6 +154,13 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
     ],
     location: "Mudd 1st Floor",
   },
+  {
+    time: "1:00 - 5:00 PM",
+    event: [
+      { content: "Mentors Block 1" },
+    ],
+    location: "Mudd 2nd Floor",
+  },
   // {
   //   time: "12:45 PM",
   //   event: [
@@ -176,6 +183,13 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   //   ],
   //   location: "Tech L160",
   // },
+  {
+    time: "5:00 - 9:00 PM",
+    event: [
+      { content: "Mentors Block 2" },
+    ],
+    location: "Mudd 2nd Floor",
+  },
   {
     time: "6:30 PM",
     event: [
@@ -225,6 +239,11 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     location: "Mudd 1st Floor",
   },
   {
+    time: "10:30 - 12:15 PM",
+    event: [{ content: "Blanket Donation" }],
+    location: "Mudd 2nd Floor",
+  },
+  {
     id: "submission-deadline",
     time: "11:00 AM",
     event: [
@@ -232,6 +251,16 @@ export const sundayScheduleRows: DayScheduleRow[] = [
       { content: " Due and Hacking Ends", bold: true },
     ],
     highlight: "deadline",
+  },
+  {
+    time: "11:00 - 12:15 PM",
+    event: [{ content: "Games! (+ T-Shirt Distribution" }],
+    location: "Tech LR2",
+  },
+  {
+    time: "11:00 - 12:15 PM",
+    event: [{ content: "Scavenger Hunt Check In" }],
+    location: "Mudd 2nd Floor",
   },
   {
     time: "11:15 - 1:15 PM",
@@ -285,7 +314,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "3:45 - 5:00 PM",
-    event: [{ content: "Closing Keynote Speaker and Ceremony", bold: true }],
+    event: [{ content: "Closing Ceremony", bold: true }],
     location: "LR2",
   },
 ];

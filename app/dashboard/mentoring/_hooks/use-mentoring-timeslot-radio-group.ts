@@ -9,7 +9,9 @@ import { confirmMentoringTimeslot } from "../_actions";
 import { TIMESLOT_CONFIRMATION_DEADLINE } from "../constants";
 
 export type UseMentoringTimeslotRadioGroupReturn = {
-  selectedMentoringTimeslot: MentoringTimeslot | undefined;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
+  selectedMentoringTimeslot: MentoringTimeslot;
   setSelectedMentoringTimeslot: (selectedMentoringTimeslot: MentoringTimeslot) => void;
   onSubmit: () => Promise<void>;
   isSubmitting: boolean;
@@ -18,9 +20,8 @@ export type UseMentoringTimeslotRadioGroupReturn = {
 export const useMentoringTimeslotRadioGroup = (
   mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"]
 ): UseMentoringTimeslotRadioGroupReturn => {
-  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot | undefined>(
-    mentoring_timeslot
-  );
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [selectedMentoringTimeslot, setSelectedMentoringTimeslot] = useState<MentoringTimeslot>(mentoring_timeslot);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = async () => {
@@ -53,10 +54,13 @@ export const useMentoringTimeslotRadioGroup = (
       toast.error("Failed to confirm mentoring timeslot", { description: errorMessage });
     } finally {
       setIsSubmitting(false);
+      setIsEditing(false);
     }
   };
 
   return {
+    isEditing,
+    setIsEditing,
     selectedMentoringTimeslot,
     setSelectedMentoringTimeslot,
     onSubmit,

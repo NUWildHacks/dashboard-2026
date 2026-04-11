@@ -470,40 +470,6 @@ const RegistrationForm = ({
 
             <FieldSeparator />
 
-            {/* {now >= registration_deadline && now < start_time && (
-              <>
-                <FieldSet disabled={isSubmitting}>
-                  <FieldLegend className="w-full text-start">Late Registration</FieldLegend>
-                  <FieldGroup>
-                    <Controller
-                      name="permission_code"
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Permission Code</FieldLabel>
-                          <FieldDescription className="w-full text-start">
-                            If you missed the initial registration deadline, please enter your provided permission code
-                          </FieldDescription>
-                          <Input
-                            {...field}
-                            id={field.name}
-                            placeholder="Enter your permission code"
-                            aria-invalid={fieldState.invalid}
-                            autoComplete="off"
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} className="w-full text-start" />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  </FieldGroup>
-                </FieldSet>
-
-                <FieldSeparator />
-              </>
-            )} */}
-
             <FieldSet disabled={isSubmitting}>
               <FieldLegend className="w-full text-start">MLH Agreements</FieldLegend>
               <FieldDescription className="w-full text-start">Required agreements for participation</FieldDescription>

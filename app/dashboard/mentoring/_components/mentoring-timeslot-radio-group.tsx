@@ -1,12 +1,14 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Info, Loader2 } from "lucide-react";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldContent, FieldLabel, FieldTitle } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { MENTORING_TIMESLOTS } from "@/constants";
+import { IN_PERSON_MODALITY, MENTORING_TIMESLOTS, OTHER_MODALITY, REMOTE_MODALITY } from "@/constants";
 import type { JudgeAndMentorUser, MentoringTimeslot } from "@/types";
 
 import { useMentoringTimeslotRadioGroup } from "../_hooks";
@@ -22,13 +24,14 @@ const formattedDeadline = new Intl.DateTimeFormat("en-US", {
   timeZoneName: "short",
 }).format(new Date(TIMESLOT_CONFIRMATION_DEADLINE));
 
-type MentoringTimeslotRadioGroupProps = {
-  modality: JudgeAndMentorUser["modality"];
-  mentoring_timeslot: JudgeAndMentorUser["mentoring_timeslot"];
-};
+type MentoringTimeslotRadioGroupProps = Pick<JudgeAndMentorUser, "other_modality" | "modality" | "mentoring_timeslot">;
 
-const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: MentoringTimeslotRadioGroupProps) => {
-  const { selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
+const MentoringTimeslotRadioGroup = ({
+  other_modality,
+  modality,
+  mentoring_timeslot,
+}: MentoringTimeslotRadioGroupProps) => {
+  const { isEditing, setIsEditing, selectedMentoringTimeslot, setSelectedMentoringTimeslot, onSubmit, isSubmitting } =
     useMentoringTimeslotRadioGroup(mentoring_timeslot);
 
   const isTimeslotConfirmationDeadlinePassed = new Date().getTime() > TIMESLOT_CONFIRMATION_DEADLINE;
@@ -51,10 +54,31 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
           </div>
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+      <CardContent className="flex flex-col gap-6">
+        <Alert>
+          <Info />
+          <AlertTitle className="flex items-center gap-2">
+            <p className="text-sm">Your modality: </p>
+            <Badge>{modality === OTHER_MODALITY ? other_modality : modality}</Badge>
+          </AlertTitle>
+          <AlertDescription>
+            {modality === IN_PERSON_MODALITY && (
+              <p>
+                Because you have selected to be in-person, we expect you to be present at the venue from{" "}
+                <span className="font-bold underline underline-offset-4">{mentoring_timeslot}</span>.
+              </p>
+            )}
+            {modality === REMOTE_MODALITY && (
+              <p>
+                Because you have selected to be remote, we expect you to be available via our Discord server from{" "}
+                <span className="font-bold underline underline-offset-4">{mentoring_timeslot}</span>.
+              </p>
+            )}
+          </AlertDescription>
+        </Alert>
         <RadioGroup
           value={selectedMentoringTimeslot}
-          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting}
+          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting || !isEditing}
           onValueChange={(value: string) => setSelectedMentoringTimeslot(value as MentoringTimeslot)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
@@ -69,18 +93,6 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
             </FieldLabel>
           ))}
         </RadioGroup>
-        {modality === "In-Person" && (
-          <p className="text-sm text-muted-foreground">
-            Because you have selected to be in-person, we expect you to be present at the venue during your assigned
-            timeslot.
-          </p>
-        )}
-        {modality === "Remote" && (
-          <p className="text-sm text-muted-foreground">
-            Because you have selected to be remote, we expect you to be available via our Discord server during your
-            assigned timeslot.
-          </p>
-        )}
       </CardContent>
       <CardFooter className="flex justify-end items-center gap-4">
         {isTimeslotConfirmationDeadlinePassed && (
@@ -89,13 +101,20 @@ const MentoringTimeslotRadioGroup = ({ modality, mentoring_timeslot }: Mentoring
             timeslot.
           </p>
         )}
-        <Button
-          type="button"
-          onClick={onSubmit}
-          disabled={isTimeslotConfirmationDeadlinePassed || isSubmitting || !selectedMentoringTimeslot}
-        >
-          {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
-        </Button>
+        {isEditing ? (
+          <>
+            <Button type="button" onClick={() => setIsEditing(false)} variant="outline">
+              Cancel
+            </Button>
+            <Button type="submit" onClick={onSubmit} disabled={isSubmitting}>
+              {isSubmitting ? <Loader2 className="animate-spin" /> : "Confirm selection"}
+            </Button>
+          </>
+        ) : (
+          <Button type="button" onClick={() => setIsEditing(true)} disabled={isTimeslotConfirmationDeadlinePassed}>
+            Edit timeslot
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
