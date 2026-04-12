@@ -9,7 +9,7 @@ export const TRACKS = [PAST_TRACK, PRESENT_TRACK, FUTURE_TRACK] as const;
 
 export const ROOMS = rooms;
 
-export const ROUND_1_DEADLINE = 1776013200000; // April 12, 2026 1:00 PM CT
+export const ROUND_1_DEADLINE = 1776017700000; // April 12, 2026 1:00 PM CT
 
 export const SUBMITTED_STATUS = "Submitted" as const;
 export const NOT_SUBMITTED_STATUS = "Not submitted" as const;
