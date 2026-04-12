@@ -207,6 +207,8 @@ const TeamMatchingIntake = ({
     if (form.preferred_roles.length === 0) missing.push("Preferred roles");
     if (Object.values(form.skills).every((v) => v === 0)) missing.push("Skills");
     if (!form.work_style) missing.push("Work style");
+    if (!form.gender_preference) missing.push("Team gender preference");
+    if (!form.where_staying) missing.push("Overnight stay");
     if (!consentChecked) missing.push("Consent");
 
     if (missing.length > 0) {
@@ -216,7 +218,7 @@ const TeamMatchingIntake = ({
       return;
     }
 
-    if (form.required_teammates.length + 2 >= form.preferred_team_size) {
+    if (form.required_teammates.length + 1 >= form.preferred_team_size) {
       toast.error("Your required teammates already fill your preferred team size", {
         description: "You don't need team matching — close this and connect with your teammates directly.",
       });
@@ -253,7 +255,7 @@ const TeamMatchingIntake = ({
     }
   };
 
-  const hasFullTeam = form.required_teammates.length >= MAX_REQUIRED_TEAMMATES;
+  const hasFullTeam = form.required_teammates.length + 1 >= form.preferred_team_size;
 
   return (
     <>
@@ -275,7 +277,8 @@ const TeamMatchingIntake = ({
         <CardFooter className="flex items-center justify-between">
           <p className="text-muted-foreground text-xs">
             Available until{" "}
-            {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            {new Date(eventStartTime).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}{" "}
+            10:30AM
           </p>
         </CardFooter>
       </Card>

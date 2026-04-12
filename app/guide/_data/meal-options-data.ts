@@ -16,7 +16,7 @@ export const saturdayLunchOptions: MealOptionRow[] = [
   { option: text("Grilled Chicken Burrito") },
   { option: text("Fried Tofu Burrito") },
   { option: text("Chicken Tinga Burrito"), notes: text("Halal Friendly") },
-  { option: text("Chicken Al Pastor Burrito"), notes: text("Gluten Free Friendly") },
+  { option: text("Chicken Al Pastor Bowls"), notes: text("Gluten Free Friendly") },
   {
     option: text("Tilapia Burrito"),
     notes: text("Allergy Free Friendly"),

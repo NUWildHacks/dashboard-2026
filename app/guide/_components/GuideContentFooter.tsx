@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import type { GuideSearchEntry } from "../_data/guide-search-data";
 
 /** Shown on every guide page: last updated, prev/next nav, copyright. */
-const GUIDE_LAST_UPDATED = "March 30, 2026";
+const GUIDE_LAST_UPDATED = "April 12, 2026";
 
 type GuideContentFooterProps = {
   entries: GuideSearchEntry[];

@@ -3,9 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
 import { Control } from "react-hook-form";
+import { UseFormGetValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { WildHacksConfig } from "@/types";
+import { WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import { editWildhacksConfig } from "../_actions";
 import { type EditWildhacksConfigFormSchema, editWildhacksConfigFormSchema } from "../_schemas";
@@ -15,16 +16,36 @@ export type UseEditWildhacksConfigFormReturn = {
   isDirty: boolean;
   control: Control<EditWildhacksConfigFormSchema>;
   handleSubmit: UseFormHandleSubmit<EditWildhacksConfigFormSchema>;
+  watch: UseFormWatch<EditWildhacksConfigFormSchema>;
+  setValue: UseFormSetValue<EditWildhacksConfigFormSchema>;
+  getValues: UseFormGetValues<EditWildhacksConfigFormSchema>;
   onSubmit: SubmitHandler<EditWildhacksConfigFormSchema>;
   handleReset: () => void;
 };
 
-export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
-  const { max_team_size, max_participants, registration_deadline, start_time, end_time } = wildhacksConfig;
+export const useEditWildhacksConfigForm = (
+  wildhacksConfig: WildHacksConfig & WildHacksSecrets
+): UseEditWildhacksConfigFormReturn => {
+  const {
+    max_team_size,
+    max_participants,
+    registration_deadline,
+    start_time,
+    submission_deadline,
+    end_time,
+    crowd_favorite_password,
+    crowd_favorite_opt_in_started,
+    crowd_favorite_opt_in_open,
+    crowd_favorite_voting_started,
+    crowd_favorite_voting_open,
+  } = wildhacksConfig;
 
   const {
     control,
     handleSubmit,
+    watch,
+    setValue,
+    getValues,
     reset,
     setError,
     formState: { isSubmitting, isDirty },
@@ -35,7 +56,13 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       max_participants: max_participants.toString(),
       registration_deadline,
       start_time,
+      submission_deadline,
       end_time,
+      crowd_favorite_password: crowd_favorite_password || "",
+      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
     },
   });
 
@@ -58,6 +85,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
         return;
       }
 
+      reset(data);
       toast.success("WildHacks config updated successfully");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
@@ -73,13 +101,22 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       max_participants: max_participants.toString(),
       registration_deadline,
       start_time,
+      submission_deadline,
       end_time,
+      crowd_favorite_password: crowd_favorite_password || "",
+      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
     });
   };
 
   return {
     control,
     handleSubmit,
+    watch,
+    setValue,
+    getValues,
     onSubmit,
     isSubmitting,
     isDirty,

@@ -66,6 +66,24 @@ const JudgingDisplay = ({
             </InputGroupAddon>
           </InputGroup>
         </div>
+        
+        <Alert className="rounded-md border-yellow-600 bg-yellow-600/10 text-yellow-600 dark:border-yellow-400 dark:bg-yellow-400/10 dark:text-yellow-400">
+          <AlertTitle className="flex flex-wrap items-center gap-2">
+            <span>
+              Your modality:{" "}
+              <Badge className="border-yellow-600/40 bg-yellow-600/20 text-yellow-700 dark:border-yellow-400/40 dark:bg-yellow-400/20 dark:text-yellow-300">
+                {modality === "Other" ? other_modality : modality}
+              </Badge>
+            </span>
+            <span className="font-normal">
+              &mdash; Read the{" "}
+              <a href="/guide/judging-guide" className="underline">
+                judging guide
+              </a>{" "}
+              before you start.
+            </span>
+          </AlertTitle>
+        </Alert>
         <AssignedProjectGrid
           {...useJudgingFormSheetReturn}
           judgingAssignmentsWithProjects={filteredJudgingAssignmentsWithProject}

@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { registrationFormSchema } from "@/app/registration/_schemas/registration-form.schemas";
+import { registrationFormBaseSchema } from "@/app/registration/_schemas/registration-form.schemas";
 import { MODALITIES } from "@/constants/user.constants";
 import { plainTextSingleLineSchema } from "@/lib";
 
-export const editAdminProfileFormSchema = registrationFormSchema
+export const editAdminProfileFormSchema = registrationFormBaseSchema
   .pick({
     first_name: true,
     last_name: true,
@@ -16,7 +16,7 @@ export const editAdminProfileFormSchema = registrationFormSchema
     path: ["other_dietary_restrictions"],
   });
 
-export const editJudgeMentorProfileFormSchema = registrationFormSchema
+export const editJudgeMentorProfileFormSchema = registrationFormBaseSchema
   .pick({
     first_name: true,
     last_name: true,
@@ -41,7 +41,7 @@ export const editJudgeMentorProfileFormSchema = registrationFormSchema
     path: ["other_dietary_restrictions"],
   });
 
-export const editParticipantProfileFormSchema = registrationFormSchema
+export const editParticipantProfileFormSchema = registrationFormBaseSchema
   .pick({
     first_name: true,
     last_name: true,
