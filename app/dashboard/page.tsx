@@ -174,15 +174,15 @@ const DashboardPage = async () => {
             <CrowdFavoriteParticipantLink votingOpen={participantVotingOpen} />
           ) : (
             <TeamMatchingGate
-            hasSubmitted={hasSubmittedTeamMatching}
-            initialSuggestions={initialSuggestions}
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
+              hasSubmitted={hasSubmittedTeamMatching}
+              initialSuggestions={initialSuggestions}
+              firstName={first_name}
+              lastName={last_name}
+              email={email}
+              school={school as string}
+              fieldOfStudy={field_of_study as string}
+              eventStartTime={wildhacksConfig.start_time}
+            />
           )}
         </div>
       )}
