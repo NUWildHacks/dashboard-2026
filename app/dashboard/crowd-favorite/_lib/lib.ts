@@ -29,7 +29,11 @@ const getCrowdFavoriteProject = async (projectId: string): Promise<CrowdFavorite
 const getCrowdFavoriteProjectForUser = async (userId: string): Promise<CrowdFavoriteProject | null> => {
   const db = getFirestore();
 
-  const snap = await db.collection(CROWD_FAVORITES_COLLECTION).where("team_member_ids", "array-contains", userId).limit(1).get();
+  const snap = await db
+    .collection(CROWD_FAVORITES_COLLECTION)
+    .where("team_member_ids", "array-contains", userId)
+    .limit(1)
+    .get();
   if (snap.empty) return null;
 
   const doc = snap.docs[0];

@@ -123,8 +123,8 @@ const CrowdFavoritePage = async () => {
             <section className="flex flex-col gap-3 rounded-lg border bg-card p-6 shadow-sm">
               <p className="text-sm font-semibold">Presentation phase instructions</p>
               <p className="text-sm text-muted-foreground">
-                Your team is not opted in. If you want to vote for crowd favorite, be in LR2 by 2:00 PM and follow the live in-room
-                announcement for voting.
+                Your team is not opted in. If you want to vote for crowd favorite, be in LR2 by 2:00 PM and follow the
+                live in-room announcement for voting.
               </p>
             </section>
           ) : votingClosed ? (
