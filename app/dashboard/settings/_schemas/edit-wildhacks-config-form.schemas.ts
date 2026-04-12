@@ -14,6 +14,7 @@ export const editWildhacksConfigFormSchema = z
       .refine((val) => Number(val) >= 1, "Max participants must be at least 1"),
     registration_deadline: z.number().min(1, { message: "Registration deadline must be milliseconds since epoch" }),
     start_time: z.number().min(1, { message: "Start time must be milliseconds since epoch" }),
+    submission_deadline: z.number().min(1, { message: "Submission deadline must be milliseconds since epoch" }),
     end_time: z.number().min(1, { message: "End time must be milliseconds since epoch" }),
     crowd_favorite_password: z
       .string()
@@ -28,6 +29,14 @@ export const editWildhacksConfigFormSchema = z
   .refine((data) => data.registration_deadline < data.start_time, {
     message: "Registration deadline must be before event start time",
     path: ["registration_deadline"],
+  })
+  .refine((data) => data.start_time < data.submission_deadline, {
+    message: "Submission deadline must be after event start time",
+    path: ["submission_deadline"],
+  })
+  .refine((data) => data.submission_deadline < data.end_time, {
+    message: "Submission deadline must be before end time",
+    path: ["submission_deadline"],
   })
   .refine((data) => data.start_time < data.end_time, {
     message: "Start time must be before end time",

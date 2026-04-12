@@ -57,9 +57,6 @@ export type ParticipantUser = BaseUser & {
   gender: Gender;
   race: Race;
 
-  crowd_favorite_project_id?: string;
-  voted_for_project_id?: string;
-
   mlh_code_of_conduct: boolean;
   mlh_privacy_policy: boolean;
   mlh_marketing: boolean;

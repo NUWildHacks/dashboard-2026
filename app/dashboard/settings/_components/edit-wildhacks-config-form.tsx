@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Controller } from "react-hook-form";
 
 import DateTimePickerField from "@/components/form/datetime-picker";
@@ -99,6 +99,18 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                 />
 
                 <Controller
+                  name="submission_deadline"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <DateTimePickerField
+                      label="Submission Deadline"
+                      fieldName={field.name}
+                      field={field}
+                      fieldState={fieldState}
+                    />
+                  )}
+                />
+                <Controller
                   name="end_time"
                   control={control}
                   render={({ field, fieldState }) => (
@@ -114,9 +126,13 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
 
               <div className="mt-6 border-t pt-6">
                 <h3 className="mb-4 text-sm font-semibold">Crowd Favorite Controls</h3>
-                <p className="mb-4 text-xs text-muted-foreground">
-                  Use these controls to toggle phases, then click Save changes to apply them.
-                </p>
+                <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+                  <AlertCircle className="mt-0.5 size-4 shrink-0" />
+                  <span>
+                    These buttons stage changes locally. You must click{" "}
+                    <strong>Save changes</strong> at the bottom to persist them.
+                  </span>
+                </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="rounded-md border p-4">
                     <p className="text-sm font-medium">Crowd Favorite Opt-in</p>
@@ -223,7 +239,15 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col items-stretch gap-3">
+        {isDirty && (
+          <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+            <AlertCircle className="size-4 shrink-0" />
+            <span>
+              You have unsaved changes — click <strong>Save changes</strong> to apply them.
+            </span>
+          </div>
+        )}
         <Field orientation="horizontal" className="flex-row-reverse">
           <Button type="submit" form="edit-wildhacks-config-form" disabled={isSubmitting || !isDirty}>
             {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}

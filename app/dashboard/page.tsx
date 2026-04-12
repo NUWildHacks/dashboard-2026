@@ -3,6 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import {
   CrowdFavoriteAdminLink,
   CrowdFavoriteParticipantLink,
+  CrowdFavoritePresentationTile,
   QRCode,
   Statistics,
   Countdown,
@@ -11,8 +12,14 @@ import {
   ResumeUpload,
 } from "@/app/dashboard/_components";
 import {
+  getAllCrowdFavoriteProjects,
+  getCrowdFavoriteProjectForUser,
+  getUserVotedProjectId,
+} from "@/app/dashboard/crowd-favorite/_lib";
+import {
   hasCrowdFavoriteOptInStarted,
   isCrowdFavoriteOptInOpen,
+  isCrowdFavoritePresentationPhase,
   isCrowdFavoriteVotingOpen,
 } from "@/app/dashboard/crowd-favorite/constants";
 import {
@@ -110,6 +117,15 @@ const DashboardPage = async () => {
   const participantOptInOpen = await isCrowdFavoriteOptInOpen(wildhacksConfig);
   const participantVotingOpen = await isCrowdFavoriteVotingOpen(wildhacksConfig);
   const showParticipantCrowdFavoriteLink = role === PARTICIPANT && (participantOptInOpen || participantVotingOpen);
+  const showPresentationTile = role === PARTICIPANT && (await isCrowdFavoritePresentationPhase(wildhacksConfig));
+
+  const [crowdFavoriteProject, votingProjects, votedForProjectId] = await Promise.all([
+    role === PARTICIPANT ? getCrowdFavoriteProjectForUser(userId) : Promise.resolve(null),
+    participantVotingOpen ? getAllCrowdFavoriteProjects() : Promise.resolve([]),
+    participantVotingOpen && role === PARTICIPANT ? getUserVotedProjectId(userId) : Promise.resolve(null),
+  ]);
+
+  const isOptedIn = crowdFavoriteProject !== null;
 
   const db = getFirestore();
 
@@ -171,7 +187,18 @@ const DashboardPage = async () => {
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
           {showParticipantCrowdFavoriteLink ? (
-            <CrowdFavoriteParticipantLink votingOpen={participantVotingOpen} />
+            <CrowdFavoriteParticipantLink
+              votingOpen={participantVotingOpen}
+              optInOpen={participantOptInOpen}
+              isOptedIn={isOptedIn}
+              callerFirstName={first_name}
+              callerEmail={email}
+              crowdFavoriteProject={crowdFavoriteProject}
+              votingProjects={votingProjects.map((p) => ({ id: p.id, project_name: p.project_name }))}
+              initialVotedProjectId={votedForProjectId ?? undefined}
+            />
+          ) : showPresentationTile ? (
+            <CrowdFavoritePresentationTile />
           ) : (
             <TeamMatchingGate
               hasSubmitted={hasSubmittedTeamMatching}

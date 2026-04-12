@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { cn } from "@/lib";
 import type { WildHacksConfig } from "@/types";
 
-type CountdownProps = Pick<WildHacksConfig, "start_time" | "end_time">;
+type CountdownProps = Pick<WildHacksConfig, "start_time" | "submission_deadline">;
 
-const Countdown = ({ start_time, end_time }: CountdownProps) => {
-  const { days, hours, minutes, seconds, hasStarted, hasEnded } = useCountdown(start_time, end_time);
+const Countdown = ({ start_time, submission_deadline }: CountdownProps) => {
+  const { days, hours, minutes, seconds, hasStarted, hasEnded } = useCountdown(start_time, submission_deadline);
 
   let descriptionText = "";
   if (hasStarted && !hasEnded) {

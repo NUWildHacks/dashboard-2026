@@ -91,6 +91,9 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: UsersRound,
     visibleTo: [ADMIN],
   },
+  // {
+  //   title:
+  // }
 ];
 
 export const HEADER_TEXT_MAP: Record<string, string> = {

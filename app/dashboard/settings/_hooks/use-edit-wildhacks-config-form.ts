@@ -29,6 +29,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
     max_participants,
     registration_deadline,
     start_time,
+    submission_deadline,
     end_time,
     crowd_favorite_password,
     crowd_favorite_opt_in_started,
@@ -53,6 +54,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       max_participants: max_participants.toString(),
       registration_deadline,
       start_time,
+      submission_deadline,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
       crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
@@ -81,6 +83,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
         return;
       }
 
+      reset(data);
       toast.success("WildHacks config updated successfully");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
@@ -96,6 +99,7 @@ export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): Us
       max_participants: max_participants.toString(),
       registration_deadline,
       start_time,
+      submission_deadline,
       end_time,
       crowd_favorite_password: crowd_favorite_password || "",
       crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,

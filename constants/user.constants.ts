@@ -53,8 +53,6 @@ export const PARTICIPANT_USER_FIELDS = {
   github_username: "github_username",
   gender: "gender",
   race: "race",
-  crowd_favorite_project_id: "crowd_favorite_project_id",
-  voted_for_project_id: "voted_for_project_id",
   mlh_code_of_conduct: "mlh_code_of_conduct",
   mlh_privacy_policy: "mlh_privacy_policy",
   mlh_marketing: "mlh_marketing",

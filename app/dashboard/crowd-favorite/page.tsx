@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { ADMIN, DASHBOARD_CROWD_FAVORITE_PATH, DASHBOARD_PATH, LOGIN_PATH, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { ParticipantUser, WildHacksConfig } from "@/types";
+import type { WildHacksConfig } from "@/types";
 
 import {
   CrowdFavoriteAdminProjectList,
@@ -13,8 +13,9 @@ import {
 import {
   getAllCrowdFavoriteProjects,
   getAllParticipantUsers,
-  getCrowdFavoriteProject,
+  getCrowdFavoriteProjectForUser,
   getCrowdFavoriteProjectsWithVoteCount,
+  getUserVotedProjectId,
 } from "./_lib";
 import {
   hasCrowdFavoriteVotingStarted,
@@ -62,16 +63,17 @@ const CrowdFavoritePage = async () => {
     );
   }
 
-  const participantUser = user as ParticipantUser;
-  const crowdFavoriteProjectId = participantUser.crowd_favorite_project_id;
   const optInOpen = await isCrowdFavoriteOptInOpen(config);
   const inPresentationPhase = await isCrowdFavoritePresentationPhase(config);
   const votingOpen = await isCrowdFavoriteVotingOpen(config);
   const votingClosed = await isCrowdFavoriteVotingClosed(config);
 
-  const crowdFavoriteProject = crowdFavoriteProjectId ? await getCrowdFavoriteProject(crowdFavoriteProjectId) : null;
+  const crowdFavoriteProject = await getCrowdFavoriteProjectForUser(user.id);
   const participantUsers = !crowdFavoriteProject && !votingOpen ? await getAllParticipantUsers() : null;
-  const crowdFavoriteProjects = votingOpen ? await getAllCrowdFavoriteProjects() : [];
+  const [crowdFavoriteProjects, votedProjectId] = await Promise.all([
+    votingOpen ? getAllCrowdFavoriteProjects() : Promise.resolve([]),
+    votingOpen ? getUserVotedProjectId(user.id) : Promise.resolve(null),
+  ]);
 
   const participantTitle = votingOpen
     ? "Voting is open"
@@ -90,7 +92,7 @@ const CrowdFavoritePage = async () => {
         ? "Your team is currently opted in. Review your project details below and manage your opt-in while this window is open."
         : "Submit your team to opt in during this window if you want your project included for crowd favorite."
       : inPresentationPhase
-        ? "Follow live instructions in LR4 for voting updates and next steps."
+        ? "Follow live instructions in LR2 for voting updates and next steps."
         : votingClosed
           ? "Crowd favorite voting has ended and results are now locked."
           : "Crowd favorite is not currently open. Check back for the next active phase.";
@@ -109,20 +111,20 @@ const CrowdFavoritePage = async () => {
             id: project.id,
             project_name: project.project_name,
           }))}
-          initialVotedProjectId={participantUser.voted_for_project_id}
+          initialVotedProjectId={votedProjectId ?? undefined}
         />
       ) : crowdFavoriteProject ? (
         <CrowdFavoriteOptedInView crowdFavoriteProject={crowdFavoriteProject} canOptOut={optInOpen} />
       ) : (
         <>
           {optInOpen ? (
-            <CrowdFavoriteOptInForm callerFirstName={participantUser.first_name} callerEmail={participantUser.email} />
+            <CrowdFavoriteOptInForm callerFirstName={user.first_name} callerEmail={user.email} />
           ) : inPresentationPhase ? (
             <section className="flex flex-col gap-3 rounded-lg border bg-card p-6 shadow-sm">
               <p className="text-sm font-semibold">Presentation phase instructions</p>
               <p className="text-sm text-muted-foreground">
-                Your team is not opted in. If you want to vote for crowd favorite, be in LR4 and follow the live in-room
-                announcement for when voting becomes available.
+                Your team is not opted in. If you want to vote for crowd favorite, be in LR2 by 2:00 PM and follow the live in-room
+                announcement for voting.
               </p>
             </section>
           ) : votingClosed ? (

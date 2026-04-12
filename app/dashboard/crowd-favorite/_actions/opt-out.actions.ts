@@ -1,6 +1,6 @@
 "use server";
 
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
 import {
@@ -12,7 +12,9 @@ import {
   USERS_COLLECTION,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
-import type { ActionResult, CrowdFavoriteProject, ParticipantUser, WildHacksConfig } from "@/types";
+import type { ActionResult, CrowdFavoriteProject, WildHacksConfig } from "@/types";
+
+import { getCrowdFavoriteProjectForUser } from "../_lib";
 
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
@@ -26,8 +28,6 @@ const optOutOfCrowdFavorite = async (): Promise<CrowdFavoriteOptOutResult> => {
     const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck;
 
-    const participantCaller = caller as ParticipantUser;
-
     // Fetch config once to pass to all helpers
     const configDocSnapshot = await getConfigDocSnapshot();
     const config = configDocSnapshot.data() as WildHacksConfig;
@@ -36,30 +36,15 @@ const optOutOfCrowdFavorite = async (): Promise<CrowdFavoriteOptOutResult> => {
       return { success: false, error: "Crowd favorite opt-out is currently closed" };
     }
 
-    const crowdFavoriteProjectId = participantCaller.crowd_favorite_project_id;
-    if (!crowdFavoriteProjectId) {
+    const db = getFirestore();
+
+    const crowdFavoriteProject = await getCrowdFavoriteProjectForUser(caller.id);
+    if (!crowdFavoriteProject) {
       return { success: false, error: "You are not assigned to a crowd favorite project" };
     }
 
-    const db = getFirestore();
-    const now = Date.now();
-
     await db.runTransaction(async (transaction) => {
-      const callerRef = db.collection(USERS_COLLECTION).doc(caller.id);
-      const callerSnapshot = await transaction.get(callerRef);
-
-      if (!callerSnapshot.exists) {
-        throw new Error("Authenticated user no longer exists");
-      }
-
-      const callerData = callerSnapshot.data() as Omit<ParticipantUser, "id">;
-      const currentProjectId = callerData.crowd_favorite_project_id;
-
-      if (!currentProjectId) {
-        throw new Error("You are no longer assigned to a crowd favorite project");
-      }
-
-      const currentProjectRef = db.collection(CROWD_FAVORITES_COLLECTION).doc(currentProjectId);
+      const currentProjectRef = db.collection(CROWD_FAVORITES_COLLECTION).doc(crowdFavoriteProject.id);
       const projectSnapshot = await transaction.get(currentProjectRef);
 
       if (!projectSnapshot.exists) {
@@ -75,23 +60,6 @@ const optOutOfCrowdFavorite = async (): Promise<CrowdFavoriteOptOutResult> => {
       if (!callerIsMember) {
         throw new Error("You are not on this crowd favorite team");
       }
-
-      const memberIds = [...new Set(project.team_members.map((member) => member.id))];
-
-      const memberRefs = memberIds.map((memberId) => db.collection(USERS_COLLECTION).doc(memberId));
-      const memberSnapshots = await Promise.all(memberRefs.map((memberRef) => transaction.get(memberRef)));
-
-      memberSnapshots.forEach((memberSnapshot, index) => {
-        if (!memberSnapshot.exists) return;
-
-        const memberData = memberSnapshot.data() as Omit<ParticipantUser, "id">;
-        if (memberData.crowd_favorite_project_id !== project.id) return;
-
-        transaction.update(memberRefs[index], {
-          crowd_favorite_project_id: FieldValue.delete(),
-          updated_at: now,
-        });
-      });
 
       // We remove the project document as a whole on opt-out so the team is no longer votable.
       transaction.delete(currentProjectRef);

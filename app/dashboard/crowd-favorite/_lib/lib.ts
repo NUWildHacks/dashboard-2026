@@ -26,6 +26,16 @@ const getCrowdFavoriteProject = async (projectId: string): Promise<CrowdFavorite
   };
 };
 
+const getCrowdFavoriteProjectForUser = async (userId: string): Promise<CrowdFavoriteProject | null> => {
+  const db = getFirestore();
+
+  const snap = await db.collection(CROWD_FAVORITES_COLLECTION).where("team_member_ids", "array-contains", userId).limit(1).get();
+  if (snap.empty) return null;
+
+  const doc = snap.docs[0];
+  return { id: doc.id, ...(doc.data() as Omit<CrowdFavoriteProject, "id">) };
+};
+
 const getAllParticipantUsers = async (): Promise<ParticipantUser[]> => {
   const db = getFirestore();
 
@@ -89,10 +99,29 @@ const getCrowdFavoriteProjectsWithVoteCount = async (
   });
 };
 
+const getUserVotedProjectId = async (userId: string): Promise<string | null> => {
+  const db = getFirestore();
+
+  try {
+    const voteSnap = await db
+      .collectionGroup(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
+      .where("id", "==", userId)
+      .limit(1)
+      .get();
+
+    if (voteSnap.empty) return null;
+    return voteSnap.docs[0].ref.parent.parent?.id ?? null;
+  } catch {
+    return null;
+  }
+};
+
 export {
   getAllCrowdFavoriteProjects,
   getAllParticipantUsers,
   getCrowdFavoriteProject,
+  getCrowdFavoriteProjectForUser,
   getCrowdFavoriteProjectsWithVoteCount,
+  getUserVotedProjectId,
 };
 export type { CrowdFavoriteProjectWithVotes };

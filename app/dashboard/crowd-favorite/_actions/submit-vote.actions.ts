@@ -10,10 +10,11 @@ import {
   DASHBOARD_PATH,
   LOGIN_PATH,
   PARTICIPANT,
-  USERS_COLLECTION,
 } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
-import type { ActionResult, ParticipantUser, Vote, WildHacksConfig } from "@/types";
+import type { ActionResult, Vote, WildHacksConfig } from "@/types";
+
+import { getUserVotedProjectId } from "../_lib";
 
 import { crowdFavoriteVoteFormSchema, type CrowdFavoriteVoteFormSchema } from "../_schemas/vote-form.schemas";
 import { isCrowdFavoriteVotingOpen } from "../constants";
@@ -64,28 +65,24 @@ const submitCrowdFavoriteVote = async (
 
     const selectedProjectRef = db.collection(CROWD_FAVORITES_COLLECTION).doc(data.selected_project_id);
 
+    // Find any existing vote outside the transaction (collection group query can't run inside one)
+    const previousVotedProjectId = await getUserVotedProjectId(caller.id);
+    const previousVoteRef =
+      previousVotedProjectId && previousVotedProjectId !== data.selected_project_id
+        ? db
+            .collection(CROWD_FAVORITES_COLLECTION)
+            .doc(previousVotedProjectId)
+            .collection(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
+            .doc(caller.id)
+        : null;
+
     await db.runTransaction(async (transaction) => {
       const selectedProjectSnapshot = await transaction.get(selectedProjectRef);
       if (!selectedProjectSnapshot.exists) {
         throw new Error("Selected project no longer exists");
       }
 
-      const userRef = db.collection(USERS_COLLECTION).doc(caller.id);
-      const userSnapshot = await transaction.get(userRef);
-
-      if (!userSnapshot.exists) {
-        throw new Error("Authenticated user no longer exists");
-      }
-
-      const participant = userSnapshot.data() as Omit<ParticipantUser, "id">;
-      const previousVotedProjectId = participant.voted_for_project_id;
-
-      if (previousVotedProjectId) {
-        const previousVoteRef = db
-          .collection(CROWD_FAVORITES_COLLECTION)
-          .doc(previousVotedProjectId)
-          .collection(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
-          .doc(caller.id);
+      if (previousVoteRef) {
         transaction.delete(previousVoteRef);
       }
 
@@ -95,11 +92,6 @@ const submitCrowdFavoriteVote = async (
         id: caller.id,
         created_at: now,
       } as Vote);
-
-      transaction.update(userRef, {
-        voted_for_project_id: data.selected_project_id,
-        updated_at: now,
-      } as Partial<ParticipantUser>);
     });
 
     revalidatePath(DASHBOARD_CROWD_FAVORITE_PATH);

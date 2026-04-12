@@ -7,6 +7,7 @@ export type CrowdFavoriteProject = BaseModel & {
   project_name: string;
   devpost_url: string;
   team_members: CrowdFavoriteTeamMember[];
+  team_member_ids: string[];
 };
 
 /** Document at `/crowd_favorites/{crowd_favorite_project_id}/votes/{user_id}` */

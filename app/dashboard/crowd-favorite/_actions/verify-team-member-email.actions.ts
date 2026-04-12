@@ -5,6 +5,8 @@ import { getFirestore } from "firebase-admin/firestore";
 import { DASHBOARD_CROWD_FAVORITE_PATH, LOGIN_PATH, PARTICIPANT, USERS_COLLECTION } from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 
+import { getCrowdFavoriteProjectForUser } from "../_lib";
+
 type VerifyTeamMemberEmailResult =
   | { success: true; first_name: string; email: string }
   | { success: false; error: string };
@@ -40,7 +42,7 @@ const verifyTeamMemberEmail = async (email: string): Promise<VerifyTeamMemberEma
       return { success: false, error: "Only participants can be added to crowd favorite teams" };
     }
 
-    if (member.crowd_favorite_project_id) {
+    if (await getCrowdFavoriteProjectForUser(userDocSnapshots.docs[0].id)) {
       return { success: false, error: "This participant is already assigned to another crowd favorite project" };
     }
 

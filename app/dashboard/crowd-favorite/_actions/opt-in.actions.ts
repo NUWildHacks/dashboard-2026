@@ -14,6 +14,8 @@ import {
 import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
 import type { ActionResult, CrowdFavoriteProject, ParticipantUser, WildHacksConfig } from "@/types";
 
+import { getCrowdFavoriteProjectForUser } from "../_lib";
+
 import { crowdFavoriteOptInFormSchema, type CrowdFavoriteOptInFormSchema } from "../_schemas";
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
@@ -92,7 +94,7 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
         };
       }
 
-      if (user.crowd_favorite_project_id) {
+      if (await getCrowdFavoriteProjectForUser(doc.id)) {
         return {
           success: false,
           error: `${email} is already assigned to a crowd favorite project`,
@@ -116,6 +118,10 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
       });
     }
 
+    if (await getCrowdFavoriteProjectForUser(caller.id)) {
+      return { success: false, error: "You are already assigned to a crowd favorite project" };
+    }
+
     const callerRef = db.collection(USERS_COLLECTION).doc(caller.id);
     const crowdFavoriteRef = db.collection(CROWD_FAVORITES_COLLECTION).doc();
 
@@ -128,10 +134,6 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
       const callerData = callerSnapshot.data() as Omit<ParticipantUser, "id">;
       if (callerData.role !== PARTICIPANT) {
         throw new Error("Only participants can opt in to crowd favorite");
-      }
-
-      if (callerData.crowd_favorite_project_id) {
-        throw new Error("You are already assigned to a crowd favorite project");
       }
 
       const teammateRefs = candidateMembers.map((member) => db.doc(member.refPath));
@@ -147,10 +149,6 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
         const teammateData = snapshot.data() as Omit<ParticipantUser, "id">;
         if (teammateData.role !== PARTICIPANT) {
           throw new Error(`${teammateEmail} is not a participant`);
-        }
-
-        if (teammateData.crowd_favorite_project_id) {
-          throw new Error(`${teammateEmail} was assigned to another crowd favorite project`);
         }
       });
 
@@ -171,21 +169,10 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
         project_name: data.project_name,
         devpost_url: data.devpost_url,
         team_members: teamMembers,
+        team_member_ids: teamMembers.map((m) => m.id),
         created_at: now,
         updated_at: now,
       } as Omit<CrowdFavoriteProject, "id">);
-
-      transaction.update(callerRef, {
-        crowd_favorite_project_id: crowdFavoriteRef.id,
-        updated_at: now,
-      } as Partial<ParticipantUser>);
-
-      teammateRefs.forEach((teammateRef) => {
-        transaction.update(teammateRef, {
-          crowd_favorite_project_id: crowdFavoriteRef.id,
-          updated_at: now,
-        } as Partial<ParticipantUser>);
-      });
     });
 
     revalidatePath(DASHBOARD_CROWD_FAVORITE_PATH);

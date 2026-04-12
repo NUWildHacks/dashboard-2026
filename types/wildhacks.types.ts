@@ -6,6 +6,7 @@ export type WildHacksConfig = {
 
   registration_deadline: number;
   start_time: number;
+  submission_deadline: number,
   end_time: number;
 
   crowd_favorite_password: string;
