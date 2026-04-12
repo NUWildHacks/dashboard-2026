@@ -61,6 +61,7 @@ export const isCrowdFavoritePresentationPhase = async (config?: Partial<WildHack
   const stateConfig = config ? normalizeCrowdFavoriteState(config) : await getCrowdFavoriteStateConfig();
   return (
     stateConfig.crowd_favorite_opt_in_started &&
+    !stateConfig.crowd_favorite_voting_started &&
     !stateConfig.crowd_favorite_opt_in_open &&
     !stateConfig.crowd_favorite_voting_open
   );

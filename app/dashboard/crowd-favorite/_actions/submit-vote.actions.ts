@@ -15,7 +15,6 @@ import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
 import type { ActionResult, Vote, WildHacksConfig } from "@/types";
 
 import { getUserVotedProjectId } from "../_lib";
-
 import { crowdFavoriteVoteFormSchema, type CrowdFavoriteVoteFormSchema } from "../_schemas/vote-form.schemas";
 import { isCrowdFavoriteVotingOpen } from "../constants";
 

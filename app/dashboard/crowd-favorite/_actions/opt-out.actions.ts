@@ -5,17 +5,16 @@ import { revalidatePath } from "next/cache";
 
 import {
   CROWD_FAVORITES_COLLECTION,
+  CROWD_FAVORITE_VOTES_SUBCOLLECTION,
   DASHBOARD_CROWD_FAVORITE_PATH,
   DASHBOARD_PATH,
   LOGIN_PATH,
   PARTICIPANT,
-  USERS_COLLECTION,
 } from "@/constants";
 import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
 import type { ActionResult, CrowdFavoriteProject, WildHacksConfig } from "@/types";
 
 import { getCrowdFavoriteProjectForUser } from "../_lib";
-
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
 type CrowdFavoriteOptOutResult = ActionResult;
@@ -64,6 +63,23 @@ const optOutOfCrowdFavorite = async (): Promise<CrowdFavoriteOptOutResult> => {
       // We remove the project document as a whole on opt-out so the team is no longer votable.
       transaction.delete(currentProjectRef);
     });
+
+    // Subcollection documents are not deleted when a parent document is deleted in Firestore.
+    // Delete all votes to prevent orphaned docs from being returned by collectionGroup queries.
+    const votesSnapshot = await db
+      .collection(CROWD_FAVORITES_COLLECTION)
+      .doc(crowdFavoriteProject.id)
+      .collection(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
+      .get();
+
+    if (!votesSnapshot.empty) {
+      const BATCH_SIZE = 500;
+      for (let i = 0; i < votesSnapshot.docs.length; i += BATCH_SIZE) {
+        const batch = db.batch();
+        votesSnapshot.docs.slice(i, i + BATCH_SIZE).forEach((doc) => batch.delete(doc.ref));
+        await batch.commit();
+      }
+    }
 
     revalidatePath(DASHBOARD_CROWD_FAVORITE_PATH);
     revalidatePath(DASHBOARD_PATH);
