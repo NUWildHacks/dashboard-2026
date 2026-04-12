@@ -12,7 +12,7 @@ import { CategoryWithAll, useFilters } from "@/hooks";
 import type { JudgeUser } from "@/types";
 
 import { useAssignedProjects, useJudgingFormSheet } from "../_hooks";
-import { SUBMISSION_STATUSES } from "../constants";
+import { ROUND_1, ROUND_1_DEADLINE, SUBMISSION_STATUSES } from "../constants";
 import type { JudgingAssignmentWithProject, JudgingRound, SubmissionStatus } from "../types";
 
 import { AssignedProjectList, JudgingFormSheet } from ".";
@@ -40,9 +40,21 @@ const JudgingDisplay = ({
 
   const useJudgingFormSheetReturn = useJudgingFormSheet(judgeId, currentPath, judgingRound);
 
+  const isPastRound1Deadline = judgingRound === ROUND_1 && new Date().getTime() > ROUND_1_DEADLINE;
+
   return (
     <>
       <div className="h-full flex flex-col gap-4">
+        {isPastRound1Deadline && (
+          <Alert variant="destructive" className="shadow-xs border-destructive bg-destructive/10 text-destructive">
+            <Info />
+            <AlertTitle className="flex items-center gap-2">
+              <p className="text-sm">
+                The round 1 deadline has passed. You can no longer submit or edit your judging forms.
+              </p>
+            </AlertTitle>
+          </Alert>
+        )}
         <Alert className="shadow-xs">
           <Info />
           <AlertTitle className="flex items-center gap-2">

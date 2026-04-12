@@ -9,9 +9,10 @@ import { cn } from "@/lib";
 type RatingProps<T extends FieldValues = FieldValues> = {
   fieldName: string;
   field: UseControllerReturn<T>["field"];
+  disabled: boolean;
 };
 
-const Rating = <T extends FieldValues>({ fieldName, field }: RatingProps<T>) => {
+const Rating = <T extends FieldValues>({ fieldName, field, disabled }: RatingProps<T>) => {
   const [hoverRating, setHoverRating] = useState(0);
   const rating = field.value || 0;
 
@@ -19,7 +20,7 @@ const Rating = <T extends FieldValues>({ fieldName, field }: RatingProps<T>) => 
     <div id={`${fieldName}-rating`} className="flex gap-1">
       {[1, 2, 3, 4].map((star) => (
         <button
-          className="transition-transform hover:scale-110"
+          className={cn(disabled ? "cursor-not-allowed opacity-50" : "transition-transform hover:scale-110")}
           key={star}
           onClick={() => field.onChange(star)}
           onMouseEnter={() => setHoverRating(star)}
@@ -27,6 +28,7 @@ const Rating = <T extends FieldValues>({ fieldName, field }: RatingProps<T>) => 
           type="button"
           aria-label={`Rate ${star} of 4`}
           aria-pressed={rating === star}
+          disabled={disabled}
         >
           <Star
             className={cn(

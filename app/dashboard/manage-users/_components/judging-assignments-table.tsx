@@ -14,6 +14,7 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { IN_PERSON_MODALITY } from "@/constants";
 import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { useJudgingAssignmentsTable } from "../_hooks";
@@ -40,6 +41,13 @@ const JudgingAssignmentsTable = ({ judgingAssignmentsMap, projectsMap, judges }:
     handleUploadAssignments,
     handleFileChange,
   } = useJudgingAssignmentsTable(judgingAssignmentsMap, projectsMap);
+
+  const filteredJudges = judges.filter((judge) => {
+    if (round === ROUND_2) {
+      return judge.modality === IN_PERSON_MODALITY;
+    }
+    return true;
+  });
 
   return (
     <div className="flex-1 space-y-4">
@@ -76,10 +84,10 @@ const JudgingAssignmentsTable = ({ judgingAssignmentsMap, projectsMap, judges }:
             </SelectContent>
           </Select>
           <Combobox
-            items={judges}
+            items={filteredJudges}
             value={selectedJudge}
             onValueChange={setSelectedJudge}
-            itemToStringLabel={(judge: JudgeUser) => `${judge.first_name} ${judge.last_name}`}
+            itemToStringLabel={(judge: JudgeUser | JudgeAndMentorUser) => `${judge.first_name} ${judge.last_name}`}
           >
             <ComboboxInput placeholder="Select a judge" className="w-full md:w-auto min-w-[200px]" />
             <ComboboxContent>

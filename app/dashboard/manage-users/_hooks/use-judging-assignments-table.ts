@@ -16,7 +16,7 @@ import { ChangeEvent, RefObject, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useFilters, UseFiltersReturnWithoutAll } from "@/hooks";
-import { JudgeUser } from "@/types";
+import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { uploadAssignments } from "../_actions";
 import { getJudgingAssignmentsColumns } from "../_lib/client";
@@ -25,8 +25,8 @@ import { ROUND_1 } from "../../judging/constants";
 import { JudgingAssignment, JudgingAssignmentWithProject, JudgingRound, Project } from "../../judging/types";
 
 export type UseJudgingAssignmentsTableReturn = {
-  selectedJudge: JudgeUser | null;
-  setSelectedJudge: (judgeUser: JudgeUser | null) => void;
+  selectedJudge: JudgeUser | JudgeAndMentorUser | null;
+  setSelectedJudge: (judgeUser: JudgeUser | JudgeAndMentorUser | null) => void;
   search: UseFiltersReturnWithoutAll<JudgingRound>["search"];
   setSearch: UseFiltersReturnWithoutAll<JudgingRound>["setSearch"];
   round: UseFiltersReturnWithoutAll<JudgingRound>["category"];
@@ -50,7 +50,7 @@ export const useJudgingAssignmentsTable = (
   } = useFilters<JudgingRound>({ includeAll: false, defaultCategory: ROUND_1 });
 
   const [uploadRound, setUploadRound] = useState<JudgingRound | undefined>(undefined);
-  const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
+  const [selectedJudge, setSelectedJudge] = useState<JudgeUser | JudgeAndMentorUser | null>(null);
   const [sorting, setSorting] = useState<SortingState>([{ id: "project.name", desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 

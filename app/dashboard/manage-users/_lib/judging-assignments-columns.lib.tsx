@@ -6,7 +6,6 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { ROUND_1 } from "../../judging/constants";
 import { JudgingAssignmentWithProject } from "../../judging/types";
 
 /**
@@ -71,13 +70,6 @@ export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithP
       },
       cell: ({ row }) => {
         return <div className="text-left text-muted-foreground">{row.original.order}</div>;
-      },
-    },
-    {
-      accessorKey: "judging_round",
-      header: "Judging Round",
-      cell: ({ row }) => {
-        return <Badge variant="secondary">{row.original.judging_round === ROUND_1 ? "Round 1" : "Round 2"}</Badge>;
       },
     },
     {
