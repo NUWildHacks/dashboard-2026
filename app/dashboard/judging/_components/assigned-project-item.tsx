@@ -1,25 +1,41 @@
 "use client";
 
+import { MapPin } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
-import { ProjectWithMetadata } from "../types";
+import { UseJudgingFormSheetReturn } from "../_hooks";
+import { TRACKS_MAP } from "../constants";
+import type { JudgingAssignmentWithProject } from "../types";
 
-type AssignedProjectItemProps = {
-  projectWithMetadata: ProjectWithMetadata;
+type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
+  judgingAssignmentWithProject: JudgingAssignmentWithProject;
 };
 
-const AssignedProjectItem = ({ projectWithMetadata }: AssignedProjectItemProps) => {
-  const { name, track, judging_form } = projectWithMetadata;
+const AssignedProjectItem = ({
+  handleOpenJudgingForm,
+  handleKeyDown,
+  judgingAssignmentWithProject,
+}: AssignedProjectItemProps) => {
+  const { project, judging_form, room_id } = judgingAssignmentWithProject;
+  const { name, track } = project;
 
   return (
-    <Item variant="outline" aria-label={`Project: ${name}`} className="w-full shadow-xs">
+    <Item
+      variant="outline"
+      tabIndex={0}
+      aria-label={`Judge project: ${name}`}
+      onClick={() => handleOpenJudgingForm(judgingAssignmentWithProject)}
+      onKeyDown={(event) => handleKeyDown(event, judgingAssignmentWithProject)}
+      className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
+    >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">
           <span className="truncate">{name}</span>
         </ItemTitle>
         <ItemDescription className="flex flex-row items-center gap-2">
-          <Badge variant="secondary">{track}</Badge>
+          <Badge variant="secondary">{TRACKS_MAP[track]}</Badge>
           {judging_form && (
             <Badge
               variant="outline"
@@ -27,6 +43,12 @@ const AssignedProjectItem = ({ projectWithMetadata }: AssignedProjectItemProps) 
             >
               Submitted
             </Badge>
+          )}
+          {room_id && (
+            <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
+              <MapPin className="size-3 shrink-0" aria-hidden="true" />
+              {room_id}
+            </span>
           )}
         </ItemDescription>
       </ItemContent>

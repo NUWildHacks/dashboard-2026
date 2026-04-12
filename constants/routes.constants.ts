@@ -10,7 +10,8 @@ export const DASHBOARD_SUPPORT_PATH = "/dashboard/support" as const;
 export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
 export const DASHBOARD_CROWD_FAVORITE_PATH = "/dashboard/crowd-favorite" as const;
 export const GUIDE_PATH = "/guide" as const;
-export const DASHBOARD_JUDGING_PATH = "/dashboard/judging" as const;
+export const DASHBOARD_JUDGING_ROUND_1_PATH = "/dashboard/judging/round-1" as const;
+export const DASHBOARD_JUDGING_ROUND_2_PATH = "/dashboard/judging/round-2" as const;
 export const DASHBOARD_MENTORING_PATH = "/dashboard/mentoring" as const;
 export const DASHBOARD_TEAM_MATCHING_PATH = "/dashboard/team-matching" as const;
 
@@ -23,7 +24,10 @@ export const PROTECTED_ROUTES = [
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_CROWD_FAVORITE_PATH,
   GUIDE_PATH,
-  DASHBOARD_JUDGING_PATH,
+  DASHBOARD_CHECK_IN_PATH,
+  DASHBOARD_MENTORING_PATH,
+  DASHBOARD_JUDGING_ROUND_1_PATH,
+  DASHBOARD_JUDGING_ROUND_2_PATH,
   DASHBOARD_SETTINGS_PATH,
   DASHBOARD_TEAM_MATCHING_PATH,
 ] as const satisfies readonly string[];

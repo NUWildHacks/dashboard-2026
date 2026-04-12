@@ -86,11 +86,21 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
  * // User has required role, proceed with action
  * ```
  */
-const requireRole = <T extends User["role"]>(
+const requireRole = (
   user: User,
-  requiredRole: T,
+  requiredRole: User["role"] | User["role"][],
   errorMessage?: string
 ): ActionResult | null => {
+  if (Array.isArray(requiredRole)) {
+    if (requiredRole.includes(user.role)) {
+      return null;
+    }
+    return {
+      success: false,
+      error: errorMessage || "You must be a " + requiredRole.join(" or ") + " to perform this action",
+    };
+  }
+
   if (user.role !== requiredRole) {
     const defaultMessages: Record<User["role"], string> = {
       [PARTICIPANT]: "You must be a participant to perform this action",

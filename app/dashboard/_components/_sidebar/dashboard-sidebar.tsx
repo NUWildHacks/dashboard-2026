@@ -1,9 +1,8 @@
 "use client";
 
-import { Settings } from "lucide-react";
+import { ChevronRight, Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ComponentProps, PropsWithChildren } from "react";
 
 import { SidebarLogoutButton } from "@/app/dashboard/_components";
@@ -19,13 +18,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { DISCORD_INVITE_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
 import { Role } from "@/types";
 
-import { getHeaderText } from "../../_lib/sidebar";
+import { useDashboardSidebar } from "../../_hooks";
 import { SIDEBAR_ITEMS } from "../../constants";
 
 type DashboardSidebarProps = PropsWithChildren<{
@@ -34,7 +36,7 @@ type DashboardSidebarProps = PropsWithChildren<{
   ComponentProps<typeof Sidebar>;
 
 const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) => {
-  const pathname = usePathname();
+  const { openSubMenus, handleOpenSubMenu, isPathActive, headerText } = useDashboardSidebar();
 
   return (
     <SidebarProvider>
@@ -54,6 +56,35 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
             <SidebarMenu className="gap-2">
               {SIDEBAR_ITEMS.map((item) => {
                 if (!item.visibleTo.includes(role)) return null;
+                if (item.hasSubItems) {
+                  const hasActiveSubItem = item.subItems.some((subItem) => isPathActive(subItem.url));
+                  const isSubMenuOpen = openSubMenus[item.title] ?? hasActiveSubItem;
+
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton className="font-regular" onClick={() => handleOpenSubMenu(item.title)}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                        <ChevronRight
+                          className={`ml-auto transition-transform duration-200 ${isSubMenuOpen ? "rotate-90" : ""}`}
+                        />
+                      </SidebarMenuButton>
+                      {isSubMenuOpen && (
+                        <SidebarMenuSub>
+                          {item.subItems.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton asChild>
+                                <Link href={subItem.url} className="font-regular">
+                                  {subItem.title}
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      )}
+                    </SidebarMenuItem>
+                  );
+                }
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
@@ -97,7 +128,7 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
           <div className="flex h-12 shrink-0 items-center gap-2 px-4 border-b border-border">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            <p className="flex-1">{getHeaderText(pathname)}</p>
+            <p className="flex-1">{headerText}</p>
           </div>
           <main className="flex-1 flex flex-col gap-4 p-4">{children}</main>
         </div>

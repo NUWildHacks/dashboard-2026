@@ -1,2 +1,2 @@
 export { getUsersColumns } from "./users-columns.lib";
-export { getProjectsColumns } from "./projects-columns.lib";
+export { getJudgingAssignmentsColumns } from "./judging-assignments-columns.lib";

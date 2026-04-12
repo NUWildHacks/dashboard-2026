@@ -84,7 +84,7 @@ export const githubUsernameSchema = z
 /**
  * Firestore user ID schema.
  * Validates that a string matches the format of Firestore auto-generated document IDs:
- * - Exactly 20 characters long
+ * - Exactly 28 characters long
  * - Contains only alphanumeric characters (a-z, A-Z, 0-9)
  *
  * @example

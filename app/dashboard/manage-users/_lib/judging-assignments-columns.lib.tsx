@@ -6,22 +6,24 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { ProjectWithMetadata } from "../../judging/types";
+import { ROUND_1 } from "../../judging/constants";
+import { JudgingAssignmentWithProject } from "../../judging/types";
 
 /**
- * Get projects table columns.
- * Returns columns for displaying projects in a table format.
+ * Get judging assignments table columns.
+ * Returns columns for displaying judging assignments in a table format.
  *
- * @returns Array of column definitions for the projects table
+ * @returns Array of column definitions for the judging assignments table
  * @example
  * ```ts
- * const columns = getProjectsColumns();
+ * const columns = getJudgingAssignmentsColumns();
  * ```
  */
-export const getProjectsColumns = (): ColumnDef<ProjectWithMetadata>[] => {
+export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithProject>[] => {
   return [
     {
-      accessorKey: "name",
+      id: "project.name",
+      accessorKey: "project.name",
       header: ({ column }) => {
         return (
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
@@ -31,34 +33,54 @@ export const getProjectsColumns = (): ColumnDef<ProjectWithMetadata>[] => {
         );
       },
       cell: ({ row }) => {
-        return <div className="text-left text-muted-foreground">{row.original.name}</div>;
+        return <div className="text-left text-muted-foreground">{row.original.project.name}</div>;
       },
     },
     {
-      accessorKey: "track",
+      accessorKey: "project.track",
       header: "Track",
       cell: ({ row }) => {
-        return <Badge variant="secondary">{row.original.track}</Badge>;
+        return <Badge variant="secondary">{row.original.project.track}</Badge>;
       },
     },
     {
-      accessorKey: "project_url",
-      header: "Project URL",
+      accessorKey: "project.devpost_url",
+      header: "Devpost URL",
       cell: ({ row }) => {
         return (
           <a
-            href={row.original.project_url}
+            href={row.original.project.devpost_url}
             target="_blank"
             rel="noreferrer"
             className="underline-offset-4 hover:underline"
           >
-            {row.original.project_url}
+            {row.original.project.devpost_url}
           </a>
         );
       },
     },
     {
-      accessorKey: "Status",
+      accessorKey: "order",
+      header: ({ column }) => {
+        return (
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            Order
+            {column.getIsSorted() === "asc" ? <ChevronUp /> : <ChevronDown />}
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return <div className="text-left text-muted-foreground">{row.original.order}</div>;
+      },
+    },
+    {
+      accessorKey: "judging_round",
+      header: "Judging Round",
+      cell: ({ row }) => {
+        return <Badge variant="secondary">{row.original.judging_round === ROUND_1 ? "Round 1" : "Round 2"}</Badge>;
+      },
+    },
+    {
       header: "Status",
       cell: ({ row }) => {
         if (!row.original.judging_form) {
