@@ -4,6 +4,7 @@ import { MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { cn } from "@/lib";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import { TRACKS_MAP } from "../constants";
@@ -29,6 +30,7 @@ const AssignedProjectItem = ({
       onClick={() => handleOpenJudgingForm(judgingAssignmentWithProject)}
       onKeyDown={(event) => handleKeyDown(event, judgingAssignmentWithProject)}
       className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
+      role="button"
     >
       <ItemContent className="gap-2 min-w-0">
         <ItemTitle className="w-full">

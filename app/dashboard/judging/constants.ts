@@ -17,6 +17,8 @@ export const ROUND_1 = "Round 1" as const;
 export const ROUND_2 = "Round 2" as const;
 export const ROUNDS = [ROUND_1, ROUND_2] as const;
 
+export const ROUND_1_DEADLINE = 1776017700000 as const;
+
 export const TRACKS_MAP = {
   [PAST_TRACK]: "Childhood Games",
   [PRESENT_TRACK]: "Community",
