@@ -42,7 +42,6 @@ const CrowdFavoritePage = async () => {
     return (
       <div className="flex flex-1 flex-col gap-6">
         <section className="flex flex-col gap-2">
-          <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">Crowd Favorite</p>
           <h1 className="text-2xl font-semibold">Crowd favorite projects</h1>
           <p className="max-w-3xl text-sm text-muted-foreground">
             {votingClosed

@@ -85,11 +85,12 @@ const getCrowdFavoriteProjectsWithVoteCount = async (
         .collection(CROWD_FAVORITES_COLLECTION)
         .doc(project.id)
         .collection(CROWD_FAVORITE_VOTES_SUBCOLLECTION)
+        .count()
         .get();
 
       return {
         ...project,
-        vote_count: voteSnapshot.size,
+        vote_count: voteSnapshot.data().count,
       };
     })
   );

@@ -47,12 +47,14 @@ const CrowdFavoriteAdminProjectList = ({
       {projects.map((project, index) => (
         <Card key={project.id} className={cn(highlightWinner && index === 0 && "ring-2 ring-white ring-offset-2")}>
           <CardHeader>
-            <CardTitle className="flex items-center justify-between gap-2">
+            <CardTitle className="flex items-center justify-between gap-2 items-start">
               <span>{project.project_name}</span>
-              <span className="flex items-center gap-2 text-sm font-medium">
-                {highlightWinner && index === 0 ? "Winner" : null}
-                {showVoteCount ? `Votes: ${project.vote_count}` : null}
-              </span>
+              <div>
+                <span>{highlightWinner && index === 0 ? "Winner " : null}</span>
+                <span className="flex items-center gap-2 text-sm font-medium">
+                  {showVoteCount ? `Votes: ${project.vote_count}` : null}
+                </span>
+              </div>
             </CardTitle>
             <CardDescription>
               Rank #{index + 1}
