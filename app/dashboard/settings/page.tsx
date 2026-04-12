@@ -1,6 +1,13 @@
 import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
 import { getAuthenticatedUser, getConfigDocSnapshot, getSecretsDocSnapshot } from "@/lib";
-import type { AdminUser, JudgeUser, JudgeAndMentorUser, ParticipantUser, WildHacksConfig, WildHacksSecrets } from "@/types";
+import type {
+  AdminUser,
+  JudgeUser,
+  JudgeAndMentorUser,
+  ParticipantUser,
+  WildHacksConfig,
+  WildHacksSecrets,
+} from "@/types";
 
 import {
   EditParticipantProfileForm,

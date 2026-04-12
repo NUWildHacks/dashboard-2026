@@ -41,10 +41,7 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
           max_participants: Number(max_participants),
           updated_at: now,
         }),
-      db
-        .collection(WILDHACKS_COLLECTION)
-        .doc(WILDHACKS_SECRETS_DOC)
-        .set({ crowd_favorite_password }, { merge: true }),
+      db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_SECRETS_DOC).set({ crowd_favorite_password }, { merge: true }),
     ]);
 
     revalidatePath(DASHBOARD_SETTINGS_PATH);

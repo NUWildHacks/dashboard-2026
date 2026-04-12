@@ -23,7 +23,9 @@ export type UseEditWildhacksConfigFormReturn = {
   handleReset: () => void;
 };
 
-export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig & WildHacksSecrets): UseEditWildhacksConfigFormReturn => {
+export const useEditWildhacksConfigForm = (
+  wildhacksConfig: WildHacksConfig & WildHacksSecrets
+): UseEditWildhacksConfigFormReturn => {
   const {
     max_team_size,
     max_participants,
