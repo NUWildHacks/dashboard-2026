@@ -20,7 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
-import { TRACKS_MAP } from "../constants";
+import { ROUND_1, ROUND_1_DEADLINE, TRACKS_MAP } from "../constants";
 
 type JudgingFormSheetProps = Pick<
   UseJudgingFormSheetReturn,
@@ -48,7 +48,10 @@ const JudgingFormSheet = ({
     project: { name, track, devpost_url },
     judging_form,
     room_id,
+    judging_round,
   } = selectedJudgingAssignmentWithProject;
+
+  const isPastRound1Deadline = judging_round === ROUND_1 && new Date().getTime() > ROUND_1_DEADLINE;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -86,7 +89,7 @@ const JudgingFormSheet = ({
         <Separator />
         <form id="judging-form" onSubmit={handleSubmit(onSubmit)} className="flex-1 overflow-y-auto px-4">
           <FieldGroup>
-            <FieldSet disabled={isSubmitting}>
+            <FieldSet disabled={isSubmitting || isPastRound1Deadline}>
               <Controller
                 name="technical_complexity"
                 control={control}
@@ -102,7 +105,7 @@ const JudgingFormSheet = ({
                       Measures technical impressiveness: frameworks, APIs, algorithms, and functioning code with a
                       working demo.
                     </FieldDescription>
-                    <Rating fieldName={field.name} field={field} />
+                    <Rating fieldName={field.name} field={field} disabled={isPastRound1Deadline} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
@@ -122,7 +125,7 @@ const JudgingFormSheet = ({
                     <FieldDescription>
                       Measures potential for everyday use. Should be intuitive and easy to use.
                     </FieldDescription>
-                    <Rating fieldName={field.name} field={field} />
+                    <Rating fieldName={field.name} field={field} disabled={isPastRound1Deadline} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
@@ -142,7 +145,7 @@ const JudgingFormSheet = ({
                     <FieldDescription>
                       Measures uniqueness and novelty, from new spins on existing ideas to completely original concepts.
                     </FieldDescription>
-                    <Rating fieldName={field.name} field={field} />
+                    <Rating fieldName={field.name} field={field} disabled={isPastRound1Deadline} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
@@ -162,7 +165,7 @@ const JudgingFormSheet = ({
                     <FieldDescription>
                       Measures how polished and professional the project looks and functions.
                     </FieldDescription>
-                    <Rating fieldName={field.name} field={field} />
+                    <Rating fieldName={field.name} field={field} disabled={isPastRound1Deadline} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
@@ -182,7 +185,7 @@ const JudgingFormSheet = ({
                     <FieldDescription>
                       Measures the demo video&apos;s clarity in explaining the problem statement and solution.
                     </FieldDescription>
-                    <Rating fieldName={field.name} field={field} />
+                    <Rating fieldName={field.name} field={field} disabled={isPastRound1Deadline} />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
                   </Field>
                 )}
@@ -212,7 +215,7 @@ const JudgingFormSheet = ({
         <Separator />
         <SheetFooter>
           <Field orientation="horizontal" className="flex-row-reverse">
-            <Button type="submit" form="judging-form" disabled={isSubmitting}>
+            <Button type="submit" form="judging-form" disabled={isSubmitting || isPastRound1Deadline}>
               {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
             <SheetClose asChild>
