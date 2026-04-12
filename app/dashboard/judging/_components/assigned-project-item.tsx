@@ -4,7 +4,6 @@ import { MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
-import { cn } from "@/lib";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import { TRACKS_MAP } from "../constants";

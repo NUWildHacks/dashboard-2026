@@ -15,7 +15,6 @@ import { getAuthenticatedUser, requireRole, getConfigDocSnapshot } from "@/lib";
 import type { ActionResult, CrowdFavoriteProject, ParticipantUser, WildHacksConfig } from "@/types";
 
 import { getCrowdFavoriteProjectForUser } from "../_lib";
-
 import { crowdFavoriteOptInFormSchema, type CrowdFavoriteOptInFormSchema } from "../_schemas";
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
