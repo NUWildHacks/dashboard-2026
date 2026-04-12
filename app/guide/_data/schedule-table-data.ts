@@ -249,7 +249,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
   },
   {
     time: "11:00 - 12:15 PM",
-    event: [{ content: "Games! (+ T-Shirt Distribution" }],
+    event: [{ content: "Games! (+ T-Shirt Distribution)" }],
     location: "Tech LR2",
   },
   {
@@ -291,7 +291,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
     time: "2:00 PM",
     event: [
       {
-        content: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
+        content: "Crowd Favorite Sign Up Deadline (In the Dashboard!)",
         // href: "Coming Soon!",
       },
     ],

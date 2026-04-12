@@ -244,7 +244,7 @@ export const scheduleEvents: CalendarEvent[] = [
     url: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
   },
   {
-    title: "Crowd Favorite Sign Up Deadline (Link Coming Soon!)",
+    title: "Crowd Favorite Sign Up Deadline (In the Dashboard!)",
     description: "Deadline to sign up for Crowd Favorite",
     start: new Date("2026-04-12T14:00:00-05:00"),
     end: new Date("2026-04-12T14:00:00-05:00"),
