@@ -7,59 +7,69 @@
     {
       "title": "1st Place Overall",
       "description": "This prize is awarded to the first-place project across all tracks.",
-      "award": "To be announced!",
+      "award": "Soundcore by Anker Space Q45 Adaptive Active Noise Cancelling Headphones",
       "emoji": "🥇"
     },
     {
       "title": "2nd Place Overall",
       "description": "This prize is awarded to the second-place project across all tracks.",
-      "award": "To be announced!",
+      "award": "Polaroid camera",
       "emoji": "🥈"
     },
     {
       "title": "3rd Place Overall",
       "description": "This prize is awarded to the third-place project across all tracks.",
-      "award": "To be announced!",
+      "award": "JBL Go 3 - Portable Mini Speaker",
       "emoji": "🥉"
     }
   ],
   "trackPrizes": [
     {
-      "title": "Track 1",
-      "award": "To be announced!",
+      "title": "Track 1 - Past",
+      "award": "MP3 Player with Bluetooth",
       "emoji": "1️⃣"
     },
     {
-      "title": "Track 2",
-      "award": "To be announced!",
+      "title": "Track 2 - Present",
+      "award": "Pickle Ball Set",
       "emoji": "2️⃣"
     },
     {
-      "title": "Track 3",
-      "award": "To be announced!",
+      "title": "Track 3 - Future",
+      "award": "Projector",
       "emoji": "3️⃣"
     }
   ],
   "mlhPrizes": [
     {
-      "title": "Prize 1!",
-      "award": "To be announced!",
+      "title": "Best Use of Gemini API",
+      "award": "Google Swag Kits",
       "emoji": "💻"
     },
     {
-      "title": "Prize 2!",
-      "award": "To be announced!",
+      "title": "Best Use of ElevenLabs",
+      "award": "Wireless Earbuds",
       "emoji": "💻"
     },
     {
-      "title": "Prize 3!",
-      "award": "To be announced!",
+      "title": "Best Use of Solana",
+      "award": "Ledger Nano S Plus",
+      "emoji": "💻"
+    },
+    {
+      "title": "Best Use of DigitalOcean",
+      "award": "Retro Wireless Mouse",
+      "emoji": "💻"
+    },
+    {
+      "title": "Best .Tech Domain Name",
+      "award": "Desktop Microphone & a Free .Tech Domain Name for up to 10 years!",
       "emoji": "💻"
     }
   ],
   "crowdFavorite": {
     "title": "Crowd Favorite",
-    "award": "To be announced!",
+    "award": "Otamatone Japanese Instrument",
     "emoji": "😄"
   }
 }

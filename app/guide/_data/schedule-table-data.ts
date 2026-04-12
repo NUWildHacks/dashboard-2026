@@ -83,17 +83,6 @@ export const workshopWeekRows: WorkshopWeekRow[] = [
     location: "Tech M177",
   },
   {
-    date: "April 10, 2026",
-    time: "7:00 PM - 8:00 PM",
-    event: [
-      {
-        content: "Blossoms X WildHacks Informational Session",
-        href: "/guide/workshops#blossoms-x-wildhacks-informational-session",
-      },
-    ],
-    location: "Virtual",
-  },
-  {
     date: "April 11, 2026",
     time: "1:30 PM - 2:15 PM",
     event: [
@@ -115,17 +104,12 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
   {
     time: "8:30 - 10:00 AM",
     event: [{ content: "Sponsor Fair — IMC + MLH" }],
-    location: "Tech A110",
-  },
-  {
-    time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Fair — Claude" }],
-    location: "Tech L170",
-  },
-  {
-    time: "8:30 - 10:00 AM",
-    event: [{ content: "Sponsor Fair — Blossoms + Redbull" }],
     location: "Tech L168",
+  },
+  {
+    time: "8:30 - 10:00 AM",
+    event: [{ content: "Sponsor Fair — Claude + Redbull" }],
+    location: "Tech L170",
   },
   {
     time: "10:00 - 11:00 AM",
@@ -158,6 +142,21 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
     time: "1:00 - 5:00 PM",
     event: [{ content: "Mentors Block 1" }],
     location: "Mudd 2nd Floor",
+  },
+  {
+    time: "1:30 - 2:15 PM",
+    event: [{ content: "Finding Your Path in Tech with Women in Computing" }],
+    location: "LR5",
+  },
+  {
+    time: "3:15 - 3:45 PM",
+    event: [{ content: "GitHub Copilot Session" }],
+    location: "LR5",
+  },
+  {
+    time: "3:45 - 4:30 PM",
+    event: [{ content: "Google AI Studio" }],
+    location: "LR5",
   },
   // {
   //   time: "12:45 PM",
@@ -266,6 +265,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
         href: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
       },
     ],
+    location: "LR5",
   },
   {
     time: "12:30 PM",
@@ -284,7 +284,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
         href: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
       },
     ],
-    location: "To Be Announced Per Team",
+    location: "Tech LR4 + LR5",
   },
   {
     id: "crowd-favorite-sign-up",
@@ -306,7 +306,7 @@ export const sundayScheduleRows: DayScheduleRow[] = [
       },
       { content: " Presentations" },
     ],
-    location: "LR4",
+    location: "LR5",
   },
   {
     time: "3:45 - 5:00 PM",

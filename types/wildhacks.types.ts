@@ -1,3 +1,5 @@
+export type TeamMatchingMode = "dev" | "prod";
+
 export type WildHacksConfig = {
   max_team_size: number;
   max_participants: number;
@@ -13,6 +15,9 @@ export type WildHacksConfig = {
   crowd_favorite_voting_open: boolean;
 
   updated_at: number;
+  results_released?: boolean;
+  results_released_dev?: boolean;
+  team_matching_mode?: TeamMatchingMode;
 };
 
 export type WildHacksStatistics = {
