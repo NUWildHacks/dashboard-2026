@@ -106,6 +106,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     title: "Team Matching",
+    hasSubItems: false,
     url: DASHBOARD_TEAM_MATCHING_PATH,
     icon: UsersRound,
     visibleTo: [ADMIN],
