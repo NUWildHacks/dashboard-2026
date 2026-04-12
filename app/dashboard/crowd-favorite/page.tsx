@@ -12,7 +12,6 @@ import {
 } from "./_components";
 import {
   getAllCrowdFavoriteProjects,
-  getAllParticipantUsers,
   getCrowdFavoriteProjectForUser,
   getCrowdFavoriteProjectsWithVoteCount,
   getUserVotedProjectId,
@@ -69,7 +68,6 @@ const CrowdFavoritePage = async () => {
   const votingClosed = await isCrowdFavoriteVotingClosed(config);
 
   const crowdFavoriteProject = await getCrowdFavoriteProjectForUser(user.id);
-  const participantUsers = !crowdFavoriteProject && !votingOpen ? await getAllParticipantUsers() : null;
   const [crowdFavoriteProjects, votedProjectId] = await Promise.all([
     votingOpen ? getAllCrowdFavoriteProjects() : Promise.resolve([]),
     votingOpen ? getUserVotedProjectId(user.id) : Promise.resolve(null),
@@ -142,9 +140,6 @@ const CrowdFavoritePage = async () => {
                   The opt-in form is only available during the configured phase window.
                 </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Loaded {participantUsers?.length ?? 0} participant users for downstream voting flow.
-              </p>
             </section>
           )}
         </>
