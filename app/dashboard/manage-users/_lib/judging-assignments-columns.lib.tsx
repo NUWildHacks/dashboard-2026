@@ -22,6 +22,7 @@ import { JudgingAssignmentWithProject } from "../../judging/types";
 export const getJudgingAssignmentsColumns = (): ColumnDef<JudgingAssignmentWithProject>[] => {
   return [
     {
+      id: "project.name",
       accessorKey: "project.name",
       header: ({ column }) => {
         return (

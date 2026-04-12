@@ -51,7 +51,7 @@ export const useJudgingAssignmentsTable = (
 
   const [uploadRound, setUploadRound] = useState<JudgingRound | undefined>(undefined);
   const [selectedJudge, setSelectedJudge] = useState<JudgeUser | null>(null);
-  const [sorting, setSorting] = useState<SortingState>([{ id: "name", desc: false }]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: "project.name", desc: false }]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

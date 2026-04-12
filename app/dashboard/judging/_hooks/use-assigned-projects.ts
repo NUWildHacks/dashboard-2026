@@ -24,9 +24,9 @@ export const useAssignedProjects = (
     let result = judgingAssignmentsWithProject;
 
     if (category === SUBMITTED_STATUS) {
-      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form !== undefined);
+      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form !== null);
     } else if (category === NOT_SUBMITTED_STATUS) {
-      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form === undefined);
+      result = result.filter((judgingAssignmentWithProject) => judgingAssignmentWithProject.judging_form === null);
     }
 
     if (search && search !== "") {

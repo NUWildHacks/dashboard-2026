@@ -20,6 +20,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
+import { TRACKS_MAP } from "../constants";
 
 type JudgingFormSheetProps = Pick<
   UseJudgingFormSheetReturn,
@@ -56,7 +57,7 @@ const JudgingFormSheet = ({
           <SheetTitle>{name}</SheetTitle>
           <SheetDescription asChild>
             <div className="flex flex-row items-center gap-2">
-              <Badge variant="secondary">{track}</Badge>
+              <Badge variant="secondary">{TRACKS_MAP[track]}</Badge>
               {judging_form && (
                 <Badge
                   variant="outline"

@@ -26,9 +26,9 @@ export type JudgingAssignment = {
 
   order: number;
   judging_round: JudgingRound;
-  room_id?: Room;
+  room_id: Room | null;
 
-  judging_form?: JudgingForm;
+  judging_form: JudgingForm | null;
 };
 
 export type JudgingAssignmentWithProject = JudgingAssignment & {

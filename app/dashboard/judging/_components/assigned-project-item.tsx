@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
+import { TRACKS_MAP } from "../constants";
 import type { JudgingAssignmentWithProject } from "../types";
 
 type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
@@ -34,7 +35,7 @@ const AssignedProjectItem = ({
           <span className="truncate">{name}</span>
         </ItemTitle>
         <ItemDescription className="flex flex-row items-center gap-2">
-          <Badge variant="secondary">{track}</Badge>
+          <Badge variant="secondary">{TRACKS_MAP[track]}</Badge>
           {judging_form && (
             <Badge
               variant="outline"

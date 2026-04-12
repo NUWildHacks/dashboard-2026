@@ -1,6 +1,6 @@
 import rooms from "@/data/rooms.json";
 
-import { JudgingAssignment, JudgingForm, Project } from "./types";
+import { JudgingAssignment, JudgingForm, Project, Track } from "./types";
 
 export const PAST_TRACK = "Past" as const;
 export const PRESENT_TRACK = "Present" as const;
@@ -16,6 +16,12 @@ export const SUBMISSION_STATUSES = [SUBMITTED_STATUS, NOT_SUBMITTED_STATUS] as c
 export const ROUND_1 = "Round 1" as const;
 export const ROUND_2 = "Round 2" as const;
 export const ROUNDS = [ROUND_1, ROUND_2] as const;
+
+export const TRACKS_MAP = {
+  [PAST_TRACK]: "Childhood Games",
+  [PRESENT_TRACK]: "Community",
+  [FUTURE_TRACK]: "Data Storytelling",
+} as const satisfies Record<Track, string>;
 
 export const JUDGING_FORM_FIELDS = {
   technical_complexity: "technical_complexity",

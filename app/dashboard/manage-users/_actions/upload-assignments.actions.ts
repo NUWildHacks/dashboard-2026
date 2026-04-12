@@ -52,8 +52,7 @@ export const uploadAssignments = async (
     const seenProjectIds = new Set<Project["id"]>();
 
     for (const assignment of data) {
-      const { room_id, ...rest } = assignment;
-      const { project_id, project_name, track, devpost_url } = rest;
+      const { judge_id, project_id, project_name, track, devpost_url, room_id, order } = assignment;
 
       if (!seenProjectIds.has(project_id)) {
         seenProjectIds.add(project_id);
@@ -66,15 +65,15 @@ export const uploadAssignments = async (
         } as Omit<Project, "id">);
       }
 
-      const assignmentData: Omit<JudgingAssignment, "id"> = room_id
-        ? {
-            ...rest,
-            room_id,
-          }
-        : rest;
-
       const assignmentDocRef = judgingAssignmentsCollectionRef.doc();
-      judgingAssignmentBatch.set(assignmentDocRef, assignmentData);
+      judgingAssignmentBatch.set(assignmentDocRef, {
+        judge_id,
+        project_id,
+        order,
+        judging_round: uploadRound,
+        room_id: room_id === "" ? null : room_id,
+        judging_form: null,
+      } as Omit<JudgingAssignment, "id">);
     }
 
     await Promise.all([judgingAssignmentBatch.commit(), projectBatch.commit()]);
