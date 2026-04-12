@@ -2,7 +2,7 @@
 
 import { getFirestore } from "firebase-admin/firestore";
 
-import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
+import { WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC, WILDHACKS_SECRETS_DOC } from "@/constants";
 
 /**
  * Get the WildHacks configuration document snapshot from Firestore.
@@ -31,4 +31,18 @@ const getConfigDocSnapshot = async () => {
   return configDocSnapshot;
 };
 
-export { getConfigDocSnapshot };
+const getSecretsDocSnapshot = async () => {
+  const db = getFirestore();
+
+  const secretsDocRef = db.collection(WILDHACKS_COLLECTION).doc(WILDHACKS_SECRETS_DOC);
+
+  const secretsDocSnapshot = await secretsDocRef.get();
+
+  if (!secretsDocSnapshot.exists) {
+    throw new Error("WildHacks secrets document not found");
+  }
+
+  return secretsDocSnapshot;
+};
+
+export { getConfigDocSnapshot, getSecretsDocSnapshot };

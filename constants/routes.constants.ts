@@ -8,6 +8,7 @@ export const DASHBOARD_MANAGE_USERS_PATH = "/dashboard/manage-users" as const;
 export const DASHBOARD_CHECK_IN_PATH = "/dashboard/check-in" as const;
 export const DASHBOARD_SUPPORT_PATH = "/dashboard/support" as const;
 export const DASHBOARD_SETTINGS_PATH = "/dashboard/settings" as const;
+export const DASHBOARD_CROWD_FAVORITE_PATH = "/dashboard/crowd-favorite" as const;
 export const GUIDE_PATH = "/guide" as const;
 export const DASHBOARD_JUDGING_PATH = "/dashboard/judging" as const;
 export const DASHBOARD_MENTORING_PATH = "/dashboard/mentoring" as const;
@@ -20,6 +21,7 @@ export const PROTECTED_ROUTES = [
   DASHBOARD_PATH,
   DASHBOARD_SCHEDULE_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
+  DASHBOARD_CROWD_FAVORITE_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_PATH,
   DASHBOARD_SETTINGS_PATH,

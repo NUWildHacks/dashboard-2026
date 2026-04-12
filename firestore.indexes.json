@@ -39,7 +39,26 @@
         { "fieldPath": "is_top", "order": "ASCENDING" },
         { "fieldPath": "run_at", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "round_2",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "judge_id", "order": "ASCENDING" },
+        { "fieldPath": "judging_round", "order": "ASCENDING" },
+        { "fieldPath": "order", "order": "ASCENDING" }
+      ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "votes",
+      "fieldPath": "id",
+      "indexes": [
+        { "order": "ASCENDING", "queryScope": "COLLECTION" },
+        { "order": "DESCENDING", "queryScope": "COLLECTION" },
+        { "order": "ASCENDING", "queryScope": "COLLECTION_GROUP" }
+      ]
+    }
+  ]
 }
