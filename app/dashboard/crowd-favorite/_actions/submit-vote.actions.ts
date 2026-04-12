@@ -11,8 +11,8 @@ import {
   LOGIN_PATH,
   PARTICIPANT,
 } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot, requireRole } from "@/lib";
-import type { ActionResult, Vote, WildHacksConfig } from "@/types";
+import { getAuthenticatedUser, getConfigDocSnapshot, getSecretsDocSnapshot, requireRole } from "@/lib";
+import type { ActionResult, Vote, WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import { getUserVotedProjectId } from "../_lib";
 import { crowdFavoriteVoteFormSchema, type CrowdFavoriteVoteFormSchema } from "../_schemas/vote-form.schemas";
@@ -30,8 +30,12 @@ const submitCrowdFavoriteVote = async (
     const roleCheck = requireRole(caller, PARTICIPANT);
     if (roleCheck) return roleCheck;
 
-    const configDocSnapshot = await getConfigDocSnapshot();
+    const [configDocSnapshot, secretsDocSnapshot] = await Promise.all([
+      getConfigDocSnapshot(),
+      getSecretsDocSnapshot(),
+    ]);
     const config = configDocSnapshot.data() as WildHacksConfig;
+    const secrets = secretsDocSnapshot.data() as WildHacksSecrets;
 
     if (!(await isCrowdFavoriteVotingOpen(config))) {
       return { success: false, error: "Voting is not open right now" };
@@ -51,7 +55,7 @@ const submitCrowdFavoriteVote = async (
 
     const data = parsed.data;
 
-    if (config.crowd_favorite_password !== data.crowd_favorite_password) {
+    if (secrets.crowd_favorite_password !== data.crowd_favorite_password) {
       return {
         success: false,
         error: "Incorrect crowd favorite password",

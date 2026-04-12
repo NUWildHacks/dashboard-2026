@@ -27,7 +27,7 @@ export type {
   User,
   Modality,
 } from "./user.types";
-export type { WildHacksConfig, WildHacksStatistics, TeamMatchingMode } from "./wildhacks.types";
+export type { WildHacksConfig, WildHacksSecrets, WildHacksStatistics, TeamMatchingMode } from "./wildhacks.types";
 export type {
   TeamMatchingRunStatus,
   TeamMatchingSettings,

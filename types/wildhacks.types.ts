@@ -9,7 +9,6 @@ export type WildHacksConfig = {
   submission_deadline: number;
   end_time: number;
 
-  crowd_favorite_password: string;
   crowd_favorite_opt_in_started: boolean;
   crowd_favorite_opt_in_open: boolean;
   crowd_favorite_voting_started: boolean;
@@ -19,6 +18,11 @@ export type WildHacksConfig = {
   results_released?: boolean;
   results_released_dev?: boolean;
   team_matching_mode?: TeamMatchingMode;
+};
+
+// Stored in wildhacks/secrets — admin-only read in Firestore rules.
+export type WildHacksSecrets = {
+  crowd_favorite_password: string;
 };
 
 export type WildHacksStatistics = {

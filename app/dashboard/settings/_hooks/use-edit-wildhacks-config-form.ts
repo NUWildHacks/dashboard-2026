@@ -6,7 +6,7 @@ import { Control } from "react-hook-form";
 import { UseFormGetValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { toast } from "sonner";
 
-import { WildHacksConfig } from "@/types";
+import { WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import { editWildhacksConfig } from "../_actions";
 import { type EditWildhacksConfigFormSchema, editWildhacksConfigFormSchema } from "../_schemas";
@@ -23,7 +23,7 @@ export type UseEditWildhacksConfigFormReturn = {
   handleReset: () => void;
 };
 
-export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig): UseEditWildhacksConfigFormReturn => {
+export const useEditWildhacksConfigForm = (wildhacksConfig: WildHacksConfig & WildHacksSecrets): UseEditWildhacksConfigFormReturn => {
   const {
     max_team_size,
     max_participants,

@@ -8,12 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { WildHacksConfig } from "@/types";
+import { WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import { useEditWildhacksConfigForm } from "../_hooks";
 
 type EditWildhacksConfigFormProps = {
-  wildhacksConfig: WildHacksConfig;
+  wildhacksConfig: WildHacksConfig & WildHacksSecrets;
 };
 
 const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormProps) => {

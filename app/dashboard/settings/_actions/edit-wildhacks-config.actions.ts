@@ -3,7 +3,14 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { revalidatePath } from "next/cache";
 
-import { ADMIN, DASHBOARD_SETTINGS_PATH, LOGIN_PATH, WILDHACKS_COLLECTION, WILDHACKS_CONFIG_DOC } from "@/constants";
+import {
+  ADMIN,
+  DASHBOARD_SETTINGS_PATH,
+  LOGIN_PATH,
+  WILDHACKS_COLLECTION,
+  WILDHACKS_CONFIG_DOC,
+  WILDHACKS_SECRETS_DOC,
+} from "@/constants";
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -22,17 +29,23 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
     const roleError = requireRole(user, ADMIN, "You are not authorized to edit the Wildhacks config");
     if (roleError) return roleError;
 
-    const { max_team_size, max_participants, ...rest } = data;
+    const { max_team_size, max_participants, crowd_favorite_password, ...rest } = data;
 
-    await db
-      .collection(WILDHACKS_COLLECTION)
-      .doc(WILDHACKS_CONFIG_DOC)
-      .update({
-        ...rest,
-        max_team_size: Number(max_team_size),
-        max_participants: Number(max_participants),
-        updated_at: now,
-      });
+    await Promise.all([
+      db
+        .collection(WILDHACKS_COLLECTION)
+        .doc(WILDHACKS_CONFIG_DOC)
+        .update({
+          ...rest,
+          max_team_size: Number(max_team_size),
+          max_participants: Number(max_participants),
+          updated_at: now,
+        }),
+      db
+        .collection(WILDHACKS_COLLECTION)
+        .doc(WILDHACKS_SECRETS_DOC)
+        .set({ crowd_favorite_password }, { merge: true }),
+    ]);
 
     revalidatePath(DASHBOARD_SETTINGS_PATH);
 

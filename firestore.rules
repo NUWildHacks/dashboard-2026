@@ -79,13 +79,22 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // WildHacks collection (config document)
-    match /wildhacks/{document=**} {
-      // All authenticated users can read config
+    // WildHacks config document — public flags readable by all authenticated users
+    match /wildhacks/config {
       allow read: if isAuthenticated();
-
-      // Only admins can write to config
       // Note: Server actions use Admin SDK, but we keep this for defense in depth
+      allow write: if isAdmin();
+    }
+
+    // WildHacks secrets document — contains crowd_favorite_password; admin-only
+    match /wildhacks/secrets {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Catch-all for any other wildhacks documents — default to admin-only
+    match /wildhacks/{document=**} {
+      allow read: if isAdmin();
       allow write: if isAdmin();
     }
   }

@@ -1,6 +1,6 @@
 import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot } from "@/lib";
-import type { AdminUser, JudgeUser, JudgeAndMentorUser, ParticipantUser, WildHacksConfig } from "@/types";
+import { getAuthenticatedUser, getConfigDocSnapshot, getSecretsDocSnapshot } from "@/lib";
+import type { AdminUser, JudgeUser, JudgeAndMentorUser, ParticipantUser, WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import {
   EditParticipantProfileForm,
@@ -16,10 +16,16 @@ const SettingsPage = async () => {
 
   const user = await getAuthenticatedUser(redirectPath);
 
-  let wildHacksConfig: WildHacksConfig | undefined;
+  let wildHacksConfig: (WildHacksConfig & WildHacksSecrets) | undefined;
   if (user.role === ADMIN) {
-    const configDocSnapshot = await getConfigDocSnapshot();
-    wildHacksConfig = configDocSnapshot.data() as WildHacksConfig;
+    const [configDocSnapshot, secretsDocSnapshot] = await Promise.all([
+      getConfigDocSnapshot(),
+      getSecretsDocSnapshot(),
+    ]);
+    wildHacksConfig = {
+      ...(configDocSnapshot.data() as WildHacksConfig),
+      ...(secretsDocSnapshot.data() as WildHacksSecrets),
+    };
   }
 
   return (

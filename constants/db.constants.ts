@@ -21,4 +21,5 @@ export const TEAM_MATCHING_TEAMS_COLLECTION_PROD = "team_matching_teams_prod" as
 export const TEAM_MATCHING_FORMATIONS_COLLECTION_PROD = "team_matching_formations_prod" as const;
 
 export const WILDHACKS_CONFIG_DOC = "config" as const;
+export const WILDHACKS_SECRETS_DOC = "secrets" as const;
 export const CLOSED_REGISTRATION = 1773205239000 as const;
