@@ -52,7 +52,7 @@ const JudgingDisplay = ({
           <AlertDescription>
             <span className="text-sm font-normal">
               Please familiarize yourself with the{" "}
-              <Link href="/guide/judging-and-awards/how-judging-works" className="underline underline-offset-4">
+              <Link href="/guide/judging-guide" className="underline underline-offset-4">
                 judging guide
               </Link>{" "}
               before you begin looking at projects.
