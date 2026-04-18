@@ -20,7 +20,6 @@ export type WildHacksConfig = {
   team_matching_mode?: TeamMatchingMode;
 };
 
-// Stored in wildhacks/secrets — admin-only read in Firestore rules.
 export type WildHacksSecrets = {
   crowd_favorite_password: string;
 };

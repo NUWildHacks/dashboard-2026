@@ -13,13 +13,13 @@ const Completed = () => {
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
         <Button variant="outline" asChild>
-          <Link href="#">
+          <Link href="https://wildhacks-2026.devpost.com/project-gallery">
             <CodeXml />
             Browse Projects
           </Link>
         </Button>
-        <Button asChild>
-          <Link href="#">Get notified for WildHacks 2027</Link>
+        <Button disabled aria-disabled="true">
+          Get notified for WildHacks 2027
         </Button>
       </div>
     </>
