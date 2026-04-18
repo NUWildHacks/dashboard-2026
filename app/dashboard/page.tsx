@@ -213,7 +213,7 @@ const DashboardPage = async () => {
           )}
         </div>
       )}
-
+{/* 
       {role === ADMIN && hasSubmittedTeamMatching && (
         <div className="md:col-span-1">
           <TeamMatchingGate
@@ -229,7 +229,7 @@ const DashboardPage = async () => {
           />
         </div>
       )}
-
+*/}
       <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}

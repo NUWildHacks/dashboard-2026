@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import {
   ADMIN,
+  DASHBOARD_PATH,
   DASHBOARD_SETTINGS_PATH,
   LOGIN_PATH,
   WILDHACKS_COLLECTION,
@@ -45,6 +46,7 @@ export const editWildhacksConfig = async (data: EditWildhacksConfigFormSchema): 
     ]);
 
     revalidatePath(DASHBOARD_SETTINGS_PATH);
+    revalidatePath(DASHBOARD_PATH);
 
     return { success: true };
   } catch (error) {
