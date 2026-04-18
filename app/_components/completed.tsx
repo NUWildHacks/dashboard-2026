@@ -18,9 +18,8 @@ const Completed = () => {
             Browse Projects
           </Link>
         </Button>
-        <Button asChild>
-          {/* <Link href="#">Get notified for WildHacks 2027</Link> */}
-          <Link href="#">Coming soon...</Link>
+        <Button disabled aria-disabled="true">
+          Get notified for WildHacks 2027
         </Button>
       </div>
     </>
