@@ -162,6 +162,9 @@ const DashboardPage = async () => {
   const initialSuggestions =
     role === ADMIN || role === PARTICIPANT ? await fetchTopSuggestions(userId, suggestionCollections) : [];
 
+  const now = new Date().getTime();
+  const end = wildhacksConfig.end_time;
+  
   return (
     <>
       <div className="grid gap-4 auto-rows-min md:grid-cols-2 lg:grid-cols-4">
@@ -183,7 +186,7 @@ const DashboardPage = async () => {
         )}
       </div>
 
-      {role === PARTICIPANT && (
+      {(role === PARTICIPANT && now < end) && (
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
           {showParticipantCrowdFavoriteLink ? (
@@ -213,8 +216,8 @@ const DashboardPage = async () => {
           )}
         </div>
       )}
-      {/* 
-      {role === ADMIN && hasSubmittedTeamMatching && (
+      
+      {role === ADMIN && now < end && hasSubmittedTeamMatching && (
         <div className="md:col-span-1">
           <TeamMatchingGate
             hasSubmitted={hasSubmittedTeamMatching}
@@ -229,7 +232,7 @@ const DashboardPage = async () => {
           />
         </div>
       )}
-*/}
+
       <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>
         <UpcomingEvents />
         {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
