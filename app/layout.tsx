@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WildHacks 2026 Dashboard",
-  description: "Dashboard application for WildHacks 2026",
+  title: "WildHacks / Dashboard",
+  description: "Hacker dashboard for WildHacks",
 };
 
 const RootLayout = async ({
