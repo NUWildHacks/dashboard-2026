@@ -28,34 +28,21 @@ export const editWildhacksConfigFormSchema = z
         (val) => Number(val) <= 2147483647,
         "Max participants is too large"
       ),
-    registration_deadline: z
-      .number()
-      .int()
-      .min(1, {
-        message:
-          "Registration deadline must be milliseconds since epoch",
-      }),
-    start_time: z
-      .number()
-      .int()
-      .min(1, {
-        message:
-          "Start time must be milliseconds since epoch",
-      }),
-    submission_deadline: z
-      .number()
-      .int()
-      .min(1, {
-        message:
-          "Submission deadline must be milliseconds since epoch",
-      }),
-    end_time: z
-      .number()
-      .int()
-      .min(1, {
-        message:
-          "End time must be milliseconds since epoch",
-      }),
+    registration_deadline: z.number().int().min(1, {
+      message:
+        "Registration deadline must be milliseconds since epoch",
+    }),
+    start_time: z.number().int().min(1, {
+      message:
+        "Start time must be milliseconds since epoch",
+    }),
+    submission_deadline: z.number().int().min(1, {
+      message:
+        "Submission deadline must be milliseconds since epoch",
+    }),
+    end_time: z.number().int().min(1, {
+      message: "End time must be milliseconds since epoch",
+    }),
     crowd_favorite_password: z
       .string()
       .min(1, "Crowd favorite password is required")
