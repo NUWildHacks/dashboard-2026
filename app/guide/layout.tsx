@@ -12,7 +12,8 @@ type GuideLayoutProps = {
 
 export const metadata: Metadata = {
   title: "WildHacks Guide",
-  description: "The complete WildHacks 2026 event guide—schedule, logistics, judging details, and more.",
+  description:
+    "The complete WildHacks 2026 event guide—schedule, logistics, judging details, and more.",
 };
 
 const figtree = Figtree({
@@ -23,7 +24,9 @@ const figtree = Figtree({
 const GuideLayout = ({ children }: GuideLayoutProps) => {
   return (
     <div className={`guide-theme ${figtree.className}`}>
-      <GuideShell entries={GUIDE_SEARCH_ENTRIES}>{children}</GuideShell>
+      <GuideShell entries={GUIDE_SEARCH_ENTRIES}>
+        {children}
+      </GuideShell>
     </div>
   );
 };
