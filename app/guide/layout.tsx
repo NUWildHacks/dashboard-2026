@@ -13,7 +13,7 @@ type GuideLayoutProps = {
 export const metadata: Metadata = {
   title: "WildHacks Guide",
   description:
-    "The complete WildHacks 2026 event guide—schedule, logistics, judging details, and more.",
+    "The complete WildHacks 2027 event guide—schedule, logistics, judging details, and more.",
 };
 
 const figtree = Figtree({
