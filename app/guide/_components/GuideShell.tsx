@@ -16,8 +16,12 @@ type GuideShellProps = {
   readonly entries: GuideSearchEntry[];
 };
 
-const GuideShell = ({ children, entries }: GuideShellProps) => {
-  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+const GuideShell = ({
+  children,
+  entries,
+}: GuideShellProps) => {
+  const [isNavigationOpen, setIsNavigationOpen] =
+    useState(false);
 
   useEffect(() => {
     if (!isNavigationOpen) {
@@ -37,22 +41,35 @@ const GuideShell = ({ children, entries }: GuideShellProps) => {
   }, [isNavigationOpen]);
 
   return (
-    <div className={`guide-shell${isNavigationOpen ? " guide-shell-nav-open" : ""}`}>
+    <div
+      className={`guide-shell${isNavigationOpen ? " guide-shell-nav-open" : ""}`}
+    >
       <GuideTopbar
         entries={entries}
         isNavigationOpen={isNavigationOpen}
-        onToggleNavigation={() => setIsNavigationOpen((open) => !open)}
+        onToggleNavigation={() =>
+          setIsNavigationOpen((open) => !open)
+        }
       />
       <div className="guide-body">
-        <aside id="guide-navigation-panel" className="guide-sidebar" aria-label="Guide navigation">
-          <GuideNavigation onNavigate={() => setIsNavigationOpen(false)} />
+        <aside
+          id="guide-navigation-panel"
+          className="guide-sidebar"
+          aria-label="Guide navigation"
+        >
+          <GuideNavigation
+            onNavigate={() => setIsNavigationOpen(false)}
+          />
         </aside>
         <main className="guide-main" role="main">
           <div className="guide-content">
             <div className="guide-content-inner">
               <div className="guide-content-body">
                 <GuideBreadcrumbs entries={entries} />
-                <div id="guide-content-article" className="guide-content-article">
+                <div
+                  id="guide-content-article"
+                  className="guide-content-article"
+                >
                   {children}
                 </div>
               </div>
