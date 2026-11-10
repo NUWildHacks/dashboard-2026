@@ -10,7 +10,7 @@ import {
   USERS_TABLE,
   CLOSED_REGISTRATION,
 } from "@/constants";
-import { deleteSession, fromRow } from "@/lib";
+import { fromRow } from "@/lib";
 import { isAuthUserId } from "@/lib/auth-user.lib";
 import {
   JudgeUser,
