@@ -1,6 +1,7 @@
 {
   "singleQuote": false,
   "printWidth": 60,
+  "proseWrap": "always",
   "trailingComma": "es5",
   "tabWidth": 2,
   "useTabs": false,
