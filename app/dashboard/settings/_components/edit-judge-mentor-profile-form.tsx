@@ -5,7 +5,11 @@ import { Controller } from "react-hook-form";
 
 import { useEditJudgeMentorProfileForm } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import {
   FieldGroup,
   FieldSet,
@@ -24,22 +28,43 @@ import {
   MultiSelectGroup,
   MultiSelectItem,
 } from "@/components/ui/multi-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { DIETARY_RESTRICTIONS } from "@/constants";
 import { MODALITIES } from "@/constants/user.constants";
-import type { JudgeUser, JudgeAndMentorUser } from "@/types";
+import type {
+  JudgeUser,
+  JudgeAndMentorUser,
+} from "@/types";
 
 type EditJudgeMentorProfileFormProps = {
   user: JudgeUser | JudgeAndMentorUser;
 };
 
-const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } = useEditJudgeMentorProfileForm(user);
+const EditJudgeMentorProfileForm = ({
+  user,
+}: EditJudgeMentorProfileFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    onSubmit,
+    isSubmitting,
+    isDirty,
+    handleReset,
+  } = useEditJudgeMentorProfileForm(user);
 
   return (
     <Card className="shadow-sm">
       <CardContent>
-        <form id="edit-profile-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="edit-profile-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
               <FieldGroup>
@@ -48,7 +73,9 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                     name="first_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -62,7 +89,12 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                           aria-invalid={fieldState.invalid}
                           autoComplete="given-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -71,7 +103,9 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                     name="last_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -85,24 +119,43 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                           aria-invalid={fieldState.invalid}
                           autoComplete="family-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
                 </div>
 
                 <Field>
-                  <FieldLabel htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  <FieldLabel
+                    htmlFor="email"
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
                     Email
                   </FieldLabel>
-                  <Input id="email" value={user.email} disabled />
+                  <Input
+                    id="email"
+                    value={user.email}
+                    disabled
+                  />
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="role" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  <FieldLabel
+                    htmlFor="role"
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
                     Role
                   </FieldLabel>
-                  <Input id="role" value={user.role} disabled />
+                  <Input
+                    id="role"
+                    value={user.role}
+                    disabled
+                  />
                 </Field>
 
                 <FieldSeparator />
@@ -111,8 +164,13 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                   name="affiliated_company"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Affiliated Company
                       </FieldLabel>
                       <Input
@@ -122,7 +180,12 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                         placeholder="Enter your affiliated company"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -135,23 +198,45 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                   name="modality"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Modality
                       </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          className="w-full"
+                        >
                           <SelectValue placeholder="Select your modality" />
                         </SelectTrigger>
                         <SelectContent>
-                          {MODALITIES.map((modality: string) => (
-                            <SelectItem key={modality} value={modality}>
-                              {modality}
-                            </SelectItem>
-                          ))}
+                          {MODALITIES.map(
+                            (modality: string) => (
+                              <SelectItem
+                                key={modality}
+                                value={modality}
+                              >
+                                {modality}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -163,9 +248,12 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
               control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Other Modality</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    Other Modality
+                  </FieldLabel>
                   <FieldDescription className="w-full text-start">
-                    If you selected &quot;Other&quot;, please specify below
+                    If you selected &quot;Other&quot;,
+                    please specify below
                   </FieldDescription>
                   <Input
                     {...field}
@@ -174,7 +262,12 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                     placeholder="Enter your other modality"
                     autoComplete="off"
                   />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                  {fieldState.invalid && (
+                    <FieldError
+                      errors={[fieldState.error]}
+                      className="w-full text-start"
+                    />
+                  )}
                 </Field>
               )}
             />
@@ -187,25 +280,49 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                   name="dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Dietary Restrictions
                       </FieldLabel>
-                      <MultiSelect values={field.value} onValuesChange={field.onChange}>
-                        <MultiSelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
+                      <MultiSelect
+                        values={field.value}
+                        onValuesChange={field.onChange}
+                      >
+                        <MultiSelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          className="w-full"
+                        >
                           <MultiSelectValue placeholder="Select all of your dietary restrictions" />
                         </MultiSelectTrigger>
                         <MultiSelectContent>
                           <MultiSelectGroup>
-                            {DIETARY_RESTRICTIONS.map((dietary_restriction) => (
-                              <MultiSelectItem key={dietary_restriction} value={dietary_restriction}>
-                                {dietary_restriction}
-                              </MultiSelectItem>
-                            ))}
+                            {DIETARY_RESTRICTIONS.map(
+                              (dietary_restriction) => (
+                                <MultiSelectItem
+                                  key={dietary_restriction}
+                                  value={
+                                    dietary_restriction
+                                  }
+                                >
+                                  {dietary_restriction}
+                                </MultiSelectItem>
+                              )
+                            )}
                           </MultiSelectGroup>
                         </MultiSelectContent>
                       </MultiSelect>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -214,10 +331,15 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                   name="other_dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Other Dietary Restrictions</FieldLabel>
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel htmlFor={field.name}>
+                        Other Dietary Restrictions
+                      </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        If you selected &quot;Other&quot;, please specify below
+                        If you selected &quot;Other&quot;,
+                        please specify below
                       </FieldDescription>
                       <Input
                         {...field}
@@ -226,7 +348,12 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -236,11 +363,27 @@ const EditJudgeMentorProfileForm = ({ user }: EditJudgeMentorProfileFormProps) =
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="edit-profile-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
+        <Field
+          orientation="horizontal"
+          className="flex-row-reverse"
+        >
+          <Button
+            type="submit"
+            form="edit-profile-form"
+            disabled={isSubmitting || !isDirty}
+          >
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Save changes"
+            )}
           </Button>
-          <Button type="button" variant="outline" disabled={isSubmitting || !isDirty} onClick={handleReset}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isSubmitting || !isDirty}
+            onClick={handleReset}
+          >
             Reset
           </Button>
         </Field>

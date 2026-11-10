@@ -12,7 +12,11 @@ import {
 } from "@/constants";
 import { deleteSession, fromRow } from "@/lib";
 import { isAuthUserId } from "@/lib/auth-user.lib";
-import { JudgeUser, JudgeAndMentorUser, User } from "@/types";
+import {
+  JudgeUser,
+  JudgeAndMentorUser,
+  User,
+} from "@/types";
 
 const getCurrentTimestamp = () => Date.now();
 
@@ -36,7 +40,10 @@ const getCurrentTimestamp = () => Date.now();
  * @throws {RedirectError} Redirects to DASHBOARD_PATH if user already exists or after successful migration
  * @async
  */
-const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User["email"]) => {
+const registerJudgeMentorWithEmail = async (
+  userId: User["id"],
+  userEmail: User["email"]
+) => {
   const { data: userRowById } = await supabaseAdmin
     .from(USERS_TABLE)
     .select()
@@ -63,12 +70,22 @@ const registerJudgeMentorWithEmail = async (userId: User["id"], userEmail: User[
     .limit(1)
     .throwOnError();
   if (userRowsByEmail && userRowsByEmail.length > 0) {
-    const { id: oldId, ...data } = fromRow<JudgeUser | JudgeAndMentorUser>(userRowsByEmail[0]);
+    const { id: oldId, ...data } = fromRow<
+      JudgeUser | JudgeAndMentorUser
+    >(userRowsByEmail[0]);
 
     // A row that already belongs to another sign-in account is not a pre-created row.
-    if ((data?.role === JUDGE || data?.role === JUDGE_AND_MENTOR) && !(await isAuthUserId(oldId))) {
+    if (
+      (data?.role === JUDGE ||
+        data?.role === JUDGE_AND_MENTOR) &&
+      !(await isAuthUserId(oldId))
+    ) {
       const { data: claimed } = await supabaseAdmin
-        .rpc("claim_judge_row", { p_old_id: oldId, p_new_id: userId, p_now: getCurrentTimestamp() })
+        .rpc("claim_judge_row", {
+          p_old_id: oldId,
+          p_new_id: userId,
+          p_now: getCurrentTimestamp(),
+        })
         .throwOnError();
 
       if (claimed) redirect(DASHBOARD_PATH);

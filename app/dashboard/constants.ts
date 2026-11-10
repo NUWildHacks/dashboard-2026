@@ -37,14 +37,24 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     hasSubItems: false,
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
   {
     title: "Schedule",
     hasSubItems: false,
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
   {
     title: "Manage users",
@@ -58,7 +68,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     hasSubItems: false,
     url: GUIDE_PATH,
     icon: TableCellsMerge,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
   {
     title: "Mentoring",

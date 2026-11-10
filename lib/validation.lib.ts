@@ -11,17 +11,21 @@ import { z } from "zod";
  * });
  * ```
  */
-export const secureUrlSchema = z.url("Invalid URL format").refine(
-  (url) => {
-    try {
-      const parsed = new URL(url);
-      return ["http:", "https:"].includes(parsed.protocol);
-    } catch {
-      return false;
-    }
-  },
-  { message: "URL must use http:// or https:// protocol" }
-);
+export const secureUrlSchema = z
+  .url("Invalid URL format")
+  .refine(
+    (url) => {
+      try {
+        const parsed = new URL(url);
+        return ["http:", "https:"].includes(
+          parsed.protocol
+        );
+      } catch {
+        return false;
+      }
+    },
+    { message: "URL must use http:// or https:// protocol" }
+  );
 
 /**
  * Plain text schema that rejects HTML content.
@@ -38,9 +42,13 @@ export const secureUrlSchema = z.url("Invalid URL format").refine(
 export const plainTextMultiLineSchema = z
   .string()
   .regex(/^[^\x00-\x09\x0B-\x0C\x0E-\x1F\x7F]*$/, {
-    message: "Invalid characters in text. Please use plain text only.",
+    message:
+      "Invalid characters in text. Please use plain text only.",
   })
-  .regex(/^[^<]*$/, { message: "HTML tags are not allowed. Please use plain text only." });
+  .regex(/^[^<]*$/, {
+    message:
+      "HTML tags are not allowed. Please use plain text only.",
+  });
 
 /**
  * Plain text schema for single-line fields (no newlines allowed).
@@ -53,9 +61,10 @@ export const plainTextMultiLineSchema = z
  * });
  * ```
  */
-export const plainTextSingleLineSchema = plainTextMultiLineSchema.regex(/^[^\n\r]*$/, {
-  message: "Newlines are not allowed in this field",
-});
+export const plainTextSingleLineSchema =
+  plainTextMultiLineSchema.regex(/^[^\n\r]*$/, {
+    message: "Newlines are not allowed in this field",
+  });
 
 /**
  * GitHub username schema that validates according to GitHub's rules:
@@ -79,7 +88,10 @@ export const githubUsernameSchema = z
     message:
       "GitHub username can only contain alphanumeric characters and hyphens, cannot begin or end with a hyphen, and cannot have consecutive hyphens",
   })
-  .refine((username) => !username.includes("--"), { message: "GitHub username cannot have consecutive hyphens" });
+  .refine((username) => !username.includes("--"), {
+    message:
+      "GitHub username cannot have consecutive hyphens",
+  });
 
 /**
  * User ID schema.

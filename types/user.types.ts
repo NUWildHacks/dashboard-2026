@@ -25,10 +25,12 @@ export type FieldOfStudy = (typeof FIELDS_OF_STUDY)[number];
 export type TShirtSize = (typeof TSHIRT_SIZES)[number];
 export type Gender = (typeof GENDERS)[number];
 export type Race = (typeof RACES)[number];
-export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
+export type DietaryRestriction =
+  (typeof DIETARY_RESTRICTIONS)[number];
 export type Modality = (typeof MODALITIES)[number];
 
-export type MentoringTimeslot = (typeof MENTORING_TIMESLOTS)[number];
+export type MentoringTimeslot =
+  (typeof MENTORING_TIMESLOTS)[number];
 
 export type Role = (typeof ROLES)[number];
 
@@ -88,4 +90,8 @@ export type JudgeAndMentorUser = BaseUser & {
   onboarded?: boolean;
 };
 
-export type User = ParticipantUser | AdminUser | JudgeUser | JudgeAndMentorUser;
+export type User =
+  | ParticipantUser
+  | AdminUser
+  | JudgeUser
+  | JudgeAndMentorUser;

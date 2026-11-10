@@ -13,7 +13,12 @@ const Navbar = () => {
   return (
     <nav className="w-full h-[72px] px-6 sm:px-12 flex justify-between items-center">
       <div className="flex justify-between w-full items-center gap-2">
-        <Image src="/wildhacks.svg" alt="Navigation Logo" width={39} height={50.74} />
+        <Image
+          src="/wildhacks.svg"
+          alt="Navigation Logo"
+          width={39}
+          height={50.74}
+        />
         <Button variant="outline" asChild>
           <Link href={DASHBOARD_PATH}>
             <LayoutDashboard />

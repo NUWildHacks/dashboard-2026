@@ -12,7 +12,12 @@ import {
   CLOSED_REGISTRATION,
   JUDGE_AND_MENTOR,
 } from "@/constants";
-import type { ActionResult, JudgeUser, JudgeAndMentorUser, User } from "@/types";
+import type {
+  ActionResult,
+  JudgeUser,
+  JudgeAndMentorUser,
+  User,
+} from "@/types";
 
 import { fromRow } from "./db.lib";
 import { verifySession } from "./session.lib";
@@ -32,7 +37,9 @@ import { verifySession } from "./session.lib";
  * // User is guaranteed to be authenticated and exist in database
  * ```
  */
-const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
+const getAuthenticatedUser = async (
+  redirectPath?: string
+): Promise<User> => {
   const userInfo = await verifySession();
   if (!userInfo) {
     const path = redirectPath || LOGIN_PATH;
@@ -41,7 +48,12 @@ const getAuthenticatedUser = async (redirectPath?: string): Promise<User> => {
 
   const { id } = userInfo;
 
-  const { data: userRow } = await supabaseAdmin.from(USERS_TABLE).select().eq("id", id).maybeSingle().throwOnError();
+  const { data: userRow } = await supabaseAdmin
+    .from(USERS_TABLE)
+    .select()
+    .eq("id", id)
+    .maybeSingle()
+    .throwOnError();
   if (!userRow) redirect(REGISTRATION_PATH);
 
   // check if this is a Kris-special permission participant
@@ -95,16 +107,23 @@ const requireRole = (
     }
     return {
       success: false,
-      error: errorMessage || "You must be a " + requiredRole.join(" or ") + " to perform this action",
+      error:
+        errorMessage ||
+        "You must be a " +
+          requiredRole.join(" or ") +
+          " to perform this action",
     };
   }
 
   if (user.role !== requiredRole) {
     const defaultMessages: Record<User["role"], string> = {
-      [PARTICIPANT]: "You must be a participant to perform this action",
-      [ADMIN]: "You must be an administrator to perform this action",
+      [PARTICIPANT]:
+        "You must be a participant to perform this action",
+      [ADMIN]:
+        "You must be an administrator to perform this action",
       [JUDGE]: "You must be a judge to perform this action",
-      [JUDGE_AND_MENTOR]: "You must be a judge and mentor to perform this action",
+      [JUDGE_AND_MENTOR]:
+        "You must be a judge and mentor to perform this action",
     };
 
     return {
@@ -135,7 +154,9 @@ const requireRole = (
  * }
  * ```
  */
-const onboardUser = async (id: User["id"]): Promise<boolean> => {
+const onboardUser = async (
+  id: User["id"]
+): Promise<boolean> => {
   const now = Date.now();
 
   // Only let callers onboard themselves.
@@ -149,7 +170,10 @@ const onboardUser = async (id: User["id"]): Promise<boolean> => {
     .maybeSingle()
     .throwOnError();
   if (!judgeRow) return true;
-  const { onboarded } = judgeRow as Pick<JudgeUser | JudgeAndMentorUser, "onboarded">;
+  const { onboarded } = judgeRow as Pick<
+    JudgeUser | JudgeAndMentorUser,
+    "onboarded"
+  >;
 
   if (!onboarded) {
     await supabaseAdmin

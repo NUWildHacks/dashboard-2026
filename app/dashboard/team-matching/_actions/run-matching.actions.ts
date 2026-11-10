@@ -12,7 +12,10 @@ import {
   WILDHACKS_CONFIG_TABLE,
 } from "@/constants";
 import { fromRow, selectAllRows } from "@/lib";
-import { getAuthenticatedUser, requireRole } from "@/lib/server";
+import {
+  getAuthenticatedUser,
+  requireRole,
+} from "@/lib/server";
 import type {
   ActionResult,
   IntakeRecord,
@@ -35,7 +38,9 @@ export type RunMatchingResult = ActionResult & {
 // Keep each `.in()` filter short enough for the request URL.
 const USER_LOOKUP_CHUNK_SIZE = 200;
 
-export const runMatching = async (name?: string): Promise<RunMatchingResult> => {
+export const runMatching = async (
+  name?: string
+): Promise<RunMatchingResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
@@ -43,55 +48,101 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     if (roleCheck) return roleCheck;
 
     // Fetch config and settings in parallel
-    const [configResult, settingsResult] = await Promise.all([
-      supabaseAdmin
-        .from(WILDHACKS_CONFIG_TABLE)
-        .select("team_matching_mode")
-        .eq("id", "config")
-        .maybeSingle()
-        .throwOnError(),
-      supabaseAdmin
-        .from(TEAM_MATCHING_SETTINGS_TABLE)
-        .select()
-        .eq("id", "team_matching_settings")
-        .maybeSingle()
-        .throwOnError(),
-    ]);
+    const [configResult, settingsResult] =
+      await Promise.all([
+        supabaseAdmin
+          .from(WILDHACKS_CONFIG_TABLE)
+          .select("team_matching_mode")
+          .eq("id", "config")
+          .maybeSingle()
+          .throwOnError(),
+        supabaseAdmin
+          .from(TEAM_MATCHING_SETTINGS_TABLE)
+          .select()
+          .eq("id", "team_matching_settings")
+          .maybeSingle()
+          .throwOnError(),
+      ]);
 
-    const mode: TeamMatchingMode = (configResult.data?.team_matching_mode as TeamMatchingMode | undefined) ?? "dev";
-    const intakeTable = mode === "prod" ? TEAM_MATCHING_INTAKE_TABLE : TEAM_MATCHING_INTAKE_TABLE_DEV;
+    const mode: TeamMatchingMode =
+      (configResult.data?.team_matching_mode as
+        | TeamMatchingMode
+        | undefined) ?? "dev";
+    const intakeTable =
+      mode === "prod"
+        ? TEAM_MATCHING_INTAKE_TABLE
+        : TEAM_MATCHING_INTAKE_TABLE_DEV;
 
-    let settings: TeamMatchingSettings = DEFAULT_TEAM_MATCHING_SETTINGS;
+    let settings: TeamMatchingSettings =
+      DEFAULT_TEAM_MATCHING_SETTINGS;
     if (settingsResult.data) {
-      const settingsRow: Record<string, unknown> = { ...settingsResult.data };
+      const settingsRow: Record<string, unknown> = {
+        ...settingsResult.data,
+      };
       delete settingsRow.id;
-      settings = { ...DEFAULT_TEAM_MATCHING_SETTINGS, ...fromRow<Partial<TeamMatchingSettings>>(settingsRow) };
+      settings = {
+        ...DEFAULT_TEAM_MATCHING_SETTINGS,
+        ...fromRow<Partial<TeamMatchingSettings>>(
+          settingsRow
+        ),
+      };
     }
 
     // Fetch all intake rows from the active table
     const intakeRows = await selectAllRows((from, to) =>
-      supabaseAdmin.from(intakeTable).select().order("user_id").range(from, to).throwOnError()
+      supabaseAdmin
+        .from(intakeTable)
+        .select()
+        .order("user_id")
+        .range(from, to)
+        .throwOnError()
     );
 
     // Fetch user display names
-    const userIds = (intakeRows ?? []).map((row) => row.user_id as string);
-    const userRows: { id: string; first_name: string | null; last_name: string | null; gender: string | null }[] = [];
-    for (let i = 0; i < userIds.length; i += USER_LOOKUP_CHUNK_SIZE) {
+    const userIds = (intakeRows ?? []).map(
+      (row) => row.user_id as string
+    );
+    const userRows: {
+      id: string;
+      first_name: string | null;
+      last_name: string | null;
+      gender: string | null;
+    }[] = [];
+    for (
+      let i = 0;
+      i < userIds.length;
+      i += USER_LOOKUP_CHUNK_SIZE
+    ) {
       const { data } = await supabaseAdmin
         .from(USERS_TABLE)
         .select("id, first_name, last_name, gender")
-        .in("id", userIds.slice(i, i + USER_LOOKUP_CHUNK_SIZE))
+        .in(
+          "id",
+          userIds.slice(i, i + USER_LOOKUP_CHUNK_SIZE)
+        )
         .throwOnError();
       userRows.push(...(data ?? []));
     }
-    const userMap = new Map(userRows.map((row) => [row.id, row]));
+    const userMap = new Map(
+      userRows.map((row) => [row.id, row])
+    );
     const nameMap = new Map(
       userIds.map((id) => {
         const row = userMap.get(id);
-        return [id, row ? `${row.first_name ?? ""} ${row.last_name ?? ""}`.trim() : "Unknown"];
+        return [
+          id,
+          row
+            ? `${row.first_name ?? ""} ${row.last_name ?? ""}`.trim()
+            : "Unknown",
+        ];
       })
     );
-    const genderMap = new Map(userIds.map((id) => [id, userMap.get(id)?.gender ?? undefined]));
+    const genderMap = new Map(
+      userIds.map((id) => [
+        id,
+        userMap.get(id)?.gender ?? undefined,
+      ])
+    );
 
     // Build IntakeRecord array. Intake rows are kept when a user is deleted, so skip rows whose
     // user no longer exists.
@@ -102,7 +153,8 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
         return {
           user_id: userId,
           name: nameMap.get(userId) ?? "Unknown",
-          experience_level: d.experience_level ?? "beginner",
+          experience_level:
+            d.experience_level ?? "beginner",
           preferred_roles: d.preferred_roles ?? [],
           skills: d.skills ?? {},
           work_style: d.work_style ?? "in_between",
@@ -110,19 +162,26 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
           required_teammates: d.required_teammates ?? [],
           additional_notes: d.additional_notes ?? "",
           gender: genderMap.get(userId),
-          gender_preference: d.gender_preference ?? "no_preference",
+          gender_preference:
+            d.gender_preference ?? "no_preference",
           where_staying: d.where_staying ?? "unsure",
         };
       });
 
     // Use a timestamp-based seed so each run explores a different random ordering.
     const baseSeed = Date.now() & 0xffffffff;
-    const result = runMatchingAlgorithm(intakes, settings, settings.where_to_meet, baseSeed);
+    const result = runMatchingAlgorithm(
+      intakes,
+      settings,
+      settings.where_to_meet,
+      baseSeed
+    );
 
     if (result.preflightFailed) {
       return {
         success: false,
-        error: "Pre-flight validation failed. Please resolve the warnings before running.",
+        error:
+          "Pre-flight validation failed. Please resolve the warnings before running.",
         warningCount: result.warnings.length,
       };
     }
@@ -135,9 +194,15 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       total_teams: result.teams.length,
       unmatched_count: result.unmatched.length,
       required_cluster_count: result.teams.filter((t) =>
-        t.members.some((m) => (intakes.find((i) => i.user_id === m.user_id)?.required_teammates.length ?? 0) > 0)
+        t.members.some(
+          (m) =>
+            (intakes.find((i) => i.user_id === m.user_id)
+              ?.required_teammates.length ?? 0) > 0
+        )
       ).length,
-      invalid_cluster_count: result.warnings.filter((w) => w.type === "oversized_cluster").length,
+      invalid_cluster_count: result.warnings.filter(
+        (w) => w.type === "oversized_cluster"
+      ).length,
     };
 
     // Build primary team rows with stable IDs
@@ -152,21 +217,23 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
     }));
 
     // Build alternative formation rows (up to 2 runner-up results)
-    const formationRows = result.alternatives.slice(0, 2).map((alt, i) => {
-      const formationIndex = (i + 1) as 1 | 2;
-      const teams = alt.teams.map((team, j) => ({
-        ...team,
-        id: `${runId}_alt${formationIndex}_${j}`,
-        run_id: runId,
-      }));
-      return {
-        id: `${runId}_alt${formationIndex}`,
-        run_id: runId,
-        formation_index: formationIndex,
-        teams,
-        fingerprint: alt.fingerprint,
-      };
-    });
+    const formationRows = result.alternatives
+      .slice(0, 2)
+      .map((alt, i) => {
+        const formationIndex = (i + 1) as 1 | 2;
+        const teams = alt.teams.map((team, j) => ({
+          ...team,
+          id: `${runId}_alt${formationIndex}_${j}`,
+          run_id: runId,
+        }));
+        return {
+          id: `${runId}_alt${formationIndex}`,
+          run_id: runId,
+          formation_index: formationIndex,
+          teams,
+          fingerprint: alt.fingerprint,
+        };
+      });
 
     // Save the run, its teams, and its alternative formations in one transaction.
     await supabaseAdmin
@@ -201,9 +268,18 @@ export const runMatching = async (name?: string): Promise<RunMatchingResult> => 
       warnings: result.warnings,
       stats,
     };
-    return { success: true, runId, run, stats, warningCount: result.warnings.length };
+    return {
+      success: true,
+      runId,
+      run,
+      stats,
+      warningCount: result.warnings.length,
+    };
   } catch (error) {
-    const msg = error instanceof Error ? error.message : "An unknown error occurred";
+    const msg =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
     return { success: false, error: msg };
   }
 };

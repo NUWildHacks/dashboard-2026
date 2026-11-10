@@ -3,31 +3,61 @@
 import { PostgrestError } from "@supabase/supabase-js";
 
 import supabaseAdmin from "@/config/supabase-admin";
-import { ADMIN, EVENT_CHECK_INS_TABLE, EVENTS_TABLE, USERS_TABLE } from "@/constants";
+import {
+  ADMIN,
+  EVENT_CHECK_INS_TABLE,
+  EVENTS_TABLE,
+  USERS_TABLE,
+} from "@/constants";
 import { fromRow } from "@/lib";
 import { isValidCheckInSignature } from "@/lib/check-in-code.lib";
-import { getAuthenticatedUser, requireRole } from "@/lib/server";
-import type { CheckInActionResponse, EventCheckIn, QRCodeScanPayload, User } from "@/types";
+import {
+  getAuthenticatedUser,
+  requireRole,
+} from "@/lib/server";
+import type {
+  CheckInActionResponse,
+  EventCheckIn,
+  QRCodeScanPayload,
+  User,
+} from "@/types";
 
-import { getCheckInRedirectPath, isAllowedScannableRole, parseScanPayload, WILDHACKS_EVENT_ID } from "./helpers";
+import {
+  getCheckInRedirectPath,
+  isAllowedScannableRole,
+  parseScanPayload,
+  WILDHACKS_EVENT_ID,
+} from "./helpers";
 
 export type ProcessCheckInInput = {
   eventId: string;
   scanPayload: QRCodeScanPayload | string;
 };
 
-export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInput): Promise<CheckInActionResponse> => {
+export const processCheckIn = async ({
+  eventId,
+  scanPayload,
+}: ProcessCheckInInput): Promise<CheckInActionResponse> => {
   const now = Date.now();
 
   try {
-    const adminUser = await getAuthenticatedUser(getCheckInRedirectPath());
+    const adminUser = await getAuthenticatedUser(
+      getCheckInRedirectPath()
+    );
 
-    const roleError = requireRole(adminUser, ADMIN, "You are not authorized to process check-ins");
+    const roleError = requireRole(
+      adminUser,
+      ADMIN,
+      "You are not authorized to process check-ins"
+    );
     if (roleError) return roleError;
 
     const normalizedEventId = eventId.trim();
     if (!normalizedEventId) {
-      return { success: false, error: "Event ID is required" };
+      return {
+        success: false,
+        error: "Event ID is required",
+      };
     }
 
     let isFoodEvent = false;
@@ -41,23 +71,35 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
         .maybeSingle()
         .throwOnError();
       if (!event) {
-        return { success: false, error: "Selected event does not exist" };
+        return {
+          success: false,
+          error: "Selected event does not exist",
+        };
       }
 
       const eventCategory = event.category;
-      isFoodEvent = typeof eventCategory === "string" && eventCategory.toLowerCase() === "food";
+      isFoodEvent =
+        typeof eventCategory === "string" &&
+        eventCategory.toLowerCase() === "food";
     }
 
-    const parsedPayloadResult = parseScanPayload(scanPayload);
+    const parsedPayloadResult =
+      parseScanPayload(scanPayload);
     if (!parsedPayloadResult.success) {
-      return { success: false, error: parsedPayloadResult.error };
+      return {
+        success: false,
+        error: parsedPayloadResult.error,
+      };
     }
 
     const payload = parsedPayloadResult.payload;
-    if (!isValidCheckInSignature(payload.user_id, payload.sig)) {
+    if (
+      !isValidCheckInSignature(payload.user_id, payload.sig)
+    ) {
       return {
         success: false,
-        error: "This QR code is not valid. Ask the attendee to open it again from the dashboard.",
+        error:
+          "This QR code is not valid. Ask the attendee to open it again from the dashboard.",
       };
     }
 
@@ -68,18 +110,23 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       .maybeSingle()
       .throwOnError();
     if (!userRow) {
-      return { success: false, error: "Scanned user does not exist" };
+      return {
+        success: false,
+        error: "Scanned user does not exist",
+      };
     }
 
     const scannedUser = fromRow<User>(userRow);
     if (!isAllowedScannableRole(scannedUser.role)) {
       return {
         success: false,
-        error: "Only participants, judges, and mentors can be checked in",
+        error:
+          "Only participants, judges, and mentors can be checked in",
       };
     }
 
-    const fullName = `${scannedUser.first_name} ${scannedUser.last_name}`.trim();
+    const fullName =
+      `${scannedUser.first_name} ${scannedUser.last_name}`.trim();
 
     if (normalizedEventId !== WILDHACKS_EVENT_ID) {
       const wildhacksCheckInId = `${WILDHACKS_EVENT_ID}_${payload.user_id}`;
@@ -93,13 +140,16 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       if (!wildhacksCheckIn) {
         return {
           success: false,
-          error: "This attendee must check in to WildHacks before checking in to other events.",
+          error:
+            "This attendee must check in to WildHacks before checking in to other events.",
           requires_wildhacks_check_in: true,
         };
       }
     }
 
-    const dietaryRestrictions = isFoodEvent ? scannedUser.dietary_restrictions : undefined;
+    const dietaryRestrictions = isFoodEvent
+      ? scannedUser.dietary_restrictions
+      : undefined;
 
     // Deterministic ID makes the write idempotent-safe: the insert fails atomically on the
     // primary key if another concurrent scan already wrote the record, eliminating the
@@ -123,10 +173,16 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
     };
 
     try {
-      await supabaseAdmin.from(EVENT_CHECK_INS_TABLE).insert(checkInRecord).throwOnError();
+      await supabaseAdmin
+        .from(EVENT_CHECK_INS_TABLE)
+        .insert(checkInRecord)
+        .throwOnError();
     } catch (insertError) {
       // Postgres error code 23505 = unique_violation — a concurrent scan won the race
-      if (insertError instanceof PostgrestError && insertError.code === "23505") {
+      if (
+        insertError instanceof PostgrestError &&
+        insertError.code === "23505"
+      ) {
         const { data: existingRow } = await supabaseAdmin
           .from(EVENT_CHECK_INS_TABLE)
           .select()
@@ -134,14 +190,21 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
           .single()
           .throwOnError();
 
-        const existingData = fromRow<EventCheckIn>(existingRow);
+        const existingData =
+          fromRow<EventCheckIn>(existingRow);
         const existingCheckIn: EventCheckIn = {
           ...existingData,
           scan_payload: {
             ...existingData.scan_payload,
-            full_name: existingData.scan_payload.full_name ?? (fullName || undefined),
-            email: existingData.scan_payload.email ?? scannedUser.email,
-            role: existingData.scan_payload.role ?? scannedUser.role,
+            full_name:
+              existingData.scan_payload.full_name ??
+              (fullName || undefined),
+            email:
+              existingData.scan_payload.email ??
+              scannedUser.email,
+            role:
+              existingData.scan_payload.role ??
+              scannedUser.role,
           },
         };
         return {
@@ -161,11 +224,17 @@ export const processCheckIn = async ({ eventId, scanPayload }: ProcessCheckInInp
       dietary_restrictions: dietaryRestrictions,
     };
   } catch (error) {
-    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    const detailedError =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
     console.error("Process check-in error:", detailedError);
 
-    const isProduction = process.env.APP_ENV === "production";
-    const errorMessage = isProduction ? "Unable to process check-in. Please try again." : detailedError;
+    const isProduction =
+      process.env.APP_ENV === "production";
+    const errorMessage = isProduction
+      ? "Unable to process check-in. Please try again."
+      : detailedError;
 
     return { success: false, error: errorMessage };
   }

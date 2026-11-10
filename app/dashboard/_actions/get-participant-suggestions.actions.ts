@@ -15,12 +15,20 @@ import {
 } from "@/constants";
 import { fromRows, selectAllRows } from "@/lib";
 import { getAuthenticatedUser } from "@/lib/server";
-import type { MatchedTeam, TeamFormation, TeamMatchingRun, TeamSuggestion } from "@/types";
+import type {
+  MatchedTeam,
+  TeamFormation,
+  TeamMatchingRun,
+  TeamSuggestion,
+} from "@/types";
 
-export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => {
+export const getParticipantSuggestions = async (): Promise<
+  TeamSuggestion[]
+> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
-    const { id: userId, role } = await getAuthenticatedUser(redirectPath);
+    const { id: userId, role } =
+      await getAuthenticatedUser(redirectPath);
 
     const { data: config } = await supabaseAdmin
       .from(WILDHACKS_CONFIG_TABLE)
@@ -29,15 +37,24 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
       .maybeSingle()
       .throwOnError();
     // Participants see suggestions only after admins release the results.
-    if (role !== ADMIN && config?.results_released !== true) return [];
+    if (role !== ADMIN && config?.results_released !== true)
+      return [];
 
     const mode = config?.team_matching_mode ?? "dev";
     const effectiveMode = role === ADMIN ? mode : "prod";
 
-    const runsTable = effectiveMode === "prod" ? TEAM_MATCHING_RUNS_TABLE_PROD : TEAM_MATCHING_RUNS_TABLE;
-    const teamsTable = effectiveMode === "prod" ? TEAM_MATCHING_TEAMS_TABLE_PROD : TEAM_MATCHING_TEAMS_TABLE;
+    const runsTable =
+      effectiveMode === "prod"
+        ? TEAM_MATCHING_RUNS_TABLE_PROD
+        : TEAM_MATCHING_RUNS_TABLE;
+    const teamsTable =
+      effectiveMode === "prod"
+        ? TEAM_MATCHING_TEAMS_TABLE_PROD
+        : TEAM_MATCHING_TEAMS_TABLE;
     const formationsTable =
-      effectiveMode === "prod" ? TEAM_MATCHING_FORMATIONS_TABLE_PROD : TEAM_MATCHING_FORMATIONS_TABLE;
+      effectiveMode === "prod"
+        ? TEAM_MATCHING_FORMATIONS_TABLE_PROD
+        : TEAM_MATCHING_FORMATIONS_TABLE;
 
     const { data: topRunRows } = await supabaseAdmin
       .from(runsTable)
@@ -62,16 +79,18 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
         rank: (results.length + 1) as 1 | 2 | 3,
         team_id: team.id,
         // The card shows only names and roles, so do not send other members' survey answers.
-        members: team.members.map(({ user_id, name, roles }) => ({
-          user_id,
-          name,
-          roles,
-          skills: {},
-          experience_level: "",
-          work_style: "",
-          gender_preference: "",
-          where_staying: "",
-        })),
+        members: team.members.map(
+          ({ user_id, name, roles }) => ({
+            user_id,
+            name,
+            roles,
+            skills: {},
+            experience_level: "",
+            work_style: "",
+            gender_preference: "",
+            where_staying: "",
+          })
+        ),
         score: team.score,
         match_reasons: team.match_reasons,
         where_to_meet: team.where_to_meet,
@@ -83,9 +102,17 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
 
       // Primary formation
       const teamRows = await selectAllRows((from, to) =>
-        supabaseAdmin.from(teamsTable).select().eq("run_id", run.id).order("id").range(from, to).throwOnError()
+        supabaseAdmin
+          .from(teamsTable)
+          .select()
+          .eq("run_id", run.id)
+          .order("id")
+          .range(from, to)
+          .throwOnError()
       );
-      const primary = fromRows<MatchedTeam>(teamRows).find((t) => t.members.some((m) => m.user_id === userId));
+      const primary = fromRows<MatchedTeam>(teamRows).find(
+        (t) => t.members.some((m) => m.user_id === userId)
+      );
       if (primary) tryAdd(primary);
 
       if (results.length >= 3) break;
@@ -93,16 +120,24 @@ export const getParticipantSuggestions = async (): Promise<TeamSuggestion[]> => 
       // Alternative formations (alt1, alt2)
       const { data: formationRows } = await supabaseAdmin
         .from(formationsTable)
-        .select("run_id, formation_index, teams, fingerprint")
+        .select(
+          "run_id, formation_index, teams, fingerprint"
+        )
         .in(
           "id",
           [1, 2].map((i) => `${run.id}_alt${i}`)
         )
         .throwOnError();
-      const formations = fromRows<TeamFormation>(formationRows).sort((a, b) => a.formation_index - b.formation_index);
+      const formations = fromRows<TeamFormation>(
+        formationRows
+      ).sort(
+        (a, b) => a.formation_index - b.formation_index
+      );
       for (const formation of formations) {
         if (results.length >= 3) continue;
-        const altTeam = formation.teams.find((t) => t.members.some((m) => m.user_id === userId));
+        const altTeam = formation.teams.find((t) =>
+          t.members.some((m) => m.user_id === userId)
+        );
         if (altTeam) tryAdd(altTeam);
       }
     }

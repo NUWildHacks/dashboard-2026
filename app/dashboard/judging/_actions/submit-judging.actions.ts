@@ -12,13 +12,25 @@ import {
   DASHBOARD_JUDGING_ROUND_2_PATH,
   JUDGE_AND_MENTOR,
 } from "@/constants";
-import { getAuthenticatedUser, requireRole } from "@/lib/server";
+import {
+  getAuthenticatedUser,
+  requireRole,
+} from "@/lib/server";
 import type { ActionResult, JudgeUser } from "@/types";
 
-import { judgingFormSchema, type JudgingFormSchema } from "../_schemas";
-import type { JudgingAssignment, JudgingForm, JudgingRound, Project } from "../types";
+import {
+  judgingFormSchema,
+  type JudgingFormSchema,
+} from "../_schemas";
+import type {
+  JudgingAssignment,
+  JudgingForm,
+  JudgingRound,
+  Project,
+} from "../types";
 
-export type SubmitJudgingResult = ActionResult<JudgingFormSchema>;
+export type SubmitJudgingResult =
+  ActionResult<JudgingFormSchema>;
 
 export const submitJudging = async (
   data: JudgingFormSchema,
@@ -30,7 +42,10 @@ export const submitJudging = async (
 ): Promise<SubmitJudgingResult> => {
   const now = Date.now();
 
-  if (currentPath !== DASHBOARD_JUDGING_ROUND_1_PATH && currentPath !== DASHBOARD_JUDGING_ROUND_2_PATH) {
+  if (
+    currentPath !== DASHBOARD_JUDGING_ROUND_1_PATH &&
+    currentPath !== DASHBOARD_JUDGING_ROUND_2_PATH
+  ) {
     return {
       success: false,
       error: "Invalid path",
@@ -41,19 +56,29 @@ export const submitJudging = async (
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(currentPath)}`;
     const user = await getAuthenticatedUser(redirectPath);
 
-    const roleError = requireRole(user, [JUDGE, JUDGE_AND_MENTOR], "You are not authorized to submit judging form");
+    const roleError = requireRole(
+      user,
+      [JUDGE, JUDGE_AND_MENTOR],
+      "You are not authorized to submit judging form"
+    );
     if (roleError) return roleError;
 
     if (user.id !== judgeId) {
       return {
         success: false,
-        error: "You are not authorized to submit judging form for this judge",
+        error:
+          "You are not authorized to submit judging form for this judge",
       };
     }
 
     const parsed = judgingFormSchema.safeParse(data);
     if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0]?.message ?? "Invalid judging form" };
+      return {
+        success: false,
+        error:
+          parsed.error.issues[0]?.message ??
+          "Invalid judging form",
+      };
     }
 
     const { data: project } = await supabaseAdmin
@@ -86,7 +111,8 @@ export const submitJudging = async (
       };
     }
 
-    const existingForm = judgingAssignment.judging_form as JudgingAssignment["judging_form"];
+    const existingForm =
+      judgingAssignment.judging_form as JudgingAssignment["judging_form"];
 
     const { data: updatedAssignments } = await supabaseAdmin
       .from(JUDGING_ASSIGNMENTS_TABLE)
@@ -113,11 +139,20 @@ export const submitJudging = async (
 
     return { success: true };
   } catch (error) {
-    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Submit judging form error:", detailedError);
+    const detailedError =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
+    console.error(
+      "Submit judging form error:",
+      detailedError
+    );
 
-    const isProduction = process.env.APP_ENV === "production";
-    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+    const isProduction =
+      process.env.APP_ENV === "production";
+    const errorMessage = isProduction
+      ? "An unknown error occurred. Please try again."
+      : detailedError;
 
     return { success: false, error: errorMessage };
   }

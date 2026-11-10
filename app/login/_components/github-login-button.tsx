@@ -12,7 +12,11 @@ const GithubLoginButton = () => {
   };
 
   return (
-    <Button variant="outline" size="lg" onClick={handleGithubLogin}>
+    <Button
+      variant="outline"
+      size="lg"
+      onClick={handleGithubLogin}
+    >
       <Github />
       Login with Github
     </Button>

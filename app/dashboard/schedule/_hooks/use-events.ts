@@ -8,7 +8,11 @@ import type { UseFiltersReturnWithAll } from "@/hooks";
 import { fromRows, selectAllRows } from "@/lib/db.lib";
 
 import { EVENT_FIELDS } from "../constants";
-import type { CalendarDay, Event, EventCategory } from "../types";
+import type {
+  CalendarDay,
+  Event,
+  EventCategory,
+} from "../types";
 
 export type UseEventsSettings = {
   category?: UseFiltersReturnWithAll<EventCategory>["category"];
@@ -24,11 +28,19 @@ export type UseEventsReturn = {
   isLoading: boolean;
 };
 
-export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
+export const useEvents = (
+  settings: UseEventsSettings
+): UseEventsReturn => {
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { category, search, selectedDay, limitCount, upcomingOnly } = settings;
+  const {
+    category,
+    search,
+    selectedDay,
+    limitCount,
+    upcomingOnly,
+  } = settings;
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
@@ -38,7 +50,8 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
 
     const queryEvents = (from: number, to: number) => {
       let q = supabase.from(EVENTS_TABLE).select();
-      if (upcomingOnly) q = q.gt(EVENT_FIELDS.end_time, Date.now());
+      if (upcomingOnly)
+        q = q.gt(EVENT_FIELDS.end_time, Date.now());
       return q
         .order(EVENT_FIELDS.start_time, { ascending: true })
         .order("id", { ascending: true })
@@ -51,7 +64,9 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
       try {
         const rows = limitCount
           ? (await queryEvents(0, limitCount - 1)).data
-          : await selectAllRows((from, to) => queryEvents(from, to));
+          : await selectAllRows((from, to) =>
+              queryEvents(from, to)
+            );
         if (!isActive || request !== latestRequest) return;
 
         setAllEvents(fromRows<Event>(rows));
@@ -66,16 +81,26 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
 
     const channel = supabase
       .channel(`events-${crypto.randomUUID()}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: EVENTS_TABLE }, () => {
-        fetchEvents();
-      })
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: EVENTS_TABLE,
+        },
+        () => {
+          fetchEvents();
+        }
+      )
       .subscribe((status) => {
         // Changes made while the connection was down are not replayed, so fetch again after
         // every (re)connect.
         if (status === "SUBSCRIBED") fetchEvents();
       });
 
-    const refreshTimer = upcomingOnly ? setInterval(fetchEvents, ONE_MINUTE) : undefined;
+    const refreshTimer = upcomingOnly
+      ? setInterval(fetchEvents, ONE_MINUTE)
+      : undefined;
 
     return () => {
       isActive = false;
@@ -88,7 +113,9 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
     let result = allEvents;
 
     if (category && category !== "all") {
-      result = result.filter((event) => event.category === category);
+      result = result.filter(
+        (event) => event.category === category
+      );
     }
 
     if (search && search !== "") {
@@ -97,14 +124,20 @@ export const useEvents = (settings: UseEventsSettings): UseEventsReturn => {
         return (
           event.title.toLowerCase().includes(searchLower) ||
           event.body.toLowerCase().includes(searchLower) ||
-          event.category.toLowerCase().includes(searchLower) ||
+          event.category
+            .toLowerCase()
+            .includes(searchLower) ||
           event.location.toLowerCase().includes(searchLower)
         );
       });
     }
 
     if (selectedDay) {
-      result = result.filter((event) => event.start_time >= selectedDay.startMs && event.end_time <= selectedDay.endMs);
+      result = result.filter(
+        (event) =>
+          event.start_time >= selectedDay.startMs &&
+          event.end_time <= selectedDay.endMs
+      );
     }
 
     return result;

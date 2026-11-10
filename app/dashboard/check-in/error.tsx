@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { DASHBOARD_PATH } from "@/constants";
 import type { ErrorPageProps } from "@/types";
 
@@ -19,7 +25,8 @@ const CheckInError = ({ error, reset }: ErrorPageProps) => {
         <CardHeader>
           <CardTitle>Check-in unavailable</CardTitle>
           <CardDescription>
-            Something went wrong while loading the admin check-in console. Please try again.
+            Something went wrong while loading the admin
+            check-in console. Please try again.
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex-row-reverse">

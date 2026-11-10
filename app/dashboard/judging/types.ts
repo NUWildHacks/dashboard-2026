@@ -1,7 +1,12 @@
 import { JudgeUser } from "@/types";
 
 import { JudgingFormSchema } from "./_schemas";
-import { ROOMS, ROUNDS, SUBMISSION_STATUSES, TRACKS } from "./constants";
+import {
+  ROOMS,
+  ROUNDS,
+  SUBMISSION_STATUSES,
+  TRACKS,
+} from "./constants";
 
 export type Track = (typeof TRACKS)[number];
 
@@ -31,10 +36,12 @@ export type JudgingAssignment = {
   judging_form: JudgingForm | null;
 };
 
-export type JudgingAssignmentWithProject = JudgingAssignment & {
-  project: Project;
-};
+export type JudgingAssignmentWithProject =
+  JudgingAssignment & {
+    project: Project;
+  };
 
-export type SubmissionStatus = (typeof SUBMISSION_STATUSES)[number];
+export type SubmissionStatus =
+  (typeof SUBMISSION_STATUSES)[number];
 
 export type JudgingRound = (typeof ROUNDS)[number];

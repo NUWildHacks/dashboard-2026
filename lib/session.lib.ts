@@ -30,13 +30,20 @@ export async function verifySession() {
 
     if (error) throw error;
     if (!user) throw new Error("Could not find session");
-    if (!user.email || !user.email_confirmed_at) throw new Error("Account email is not confirmed");
+    if (!user.email || !user.email_confirmed_at)
+      throw new Error("Account email is not confirmed");
 
-    return { id: user.id, email: user.email } as Pick<User, "id" | "email">;
+    return { id: user.id, email: user.email } as Pick<
+      User,
+      "id" | "email"
+    >;
   } catch (e) {
     // Let Next.js handle its own signals (for example, the one that marks a page as dynamic).
     unstable_rethrow(e);
-    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
+    const errorMessage =
+      e instanceof Error
+        ? e.message
+        : "An unknown error occurred";
     console.error(errorMessage);
 
     return null;

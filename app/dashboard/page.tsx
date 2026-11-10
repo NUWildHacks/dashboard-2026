@@ -37,9 +37,17 @@ import {
 } from "@/constants";
 import { cn, fromRows, selectAllRows } from "@/lib";
 import { createCheckInCode } from "@/lib/check-in-code.lib";
-import { getAuthenticatedUser, getConfig } from "@/lib/server";
+import {
+  getAuthenticatedUser,
+  getConfig,
+} from "@/lib/server";
 import { calculateStatistics } from "@/lib/statistics.lib";
-import type { MatchedTeam, TeamFormation, TeamMatchingRun, TeamSuggestion } from "@/types";
+import type {
+  MatchedTeam,
+  TeamFormation,
+  TeamMatchingRun,
+  TeamSuggestion,
+} from "@/types";
 
 import { TeamMatchingGate } from "./_components/team-matching-gate";
 import { getResumeMetadata } from "./_lib/resume";
@@ -75,16 +83,18 @@ async function fetchTopSuggestions(
       rank: (results.length + 1) as 1 | 2 | 3,
       team_id: team.id,
       // The card shows only names and roles, so do not send other members' survey answers.
-      members: team.members.map(({ user_id, name, roles }) => ({
-        user_id,
-        name,
-        roles,
-        skills: {},
-        experience_level: "",
-        work_style: "",
-        gender_preference: "",
-        where_staying: "",
-      })),
+      members: team.members.map(
+        ({ user_id, name, roles }) => ({
+          user_id,
+          name,
+          roles,
+          skills: {},
+          experience_level: "",
+          work_style: "",
+          gender_preference: "",
+          where_staying: "",
+        })
+      ),
       score: team.score,
       match_reasons: team.match_reasons,
       where_to_meet: team.where_to_meet,
@@ -95,9 +105,17 @@ async function fetchTopSuggestions(
     if (results.length >= 3) break;
 
     const teamRows = await selectAllRows((from, to) =>
-      supabaseAdmin.from(collections.teams).select().eq("run_id", run.id).order("id").range(from, to).throwOnError()
+      supabaseAdmin
+        .from(collections.teams)
+        .select()
+        .eq("run_id", run.id)
+        .order("id")
+        .range(from, to)
+        .throwOnError()
     );
-    const primary = fromRows<MatchedTeam>(teamRows).find((t) => t.members.some((m) => m.user_id === userId));
+    const primary = fromRows<MatchedTeam>(teamRows).find(
+      (t) => t.members.some((m) => m.user_id === userId)
+    );
     if (primary) tryAdd(primary);
 
     if (results.length >= 3) break;
@@ -110,10 +128,14 @@ async function fetchTopSuggestions(
         [1, 2].map((i) => `${run.id}_alt${i}`)
       )
       .throwOnError();
-    const formations = fromRows<TeamFormation>(formationRows).sort((a, b) => a.formation_index - b.formation_index);
+    const formations = fromRows<TeamFormation>(
+      formationRows
+    ).sort((a, b) => a.formation_index - b.formation_index);
     for (const formation of formations) {
       if (results.length >= 3) continue;
-      const altTeam = formation.teams.find((t) => t.members.some((m) => m.user_id === userId));
+      const altTeam = formation.teams.find((t) =>
+        t.members.some((m) => m.user_id === userId)
+      );
       if (altTeam) tryAdd(altTeam);
     }
   }
@@ -124,32 +146,69 @@ async function fetchTopSuggestions(
 const DashboardPage = async () => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
 
-  const { id: userId, role, first_name, last_name, email, ...userProfile } = await getAuthenticatedUser(redirectPath);
-  const school = "school" in userProfile ? userProfile.school : "";
-  const field_of_study = "field_of_study" in userProfile ? userProfile.field_of_study : "";
+  const {
+    id: userId,
+    role,
+    first_name,
+    last_name,
+    email,
+    ...userProfile
+  } = await getAuthenticatedUser(redirectPath);
+  const school =
+    "school" in userProfile ? userProfile.school : "";
+  const field_of_study =
+    "field_of_study" in userProfile
+      ? userProfile.field_of_study
+      : "";
 
   const wildhacksConfig = await getConfig();
-  const wildHacksStatistics = role === ADMIN ? await calculateStatistics() : undefined;
+  const wildHacksStatistics =
+    role === ADMIN
+      ? await calculateStatistics()
+      : undefined;
 
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
-  const showAdminCrowdFavoriteLink = role === ADMIN && (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
-  const participantOptInOpen = await isCrowdFavoriteOptInOpen(wildhacksConfig);
-  const participantVotingOpen = await isCrowdFavoriteVotingOpen(wildhacksConfig);
-  const showParticipantCrowdFavoriteLink = role === PARTICIPANT && (participantOptInOpen || participantVotingOpen);
-  const showPresentationTile = role === PARTICIPANT && (await isCrowdFavoritePresentationPhase(wildhacksConfig));
+  const showAdminCrowdFavoriteLink =
+    role === ADMIN &&
+    (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
+  const participantOptInOpen =
+    await isCrowdFavoriteOptInOpen(wildhacksConfig);
+  const participantVotingOpen =
+    await isCrowdFavoriteVotingOpen(wildhacksConfig);
+  const showParticipantCrowdFavoriteLink =
+    role === PARTICIPANT &&
+    (participantOptInOpen || participantVotingOpen);
+  const showPresentationTile =
+    role === PARTICIPANT &&
+    (await isCrowdFavoritePresentationPhase(
+      wildhacksConfig
+    ));
 
-  const [crowdFavoriteProject, votingProjects, votedForProjectId] = await Promise.all([
-    role === PARTICIPANT ? getCrowdFavoriteProjectForUser(userId) : Promise.resolve(null),
-    participantVotingOpen ? getAllCrowdFavoriteProjects() : Promise.resolve([]),
-    participantVotingOpen && role === PARTICIPANT ? getUserVotedProjectId(userId) : Promise.resolve(null),
+  const [
+    crowdFavoriteProject,
+    votingProjects,
+    votedForProjectId,
+  ] = await Promise.all([
+    role === PARTICIPANT
+      ? getCrowdFavoriteProjectForUser(userId)
+      : Promise.resolve(null),
+    participantVotingOpen
+      ? getAllCrowdFavoriteProjects()
+      : Promise.resolve([]),
+    participantVotingOpen && role === PARTICIPANT
+      ? getUserVotedProjectId(userId)
+      : Promise.resolve(null),
   ]);
 
   const isOptedIn = crowdFavoriteProject !== null;
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT || role === ADMIN) {
-    const intakeTable = role === PARTICIPANT ? TEAM_MATCHING_INTAKE_TABLE : TEAM_MATCHING_INTAKE_TABLE_DEV;
+    const intakeTable =
+      role === PARTICIPANT
+        ? TEAM_MATCHING_INTAKE_TABLE
+        : TEAM_MATCHING_INTAKE_TABLE_DEV;
     const { data: intake } = await supabaseAdmin
       .from(intakeTable)
       .select("user_id")
@@ -159,7 +218,8 @@ const DashboardPage = async () => {
     hasSubmittedTeamMatching = intake !== null;
   }
 
-  const adminMode = wildhacksConfig.team_matching_mode ?? "dev";
+  const adminMode =
+    wildhacksConfig.team_matching_mode ?? "dev";
   const suggestionCollections =
     role === PARTICIPANT
       ? {
@@ -182,8 +242,13 @@ const DashboardPage = async () => {
   // Participants get suggestions only after admins release the results; the page data would
   // otherwise carry them to the browser early.
   const initialSuggestions =
-    role === ADMIN || (role === PARTICIPANT && wildhacksConfig.results_released === true)
-      ? await fetchTopSuggestions(userId, suggestionCollections)
+    role === ADMIN ||
+    (role === PARTICIPANT &&
+      wildhacksConfig.results_released === true)
+      ? await fetchTopSuggestions(
+          userId,
+          suggestionCollections
+        )
       : [];
 
   const now = new Date().getTime();
@@ -200,7 +265,14 @@ const DashboardPage = async () => {
             <QRCode code={createCheckInCode(userId)} />
           </div>
         )}
-        <div className={cn(role === PARTICIPANT || showAdminCrowdFavoriteLink ? "md:col-span-1" : "md:col-span-2")}>
+        <div
+          className={cn(
+            role === PARTICIPANT ||
+              showAdminCrowdFavoriteLink
+              ? "md:col-span-1"
+              : "md:col-span-2"
+          )}
+        >
           <VenueMap />
         </div>
         {showAdminCrowdFavoriteLink && (
@@ -221,8 +293,13 @@ const DashboardPage = async () => {
               callerFirstName={first_name}
               callerEmail={email}
               crowdFavoriteProject={crowdFavoriteProject}
-              votingProjects={votingProjects.map((p) => ({ id: p.id, project_name: p.project_name }))}
-              initialVotedProjectId={votedForProjectId ?? undefined}
+              votingProjects={votingProjects.map((p) => ({
+                id: p.id,
+                project_name: p.project_name,
+              }))}
+              initialVotedProjectId={
+                votedForProjectId ?? undefined
+              }
             />
           ) : showPresentationTile ? (
             <CrowdFavoritePresentationTile />
@@ -241,25 +318,34 @@ const DashboardPage = async () => {
         </div>
       )}
 
-      {role === ADMIN && now < end && hasSubmittedTeamMatching && (
-        <div className="md:col-span-1">
-          <TeamMatchingGate
-            hasSubmitted={hasSubmittedTeamMatching}
-            initialSuggestions={initialSuggestions}
-            releasedField="results_released_dev"
-            firstName={first_name}
-            lastName={last_name}
-            email={email}
-            school={school as string}
-            fieldOfStudy={field_of_study as string}
-            eventStartTime={wildhacksConfig.start_time}
-          />
-        </div>
-      )}
+      {role === ADMIN &&
+        now < end &&
+        hasSubmittedTeamMatching && (
+          <div className="md:col-span-1">
+            <TeamMatchingGate
+              hasSubmitted={hasSubmittedTeamMatching}
+              initialSuggestions={initialSuggestions}
+              releasedField="results_released_dev"
+              firstName={first_name}
+              lastName={last_name}
+              email={email}
+              school={school as string}
+              fieldOfStudy={field_of_study as string}
+              eventStartTime={wildhacksConfig.start_time}
+            />
+          </div>
+        )}
 
-      <div className={cn("grid grid-cols-1 gap-4", wildHacksStatistics && "lg:grid-cols-2")}>
+      <div
+        className={cn(
+          "grid grid-cols-1 gap-4",
+          wildHacksStatistics && "lg:grid-cols-2"
+        )}
+      >
         <UpcomingEvents />
-        {wildHacksStatistics && <Statistics {...wildHacksStatistics} />}
+        {wildHacksStatistics && (
+          <Statistics {...wildHacksStatistics} />
+        )}
       </div>
     </>
   );

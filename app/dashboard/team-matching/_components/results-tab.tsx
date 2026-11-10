@@ -2,7 +2,13 @@
 
 import { Loader2 } from "lucide-react";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { MatchedTeam, TeamMatchingRun } from "@/types";
 
 import { TeamResultCard } from "./team-result-card";
@@ -14,7 +20,12 @@ type ResultsTabProps = {
   onSelectRun: (runId: string) => void;
 };
 
-export const ResultsTab = ({ runs, teams, loadingTeams, onSelectRun }: ResultsTabProps) => {
+export const ResultsTab = ({
+  runs,
+  teams,
+  loadingTeams,
+  onSelectRun,
+}: ResultsTabProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -25,19 +36,31 @@ export const ResultsTab = ({ runs, teams, loadingTeams, onSelectRun }: ResultsTa
           <SelectContent>
             {runs.map((run) => (
               <SelectItem key={run.id} value={run.id}>
-                {new Date(run.run_at).toLocaleString("en-US")} — {run.status} ({run.stats.total_teams} teams)
+                {new Date(run.run_at).toLocaleString(
+                  "en-US"
+                )}{" "}
+                — {run.status} ({run.stats.total_teams}{" "}
+                teams)
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-        {loadingTeams && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+        {loadingTeams && (
+          <Loader2 className="size-4 animate-spin text-muted-foreground" />
+        )}
       </div>
 
-      {runs.length === 0 && <p className="text-sm text-muted-foreground">No runs yet. Run the algorithm first.</p>}
+      {runs.length === 0 && (
+        <p className="text-sm text-muted-foreground">
+          No runs yet. Run the algorithm first.
+        </p>
+      )}
 
       {!loadingTeams && teams.length > 0 && (
         <>
-          <p className="text-sm text-muted-foreground">{teams.length} teams</p>
+          <p className="text-sm text-muted-foreground">
+            {teams.length} teams
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {teams.map((team) => (
               <TeamResultCard key={team.id} team={team} />
@@ -46,9 +69,13 @@ export const ResultsTab = ({ runs, teams, loadingTeams, onSelectRun }: ResultsTa
         </>
       )}
 
-      {!loadingTeams && teams.length === 0 && runs.length > 0 && (
-        <p className="text-sm text-muted-foreground">Select a run above to view its teams.</p>
-      )}
+      {!loadingTeams &&
+        teams.length === 0 &&
+        runs.length > 0 && (
+          <p className="text-sm text-muted-foreground">
+            Select a run above to view its teams.
+          </p>
+        )}
     </div>
   );
 };

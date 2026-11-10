@@ -14,9 +14,12 @@ import {
   VIRTUAL_ZOOM_JUDGING_PATH,
 } from "./constants/routes.constants";
 
-const discordInviteDestination = process.env.DISCORD_INVITE_URL as string;
-const discordTeamDestination = process.env.DISCORD_TEAM_URL as string;
-const virtualZoomJudgingDestination = process.env.VIRTUAL_ZOOM_JUDGING_URL as string;
+const discordInviteDestination = process.env
+  .DISCORD_INVITE_URL as string;
+const discordTeamDestination = process.env
+  .DISCORD_TEAM_URL as string;
+const virtualZoomJudgingDestination = process.env
+  .VIRTUAL_ZOOM_JUDGING_URL as string;
 
 const require = createRequire(import.meta.url);
 
@@ -39,9 +42,19 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         // proxy.ts sets the Content-Security-Policy header, because it needs a new nonce per request.
         headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=(), payment=()" },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value:
+              "camera=(self), microphone=(), geolocation=(), payment=()",
+          },
         ],
       },
     ];
@@ -63,13 +76,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: TECH_ROOM_FINDER_PATH,
-        destination: "https://www.mccormick.northwestern.edu/contact/tech-room-finder.html",
+        destination:
+          "https://www.mccormick.northwestern.edu/contact/tech-room-finder.html",
         basePath: false,
         permanent: false,
       },
       {
         source: JUDGING_GUIDE_PATH,
-        destination: "https://guide.wildhacks.net/judging-and-awards/how-judging-works/",
+        destination:
+          "https://guide.wildhacks.net/judging-and-awards/how-judging-works/",
         basePath: false,
         permanent: false,
       },

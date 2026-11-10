@@ -3,11 +3,16 @@
  * so injected inline scripts are blocked; the app's own script files load from 'self'.
  * proxy.ts creates a new nonce for every request.
  */
-export const buildContentSecurityPolicy = (nonce: string) => {
+export const buildContentSecurityPolicy = (
+  nonce: string
+) => {
   // Use the strict policy unless the environment is explicitly a development one, so a missing
   // APP_ENV never relaxes production.
-  const isDev = process.env.APP_ENV === "development" || process.env.NODE_ENV === "development";
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const isDev =
+    process.env.APP_ENV === "development" ||
+    process.env.NODE_ENV === "development";
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
   const supabaseWsUrl = supabaseUrl.replace(/^http/, "ws");
 
   return `

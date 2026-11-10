@@ -7,7 +7,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { DASHBOARD_PATH, ROOT_PATH } from "@/constants";
 import { verifySession } from "@/lib/server";
 
-import { GithubLoginButton, GoogleLoginButton, LoginErrorToast } from "./_components";
+import {
+  GithubLoginButton,
+  GoogleLoginButton,
+  LoginErrorToast,
+} from "./_components";
 
 const LoginPage = async () => {
   const userInfo = await verifySession();
@@ -22,9 +26,18 @@ const LoginPage = async () => {
         <Card>
           <CardContent className="flex flex-col items-center gap-6">
             <Link href={ROOT_PATH} aria-label="Return home">
-              <Image src="/wildhacks-splash.svg" alt="Main Logo" width={300} height={114} loading="eager" />
+              <Image
+                src="/wildhacks-splash.svg"
+                alt="Main Logo"
+                width={300}
+                height={114}
+                loading="eager"
+              />
             </Link>
-            <p className="text-sm text-center">Before we continue, let&apos;s make sure you&apos;re logged in first</p>
+            <p className="text-sm text-center">
+              Before we continue, let&apos;s make sure
+              you&apos;re logged in first
+            </p>
             <div className="flex flex-col items-center gap-2">
               <GithubLoginButton />
               <GoogleLoginButton />

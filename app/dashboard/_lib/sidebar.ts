@@ -18,7 +18,8 @@ import { HEADER_TEXT_MAP } from "../constants";
 const getHeaderText = (pathname: string) => {
   const subpath = pathname.split("/").at(-1);
 
-  const headerText = HEADER_TEXT_MAP[subpath ?? ""] || "Home";
+  const headerText =
+    HEADER_TEXT_MAP[subpath ?? ""] || "Home";
 
   return headerText;
 };

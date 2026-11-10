@@ -1,17 +1,26 @@
 import { z } from "zod";
 
-import { plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
+import {
+  plainTextSingleLineSchema,
+  secureUrlSchema,
+} from "@/lib";
 
 import { CROWD_FAVORITE_MAX_ADDITIONAL_MEMBERS } from "../constants";
 
 const teamMemberSchema = z.object({
-  email: z.email("Enter a valid email address").toLowerCase().trim(),
+  email: z
+    .email("Enter a valid email address")
+    .toLowerCase()
+    .trim(),
 });
 
 export const crowdFavoriteOptInFormSchema = z.object({
   project_name: plainTextSingleLineSchema
     .min(1, "Project name is required")
-    .max(100, "Project name must be 100 characters or less"),
+    .max(
+      100,
+      "Project name must be 100 characters or less"
+    ),
   devpost_url: secureUrlSchema,
   team_members: z
     .array(teamMemberSchema)
@@ -20,7 +29,9 @@ export const crowdFavoriteOptInFormSchema = z.object({
       `You can add at most ${CROWD_FAVORITE_MAX_ADDITIONAL_MEMBERS} teammate emails`
     )
     .superRefine((teamMembers, ctx) => {
-      const normalized = teamMembers.map((member) => member.email.trim().toLowerCase());
+      const normalized = teamMembers.map((member) =>
+        member.email.trim().toLowerCase()
+      );
 
       normalized.forEach((email, index) => {
         if (!email) {
@@ -47,4 +58,6 @@ export const crowdFavoriteOptInFormSchema = z.object({
     }),
 });
 
-export type CrowdFavoriteOptInFormSchema = z.infer<typeof crowdFavoriteOptInFormSchema>;
+export type CrowdFavoriteOptInFormSchema = z.infer<
+  typeof crowdFavoriteOptInFormSchema
+>;

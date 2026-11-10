@@ -1,4 +1,9 @@
-import { MONTH_ABBREVIATIONS, ONE_DAY, ONE_HOUR, ONE_MINUTE } from "@/constants";
+import {
+  MONTH_ABBREVIATIONS,
+  ONE_DAY,
+  ONE_HOUR,
+  ONE_MINUTE,
+} from "@/constants";
 
 /**
  * Format a date from milliseconds to a readable string.
@@ -73,7 +78,10 @@ const getTimeFromMilliseconds = (milliseconds: number) => {
  * // Returns: "April 11, 8:00 AM - 5:00 PM"
  * ```
  */
-const getEventTimeRange = (start_time: number, end_time: number) => {
+const getEventTimeRange = (
+  start_time: number,
+  end_time: number
+) => {
   const startDate = new Date(start_time);
   const month = MONTH_ABBREVIATIONS[startDate.getMonth()];
   const day = startDate.getDate();
@@ -109,11 +117,17 @@ const getSendTime = (sendMilliseconds: number) => {
   if (diffMilliseconds < ONE_MINUTE) {
     return "Less than a minute ago";
   } else if (diffMilliseconds < ONE_HOUR) {
-    const minutes = Math.floor(diffMilliseconds / ONE_MINUTE);
-    return minutes === 1 ? `${minutes} minute ago` : `${minutes} minutes ago`;
+    const minutes = Math.floor(
+      diffMilliseconds / ONE_MINUTE
+    );
+    return minutes === 1
+      ? `${minutes} minute ago`
+      : `${minutes} minutes ago`;
   } else if (diffMilliseconds < ONE_DAY) {
     const hours = Math.floor(diffMilliseconds / ONE_HOUR);
-    return hours === 1 ? `${hours} hour ago` : `${hours} hours ago`;
+    return hours === 1
+      ? `${hours} hour ago`
+      : `${hours} hours ago`;
   } else {
     return getDateFromMilliseconds(sendMilliseconds);
   }
@@ -131,7 +145,9 @@ const getSendTime = (sendMilliseconds: number) => {
  * // Returns: Date object for April 11, 2026 at 8:00 AM
  * ```
  */
-const millisecondsToDate = (milliseconds: number): Date | undefined => {
+const millisecondsToDate = (
+  milliseconds: number
+): Date | undefined => {
   if (!milliseconds || milliseconds <= 0) return undefined;
   return new Date(milliseconds);
 };
@@ -150,7 +166,10 @@ const millisecondsToDate = (milliseconds: number): Date | undefined => {
  * // Returns: milliseconds for April 11, 2026 at 2:30 PM
  * ```
  */
-const combineDateAndTime = (date: Date | undefined, time: string): number => {
+const combineDateAndTime = (
+  date: Date | undefined,
+  time: string
+): number => {
   if (!date || !time) return 0;
   const [hours, minutes] = time.split(":").map(Number);
   const combined = new Date(date);
@@ -170,11 +189,16 @@ const combineDateAndTime = (date: Date | undefined, time: string): number => {
  * // Returns: "14:30"
  * ```
  */
-const millisecondsToTime = (milliseconds: number): string => {
+const millisecondsToTime = (
+  milliseconds: number
+): string => {
   if (!milliseconds || milliseconds <= 0) return "";
   const date = new Date(milliseconds);
   const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(
+    2,
+    "0"
+  );
   return `${hours}:${minutes}`;
 };
 
@@ -190,7 +214,9 @@ const millisecondsToTime = (milliseconds: number): string => {
  * // Returns: Date object for March 10, 2026
  * ```
  */
-const parseDateLabel = (dateLabel: string): Date | undefined => {
+const parseDateLabel = (
+  dateLabel: string
+): Date | undefined => {
   if (!dateLabel) return undefined;
 
   // Format: "Mar 10, 2026"
@@ -203,12 +229,18 @@ const parseDateLabel = (dateLabel: string): Date | undefined => {
 
   if (isNaN(day) || isNaN(year)) return undefined;
 
-  const monthIndex = MONTH_ABBREVIATIONS.indexOf(monthAbbr as (typeof MONTH_ABBREVIATIONS)[number]);
+  const monthIndex = MONTH_ABBREVIATIONS.indexOf(
+    monthAbbr as (typeof MONTH_ABBREVIATIONS)[number]
+  );
   if (monthIndex === -1) return undefined;
 
   const date = new Date(year, monthIndex, day);
   // Validate the date is valid (handles cases like Feb 30)
-  if (date.getDate() !== day || date.getMonth() !== monthIndex || date.getFullYear() !== year) {
+  if (
+    date.getDate() !== day ||
+    date.getMonth() !== monthIndex ||
+    date.getFullYear() !== year
+  ) {
     return undefined;
   }
 
@@ -234,10 +266,17 @@ const parseDateLabel = (dateLabel: string): Date | undefined => {
  */
 const findDayLabel = (
   timestamp: number | undefined,
-  availableDays: Array<{ startMs: number; endMs: number; label: string }>
+  availableDays: Array<{
+    startMs: number;
+    endMs: number;
+    label: string;
+  }>
 ): string | undefined => {
   if (timestamp === undefined) return undefined;
-  const matchingDay = availableDays.find((day) => timestamp >= day.startMs && timestamp < day.endMs);
+  const matchingDay = availableDays.find(
+    (day) =>
+      timestamp >= day.startMs && timestamp < day.endMs
+  );
   return matchingDay?.label;
 };
 

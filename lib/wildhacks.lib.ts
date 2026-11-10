@@ -30,7 +30,9 @@ const getConfig = async (): Promise<WildHacksConfig> => {
     throw new Error("WildHacks configuration not found");
   }
 
-  const config = fromRow<WildHacksConfig & { id?: string }>(data);
+  const config = fromRow<WildHacksConfig & { id?: string }>(
+    data
+  );
   delete config.id;
   return config;
 };

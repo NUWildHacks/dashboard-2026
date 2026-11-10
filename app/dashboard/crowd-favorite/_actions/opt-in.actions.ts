@@ -11,18 +11,32 @@ import {
   TEN_MINUTES,
   USERS_TABLE,
 } from "@/constants";
-import { isWithinRateLimit, RATE_LIMIT_TOO_MANY_ATTEMPTS } from "@/lib/rate-limit.lib";
-import { getAuthenticatedUser, requireRole, getConfig } from "@/lib/server";
-import type { ActionResult, CrowdFavoriteProject } from "@/types";
+import {
+  isWithinRateLimit,
+  RATE_LIMIT_TOO_MANY_ATTEMPTS,
+} from "@/lib/rate-limit.lib";
+import {
+  getAuthenticatedUser,
+  requireRole,
+  getConfig,
+} from "@/lib/server";
+import type {
+  ActionResult,
+  CrowdFavoriteProject,
+} from "@/types";
 
 import { getCrowdFavoriteProjectForUser } from "../_lib";
-import { crowdFavoriteOptInFormSchema, type CrowdFavoriteOptInFormSchema } from "../_schemas";
+import {
+  crowdFavoriteOptInFormSchema,
+  type CrowdFavoriteOptInFormSchema,
+} from "../_schemas";
 import { isCrowdFavoriteOptInOpen } from "../constants";
 
 // Same limit as verifyTeamMemberEmail, on the same rate-limit key (one call per email checked).
 const EMAIL_LOOKUP_LIMIT = 30;
 
-type CrowdFavoriteOptInResult = ActionResult<CrowdFavoriteOptInFormSchema>;
+type CrowdFavoriteOptInResult =
+  ActionResult<CrowdFavoriteOptInFormSchema>;
 
 type CandidateMember = {
   id: string;
@@ -30,7 +44,9 @@ type CandidateMember = {
   email: string;
 };
 
-const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Promise<CrowdFavoriteOptInResult> => {
+const optInToCrowdFavorite = async (
+  rawData: CrowdFavoriteOptInFormSchema
+): Promise<CrowdFavoriteOptInResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_CROWD_FAVORITE_PATH)}`;
     const caller = await getAuthenticatedUser(redirectPath);
@@ -42,10 +58,14 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
     const config = await getConfig();
 
     if (!(await isCrowdFavoriteOptInOpen(config))) {
-      return { success: false, error: "Crowd favorite opt-in is currently closed" };
+      return {
+        success: false,
+        error: "Crowd favorite opt-in is currently closed",
+      };
     }
 
-    const parsed = crowdFavoriteOptInFormSchema.safeParse(rawData);
+    const parsed =
+      crowdFavoriteOptInFormSchema.safeParse(rawData);
     if (!parsed.success) {
       const firstIssue = parsed.error.issues[0];
       const firstField = firstIssue.path[0];
@@ -53,26 +73,44 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
       return {
         success: false,
         error: firstIssue.message,
-        field: typeof firstField === "string" ? (firstField as keyof CrowdFavoriteOptInFormSchema) : undefined,
+        field:
+          typeof firstField === "string"
+            ? (firstField as keyof CrowdFavoriteOptInFormSchema)
+            : undefined,
       };
     }
 
     const data = parsed.data;
     const now = Date.now();
 
-    const normalizedEmails = data.team_members.map((member) => member.email.trim().toLowerCase());
+    const normalizedEmails = data.team_members.map(
+      (member) => member.email.trim().toLowerCase()
+    );
 
-    if (normalizedEmails.includes(caller.email.toLowerCase())) {
+    if (
+      normalizedEmails.includes(caller.email.toLowerCase())
+    ) {
       return {
         success: false,
-        error: "Do not include your own email in team members",
+        error:
+          "Do not include your own email in team members",
         field: "team_members",
       };
     }
 
     for (let i = 0; i < normalizedEmails.length; i += 1) {
-      if (!(await isWithinRateLimit(`email-lookup:${caller.id}`, EMAIL_LOOKUP_LIMIT, TEN_MINUTES))) {
-        return { success: false, error: RATE_LIMIT_TOO_MANY_ATTEMPTS, field: "team_members" };
+      if (
+        !(await isWithinRateLimit(
+          `email-lookup:${caller.id}`,
+          EMAIL_LOOKUP_LIMIT,
+          TEN_MINUTES
+        ))
+      ) {
+        return {
+          success: false,
+          error: RATE_LIMIT_TOO_MANY_ATTEMPTS,
+          field: "team_members",
+        };
       }
     }
 
@@ -93,12 +131,20 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
     );
 
     const candidateMembers: CandidateMember[] = [];
-    for (let index = 0; index < candidateResults.length; index += 1) {
+    for (
+      let index = 0;
+      index < candidateResults.length;
+      index += 1
+    ) {
       const { data: user } = candidateResults[index];
       const email = normalizedEmails[index];
 
       if (!user || !user.first_name) {
-        return { success: false, error: `No registered participant found for ${email}`, field: "team_members" };
+        return {
+          success: false,
+          error: `No registered participant found for ${email}`,
+          field: "team_members",
+        };
       }
 
       if (await getCrowdFavoriteProjectForUser(user.id)) {
@@ -117,7 +163,11 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
     }
 
     if (await getCrowdFavoriteProjectForUser(caller.id)) {
-      return { success: false, error: "You are already assigned to a crowd favorite project" };
+      return {
+        success: false,
+        error:
+          "You are already assigned to a crowd favorite project",
+      };
     }
 
     // Re-check the caller and teammates right before the write.
@@ -128,11 +178,15 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
       .maybeSingle()
       .throwOnError();
     if (!callerRow) {
-      throw new Error("Authenticated user no longer exists");
+      throw new Error(
+        "Authenticated user no longer exists"
+      );
     }
 
     if (callerRow.role !== PARTICIPANT) {
-      throw new Error("Only participants can opt in to crowd favorite");
+      throw new Error(
+        "Only participants can opt in to crowd favorite"
+      );
     }
 
     const { data: teammateRows } = await supabaseAdmin
@@ -145,29 +199,36 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
       .throwOnError();
 
     candidateMembers.forEach((member) => {
-      const teammate = teammateRows.find((row) => row.id === member.id);
+      const teammate = teammateRows.find(
+        (row) => row.id === member.id
+      );
 
       if (!teammate) {
-        throw new Error(`Participant ${member.email} no longer exists`);
+        throw new Error(
+          `Participant ${member.email} no longer exists`
+        );
       }
 
       if (teammate.role !== PARTICIPANT) {
-        throw new Error(`${member.email} is not a participant`);
+        throw new Error(
+          `${member.email} is not a participant`
+        );
       }
     });
 
-    const teamMembers: CrowdFavoriteProject["team_members"] = [
-      {
-        id: caller.id,
-        first_name: caller.first_name,
-        email: caller.email.toLowerCase(),
-      },
-      ...candidateMembers.map((member) => ({
-        id: member.id,
-        first_name: member.first_name,
-        email: member.email,
-      })),
-    ];
+    const teamMembers: CrowdFavoriteProject["team_members"] =
+      [
+        {
+          id: caller.id,
+          first_name: caller.first_name,
+          email: caller.email.toLowerCase(),
+        },
+        ...candidateMembers.map((member) => ({
+          id: member.id,
+          first_name: member.first_name,
+          email: member.email,
+        })),
+      ];
 
     // The database function checks again, under a lock, that no member is on another project,
     // so two opt-ins at the same time cannot place one person on two projects.
@@ -182,7 +243,8 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
     if (!projectId) {
       return {
         success: false,
-        error: "You or a teammate joined another crowd favorite project. Refresh the page and try again.",
+        error:
+          "You or a teammate joined another crowd favorite project. Refresh the page and try again.",
         field: "team_members",
       };
     }
@@ -192,11 +254,20 @@ const optInToCrowdFavorite = async (rawData: CrowdFavoriteOptInFormSchema): Prom
 
     return { success: true };
   } catch (error) {
-    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Crowd favorite opt-in error:", detailedError);
+    const detailedError =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
+    console.error(
+      "Crowd favorite opt-in error:",
+      detailedError
+    );
 
-    const isProduction = process.env.APP_ENV === "production";
-    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+    const isProduction =
+      process.env.APP_ENV === "production";
+    const errorMessage = isProduction
+      ? "An unknown error occurred. Please try again."
+      : detailedError;
 
     return { success: false, error: errorMessage };
   }

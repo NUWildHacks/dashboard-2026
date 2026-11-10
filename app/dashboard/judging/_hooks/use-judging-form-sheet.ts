@@ -2,21 +2,39 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { KeyboardEvent, useState } from "react";
-import { Control, SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
+import {
+  Control,
+  SubmitHandler,
+  useForm,
+  UseFormHandleSubmit,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 import { JudgeUser } from "@/types";
 
 import { submitJudging } from "../_actions";
-import { judgingFormSchema, JudgingFormSchema } from "../_schemas";
-import type { JudgingAssignmentWithProject, JudgingRound } from "../types";
+import {
+  judgingFormSchema,
+  JudgingFormSchema,
+} from "../_schemas";
+import type {
+  JudgingAssignmentWithProject,
+  JudgingRound,
+} from "../types";
 
 export type UseJudgingFormSheetReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  selectedJudgingAssignmentWithProject: JudgingAssignmentWithProject | undefined;
-  handleOpenJudgingForm: (judgingAssignmentWithProject?: JudgingAssignmentWithProject) => void;
-  handleKeyDown: (event: KeyboardEvent, judgingAssignmentWithProject?: JudgingAssignmentWithProject) => void;
+  selectedJudgingAssignmentWithProject:
+    | JudgingAssignmentWithProject
+    | undefined;
+  handleOpenJudgingForm: (
+    judgingAssignmentWithProject?: JudgingAssignmentWithProject
+  ) => void;
+  handleKeyDown: (
+    event: KeyboardEvent,
+    judgingAssignmentWithProject?: JudgingAssignmentWithProject
+  ) => void;
   control: Control<JudgingFormSchema>;
   handleSubmit: UseFormHandleSubmit<JudgingFormSchema>;
   onSubmit: SubmitHandler<JudgingFormSchema>;
@@ -28,9 +46,12 @@ export const useJudgingFormSheet = (
   currentPath: string,
   judgingRound: JudgingRound
 ): UseJudgingFormSheetReturn => {
-  const [selectedJudgingAssignmentWithProject, setSelectedJudgingAssignmentWithProject] = useState<
-    JudgingAssignmentWithProject | undefined
-  >(undefined);
+  const [
+    selectedJudgingAssignmentWithProject,
+    setSelectedJudgingAssignmentWithProject,
+  ] = useState<JudgingAssignmentWithProject | undefined>(
+    undefined
+  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const {
@@ -82,31 +103,58 @@ export const useJudgingFormSheet = (
       reset();
       setIsOpen(false);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Submit judging form error:", errorMessage);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
+      console.error(
+        "Submit judging form error:",
+        errorMessage
+      );
 
-      toast.error("Failed to submit judging form", { description: errorMessage });
+      toast.error("Failed to submit judging form", {
+        description: errorMessage,
+      });
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent, judgingAssignmentWithProject?: JudgingAssignmentWithProject) => {
+  const handleKeyDown = (
+    event: KeyboardEvent,
+    judgingAssignmentWithProject?: JudgingAssignmentWithProject
+  ) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleOpenJudgingForm(judgingAssignmentWithProject);
     }
   };
 
-  const handleOpenJudgingForm = (judgingAssignmentWithProject?: JudgingAssignmentWithProject) => {
-    setSelectedJudgingAssignmentWithProject(judgingAssignmentWithProject);
+  const handleOpenJudgingForm = (
+    judgingAssignmentWithProject?: JudgingAssignmentWithProject
+  ) => {
+    setSelectedJudgingAssignmentWithProject(
+      judgingAssignmentWithProject
+    );
     setIsOpen(true);
 
     reset({
-      technical_complexity: judgingAssignmentWithProject?.judging_form?.technical_complexity ?? 0,
-      usefulness: judgingAssignmentWithProject?.judging_form?.usefulness ?? 0,
-      originality: judgingAssignmentWithProject?.judging_form?.originality ?? 0,
-      design: judgingAssignmentWithProject?.judging_form?.design ?? 0,
-      presentation: judgingAssignmentWithProject?.judging_form?.presentation ?? 0,
-      comments: judgingAssignmentWithProject?.judging_form?.comments ?? "",
+      technical_complexity:
+        judgingAssignmentWithProject?.judging_form
+          ?.technical_complexity ?? 0,
+      usefulness:
+        judgingAssignmentWithProject?.judging_form
+          ?.usefulness ?? 0,
+      originality:
+        judgingAssignmentWithProject?.judging_form
+          ?.originality ?? 0,
+      design:
+        judgingAssignmentWithProject?.judging_form
+          ?.design ?? 0,
+      presentation:
+        judgingAssignmentWithProject?.judging_form
+          ?.presentation ?? 0,
+      comments:
+        judgingAssignmentWithProject?.judging_form
+          ?.comments ?? "",
     });
   };
 

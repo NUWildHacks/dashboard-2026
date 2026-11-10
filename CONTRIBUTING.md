@@ -1,8 +1,12 @@
 # Contributing to WildHacks Dashboard 2026
 
-Thank you for your interest in contributing to the WildHacks Dashboard! This guide will help you understand our project structure, coding conventions, and development workflow.
+Thank you for your interest in contributing to the WildHacks
+Dashboard! This guide will help you understand our project
+structure, coding conventions, and development workflow.
 
-**Before you begin**: Please read the [README.md](README.md) for an overview of the project, its features, and setup instructions.
+**Before you begin**: Please read the [README.md](README.md)
+for an overview of the project, its features, and setup
+instructions.
 
 ## Table of Contents
 
@@ -45,7 +49,8 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
 
 3. Set up environment variables:
 
-   Copy `.env.example` to create a `.env.local` file in the root directory with the following variables:
+   Copy `.env.example` to create a `.env.local` file in the
+   root directory with the following variables:
 
    ```env
    # Supabase (`pnpm exec supabase status` prints the local values)
@@ -57,11 +62,16 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
    APP_ENV=development
    ```
 
-   **Note**: Contact the project maintainers for access to the hosted Supabase project. Never commit `.env.local` to version control. `SUPABASE_SECRET_KEY` bypasses row level security: use it only in server code.
+   **Note**: Contact the project maintainers for access to
+   the hosted Supabase project. Never commit `.env.local` to
+   version control. `SUPABASE_SECRET_KEY` bypasses row level
+   security: use it only in server code.
 
 ### Supabase Setup
 
-1. Start the local Supabase stack (requires Docker). This applies every file in `supabase/migrations/` and then `supabase/seed.sql`:
+1. Start the local Supabase stack (requires Docker). This
+   applies every file in `supabase/migrations/` and then
+   `supabase/seed.sql`:
 
    ```bash
    pnpm exec supabase start
@@ -73,13 +83,15 @@ Thank you for your interest in contributing to the WildHacks Dashboard! This gui
    pnpm exec supabase db reset
    ```
 
-3. Make schema changes as new migration files, never by editing an applied migration:
+3. Make schema changes as new migration files, never by
+   editing an applied migration:
 
    ```bash
    pnpm exec supabase migration new <short_name>
    ```
 
-   CI applies new migrations with `supabase db push` (development on feature branches, production on `main`).
+   CI applies new migrations with `supabase db push`
+   (development on feature branches, production on `main`).
 
 4. Stop the stack when you are done:
 
@@ -95,7 +107,8 @@ Start the development server:
 pnpm run dev
 ```
 
-The application will be available at `http://localhost:3000`.
+The application will be available at
+`http://localhost:3000`.
 
 ### Available Scripts
 
@@ -105,7 +118,8 @@ The application will be available at `http://localhost:3000`.
 - `pnpm run lint` - Run ESLint to check for code issues
 - `pnpm run lint:fix` - Automatically fix ESLint issues
 - `pnpm run format` - Format code with Prettier
-- `pnpm run format:check` - Check if code is formatted correctly
+- `pnpm run format:check` - Check if code is formatted
+  correctly
 - `pnpm run clean` - Remove build artifacts and cache
 
 ## Project Structure
@@ -132,7 +146,8 @@ dashboard-2026/
 
 ### App Directory Structure
 
-The `app/` directory follows Next.js App Router conventions with feature-based organization:
+The `app/` directory follows Next.js App Router conventions
+with feature-based organization:
 
 ```
 app/
@@ -172,34 +187,52 @@ app/
 
 Each feature (route segment) follows this structure:
 
-- `_actions/` - Server actions for database operations (if applicable)
+- `_actions/` - Server actions for database operations (if
+  applicable)
 - `_components/` - React components specific to this feature
 - `_hooks/` - Custom React hooks for this feature
-- `_lib/` - Feature-specific library files (table columns, complex utilities, etc.) (optional)
+- `_lib/` - Feature-specific library files (table columns,
+  complex utilities, etc.) (optional)
 - `_schemas/` - Zod validation schemas (if applicable)
-- `constants.ts` - Constants specific to this feature (optional)
-- `lib.ts` or `lib.tsx` - Simple utility functions for this feature (optional, use `_lib/` if you have multiple library files)
-- `types.ts` - TypeScript type definitions for this feature (optional)
+- `constants.ts` - Constants specific to this feature
+  (optional)
+- `lib.ts` or `lib.tsx` - Simple utility functions for this
+  feature (optional, use `_lib/` if you have multiple
+  library files)
+- `types.ts` - TypeScript type definitions for this feature
+  (optional)
 - `page.tsx` - Next.js page component
 - `loading.tsx` - Loading UI (optional)
 - `error.tsx` - Error UI (optional)
 
 **Note**:
 
-- Folders prefixed with `_` are private and not part of the URL routing
-- `constants.ts`, `types.ts`, and `lib.ts` are single files (not folders) and are optional
-- Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
-- Use `_lib/` folder when you have multiple library files (e.g., table column definitions, calendar utilities, multiple related functions)
-- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx`
-- Use top-level `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
+- Folders prefixed with `_` are private and not part of the
+  URL routing
+- `constants.ts`, `types.ts`, and `lib.ts` are single files
+  (not folders) and are optional
+- Use `lib.tsx` instead of `lib.ts` if the file contains
+  JSX/TSX code
+- Use `_lib/` folder when you have multiple library files
+  (e.g., table column definitions, calendar utilities,
+  multiple related functions)
+- You can use `_lib/` exclusively for all library files in a
+  feature, even if you don't have a top-level `lib.ts` or
+  `lib.tsx`
+- Use top-level `lib.ts` or `lib.tsx` for simple,
+  single-file utility functions when you only have one or
+  two utility functions
 
 ### Dashboard-Level Organization
 
-The `dashboard/` route segment also has its own shared resources:
+The `dashboard/` route segment also has its own shared
+resources:
 
-- `_components/` - Components shared across dashboard features
+- `_components/` - Components shared across dashboard
+  features
 - `_hooks/` - Hooks shared across dashboard features
-- `constants.ts` - Constants shared across dashboard features
+- `constants.ts` - Constants shared across dashboard
+  features
 - `lib.ts` - Utilities shared across dashboard features
 - `types.ts` - Types shared across dashboard features
 
@@ -208,21 +241,26 @@ The `dashboard/` route segment also has its own shared resources:
 ### TypeScript Standards
 
 - **Strict Mode**: TypeScript strict mode is enabled
-- **Type Safety**: Always provide explicit types; avoid `any` (warns in ESLint)
-- **Unused Variables**: Prefix unused variables with `_` (e.g., `_unusedParam`)
+- **Type Safety**: Always provide explicit types; avoid
+  `any` (warns in ESLint)
+- **Unused Variables**: Prefix unused variables with `_`
+  (e.g., `_unusedParam`)
 
 ### Import Organization
 
-Imports are automatically sorted by ESLint's `perfectionist/sort-imports` rule:
+Imports are automatically sorted by ESLint's
+`perfectionist/sort-imports` rule:
 
 1. **Built-in modules** (Node.js, e.g., `fs`, `path`)
-2. **External packages** (npm packages, e.g., `react`, `next`)
+2. **External packages** (npm packages, e.g., `react`,
+   `next`)
 3. **Internal imports** (using `@/` alias)
 4. **Parent imports** (`../`)
 5. **Sibling imports** (`./`)
 6. **Index imports** (barrel imports)
 
-Within each group, imports are sorted alphabetically. Type imports should use `import type` syntax.
+Within each group, imports are sorted alphabetically. Type
+imports should use `import type` syntax.
 
 **Example:**
 
@@ -249,25 +287,35 @@ import type { User } from "@/types";
 
 #### Files
 
-- **Components**: `kebab-case.tsx` (e.g., `edit-feature-form.tsx`)
-- **Hooks**: `use-kebab-case.ts` (e.g., `use-edit-feature-form.ts`)
-- **Types**: `types.ts` (single file per feature, e.g., `app/dashboard/my-feature/types.ts`)
-- **Constants**: `constants.ts` (single file per feature, e.g., `app/dashboard/my-feature/constants.ts`)
-- **Schemas**: `kebab-case.schemas.ts` (e.g., `create-feature-form.schemas.ts`)
-- **Utilities**: `lib.ts` or `lib.tsx` (single file per feature, e.g., `app/dashboard/my-feature/lib.ts`)
+- **Components**: `kebab-case.tsx` (e.g.,
+  `edit-feature-form.tsx`)
+- **Hooks**: `use-kebab-case.ts` (e.g.,
+  `use-edit-feature-form.ts`)
+- **Types**: `types.ts` (single file per feature, e.g.,
+  `app/dashboard/my-feature/types.ts`)
+- **Constants**: `constants.ts` (single file per feature,
+  e.g., `app/dashboard/my-feature/constants.ts`)
+- **Schemas**: `kebab-case.schemas.ts` (e.g.,
+  `create-feature-form.schemas.ts`)
+- **Utilities**: `lib.ts` or `lib.tsx` (single file per
+  feature, e.g., `app/dashboard/my-feature/lib.ts`)
 
 #### Code
 
 - **Components**: `PascalCase` (e.g., `EditFeatureForm`)
-- **Hooks**: `camelCase` with `use` prefix (e.g., `useEditFeatureForm`)
-- **Types**: `PascalCase` (e.g., `MyFeature`, `UseEditFeatureFormReturn`)
-- **Constants**: `UPPER_SNAKE_CASE` (e.g., `MY_FEATURE_FIELDS`)
+- **Hooks**: `camelCase` with `use` prefix (e.g.,
+  `useEditFeatureForm`)
+- **Types**: `PascalCase` (e.g., `MyFeature`,
+  `UseEditFeatureFormReturn`)
+- **Constants**: `UPPER_SNAKE_CASE` (e.g.,
+  `MY_FEATURE_FIELDS`)
 - **Functions**: `camelCase` (e.g., `getFeatureDocSnapshot`)
 - **Variables**: `camelCase` (e.g., `featureId`)
 
 ### Prettier Configuration
 
-The project uses Prettier with the following settings (configured in `.prettierrc` or `package.json`):
+The project uses Prettier with the following settings
+(configured in `.prettierrc` or `package.json`):
 
 - **Print Width**: 120 characters
 - **Tab Width**: 2 spaces
@@ -276,26 +324,31 @@ The project uses Prettier with the following settings (configured in `.prettierr
 - **Trailing Commas**: ES5 style
 - **Arrow Parens**: Always (e.g., `(x) => x`)
 
-Always run `pnpm run format` before committing to ensure consistent formatting.
+Always run `pnpm run format` before committing to ensure
+consistent formatting.
 
 ### ESLint Rules
 
 Key ESLint rules enforced:
 
-- **Import Sorting**: Alphabetical with grouping (enforced by `perfectionist`)
+- **Import Sorting**: Alphabetical with grouping (enforced
+  by `perfectionist`)
 - **React Hooks**: Must follow rules of hooks
 - **TypeScript**: Strict type checking
 - **Accessibility**: JSX a11y rules enabled
 
-The project uses ESLint's flat config format (newer configuration style).
+The project uses ESLint's flat config format (newer
+configuration style).
 
-Always run `pnpm run format && pnpm run lint:fix` before committing.
+Always run `pnpm run format && pnpm run lint:fix` before
+committing.
 
 ## File Organization Patterns
 
 ### Barrel Imports
 
-**All feature folders must use barrel imports** via `index.ts` files. This provides:
+**All feature folders must use barrel imports** via
+`index.ts` files. This provides:
 
 - Cleaner import statements
 - Better code organization
@@ -303,7 +356,8 @@ Always run `pnpm run format && pnpm run lint:fix` before committing.
 
 #### Barrel Import Structure
 
-Each feature folder should have an `index.ts` that exports all public APIs:
+Each feature folder should have an `index.ts` that exports
+all public APIs:
 
 **Example: `app/dashboard/my-feature/_hooks/index.ts`**
 
@@ -322,13 +376,16 @@ export type { UseEditFeatureFormReturn } from "./use-edit-feature-form";
 
 ✅ **Use barrel imports for:**
 
-- Feature-level folders (`_components`, `_hooks`, `_schemas`, `_actions`, `_lib`)
-- Root-level shared folders (`components`, `hooks`, `lib`, `types`, `constants`)
+- Feature-level folders (`_components`, `_hooks`,
+  `_schemas`, `_actions`, `_lib`)
+- Root-level shared folders (`components`, `hooks`, `lib`,
+  `types`, `constants`)
 
 ❌ **Do NOT use barrel imports for:**
 
 - `components/ui/` - ShadCN UI components (import directly)
-- Single files (`constants.ts`, `types.ts`, `lib.ts`) - import directly
+- Single files (`constants.ts`, `types.ts`, `lib.ts`) -
+  import directly
 - `page.tsx`, `loading.tsx`, `error.tsx` - import directly
 
 #### Import Examples
@@ -439,21 +496,34 @@ type EditFeatureFormProps = {
   onSuccess?: () => void;
 };
 
-const EditFeatureForm = ({ feature, userId, onSuccess }: EditFeatureFormProps) => {
+const EditFeatureForm = ({
+  feature,
+  userId,
+  onSuccess,
+}: EditFeatureFormProps) => {
   // Component implementation
 };
 ```
 
 ### ShadCN UI Components
 
-The project uses [ShadCN UI](https://ui.shadcn.com) components. These are located in `components/ui/` and should be imported directly:
+The project uses [ShadCN UI](https://ui.shadcn.com)
+components. These are located in `components/ui/` and should
+be imported directly:
 
 ```typescript
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 ```
 
-**Important**: Do not modify files in `components/ui/` directly. If you need to customize a component, create a wrapper component.
+**Important**: Do not modify files in `components/ui/`
+directly. If you need to customize a component, create a
+wrapper component.
 
 ## Hooks Development
 
@@ -479,7 +549,9 @@ export type UseMyHookReturn = {
   error: Error | null;
 };
 
-export const useMyHook = (param: string): UseMyHookReturn => {
+export const useMyHook = (
+  param: string
+): UseMyHookReturn => {
   const [data, setData] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -494,7 +566,8 @@ export const useMyHook = (param: string): UseMyHookReturn => {
 
 ### Hook Barrel Exports
 
-Always export hooks and their types from the `_hooks/index.ts` file:
+Always export hooks and their types from the
+`_hooks/index.ts` file:
 
 ```typescript
 export { useMyHook } from "./use-my-hook";
@@ -505,7 +578,11 @@ export type { UseMyHookReturn } from "./use-my-hook";
 
 ### Overview
 
-Server actions are Next.js functions that run on the server and handle database operations securely using the Supabase admin client (`@/config/supabase-admin`). They provide a secure way to perform write operations that bypass row level security (RLS).
+Server actions are Next.js functions that run on the server
+and handle database operations securely using the Supabase
+admin client (`@/config/supabase-admin`). They provide a
+secure way to perform write operations that bypass row level
+security (RLS).
 
 ### When to Use Server Actions
 
@@ -518,7 +595,8 @@ Server actions are Next.js functions that run on the server and handle database 
 
 ❌ **Do NOT use server actions for:**
 
-- Read-only operations that need real-time updates (use a Supabase Realtime channel with the browser client)
+- Read-only operations that need real-time updates (use a
+  Supabase Realtime channel with the browser client)
 - Operations that don't require database access
 - Client-side only operations
 
@@ -526,19 +604,23 @@ Server actions are Next.js functions that run on the server and handle database 
 
 The project uses a **hybrid approach** for forms:
 
-1. **React Hook Form** handles client-side validation and form state
-2. **Server Actions** handle database operations using the Supabase admin client
+1. **React Hook Form** handles client-side validation and
+   form state
+2. **Server Actions** handle database operations using the
+   Supabase admin client
 3. **Toast notifications** display server-side errors
 
 This provides:
 
 - Better UX with real-time client-side validation
 - Security with server-side database operations
-- Clear error handling with field-specific and general errors
+- Clear error handling with field-specific and general
+  errors
 
 ### File Organization
 
-Server actions are located in `_actions` folders within feature directories:
+Server actions are located in `_actions` folders within
+feature directories:
 
 ```
 app/dashboard/my-feature/
@@ -549,7 +631,8 @@ app/dashboard/my-feature/
 │   └── index.ts
 ```
 
-**Naming Convention**: `kebab-case.actions.ts` (e.g., `create-feature.actions.ts`)
+**Naming Convention**: `kebab-case.actions.ts` (e.g.,
+`create-feature.actions.ts`)
 
 ### Server Action Structure
 
@@ -561,7 +644,11 @@ app/dashboard/my-feature/
 import { revalidatePath } from "next/cache";
 
 import supabaseAdmin from "@/config/supabase-admin";
-import { LOGIN_PATH, DASHBOARD_PATH, MY_TABLE } from "@/constants";
+import {
+  LOGIN_PATH,
+  DASHBOARD_PATH,
+  MY_TABLE,
+} from "@/constants";
 import { getAuthenticatedUser } from "@/lib";
 import type { ActionResult } from "@/types";
 
@@ -569,7 +656,9 @@ import { type MyFormSchema } from "../_schemas/my-form.schemas";
 
 export type MyActionResult = ActionResult<MyFormSchema>;
 
-export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+export const myAction = async (
+  data: MyFormSchema
+): Promise<MyActionResult> => {
   const now = Date.now();
 
   try {
@@ -589,12 +678,18 @@ export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
 
     return { success: true };
   } catch (error) {
-    const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+    const detailedError =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
     console.error("My action error:", detailedError);
 
     // In production, return a generic error message to avoid exposing sensitive details
-    const isProduction = process.env.APP_ENV === "production";
-    const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+    const isProduction =
+      process.env.APP_ENV === "production";
+    const errorMessage = isProduction
+      ? "An unknown error occurred. Please try again."
+      : detailedError;
 
     return {
       success: false,
@@ -606,7 +701,8 @@ export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
 
 ### Using ActionResult Type
 
-The project uses a generic `ActionResult<T>` type for consistent error handling:
+The project uses a generic `ActionResult<T>` type for
+consistent error handling:
 
 ```typescript
 import type { ActionResult } from "@/types";
@@ -621,8 +717,10 @@ export type MyActionResult = ActionResult;
 **Result Structure:**
 
 - **Success**: `{ success: true }`
-- **Error with field**: `{ success: false; error: string; field?: keyof FormSchema }`
-- **Error without field**: `{ success: false; error: string }`
+- **Error with field**:
+  `{ success: false; error: string; field?: keyof FormSchema }`
+- **Error without field**:
+  `{ success: false; error: string }`
 
 ### Error Handling Patterns
 
@@ -648,11 +746,16 @@ if (!exists) {
 
 // Catch block error handling (see Server Action Structure template for full example)
 // Always sanitize error messages in production:
-const detailedError = error instanceof Error ? error.message : "An unknown error occurred";
+const detailedError =
+  error instanceof Error
+    ? error.message
+    : "An unknown error occurred";
 console.error("Action error:", detailedError);
 
 const isProduction = process.env.APP_ENV === "production";
-const errorMessage = isProduction ? "An unknown error occurred. Please try again." : detailedError;
+const errorMessage = isProduction
+  ? "An unknown error occurred. Please try again."
+  : detailedError;
 
 return { success: false, error: errorMessage };
 ```
@@ -678,15 +781,22 @@ const onSubmit = async (data: FormSchema) => {
         });
       } else {
         // General error - show toast
-        toast.error("Operation failed", { description: error });
+        toast.error("Operation failed", {
+          description: error,
+        });
       }
       return;
     }
 
     // Success - server action handles revalidation via revalidatePath
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-    toast.error("Operation failed", { description: errorMessage });
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
+    toast.error("Operation failed", {
+      description: errorMessage,
+    });
   }
 };
 ```
@@ -695,13 +805,21 @@ const onSubmit = async (data: FormSchema) => {
 
 **Always use `getAuthenticatedUser` in server actions:**
 
-The `getAuthenticatedUser` function handles session verification, user document retrieval, and redirects automatically:
+The `getAuthenticatedUser` function handles session
+verification, user document retrieval, and redirects
+automatically:
 
 ```typescript
 import { getAuthenticatedUser, requireRole } from "@/lib";
-import { LOGIN_PATH, DASHBOARD_PATH, PARTICIPANT } from "@/constants";
+import {
+  LOGIN_PATH,
+  DASHBOARD_PATH,
+  PARTICIPANT,
+} from "@/constants";
 
-export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+export const myAction = async (
+  data: MyFormSchema
+): Promise<MyActionResult> => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
   const user = await getAuthenticatedUser(redirectPath);
 
@@ -718,11 +836,17 @@ Use `requireRole` to validate user permissions:
 import { getAuthenticatedUser, requireRole } from "@/lib";
 import { PARTICIPANT } from "@/constants";
 
-export const myAction = async (data: MyFormSchema): Promise<MyActionResult> => {
+export const myAction = async (
+  data: MyFormSchema
+): Promise<MyActionResult> => {
   const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
   const user = await getAuthenticatedUser(redirectPath);
 
-  const roleError = requireRole(user, PARTICIPANT, "You are not authorized to perform this action");
+  const roleError = requireRole(
+    user,
+    PARTICIPANT,
+    "You are not authorized to perform this action"
+  );
   if (roleError) return roleError;
 
   // User has required role, proceed with action
@@ -742,7 +866,11 @@ if (userId !== ownerId) {
 
 // Custom permission checks
 if (!hasPermission) {
-  return { success: false, error: "You don't have permission to perform this action" };
+  return {
+    success: false,
+    error:
+      "You don't have permission to perform this action",
+  };
 }
 ```
 
@@ -755,16 +883,26 @@ if (!hasPermission) {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 import { myAction } from "../_actions/my-action.actions";
-import { myFormSchema, type MyFormSchema } from "../_schemas/my-form.schemas";
+import {
+  myFormSchema,
+  type MyFormSchema,
+} from "../_schemas/my-form.schemas";
 
 export type UseMyFormReturn = {
   onSubmit: SubmitHandler<MyFormSchema>;
   isSubmitting: boolean;
-} & Pick<UseFormReturn<MyFormSchema>, "control" | "handleSubmit">;
+} & Pick<
+  UseFormReturn<MyFormSchema>,
+  "control" | "handleSubmit"
+>;
 
 export const useMyForm = (): UseMyFormReturn => {
   const router = useRouter();
@@ -781,7 +919,9 @@ export const useMyForm = (): UseMyFormReturn => {
     },
   });
 
-  const onSubmit: SubmitHandler<MyFormSchema> = async (data) => {
+  const onSubmit: SubmitHandler<MyFormSchema> = async (
+    data
+  ) => {
     try {
       const result = await myAction(data);
       const { success } = result;
@@ -803,10 +943,15 @@ export const useMyForm = (): UseMyFormReturn => {
       // Success - server action handles revalidation via revalidatePath
       // Use router.replace() or router.push() only if you need to navigate to a different route
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
       console.error("Action error:", errorMessage);
 
-      toast.error("Operation failed", { description: errorMessage });
+      toast.error("Operation failed", {
+        description: errorMessage,
+      });
     }
   };
 
@@ -816,26 +961,42 @@ export const useMyForm = (): UseMyFormReturn => {
 
 **Key points:**
 
-- **Field-specific errors**: If `field` exists in the result, use `setError` and return early
-- **General errors**: If `field` doesn't exist, throw an error which gets caught and displayed as a toast
-- **Revalidation**: Server actions should use `revalidatePath()` from `next/cache` to invalidate the cache for the affected route.
-- **Navigation**: Use `router.replace()` or `router.push()` only if you need to navigate to a different route
-- **Error logging**: Always log errors to console for debugging
+- **Field-specific errors**: If `field` exists in the
+  result, use `setError` and return early
+- **General errors**: If `field` doesn't exist, throw an
+  error which gets caught and displayed as a toast
+- **Revalidation**: Server actions should use
+  `revalidatePath()` from `next/cache` to invalidate the
+  cache for the affected route.
+- **Navigation**: Use `router.replace()` or `router.push()`
+  only if you need to navigate to a different route
+- **Error logging**: Always log errors to console for
+  debugging
 
 ### Best Practices
 
-1. **Always use Admin SDK** in server actions (never client SDK)
+1. **Always use Admin SDK** in server actions (never client
+   SDK)
 2. **Verify session** at the start of every server action
 3. **Return structured errors** using `ActionResult` type
 4. **Handle redirects** for unauthenticated users
 5. **Use try-catch** for error handling
-6. **Log errors** to console for debugging with descriptive context (e.g., `console.error("Edit feature error:", detailedError)`)
-7. **Sanitize error messages in production**: Always check `process.env.APP_ENV === "production"` and return generic error messages to users in production while logging detailed errors for debugging. This prevents exposing sensitive information.
+6. **Log errors** to console for debugging with descriptive
+   context (e.g.,
+   `console.error("Edit feature error:", detailedError)`)
+7. **Sanitize error messages in production**: Always check
+   `process.env.APP_ENV === "production"` and return generic
+   error messages to users in production while logging
+   detailed errors for debugging. This prevents exposing
+   sensitive information.
 8. **Validate permissions** before performing operations
-9. **Use timestamps** (`Date.now()`) for `created_at` and `updated_at`
+9. **Use timestamps** (`Date.now()`) for `created_at` and
+   `updated_at`
 10. **Keep actions focused** - one action per operation
 11. **Export result types** for type safety
-12. **Revalidate paths** after successful database operations using `revalidatePath()` from `next/cache` to ensure server components reflect the latest data
+12. **Revalidate paths** after successful database
+    operations using `revalidatePath()` from `next/cache` to
+    ensure server components reflect the latest data
 
 ## Type Definitions
 
@@ -871,7 +1032,8 @@ export type { default as MyFeature } from "./types";
 
 ### Type Organization
 
-Types should be organized in a single `types.ts` file per feature:
+Types should be organized in a single `types.ts` file per
+feature:
 
 ```
 app/dashboard/my-feature/
@@ -907,7 +1069,8 @@ import type { MyFeature } from "@/app/dashboard/my-feature/types";
 
 ### Constants Organization
 
-Constants are organized in a single `constants.ts` file per feature:
+Constants are organized in a single `constants.ts` file per
+feature:
 
 ```typescript
 import type { MyFeature } from "./types";
@@ -916,7 +1079,10 @@ export const MY_FEATURE_FIELDS = {
   name: "name",
   description: "description",
   // ...
-} as const satisfies Record<keyof Omit<MyFeature, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<MyFeature, "id">,
+  string
+>;
 ```
 
 **Naming**: Use `UPPER_SNAKE_CASE` for constants.
@@ -929,30 +1095,49 @@ import { MY_FEATURE_FIELDS } from "@/app/dashboard/my-feature/constants";
 
 ### Zod Schemas
 
-Validation schemas use Zod and are located in `_schemas` folders:
+Validation schemas use Zod and are located in `_schemas`
+folders:
 
 ```typescript
 import { z } from "zod";
 
-import { githubUsernameSchema, plainTextMultiLineSchema, plainTextSingleLineSchema, secureUrlSchema } from "@/lib";
+import {
+  githubUsernameSchema,
+  plainTextMultiLineSchema,
+  plainTextSingleLineSchema,
+  secureUrlSchema,
+} from "@/lib";
 
 export const sampleFormSchema = z.object({
-  single_line: plainTextSingleLineSchema.min(1, "Single line field is required"),
-  multi_line: plainTextMultiLineSchema.min(1, "Multi line field is required"),
+  single_line: plainTextSingleLineSchema.min(
+    1,
+    "Single line field is required"
+  ),
+  multi_line: plainTextMultiLineSchema.min(
+    1,
+    "Multi line field is required"
+  ),
   url: secureUrlSchema.optional().or(z.literal("")),
   github_username: githubUsernameSchema.optional(),
 });
 
-export type SampleFormSchema = z.infer<typeof sampleFormSchema>;
+export type SampleFormSchema = z.infer<
+  typeof sampleFormSchema
+>;
 ```
 
 **Pattern**: Export both the schema and the inferred type.
 
 ### Validation Utilities
 
-The project provides reusable validation schemas in `lib/validation.lib.ts` for common security and validation needs:
+The project provides reusable validation schemas in
+`lib/validation.lib.ts` for common security and validation
+needs:
 
-- **`secureUrlSchema`**: Validates URLs and only allows `http://` and `https://` protocols. Prevents XSS attacks from dangerous protocols like `javascript:`, `data:`, `file:`, etc.
+- **`secureUrlSchema`**: Validates URLs and only allows
+  `http://` and `https://` protocols. Prevents XSS attacks
+  from dangerous protocols like `javascript:`, `data:`,
+  `file:`, etc.
 
   ```typescript
   import { secureUrlSchema } from "@/lib";
@@ -962,27 +1147,40 @@ The project provides reusable validation schemas in `lib/validation.lib.ts` for 
   });
   ```
 
-- **`plainTextSingleLineSchema`**: Validates plain text for single-line fields (no newlines). Rejects HTML tags and control characters. Use for names, titles, and other single-line text fields.
+- **`plainTextSingleLineSchema`**: Validates plain text for
+  single-line fields (no newlines). Rejects HTML tags and
+  control characters. Use for names, titles, and other
+  single-line text fields.
 
   ```typescript
   import { plainTextSingleLineSchema } from "@/lib";
 
   const schema = z.object({
-    title: plainTextSingleLineSchema.min(1, "Title is required"),
+    title: plainTextSingleLineSchema.min(
+      1,
+      "Title is required"
+    ),
   });
   ```
 
-- **`plainTextMultiLineSchema`**: Validates plain text for multi-line fields (allows newlines). Rejects HTML tags and control characters. Use for descriptions, bodies, and other multi-line content.
+- **`plainTextMultiLineSchema`**: Validates plain text for
+  multi-line fields (allows newlines). Rejects HTML tags and
+  control characters. Use for descriptions, bodies, and
+  other multi-line content.
 
   ```typescript
   import { plainTextMultiLineSchema } from "@/lib";
 
   const schema = z.object({
-    description: plainTextMultiLineSchema.min(1, "Description is required"),
+    description: plainTextMultiLineSchema.min(
+      1,
+      "Description is required"
+    ),
   });
   ```
 
-- **`githubUsernameSchema`**: Validates GitHub usernames according to GitHub's rules:
+- **`githubUsernameSchema`**: Validates GitHub usernames
+  according to GitHub's rules:
   - Alphanumeric characters (a-z, 0-9) and hyphens (-)
   - 1-39 characters in length
   - Cannot begin or end with a hyphen
@@ -996,9 +1194,15 @@ The project provides reusable validation schemas in `lib/validation.lib.ts` for 
   });
   ```
 
-**Security Note**: Always use these validation utilities for user input to prevent XSS attacks and ensure data integrity. Prefer `secureUrlSchema` over `z.url()` for URL validation, and use `plainTextSingleLineSchema` or `plainTextMultiLineSchema` instead of plain `z.string()` for text fields.
+**Security Note**: Always use these validation utilities for
+user input to prevent XSS attacks and ensure data integrity.
+Prefer `secureUrlSchema` over `z.url()` for URL validation,
+and use `plainTextSingleLineSchema` or
+`plainTextMultiLineSchema` instead of plain `z.string()` for
+text fields.
 
-**Barrel exports**: Schemas should be exported from `_schemas/index.ts`:
+**Barrel exports**: Schemas should be exported from
+`_schemas/index.ts`:
 
 ```typescript
 export { createFeatureFormSchema } from "./create-feature-form.schemas";
@@ -1011,10 +1215,13 @@ export type { CreateFeatureFormSchema } from "./create-feature-form.schemas";
 
 Use descriptive branch names with your Github username:
 
-- `feature/<github-username>/add-user-profile` - New features
+- `feature/<github-username>/add-user-profile` - New
+  features
 - `fix/<github-username>/login-redirect-issue` - Bug fixes
-- `refactor/<github-username>/improve-schedule-hooks` - Refactoring
-- `docs/<github-username>/update-contributing-guide` - Documentation
+- `refactor/<github-username>/improve-schedule-hooks` -
+  Refactoring
+- `docs/<github-username>/update-contributing-guide` -
+  Documentation
 
 ### Commit Messages
 
@@ -1058,7 +1265,8 @@ docs: update contributing guide with barrel import examples
    git checkout -b feature/your-username/feature-name
    ```
 
-2. **Make your changes** following this guide and coding standards
+2. **Make your changes** following this guide and coding
+   standards
 
 3. **Run quality checks** before committing:
 
@@ -1070,7 +1278,8 @@ docs: update contributing guide with barrel import examples
    pnpm run build         # Ensure build succeeds
    ```
 
-4. **Commit your changes** with descriptive conventional commit messages:
+4. **Commit your changes** with descriptive conventional
+   commit messages:
 
    ```bash
    git add .
@@ -1083,11 +1292,14 @@ docs: update contributing guide with barrel import examples
    git push origin feature/your-username/feature-name
    ```
 
-6. **Ensure CI passes** - All linting, formatting, and build checks must pass
+6. **Ensure CI passes** - All linting, formatting, and build
+   checks must pass
 
-7. **Address review feedback** - Make requested changes and push updates to your branch
+7. **Address review feedback** - Make requested changes and
+   push updates to your branch
 
-8. **Keep your branch up to date** - Rebase or merge `main` into your branch if needed:
+8. **Keep your branch up to date** - Rebase or merge `main`
+   into your branch if needed:
    ```bash
    git checkout main
    git pull origin main
@@ -1102,13 +1314,18 @@ When submitting a Pull Request, ensure:
 - ✅ All code passes linting and formatting checks
 - ✅ Follow the project's code style and conventions
 - ✅ Include appropriate type definitions (no `any` types)
-- ✅ Update barrel imports (`index.ts`) if adding new exports
+- ✅ Update barrel imports (`index.ts`) if adding new
+  exports
 - ✅ Add comments for complex logic or non-obvious code
-- ✅ Ensure components are accessible (ARIA labels, keyboard navigation)
+- ✅ Ensure components are accessible (ARIA labels, keyboard
+  navigation)
 - ✅ Test your changes locally before submitting
-- ✅ Update documentation if adding new features or changing behavior
-- ✅ Keep commits focused and atomic (one logical change per commit)
-- ✅ Write clear commit messages following conventional commit format
+- ✅ Update documentation if adding new features or changing
+  behavior
+- ✅ Keep commits focused and atomic (one logical change per
+  commit)
+- ✅ Write clear commit messages following conventional
+  commit format
 
 ## Testing and Quality
 
@@ -1121,13 +1338,16 @@ Before committing, ensure:
 - [ ] Application builds successfully (`pnpm run build`)
 - [ ] No TypeScript errors or warnings
 - [ ] Barrel imports are updated if adding new exports
-- [ ] New components/hooks/types are exported from appropriate `index.ts` files
-- [ ] Server actions follow the authentication and error handling patterns
+- [ ] New components/hooks/types are exported from
+      appropriate `index.ts` files
+- [ ] Server actions follow the authentication and error
+      handling patterns
 - [ ] Forms use React Hook Form with Zod validation
 - [ ] Client components have `"use client"` directive
 - [ ] Server components don't have `"use client"` directive
 - [ ] All imports are properly organized and sorted
-- [ ] No console.log statements left in production code (use console.error for errors)
+- [ ] No console.log statements left in production code (use
+      console.error for errors)
 
 ### Linting
 
@@ -1200,7 +1420,11 @@ pnpm run build
    └── error.tsx          # Optional
    ```
 
-   **Note**: You can use `_lib/` exclusively for all library files (like the schedule feature), or use a top-level `lib.ts/lib.tsx` for simple cases. Files in `_lib/` should be named `kebab-case.lib.ts` or `kebab-case.lib.tsx`.
+   **Note**: You can use `_lib/` exclusively for all library
+   files (like the schedule feature), or use a top-level
+   `lib.ts/lib.tsx` for simple cases. Files in `_lib/`
+   should be named `kebab-case.lib.ts` or
+   `kebab-case.lib.tsx`.
 
 3. **Create barrel exports** in each `index.ts` file
 
@@ -1293,7 +1517,8 @@ pnpm run build
 
 ### Adding Utility Functions
 
-**For simple utility functions**, add to `lib.ts` or `lib.tsx` file:
+**For simple utility functions**, add to `lib.ts` or
+`lib.tsx` file:
 
 1. **Add to `lib.ts` or `lib.tsx` file**:
 
@@ -1310,7 +1535,8 @@ pnpm run build
    import { myUtility } from "@/app/dashboard/my-feature/lib";
    ```
 
-**For complex library files** (table columns, multiple related utilities), use `_lib/` folder:
+**For complex library files** (table columns, multiple
+related utilities), use `_lib/` folder:
 
 1. **Create files in `_lib/` folder**:
 
@@ -1321,9 +1547,10 @@ pnpm run build
    import { ColumnDef } from "@tanstack/react-table";
    import type { MyType } from "../types";
 
-   export const getMyTableColumns = (): ColumnDef<MyType>[] => {
-     // column definitions
-   };
+   export const getMyTableColumns =
+     (): ColumnDef<MyType>[] => {
+       // column definitions
+     };
    ```
 
    ```typescript
@@ -1355,12 +1582,22 @@ pnpm run build
 
 **When to use `_lib/` vs `lib.ts`:**
 
-- Use `_lib/` folder when you have multiple related library files (e.g., table column definitions, calendar utilities, multiple server functions)
-- You can use `_lib/` exclusively for all library files in a feature, even if you don't have a top-level `lib.ts` or `lib.tsx` (see schedule feature as an example)
-- Use `lib.ts` or `lib.tsx` for simple, single-file utility functions when you only have one or two utility functions
-- Use `lib.tsx` instead of `lib.ts` if the file contains JSX/TSX code
-- `_lib/` can contain both client-side (`.tsx` with `"use client"`) and server-side (`.ts` with `"use server"`) files
-- Files in `_lib/` should follow the naming pattern: `kebab-case.lib.ts` or `kebab-case.lib.tsx` (e.g., `calendar.lib.tsx`, `events-columns.lib.tsx`)
+- Use `_lib/` folder when you have multiple related library
+  files (e.g., table column definitions, calendar utilities,
+  multiple server functions)
+- You can use `_lib/` exclusively for all library files in a
+  feature, even if you don't have a top-level `lib.ts` or
+  `lib.tsx` (see schedule feature as an example)
+- Use `lib.ts` or `lib.tsx` for simple, single-file utility
+  functions when you only have one or two utility functions
+- Use `lib.tsx` instead of `lib.ts` if the file contains
+  JSX/TSX code
+- `_lib/` can contain both client-side (`.tsx` with
+  `"use client"`) and server-side (`.ts` with
+  `"use server"`) files
+- Files in `_lib/` should follow the naming pattern:
+  `kebab-case.lib.ts` or `kebab-case.lib.tsx` (e.g.,
+  `calendar.lib.tsx`, `events-columns.lib.tsx`)
 
 **Example: Schedule feature using `_lib/` exclusively:**
 
@@ -1380,7 +1617,10 @@ app/dashboard/schedule/
 All library functions are imported from `_lib/`:
 
 ```typescript
-import { getCalendarItems, getVisibleCalendarRows } from "@/app/dashboard/schedule/_lib";
+import {
+  getCalendarItems,
+  getVisibleCalendarRows,
+} from "@/app/dashboard/schedule/_lib";
 import { getEventsColumns } from "@/app/dashboard/schedule/_lib";
 ```
 
@@ -1395,9 +1635,11 @@ When adding new exports:
    export type { NewComponentProps } from "./new-component";
    ```
 
-2. **Ensure alphabetical ordering** (ESLint will enforce this)
+2. **Ensure alphabetical ordering** (ESLint will enforce
+   this)
 
-3. **Update imports** in files that use the new export to use the barrel import
+3. **Update imports** in files that use the new export to
+   use the barrel import
 
 ## Troubleshooting
 
@@ -1411,9 +1653,14 @@ When adding new exports:
 
 **Supabase connection issues:**
 
-- Verify `.env.local` file exists and has correct credentials
-- Check that the local stack is running (`pnpm exec supabase status`) or the hosted project is not paused
-- Ensure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `SUPABASE_SECRET_KEY` belong to the same project
+- Verify `.env.local` file exists and has correct
+  credentials
+- Check that the local stack is running
+  (`pnpm exec supabase status`) or the hosted project is not
+  paused
+- Ensure `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and
+  `SUPABASE_SECRET_KEY` belong to the same project
 
 **Import errors:**
 
@@ -1423,7 +1670,8 @@ When adding new exports:
 
 **Linting/formatting issues:**
 
-- Run `pnpm run format && pnpm run lint:fix` to auto-fix most issues
+- Run `pnpm run format && pnpm run lint:fix` to auto-fix
+  most issues
 - Check ESLint configuration in `eslint.config.mjs`
 - Verify Prettier configuration
 
@@ -1431,20 +1679,29 @@ When adding new exports:
 
 - Ensure `"use server"` directive is at the top of the file
 - Verify authentication using `getAuthenticatedUser`
-- Check the `error` returned by each Supabase query (`if (error) throw error;`)
+- Check the `error` returned by each Supabase query
+  (`if (error) throw error;`)
 
 ## Additional Resources
 
 ### Documentation
 
-- [Next.js Documentation](https://nextjs.org/docs) - App Router, Server Actions, and more
-- [React Documentation](https://react.dev) - React 19 features and hooks
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - TypeScript best practices
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs) - Utility classes and configuration
-- [ShadCN UI Documentation](https://ui.shadcn.com) - Component library and customization
-- [Supabase Documentation](https://supabase.com/docs) - Auth, Postgres, Storage, Realtime
-- [Zod Documentation](https://zod.dev) - Schema validation and type inference
-- [React Hook Form Documentation](https://react-hook-form.com) - Form state management
+- [Next.js Documentation](https://nextjs.org/docs) - App
+  Router, Server Actions, and more
+- [React Documentation](https://react.dev) - React 19
+  features and hooks
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) -
+  TypeScript best practices
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs) -
+  Utility classes and configuration
+- [ShadCN UI Documentation](https://ui.shadcn.com) -
+  Component library and customization
+- [Supabase Documentation](https://supabase.com/docs) -
+  Auth, Postgres, Storage, Realtime
+- [Zod Documentation](https://zod.dev) - Schema validation
+  and type inference
+- [React Hook Form Documentation](https://react-hook-form.com) -
+  Form state management
 
 ### Internal Resources
 
@@ -1467,4 +1724,5 @@ If you need help or have questions:
 
 Thank you for contributing to WildHacks Dashboard 2026! 🚀
 
-Your contributions help make the hackathon experience better for everyone.
+Your contributions help make the hackathon experience better
+for everyone.

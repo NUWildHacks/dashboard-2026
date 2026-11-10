@@ -11,13 +11,21 @@
  * const user = data ? fromRow<User>(data) : null;
  * ```
  */
-export const fromRow = <T>(row: Record<string, unknown>): T =>
-  Object.fromEntries(Object.entries(row).filter(([, value]) => value !== null)) as T;
+export const fromRow = <T>(
+  row: Record<string, unknown>
+): T =>
+  Object.fromEntries(
+    Object.entries(row).filter(
+      ([, value]) => value !== null
+    )
+  ) as T;
 
 /**
  * Convert many database rows into app types. See {@link fromRow}.
  */
-export const fromRows = <T>(rows: Record<string, unknown>[] | null): T[] => (rows ?? []).map((row) => fromRow<T>(row));
+export const fromRows = <T>(
+  rows: Record<string, unknown>[] | null
+): T[] => (rows ?? []).map((row) => fromRow<T>(row));
 
 /** Rows asked for per request. The hosted `max_rows` setting may return fewer. */
 const PAGE_SIZE = 1000;
@@ -34,14 +42,20 @@ const PAGE_SIZE = 1000;
  * ```
  */
 export const selectAllRows = async <T>(
-  queryPage: (from: number, to: number) => PromiseLike<{ data: T[] | null }>
+  queryPage: (
+    from: number,
+    to: number
+  ) => PromiseLike<{ data: T[] | null }>
 ): Promise<T[]> => {
   const rows: T[] = [];
 
   // Continue from the last row received and stop only on an empty page, so a server limit below
   // PAGE_SIZE never cuts the result short.
   for (let from = 0; ; ) {
-    const { data } = await queryPage(from, from + PAGE_SIZE - 1);
+    const { data } = await queryPage(
+      from,
+      from + PAGE_SIZE - 1
+    );
     if (!data || data.length === 0) break;
 
     rows.push(...data);
@@ -55,8 +69,12 @@ export const selectAllRows = async <T>(
 export const IN_FILTER_CHUNK_SIZE = 200;
 
 /** Split a list into groups of at most `size` items, for `.in()` filters. */
-export const chunkList = <T>(items: T[], size = IN_FILTER_CHUNK_SIZE): T[][] => {
+export const chunkList = <T>(
+  items: T[],
+  size = IN_FILTER_CHUNK_SIZE
+): T[][] => {
   const chunks: T[][] = [];
-  for (let i = 0; i < items.length; i += size) chunks.push(items.slice(i, i + size));
+  for (let i = 0; i < items.length; i += size)
+    chunks.push(items.slice(i, i + size));
   return chunks;
 };

@@ -2,7 +2,12 @@ import { redirect } from "next/navigation";
 
 import { CheckInConsole } from "@/app/dashboard/check-in/_components";
 import { getCheckInEvents } from "@/app/dashboard/check-in/_lib";
-import { ADMIN, DASHBOARD_CHECK_IN_PATH, DASHBOARD_PATH, LOGIN_PATH } from "@/constants";
+import {
+  ADMIN,
+  DASHBOARD_CHECK_IN_PATH,
+  DASHBOARD_PATH,
+  LOGIN_PATH,
+} from "@/constants";
 import { getAuthenticatedUser } from "@/lib/server";
 
 const CheckInPage = async () => {

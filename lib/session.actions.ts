@@ -24,7 +24,10 @@ export async function deleteSession() {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   } catch (e) {
-    const errorMessage = e instanceof Error ? e.message : "An unknown error occurred";
+    const errorMessage =
+      e instanceof Error
+        ? e.message
+        : "An unknown error occurred";
     console.error(errorMessage);
   } finally {
     redirect(ROOT_PATH);

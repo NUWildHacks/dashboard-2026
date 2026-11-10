@@ -7,8 +7,17 @@ import CrowdFavoriteOptedInView from "@/app/dashboard/crowd-favorite/_components
 import CrowdFavoriteVoteForm from "@/app/dashboard/crowd-favorite/_components/crowd-favorite-vote-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
 import type { CrowdFavoriteProject } from "@/types";
 
 type VotingProjectOption = {
@@ -39,7 +48,9 @@ const CrowdFavoriteParticipantLink = ({
 }: CrowdFavoriteParticipantLinkProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const title = votingOpen ? "Crowd Favorite Voting" : "Crowd Favorite Opt-in";
+  const title = votingOpen
+    ? "Crowd Favorite Voting"
+    : "Crowd Favorite Opt-in";
 
   const description = votingOpen
     ? initialVotedProjectId
@@ -86,18 +97,32 @@ const CrowdFavoriteParticipantLink = ({
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
-          <Button onClick={() => setIsDialogOpen(true)}>{buttonLabel} &rarr;</Button>
+          <Button onClick={() => setIsDialogOpen(true)}>
+            {buttonLabel} &rarr;
+          </Button>
         </CardContent>
       </Card>
 
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      >
         <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto p-0">
           {votingOpen ? (
-            <CrowdFavoriteVoteForm projects={votingProjects} initialVotedProjectId={initialVotedProjectId} />
+            <CrowdFavoriteVoteForm
+              projects={votingProjects}
+              initialVotedProjectId={initialVotedProjectId}
+            />
           ) : isOptedIn && crowdFavoriteProject ? (
-            <CrowdFavoriteOptedInView crowdFavoriteProject={crowdFavoriteProject} canOptOut={optInOpen} />
+            <CrowdFavoriteOptedInView
+              crowdFavoriteProject={crowdFavoriteProject}
+              canOptOut={optInOpen}
+            />
           ) : (
-            <CrowdFavoriteOptInForm callerFirstName={callerFirstName} callerEmail={callerEmail} />
+            <CrowdFavoriteOptInForm
+              callerFirstName={callerFirstName}
+              callerEmail={callerEmail}
+            />
           )}
         </DialogContent>
       </Dialog>

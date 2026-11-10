@@ -2,7 +2,8 @@ import type { BaseModel } from "@/types";
 
 import { EVENT_CATEGORIES } from "./constants";
 
-export type EventCategory = (typeof EVENT_CATEGORIES)[number];
+export type EventCategory =
+  (typeof EVENT_CATEGORIES)[number];
 
 export type Event = BaseModel & {
   category: EventCategory;

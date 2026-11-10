@@ -6,8 +6,15 @@ import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { optInToCrowdFavorite, verifyTeamMemberEmail, type VerifyTeamMemberEmailResult } from "../_actions";
-import { crowdFavoriteOptInFormSchema, type CrowdFavoriteOptInFormSchema } from "../_schemas";
+import {
+  optInToCrowdFavorite,
+  verifyTeamMemberEmail,
+  type VerifyTeamMemberEmailResult,
+} from "../_actions";
+import {
+  crowdFavoriteOptInFormSchema,
+  type CrowdFavoriteOptInFormSchema,
+} from "../_schemas";
 import { CROWD_FAVORITE_MAX_ADDITIONAL_MEMBERS } from "../constants";
 
 type ValidatedTeamMember = {
@@ -20,7 +27,10 @@ type UseCrowdFavoriteOptInFormProps = {
   callerEmail: string;
 };
 
-const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFavoriteOptInFormProps) => {
+const useCrowdFavoriteOptInForm = ({
+  callerFirstName,
+  callerEmail,
+}: UseCrowdFavoriteOptInFormProps) => {
   const router = useRouter();
 
   const {
@@ -43,13 +53,19 @@ const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFav
     name: "team_members",
   });
 
-  const [validatedTeamMembers, setValidatedTeamMembers] = useState<ValidatedTeamMember[]>([]);
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const [pendingSubmission, setPendingSubmission] = useState<CrowdFavoriteOptInFormSchema | null>(null);
-  const [isValidatingMembers, setIsValidatingMembers] = useState(false);
+  const [validatedTeamMembers, setValidatedTeamMembers] =
+    useState<ValidatedTeamMember[]>([]);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] =
+    useState(false);
+  const [pendingSubmission, setPendingSubmission] =
+    useState<CrowdFavoriteOptInFormSchema | null>(null);
+  const [isValidatingMembers, setIsValidatingMembers] =
+    useState(false);
 
   const handleAddTeamMember = () => {
-    if (fields.length >= CROWD_FAVORITE_MAX_ADDITIONAL_MEMBERS) {
+    if (
+      fields.length >= CROWD_FAVORITE_MAX_ADDITIONAL_MEMBERS
+    ) {
       return;
     }
 
@@ -73,14 +89,20 @@ const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFav
     setIsValidatingMembers(true);
 
     try {
-      const normalizedMembers = data.team_members.map((member) => member.email.trim().toLowerCase());
+      const normalizedMembers = data.team_members.map(
+        (member) => member.email.trim().toLowerCase()
+      );
 
       if (normalizedMembers.length === 0) {
         setValidatedTeamMembers([]);
         return [];
       }
 
-      const verificationResults = await Promise.all(normalizedMembers.map((email) => verifyTeamMemberEmail(email)));
+      const verificationResults = await Promise.all(
+        normalizedMembers.map((email) =>
+          verifyTeamMemberEmail(email)
+        )
+      );
 
       let hasError = false;
 
@@ -113,8 +135,11 @@ const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFav
     }
   };
 
-  const onPrepareSubmit = async (data: CrowdFavoriteOptInFormSchema) => {
-    const verificationResults = await validateTeamMembers(data);
+  const onPrepareSubmit = async (
+    data: CrowdFavoriteOptInFormSchema
+  ) => {
+    const verificationResults =
+      await validateTeamMembers(data);
     if (verificationResults === null) return;
 
     setPendingSubmission(data);
@@ -124,7 +149,9 @@ const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFav
   const onConfirmSubmit = async () => {
     if (!pendingSubmission) return;
 
-    const result = await optInToCrowdFavorite(pendingSubmission);
+    const result = await optInToCrowdFavorite(
+      pendingSubmission
+    );
 
     if (!result.success) {
       if (result.field) {
@@ -134,12 +161,16 @@ const useCrowdFavoriteOptInForm = ({ callerFirstName, callerEmail }: UseCrowdFav
         });
       }
 
-      toast.error("Could not submit crowd favorite opt-in", { description: result.error });
+      toast.error(
+        "Could not submit crowd favorite opt-in",
+        { description: result.error }
+      );
       return;
     }
 
     toast.success("Crowd favorite opt-in submitted", {
-      description: "Your team has been opted in successfully.",
+      description:
+        "Your team has been opted in successfully.",
     });
 
     setIsConfirmDialogOpen(false);

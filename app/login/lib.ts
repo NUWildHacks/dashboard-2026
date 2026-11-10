@@ -13,13 +13,23 @@ import { validateRedirectPath } from "@/lib/path.lib";
  * @param provider - The OAuth provider ("google" or "github")
  * @param scopes - Optional space-separated provider scopes
  */
-export const signInWithProvider = async (provider: Provider, scopes?: string) => {
+export const signInWithProvider = async (
+  provider: Provider,
+  scopes?: string
+) => {
   const supabase = createSupabaseBrowserClient();
 
-  const searchParams = new URLSearchParams(window.location.search);
-  const redirectTo = validateRedirectPath(searchParams.get("redirect"));
+  const searchParams = new URLSearchParams(
+    window.location.search
+  );
+  const redirectTo = validateRedirectPath(
+    searchParams.get("redirect")
+  );
 
-  const callbackUrl = new URL(AUTH_CALLBACK_PATH, window.location.origin);
+  const callbackUrl = new URL(
+    AUTH_CALLBACK_PATH,
+    window.location.origin
+  );
   callbackUrl.searchParams.set("redirect", redirectTo);
 
   const { error } = await supabase.auth.signInWithOAuth({
@@ -28,6 +38,8 @@ export const signInWithProvider = async (provider: Provider, scopes?: string) =>
   });
 
   if (error) {
-    toast.error("Login failed", { description: error.message });
+    toast.error("Login failed", {
+      description: error.message,
+    });
   }
 };

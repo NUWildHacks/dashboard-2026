@@ -9,8 +9,14 @@ import {
   TEAM_MATCHING_RUNS_TABLE_PROD,
   WILDHACKS_CONFIG_TABLE,
 } from "@/constants";
-import { getAuthenticatedUser, requireRole } from "@/lib/server";
-import type { ActionResult, TeamMatchingMode } from "@/types";
+import {
+  getAuthenticatedUser,
+  requireRole,
+} from "@/lib/server";
+import type {
+  ActionResult,
+  TeamMatchingMode,
+} from "@/types";
 
 export const toggleTopRun = async (
   runId: string,
@@ -30,21 +36,36 @@ export const toggleTopRun = async (
       .eq("id", "config")
       .maybeSingle()
       .throwOnError();
-    const released = mode === "prod" ? config?.results_released : config?.results_released_dev;
-    if (released) return { success: false, error: "Unrelease the results before changing top choices." };
+    const released =
+      mode === "prod"
+        ? config?.results_released
+        : config?.results_released_dev;
+    if (released)
+      return {
+        success: false,
+        error:
+          "Unrelease the results before changing top choices.",
+      };
 
-    const table = mode === "prod" ? TEAM_MATCHING_RUNS_TABLE_PROD : TEAM_MATCHING_RUNS_TABLE;
+    const table =
+      mode === "prod"
+        ? TEAM_MATCHING_RUNS_TABLE_PROD
+        : TEAM_MATCHING_RUNS_TABLE;
     const { data } = await supabaseAdmin
       .from(table)
       .update({ is_top: isTop })
       .eq("id", runId)
       .select("id")
       .throwOnError();
-    if (!data || data.length === 0) return { success: false, error: "Run not found." };
+    if (!data || data.length === 0)
+      return { success: false, error: "Run not found." };
 
     return { success: true };
   } catch (error) {
-    const msg = error instanceof Error ? error.message : "An unknown error occurred";
+    const msg =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
     return { success: false, error: msg };
   }
 };

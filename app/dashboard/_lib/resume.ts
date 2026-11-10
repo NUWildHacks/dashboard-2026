@@ -18,10 +18,14 @@ import { ResumeMetadata } from "../types";
  * console.log(resumeMetadata.file_name, resumeMetadata.storage_path);
  * ```
  */
-const getResumeMetadata = async (userId: string): Promise<Omit<ResumeMetadata, "id"> | null> => {
+const getResumeMetadata = async (
+  userId: string
+): Promise<Omit<ResumeMetadata, "id"> | null> => {
   const { data } = await supabaseAdmin
     .from(RESUMES_TABLE)
-    .select("file_name, storage_path, created_at, updated_at")
+    .select(
+      "file_name, storage_path, created_at, updated_at"
+    )
     .eq("id", userId)
     .maybeSingle()
     .throwOnError();
@@ -39,11 +43,21 @@ const getResumeMetadata = async (userId: string): Promise<Omit<ResumeMetadata, "
  * Get the storage paths of the given users' resumes.
  * Read them before deleting the users, because the resume rows are deleted with the user rows.
  */
-const getResumeStoragePaths = async (userIds: string[]): Promise<string[]> => {
+const getResumeStoragePaths = async (
+  userIds: string[]
+): Promise<string[]> => {
   const paths: string[] = [];
   for (const ids of chunkList(userIds)) {
-    const { data } = await supabaseAdmin.from(RESUMES_TABLE).select("storage_path").in("id", ids).throwOnError();
-    paths.push(...data.map(({ storage_path }) => storage_path as string));
+    const { data } = await supabaseAdmin
+      .from(RESUMES_TABLE)
+      .select("storage_path")
+      .in("id", ids)
+      .throwOnError();
+    paths.push(
+      ...data.map(
+        ({ storage_path }) => storage_path as string
+      )
+    );
   }
   return paths;
 };
@@ -52,11 +66,23 @@ const getResumeStoragePaths = async (userIds: string[]): Promise<string[]> => {
  * Remove resume files from storage. Failures are logged, not thrown: callers run this after the
  * user rows are deleted, and stopping there would leave the auth accounts behind.
  */
-const removeResumeFiles = async (storagePaths: string[]) => {
+const removeResumeFiles = async (
+  storagePaths: string[]
+) => {
   for (const paths of chunkList(storagePaths)) {
-    const { error } = await supabaseAdmin.storage.from(RESUMES_BUCKET).remove(paths);
-    if (error) console.error(`Resume file remove failed — orphaned files ${paths.join(", ")}:`, error);
+    const { error } = await supabaseAdmin.storage
+      .from(RESUMES_BUCKET)
+      .remove(paths);
+    if (error)
+      console.error(
+        `Resume file remove failed — orphaned files ${paths.join(", ")}:`,
+        error
+      );
   }
 };
 
-export { getResumeMetadata, getResumeStoragePaths, removeResumeFiles };
+export {
+  getResumeMetadata,
+  getResumeStoragePaths,
+  removeResumeFiles,
+};

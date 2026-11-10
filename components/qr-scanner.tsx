@@ -4,13 +4,20 @@ import { Html5Qrcode } from "html5-qrcode";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
-export type QRScannerError = "CAMERA_NOT_FOUND" | "PERMISSION_DENIED" | "SCAN_FAILED" | "UNKNOWN";
+export type QRScannerError =
+  | "CAMERA_NOT_FOUND"
+  | "PERMISSION_DENIED"
+  | "SCAN_FAILED"
+  | "UNKNOWN";
 
 export interface QRScannerProps {
   /** Callback when a QR code is successfully scanned */
   onScan: (scanResult: string) => void;
   /** Optional error handler callback */
-  onError?: (error: QRScannerError, message: string) => void;
+  onError?: (
+    error: QRScannerError,
+    message: string
+  ) => void;
   /** Debounce delay in milliseconds to prevent rapid duplicate scans (default: 500) */
   debounceMs?: number;
   /** CSS class name for the scanner container */
@@ -21,9 +28,13 @@ export interface QRScannerProps {
   fps?: number;
 }
 
-type CameraDevice = Awaited<ReturnType<typeof Html5Qrcode.getCameras>>[number];
+type CameraDevice = Awaited<
+  ReturnType<typeof Html5Qrcode.getCameras>
+>[number];
 
-const getScannerErrorType = (errorMessage: string): QRScannerError => {
+const getScannerErrorType = (
+  errorMessage: string
+): QRScannerError => {
   const normalizedErrorMessage = errorMessage.toLowerCase();
 
   if (
@@ -37,7 +48,9 @@ const getScannerErrorType = (errorMessage: string): QRScannerError => {
   if (
     normalizedErrorMessage.includes("notreadable") ||
     normalizedErrorMessage.includes("trackstarterror") ||
-    normalizedErrorMessage.includes("could not start video source") ||
+    normalizedErrorMessage.includes(
+      "could not start video source"
+    ) ||
     normalizedErrorMessage.includes("in use")
   ) {
     return "SCAN_FAILED";
@@ -56,7 +69,10 @@ const getScannerErrorType = (errorMessage: string): QRScannerError => {
   return "UNKNOWN";
 };
 
-const getErrorMessage = (error: unknown, fallbackMessage: string): string => {
+const getErrorMessage = (
+  error: unknown,
+  fallbackMessage: string
+): string => {
   if (error instanceof Error && error.message.trim()) {
     return error.message;
   }
@@ -64,15 +80,29 @@ const getErrorMessage = (error: unknown, fallbackMessage: string): string => {
   return fallbackMessage;
 };
 
-const getPreferredCameraOrder = (cameras: CameraDevice[]): CameraDevice[] => {
-  const backCameraKeywords = ["back", "rear", "environment", "traseira", "trasera", "hinten", "背面"];
+const getPreferredCameraOrder = (
+  cameras: CameraDevice[]
+): CameraDevice[] => {
+  const backCameraKeywords = [
+    "back",
+    "rear",
+    "environment",
+    "traseira",
+    "trasera",
+    "hinten",
+    "背面",
+  ];
 
   return [...cameras].sort((leftCamera, rightCamera) => {
     const leftLabel = leftCamera.label.toLowerCase();
     const rightLabel = rightCamera.label.toLowerCase();
 
-    const leftIsBackCamera = backCameraKeywords.some((keyword) => leftLabel.includes(keyword));
-    const rightIsBackCamera = backCameraKeywords.some((keyword) => rightLabel.includes(keyword));
+    const leftIsBackCamera = backCameraKeywords.some(
+      (keyword) => leftLabel.includes(keyword)
+    );
+    const rightIsBackCamera = backCameraKeywords.some(
+      (keyword) => rightLabel.includes(keyword)
+    );
 
     if (leftIsBackCamera && !rightIsBackCamera) return -1;
     if (!leftIsBackCamera && rightIsBackCamera) return 1;
@@ -94,10 +124,16 @@ export const QRScanner: React.FC<QRScannerProps> = ({
   const onScanRef = useRef(onScan);
   const onErrorRef = useRef(onError);
   const lastScanTimeRef = useRef<number>(0);
-  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const debounceTimeoutRef = useRef<ReturnType<
+    typeof setTimeout
+  > | null>(null);
+  const [isInitializing, setIsInitializing] =
+    useState(true);
   const [isScanning, setIsScanning] = useState(false);
-  const [error, setError] = useState<{ type: QRScannerError; message: string } | null>(null);
+  const [error, setError] = useState<{
+    type: QRScannerError;
+    message: string;
+  } | null>(null);
   const reactId = useId();
   const scannerElementId = `qr-scanner-${reactId.replaceAll(":", "")}`;
 
@@ -149,8 +185,14 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         const maxAttempts = 50; // 50 * 50ms = 2.5 seconds max
 
         const checkElement = () => {
-          const element = document.getElementById(scannerElementId);
-          if (element && element.offsetWidth > 0 && element.offsetHeight > 0) {
+          const element = document.getElementById(
+            scannerElementId
+          );
+          if (
+            element &&
+            element.offsetWidth > 0 &&
+            element.offsetHeight > 0
+          ) {
             resolve(element);
           } else if (attempts < maxAttempts) {
             attempts++;
@@ -159,7 +201,11 @@ export const QRScanner: React.FC<QRScannerProps> = ({
               setTimeout(checkElement, 50);
             });
           } else {
-            reject(new Error(`Element #${scannerElementId} not found or has zero dimensions after 2.5s`));
+            reject(
+              new Error(
+                `Element #${scannerElementId} not found or has zero dimensions after 2.5s`
+              )
+            );
           }
         };
 
@@ -185,7 +231,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         try {
           scanner = new Html5Qrcode(scannerElementId);
         } catch (initError) {
-          console.error("[QRScanner] Failed to create Html5Qrcode instance:", initError);
+          console.error(
+            "[QRScanner] Failed to create Html5Qrcode instance:",
+            initError
+          );
           throw new Error(
             `Failed to create scanner: ${initError instanceof Error ? initError.message : "Unknown error"}`
           );
@@ -194,9 +243,12 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         scannerRef.current = scanner;
 
         // Setup success callback with debouncing
-        const handleQrCodeSuccess = (decodedText: string) => {
+        const handleQrCodeSuccess = (
+          decodedText: string
+        ) => {
           const now = Date.now();
-          const timeSinceLastScan = now - lastScanTimeRef.current;
+          const timeSinceLastScan =
+            now - lastScanTimeRef.current;
 
           // Clear any pending debounce timeout
           if (debounceTimeoutRef.current) {
@@ -210,7 +262,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({
             onScanRef.current(decodedText);
           } else {
             // Schedule callback for after debounce period
-            const remainingDelay = debounceMs - timeSinceLastScan;
+            const remainingDelay =
+              debounceMs - timeSinceLastScan;
             debounceTimeoutRef.current = setTimeout(() => {
               lastScanTimeRef.current = Date.now();
               onScanRef.current(decodedText);
@@ -219,11 +272,16 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           }
         };
 
-        const handleQrCodeError = (errorMessage: string) => {
+        const handleQrCodeError = (
+          errorMessage: string
+        ) => {
           // Silently handle QR code scanning failures (common when no code in frame)
           // Only log in development for debugging purposes
           if (process.env.NODE_ENV === "development") {
-            console.debug("[QRScanner] Scan error (expected if no code in frame):", errorMessage);
+            console.debug(
+              "[QRScanner] Scan error (expected if no code in frame):",
+              errorMessage
+            );
           }
         };
 
@@ -237,7 +295,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           const cameras = await Html5Qrcode.getCameras();
 
           if (cameras && cameras.length > 0) {
-            const orderedCameras = getPreferredCameraOrder(cameras);
+            const orderedCameras =
+              getPreferredCameraOrder(cameras);
 
             for (const camera of orderedCameras) {
               try {
@@ -257,7 +316,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({
               } catch (error) {
                 startError = error;
 
-                if (process.env.NODE_ENV === "development") {
+                if (
+                  process.env.NODE_ENV === "development"
+                ) {
                   console.debug(
                     "[QRScanner] Unable to start camera ID, trying next:",
                     camera.label || camera.id,
@@ -269,7 +330,10 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           }
         } catch (enumerationError) {
           if (process.env.NODE_ENV === "development") {
-            console.debug("[QRScanner] Camera enumeration failed:", enumerationError);
+            console.debug(
+              "[QRScanner] Camera enumeration failed:",
+              enumerationError
+            );
           }
         }
 
@@ -288,13 +352,18 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
             cameraStartSuccess = true;
             if (process.env.NODE_ENV === "development") {
-              console.debug("[QRScanner] Started with environment facingMode");
+              console.debug(
+                "[QRScanner] Started with environment facingMode"
+              );
             }
           } catch (facingModeError) {
             startError = facingModeError;
 
             if (process.env.NODE_ENV === "development") {
-              console.debug("[QRScanner] Environment facingMode failed, trying user facingMode:", facingModeError);
+              console.debug(
+                "[QRScanner] Environment facingMode failed, trying user facingMode:",
+                facingModeError
+              );
             }
 
             // Strategy 3: Last resort - try user-facing camera
@@ -311,20 +380,30 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
               cameraStartSuccess = true;
               if (process.env.NODE_ENV === "development") {
-                console.debug("[QRScanner] Started with user facingMode");
+                console.debug(
+                  "[QRScanner] Started with user facingMode"
+                );
               }
             } catch (userFacingError) {
               startError = userFacingError;
 
               if (process.env.NODE_ENV === "development") {
-                console.error("[QRScanner] All camera start strategies failed:", userFacingError);
+                console.error(
+                  "[QRScanner] All camera start strategies failed:",
+                  userFacingError
+                );
               }
             }
           }
         }
 
         if (!cameraStartSuccess) {
-          throw startError || new Error("Failed to initialize camera - no compatible camera found");
+          throw (
+            startError ||
+            new Error(
+              "Failed to initialize camera - no compatible camera found"
+            )
+          );
         }
 
         if (cancelled) {
@@ -337,12 +416,22 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       } catch (err) {
         if (cancelled) return;
 
-        const errorMessage = getErrorMessage(err, "Failed to initialize camera");
+        const errorMessage = getErrorMessage(
+          err,
+          "Failed to initialize camera"
+        );
         const errorType = getScannerErrorType(errorMessage);
 
-        console.error("[QRScanner] Initialization failed:", errorMessage, err);
+        console.error(
+          "[QRScanner] Initialization failed:",
+          errorMessage,
+          err
+        );
 
-        setError({ type: errorType, message: errorMessage });
+        setError({
+          type: errorType,
+          message: errorMessage,
+        });
         onErrorRef.current?.(errorType, errorMessage);
         setIsInitializing(false);
         setIsScanning(false);
@@ -373,16 +462,23 @@ export const QRScanner: React.FC<QRScannerProps> = ({
 
   // Always render the scanner div (even during loading/error) so it's available for initialization
   return (
-    <div className={`flex flex-col gap-4 ${containerClassName}`}>
+    <div
+      className={`flex flex-col gap-4 ${containerClassName}`}
+    >
       {/* Scanner display container - always present for initialization */}
       <div className="relative overflow-hidden rounded-lg border border-slate-200 bg-black">
-        <div id={scannerElementId} className="w-full min-h-[300px]" />
+        <div
+          id={scannerElementId}
+          className="w-full min-h-[300px]"
+        />
 
         {/* Loading overlay */}
         {isInitializing && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950/80 backdrop-blur-sm">
             <Loader2 className="h-10 w-10 animate-spin text-slate-300" />
-            <p className="text-sm text-slate-300">Initializing camera...</p>
+            <p className="text-sm text-slate-300">
+              Initializing camera...
+            </p>
           </div>
         )}
 
@@ -391,21 +487,29 @@ export const QRScanner: React.FC<QRScannerProps> = ({
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-red-950/80 backdrop-blur-sm p-4">
             <AlertCircle className="h-10 w-10 text-red-400" />
             <div className="text-center">
-              <p className="font-semibold text-red-300">Scanner Error</p>
-              <p className="text-sm text-red-200">{error.message}</p>
+              <p className="font-semibold text-red-300">
+                Scanner Error
+              </p>
+              <p className="text-sm text-red-200">
+                {error.message}
+              </p>
               {error.type === "PERMISSION_DENIED" && (
                 <p className="mt-2 text-xs text-red-300">
-                  Please allow camera access in your browser settings and reload the page.
+                  Please allow camera access in your browser
+                  settings and reload the page.
                 </p>
               )}
               {error.type === "CAMERA_NOT_FOUND" && (
                 <p className="mt-2 text-xs text-red-300">
-                  No compatible camera is available. Ensure your webcam is accessible.
+                  No compatible camera is available. Ensure
+                  your webcam is accessible.
                 </p>
               )}
               {error.type === "SCAN_FAILED" && (
                 <p className="mt-2 text-xs text-red-300">
-                  Camera started but became unavailable. Close other apps using your camera and try again.
+                  Camera started but became unavailable.
+                  Close other apps using your camera and try
+                  again.
                 </p>
               )}
             </div>
@@ -417,7 +521,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       {isScanning && (
         <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 px-3 py-2">
           <div className="h-2 w-2 rounded-full bg-green-600 animate-pulse" />
-          <p className="text-xs font-medium text-green-700">Scanning...</p>
+          <p className="text-xs font-medium text-green-700">
+            Scanning...
+          </p>
         </div>
       )}
     </div>

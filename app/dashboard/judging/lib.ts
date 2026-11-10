@@ -1,11 +1,22 @@
 import "server-only";
 
 import supabaseAdmin from "@/config/supabase-admin";
-import { JUDGING_ASSIGNMENTS_TABLE, PROJECTS_TABLE } from "@/constants";
+import {
+  JUDGING_ASSIGNMENTS_TABLE,
+  PROJECTS_TABLE,
+} from "@/constants";
 import { JudgeUser } from "@/types";
 
-import { JUDGING_ASSIGNMENT_FIELDS, ROUND_1 } from "./constants";
-import type { JudgingAssignment, JudgingAssignmentWithProject, JudgingRound, Project } from "./types";
+import {
+  JUDGING_ASSIGNMENT_FIELDS,
+  ROUND_1,
+} from "./constants";
+import type {
+  JudgingAssignment,
+  JudgingAssignmentWithProject,
+  JudgingRound,
+  Project,
+} from "./types";
 
 /**
  * Retrieves judging assignments with their projects from the database.
@@ -33,17 +44,27 @@ const getJudgingAssignmentsWithProjectForRound = async (
     .from(JUDGING_ASSIGNMENTS_TABLE)
     .select()
     .eq(JUDGING_ASSIGNMENT_FIELDS.judge_id, judgeId)
-    .eq(JUDGING_ASSIGNMENT_FIELDS.judging_round, judgingRound);
+    .eq(
+      JUDGING_ASSIGNMENT_FIELDS.judging_round,
+      judgingRound
+    );
 
   // Round 1 has no display order, so sort by id to keep the results stable.
   query =
     judgingRound !== ROUND_1
-      ? query.order(JUDGING_ASSIGNMENT_FIELDS.order, { ascending: true })
+      ? query.order(JUDGING_ASSIGNMENT_FIELDS.order, {
+          ascending: true,
+        })
       : query.order("id", { ascending: true });
 
-  const { data: judgingAssignments } = await query.throwOnError();
+  const { data: judgingAssignments } =
+    await query.throwOnError();
 
-  if (!judgingAssignments || judgingAssignments.length === 0) return [];
+  if (
+    !judgingAssignments ||
+    judgingAssignments.length === 0
+  )
+    return [];
 
   const projectIds = new Set<Project["id"]>();
   judgingAssignments.forEach((judgingAssignment) => {
@@ -62,12 +83,17 @@ const getJudgingAssignmentsWithProjectForRound = async (
     projectMap.set(project.id, project);
   });
 
-  const result: JudgingAssignmentWithProject[] = (judgingAssignments as JudgingAssignment[]).map(
-    (judgingAssignment) => {
-      const project = projectMap.get(judgingAssignment.project_id);
-      return { ...judgingAssignment, project } as JudgingAssignmentWithProject;
-    }
-  );
+  const result: JudgingAssignmentWithProject[] = (
+    judgingAssignments as JudgingAssignment[]
+  ).map((judgingAssignment) => {
+    const project = projectMap.get(
+      judgingAssignment.project_id
+    );
+    return {
+      ...judgingAssignment,
+      project,
+    } as JudgingAssignmentWithProject;
+  });
 
   return result;
 };

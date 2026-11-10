@@ -4,9 +4,18 @@ import { useEffect, useRef, useState } from "react";
 
 import Discord from "@/components/icon/discord";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
 import { createSupabaseBrowserClient } from "@/config/supabase-browser";
-import { DISCORD_TEAM_PATH, WILDHACKS_CONFIG_TABLE } from "@/constants";
+import {
+  DISCORD_TEAM_PATH,
+  WILDHACKS_CONFIG_TABLE,
+} from "@/constants";
 import type { TeamSuggestion } from "@/types";
 
 import { getParticipantSuggestions } from "../_actions/get-participant-suggestions.actions";
@@ -17,7 +26,9 @@ import TeamMatchingResults from "./team-matching-results";
 type Props = {
   hasSubmitted: boolean;
   initialSuggestions: TeamSuggestion[];
-  releasedField?: "results_released" | "results_released_dev";
+  releasedField?:
+    | "results_released"
+    | "results_released_dev";
   firstName: string;
   lastName: string;
   email: string;
@@ -33,7 +44,9 @@ export const TeamMatchingGate = ({
   ...intakeProps
 }: Props) => {
   const [released, setReleased] = useState(false);
-  const [suggestions, setSuggestions] = useState<TeamSuggestion[]>(initialSuggestions);
+  const [suggestions, setSuggestions] = useState<
+    TeamSuggestion[]
+  >(initialSuggestions);
   const fetchedRef = useRef(initialSuggestions.length > 0);
 
   useEffect(() => {
@@ -44,7 +57,11 @@ export const TeamMatchingGate = ({
       if (!active) return;
       setReleased(newReleased);
 
-      if (newReleased && hasSubmitted && !fetchedRef.current) {
+      if (
+        newReleased &&
+        hasSubmitted &&
+        !fetchedRef.current
+      ) {
         fetchedRef.current = true;
         const result = await getParticipantSuggestions();
         if (active) setSuggestions(result);
@@ -57,12 +74,23 @@ export const TeamMatchingGate = ({
     };
 
     const channel = supabase
-      .channel(`team-matching-gate-${releasedField}-${crypto.randomUUID()}`)
+      .channel(
+        `team-matching-gate-${releasedField}-${crypto.randomUUID()}`
+      )
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: WILDHACKS_CONFIG_TABLE, filter: "id=eq.config" },
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: WILDHACKS_CONFIG_TABLE,
+          filter: "id=eq.config",
+        },
         (payload) => {
-          void handleReleased((payload.new as Record<string, unknown>)[releasedField] === true);
+          void handleReleased(
+            (payload.new as Record<string, unknown>)[
+              releasedField
+            ] === true
+          );
         }
       )
       .subscribe();
@@ -73,7 +101,11 @@ export const TeamMatchingGate = ({
         .select(releasedField)
         .eq("id", "config")
         .maybeSingle();
-      await handleReleased((data as Record<string, unknown> | null)?.[releasedField] === true);
+      await handleReleased(
+        (data as Record<string, unknown> | null)?.[
+          releasedField
+        ] === true
+      );
     })();
 
     return () => {
@@ -83,7 +115,9 @@ export const TeamMatchingGate = ({
   }, [hasSubmitted, releasedField]);
 
   if (hasSubmitted && released && suggestions.length > 0) {
-    return <TeamMatchingResults suggestions={suggestions} />;
+    return (
+      <TeamMatchingResults suggestions={suggestions} />
+    );
   }
 
   if (!hasSubmitted && released) {
@@ -92,12 +126,22 @@ export const TeamMatchingGate = ({
         <CardHeader>
           <CardTitle>Team matching has closed</CardTitle>
           <CardDescription>
-            If you&apos;re still looking for a team, head to Discord — that&apos;s where teams are forming now.
+            If you&apos;re still looking for a team, head to
+            Discord — that&apos;s where teams are forming
+            now.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
-          <Button variant="outline" className="w-fit gap-2" asChild>
-            <a href={DISCORD_TEAM_PATH} target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="outline"
+            className="w-fit gap-2"
+            asChild
+          >
+            <a
+              href={DISCORD_TEAM_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Discord className="size-4" />
               #find-teammates
             </a>
@@ -107,5 +151,10 @@ export const TeamMatchingGate = ({
     );
   }
 
-  return <TeamMatchingIntake hasSubmitted={hasSubmitted} {...intakeProps} />;
+  return (
+    <TeamMatchingIntake
+      hasSubmitted={hasSubmitted}
+      {...intakeProps}
+    />
+  );
 };

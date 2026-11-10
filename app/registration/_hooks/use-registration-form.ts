@@ -1,18 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 import { DASHBOARD_PATH } from "@/constants";
 import { WildHacksConfig } from "@/types";
 
 import { registerUser } from "../_actions";
-import { registrationFormSchema, RegistrationFormSchema } from "../_schemas";
+import {
+  registrationFormSchema,
+  RegistrationFormSchema,
+} from "../_schemas";
 
 export type UseRegistrationFormReturn = {
   onSubmit: SubmitHandler<RegistrationFormSchema>;
   isSubmitting: boolean;
-} & Pick<UseFormReturn<RegistrationFormSchema>, "control" | "handleSubmit">;
+} & Pick<
+  UseFormReturn<RegistrationFormSchema>,
+  "control" | "handleSubmit"
+>;
 
 export const useRegistrationForm = (
   userEmail: string,
@@ -58,7 +68,13 @@ export const useRegistrationForm = (
 
   const onSubmit = async (data: RegistrationFormSchema) => {
     try {
-      const result = await registerUser(data, start_time, end_time, max_participants, registration_deadline);
+      const result = await registerUser(
+        data,
+        start_time,
+        end_time,
+        max_participants,
+        registration_deadline
+      );
       const { success } = result;
 
       if (!success) {
@@ -77,10 +93,15 @@ export const useRegistrationForm = (
 
       router.replace(DASHBOARD_PATH);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
       console.error("Registration error:", errorMessage);
 
-      toast.error("Registration failed", { description: errorMessage });
+      toast.error("Registration failed", {
+        description: errorMessage,
+      });
     }
   };
 

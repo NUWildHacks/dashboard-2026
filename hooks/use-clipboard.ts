@@ -5,7 +5,9 @@ export type UseClipboardReturn = {
   handleCopy: () => Promise<void>;
 };
 
-export const useClipboard = (text: string): UseClipboardReturn => {
+export const useClipboard = (
+  text: string
+): UseClipboardReturn => {
   const [copied, setCopied] = useState<boolean>(false);
 
   const handleCopy = async () => {

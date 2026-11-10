@@ -20,31 +20,49 @@ type OnboardingDialogProps = {
   onboarded: boolean;
 };
 
-const OnboardingDialog = ({ role, onboarded }: OnboardingDialogProps) => {
-  const [isOnboardingDialogOpen, setIsOnboardingDialogOpen] = useState(!onboarded);
+const OnboardingDialog = ({
+  role,
+  onboarded,
+}: OnboardingDialogProps) => {
+  const [
+    isOnboardingDialogOpen,
+    setIsOnboardingDialogOpen,
+  ] = useState(!onboarded);
 
   const descriptionText =
     role === JUDGE
       ? "project assignments will appear here once judging begins!"
       : "mentoring sign-up slots are now live, and your timeslots have been pre-assigned. Please review and update them as needed!";
 
-  const roleText = role === JUDGE ? "Judge" : "Judge and Mentor";
+  const roleText =
+    role === JUDGE ? "Judge" : "Judge and Mentor";
 
   return (
-    <Dialog open={isOnboardingDialogOpen} onOpenChange={setIsOnboardingDialogOpen}>
+    <Dialog
+      open={isOnboardingDialogOpen}
+      onOpenChange={setIsOnboardingDialogOpen}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Welcome!</DialogTitle>
           <DialogDescription>
-            You&apos;re now officially a WildHacks 2026 {roleText}! Please take a moment to review your personal details
-            and modality under settings.
+            You&apos;re now officially a WildHacks 2026{" "}
+            {roleText}! Please take a moment to review your
+            personal details and modality under settings.
             <br /> <br />
-            You can now close this dialog and explore the dashboard -- {descriptionText}
+            You can now close this dialog and explore the
+            dashboard -- {descriptionText}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
-            <Button onClick={() => setIsOnboardingDialogOpen(false)}>Close</Button>
+            <Button
+              onClick={() =>
+                setIsOnboardingDialogOpen(false)
+              }
+            >
+              Close
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

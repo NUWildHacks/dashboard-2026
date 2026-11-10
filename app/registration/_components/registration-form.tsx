@@ -6,7 +6,11 @@ import { Controller } from "react-hook-form";
 
 import Combobox from "@/components/form/combobox";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
@@ -28,7 +32,13 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   COUNTRIES,
   DIETARY_RESTRICTIONS,
@@ -44,9 +54,14 @@ import { User, WildHacksConfig } from "@/types";
 
 import { useRegistrationForm } from "../_hooks";
 
-type RegistrationFormProps = { userEmail: User["email"] } & Pick<
+type RegistrationFormProps = {
+  userEmail: User["email"];
+} & Pick<
   WildHacksConfig,
-  "start_time" | "end_time" | "max_participants" | "registration_deadline"
+  | "start_time"
+  | "end_time"
+  | "max_participants"
+  | "registration_deadline"
 >;
 
 const RegistrationForm = ({
@@ -56,29 +71,39 @@ const RegistrationForm = ({
   max_participants,
   registration_deadline,
 }: RegistrationFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting } = useRegistrationForm(
-    userEmail,
-    start_time,
-    end_time,
-    max_participants,
-    registration_deadline
-  );
+  const { control, handleSubmit, onSubmit, isSubmitting } =
+    useRegistrationForm(
+      userEmail,
+      start_time,
+      end_time,
+      max_participants,
+      registration_deadline
+    );
 
   return (
     <Card className="rounded-2xl shadow-sm">
       <CardContent>
-        <form id="registration-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="registration-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
-              <FieldLegend className="w-full text-start">Personal Information</FieldLegend>
-              <FieldDescription className="w-full text-start">Tell us about yourself</FieldDescription>
+              <FieldLegend className="w-full text-start">
+                Personal Information
+              </FieldLegend>
+              <FieldDescription className="w-full text-start">
+                Tell us about yourself
+              </FieldDescription>
               <FieldGroup>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
                     name="first_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -92,7 +117,12 @@ const RegistrationForm = ({
                           aria-invalid={fieldState.invalid}
                           autoComplete="given-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -101,7 +131,9 @@ const RegistrationForm = ({
                     name="last_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -115,7 +147,12 @@ const RegistrationForm = ({
                           aria-invalid={fieldState.invalid}
                           autoComplete="family-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -125,8 +162,13 @@ const RegistrationForm = ({
                   name="email"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Email
                       </FieldLabel>
                       <Input
@@ -137,7 +179,12 @@ const RegistrationForm = ({
                         autoComplete="email"
                         disabled
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -147,7 +194,9 @@ const RegistrationForm = ({
                     name="age"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -165,7 +214,12 @@ const RegistrationForm = ({
                           step={1}
                           autoComplete="off"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -174,7 +228,9 @@ const RegistrationForm = ({
                     name="phone"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -188,7 +244,12 @@ const RegistrationForm = ({
                           placeholder="Enter your phone number"
                           autoComplete="tel"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -198,8 +259,13 @@ const RegistrationForm = ({
                   name="country"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Country
                       </FieldLabel>
                       <Combobox
@@ -212,7 +278,12 @@ const RegistrationForm = ({
                         minSearchLength={2}
                         maxResults={50}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -222,15 +293,24 @@ const RegistrationForm = ({
             <FieldSeparator />
 
             <FieldSet disabled={isSubmitting}>
-              <FieldLegend className="w-full text-start">Education</FieldLegend>
-              <FieldDescription className="w-full text-start">Tell us about your academic background</FieldDescription>
+              <FieldLegend className="w-full text-start">
+                Education
+              </FieldLegend>
+              <FieldDescription className="w-full text-start">
+                Tell us about your academic background
+              </FieldDescription>
               <FieldGroup>
                 <Controller
                   name="school"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         School
                       </FieldLabel>
                       <Combobox
@@ -243,7 +323,12 @@ const RegistrationForm = ({
                         minSearchLength={3}
                         maxResults={30}
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -252,23 +337,48 @@ const RegistrationForm = ({
                   name="level_of_study"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Level of Study
                       </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
-                          <SelectValue placeholder="Select your level of study" defaultValue={field.value} />
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          tabIndex={0}
+                        >
+                          <SelectValue
+                            placeholder="Select your level of study"
+                            defaultValue={field.value}
+                          />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
-                          {LEVELS_OF_STUDY.map((levelOfStudy) => (
-                            <SelectItem key={levelOfStudy} value={levelOfStudy}>
-                              {levelOfStudy}
-                            </SelectItem>
-                          ))}
+                          {LEVELS_OF_STUDY.map(
+                            (levelOfStudy) => (
+                              <SelectItem
+                                key={levelOfStudy}
+                                value={levelOfStudy}
+                              >
+                                {levelOfStudy}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -277,23 +387,45 @@ const RegistrationForm = ({
                   name="field_of_study"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Field of Study
                       </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          tabIndex={0}
+                        >
                           <SelectValue placeholder="Select your field of study" />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
-                          {FIELDS_OF_STUDY.map((fieldOfStudy) => (
-                            <SelectItem key={fieldOfStudy} value={fieldOfStudy}>
-                              {fieldOfStudy}
-                            </SelectItem>
-                          ))}
+                          {FIELDS_OF_STUDY.map(
+                            (fieldOfStudy) => (
+                              <SelectItem
+                                key={fieldOfStudy}
+                                value={fieldOfStudy}
+                              >
+                                {fieldOfStudy}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -303,19 +435,29 @@ const RegistrationForm = ({
             <FieldSeparator />
 
             <FieldSet disabled={isSubmitting}>
-              <FieldLegend className="w-full text-start">Hacker Profile</FieldLegend>
-              <FieldDescription className="w-full text-start">Help us personalize your experience</FieldDescription>
+              <FieldLegend className="w-full text-start">
+                Hacker Profile
+              </FieldLegend>
+              <FieldDescription className="w-full text-start">
+                Help us personalize your experience
+              </FieldDescription>
               <FieldGroup>
                 <Controller
                   name="github_username"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Github Username
                       </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        Please enter what you use to login to your Github account
+                        Please enter what you use to login
+                        to your Github account
                       </FieldDescription>
                       <Input
                         {...field}
@@ -324,7 +466,12 @@ const RegistrationForm = ({
                         placeholder="Enter your Github username"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -333,23 +480,45 @@ const RegistrationForm = ({
                   name="tshirt_size"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         T-shirt Size
                       </FieldLabel>
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          tabIndex={0}
+                        >
                           <SelectValue placeholder="Select your t-shirt size" />
                         </SelectTrigger>
                         <SelectContent className="w-(--radix-select-trigger-width)">
-                          {TSHIRT_SIZES.map((tshirtSize) => (
-                            <SelectItem key={tshirtSize} value={tshirtSize}>
-                              {tshirtSize}
-                            </SelectItem>
-                          ))}
+                          {TSHIRT_SIZES.map(
+                            (tshirtSize) => (
+                              <SelectItem
+                                key={tshirtSize}
+                                value={tshirtSize}
+                              >
+                                {tshirtSize}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -357,34 +526,57 @@ const RegistrationForm = ({
             </FieldSet>
 
             <FieldSet disabled={isSubmitting}>
-              <FieldLegend className="w-full text-start">Demographics and Dietary</FieldLegend>
-              <FieldDescription className="w-full text-start">Help us create an inclusive event</FieldDescription>
+              <FieldLegend className="w-full text-start">
+                Demographics and Dietary
+              </FieldLegend>
+              <FieldDescription className="w-full text-start">
+                Help us create an inclusive event
+              </FieldDescription>
               <FieldGroup>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Controller
                     name="gender"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
                           Gender
                         </FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger
+                            id={field.name}
+                            aria-invalid={
+                              fieldState.invalid
+                            }
+                            tabIndex={0}
+                          >
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                           <SelectContent className="w-(--radix-select-trigger-width)">
                             {GENDERS.map((gender) => (
-                              <SelectItem key={gender} value={gender}>
+                              <SelectItem
+                                key={gender}
+                                value={gender}
+                              >
                                 {gender}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -393,26 +585,45 @@ const RegistrationForm = ({
                     name="race"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
                           Racial/Ethnic Background
                         </FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger
+                            id={field.name}
+                            aria-invalid={
+                              fieldState.invalid
+                            }
+                            tabIndex={0}
+                          >
                             <SelectValue placeholder="Select your racial/ethnic background" />
                           </SelectTrigger>
                           <SelectContent className="w-(--radix-select-trigger-width)">
                             {RACES.map((race) => (
-                              <SelectItem key={race} value={race}>
+                              <SelectItem
+                                key={race}
+                                value={race}
+                              >
                                 {race}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -422,25 +633,49 @@ const RegistrationForm = ({
                   name="dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Dietary Restrictions
                       </FieldLabel>
-                      <MultiSelect values={field.value} onValuesChange={field.onChange}>
-                        <MultiSelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
+                      <MultiSelect
+                        values={field.value}
+                        onValuesChange={field.onChange}
+                      >
+                        <MultiSelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          className="w-full"
+                        >
                           <MultiSelectValue placeholder="Select all of your dietary restrictions" />
                         </MultiSelectTrigger>
                         <MultiSelectContent>
                           <MultiSelectGroup>
-                            {DIETARY_RESTRICTIONS.map((dietary_restriction) => (
-                              <MultiSelectItem key={dietary_restriction} value={dietary_restriction}>
-                                {dietary_restriction}
-                              </MultiSelectItem>
-                            ))}
+                            {DIETARY_RESTRICTIONS.map(
+                              (dietary_restriction) => (
+                                <MultiSelectItem
+                                  key={dietary_restriction}
+                                  value={
+                                    dietary_restriction
+                                  }
+                                >
+                                  {dietary_restriction}
+                                </MultiSelectItem>
+                              )
+                            )}
                           </MultiSelectGroup>
                         </MultiSelectContent>
                       </MultiSelect>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -449,10 +684,15 @@ const RegistrationForm = ({
                   name="other_dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Other Dietary Restrictions</FieldLabel>
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel htmlFor={field.name}>
+                        Other Dietary Restrictions
+                      </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        If you selected &quot;Other&quot;, please specify below
+                        If you selected &quot;Other&quot;,
+                        please specify below
                       </FieldDescription>
                       <Input
                         {...field}
@@ -461,7 +701,12 @@ const RegistrationForm = ({
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -471,14 +716,21 @@ const RegistrationForm = ({
             <FieldSeparator />
 
             <FieldSet disabled={isSubmitting}>
-              <FieldLegend className="w-full text-start">MLH Agreements</FieldLegend>
-              <FieldDescription className="w-full text-start">Required agreements for participation</FieldDescription>
+              <FieldLegend className="w-full text-start">
+                MLH Agreements
+              </FieldLegend>
+              <FieldDescription className="w-full text-start">
+                Required agreements for participation
+              </FieldDescription>
               <FieldGroup>
                 <Controller
                   name="mlh_code_of_conduct"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                    <Field
+                      orientation="horizontal"
+                      data-invalid={fieldState.invalid}
+                    >
                       <Checkbox
                         id={field.name}
                         name={field.name}
@@ -504,7 +756,12 @@ const RegistrationForm = ({
                             MLH Code of Conduct
                           </a>
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </FieldContent>
                     </Field>
                   )}
@@ -514,7 +771,10 @@ const RegistrationForm = ({
                   name="mlh_privacy_policy"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                    <Field
+                      orientation="horizontal"
+                      data-invalid={fieldState.invalid}
+                    >
                       <Checkbox
                         id={field.name}
                         name={field.name}
@@ -530,8 +790,12 @@ const RegistrationForm = ({
                           MLH Privacy Policy
                         </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize you to share my application/registration information with Major League Hacking for
-                          event administration, ranking, and MLH administration in-line with the{" "}
+                          I authorize you to share my
+                          application/registration
+                          information with Major League
+                          Hacking for event administration,
+                          ranking, and MLH administration
+                          in-line with the{" "}
                           <a
                             href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md"
                             target="_blank"
@@ -540,7 +804,8 @@ const RegistrationForm = ({
                           >
                             MLH Privacy Policy.
                           </a>{" "}
-                          I further agree to the terms of both the{" "}
+                          I further agree to the terms of
+                          both the{" "}
                           <a
                             href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md"
                             target="_blank"
@@ -559,7 +824,12 @@ const RegistrationForm = ({
                             MLH Privacy Policy.
                           </a>
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </FieldContent>
                     </Field>
                   )}
@@ -569,7 +839,10 @@ const RegistrationForm = ({
                   name="mlh_marketing"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                    <Field
+                      orientation="horizontal"
+                      data-invalid={fieldState.invalid}
+                    >
                       <Checkbox
                         id={field.name}
                         name={field.name}
@@ -578,12 +851,21 @@ const RegistrationForm = ({
                         aria-invalid={fieldState.invalid}
                       />
                       <FieldContent>
-                        <FieldLabel htmlFor={field.name}>MLH Email Communications</FieldLabel>
+                        <FieldLabel htmlFor={field.name}>
+                          MLH Email Communications
+                        </FieldLabel>
                         <FieldDescription className="w-full text-start">
-                          I authorize MLH to send me occasional emails about relevant events, career opportunities, and
+                          I authorize MLH to send me
+                          occasional emails about relevant
+                          events, career opportunities, and
                           community announcements.
                         </FieldDescription>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </FieldContent>
                     </Field>
                   )}
@@ -594,12 +876,27 @@ const RegistrationForm = ({
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="registration-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit"}
+        <Field
+          orientation="horizontal"
+          className="flex-row-reverse"
+        >
+          <Button
+            type="submit"
+            form="registration-form"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Submit"
+            )}
           </Button>
           <Link href={ROOT_PATH}>
-            <Button type="button" variant="outline" disabled={isSubmitting}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+            >
               Go back
             </Button>
           </Link>

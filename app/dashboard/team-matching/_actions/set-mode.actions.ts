@@ -1,18 +1,32 @@
 "use server";
 
 import supabaseAdmin from "@/config/supabase-admin";
-import { ADMIN, DASHBOARD_PATH, LOGIN_PATH, WILDHACKS_CONFIG_TABLE } from "@/constants";
-import { getAuthenticatedUser, requireRole } from "@/lib/server";
-import type { ActionResult, TeamMatchingMode } from "@/types";
+import {
+  ADMIN,
+  DASHBOARD_PATH,
+  LOGIN_PATH,
+  WILDHACKS_CONFIG_TABLE,
+} from "@/constants";
+import {
+  getAuthenticatedUser,
+  requireRole,
+} from "@/lib/server";
+import type {
+  ActionResult,
+  TeamMatchingMode,
+} from "@/types";
 
-export const setTeamMatchingMode = async (mode: TeamMatchingMode): Promise<ActionResult> => {
+export const setTeamMatchingMode = async (
+  mode: TeamMatchingMode
+): Promise<ActionResult> => {
   try {
     const redirectPath = `${LOGIN_PATH}?redirect=${encodeURIComponent(DASHBOARD_PATH)}`;
     const user = await getAuthenticatedUser(redirectPath);
     const roleCheck = requireRole(user, ADMIN);
     if (roleCheck) return roleCheck;
 
-    if (mode !== "dev" && mode !== "prod") return { success: false, error: "Invalid mode." };
+    if (mode !== "dev" && mode !== "prod")
+      return { success: false, error: "Invalid mode." };
 
     const { data: updatedRows } = await supabaseAdmin
       .from(WILDHACKS_CONFIG_TABLE)
@@ -20,11 +34,15 @@ export const setTeamMatchingMode = async (mode: TeamMatchingMode): Promise<Actio
       .eq("id", "config")
       .select("id")
       .throwOnError();
-    if (updatedRows.length === 0) throw new Error("WildHacks configuration not found");
+    if (updatedRows.length === 0)
+      throw new Error("WildHacks configuration not found");
 
     return { success: true };
   } catch (error) {
-    const msg = error instanceof Error ? error.message : "An unknown error occurred";
+    const msg =
+      error instanceof Error
+        ? error.message
+        : "An unknown error occurred";
     return { success: false, error: msg };
   }
 };

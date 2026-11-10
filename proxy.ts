@@ -2,7 +2,10 @@ import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
 import { LOGIN_PATH, PROTECTED_ROUTES } from "@/constants";
-import { buildContentSecurityPolicy, NONCE_HEADER } from "@/lib/csp.lib";
+import {
+  buildContentSecurityPolicy,
+  NONCE_HEADER,
+} from "@/lib/csp.lib";
 import { validateRedirectPath } from "@/lib/path.lib";
 
 /**
@@ -12,15 +15,23 @@ import { validateRedirectPath } from "@/lib/path.lib";
  * It also sets the Content-Security-Policy header with a new script nonce for every request.
  */
 export async function proxy(req: NextRequest) {
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-  const contentSecurityPolicy = buildContentSecurityPolicy(nonce);
+  const nonce = Buffer.from(crypto.randomUUID()).toString(
+    "base64"
+  );
+  const contentSecurityPolicy =
+    buildContentSecurityPolicy(nonce);
 
   // Next.js reads the nonce from the request's CSP header and adds it to its own scripts.
   const nextResponse = () => {
     const requestHeaders = new Headers(req.headers);
     requestHeaders.set(NONCE_HEADER, nonce);
-    requestHeaders.set("Content-Security-Policy", contentSecurityPolicy);
-    return NextResponse.next({ request: { headers: requestHeaders } });
+    requestHeaders.set(
+      "Content-Security-Policy",
+      contentSecurityPolicy
+    );
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    });
   };
 
   let response = nextResponse();
@@ -34,9 +45,13 @@ export async function proxy(req: NextRequest) {
           return req.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => req.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) =>
+            req.cookies.set(name, value)
+          );
           response = nextResponse();
-          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
         },
       },
     }
@@ -47,20 +62,35 @@ export async function proxy(req: NextRequest) {
   const isSignedIn = Boolean(data?.claims);
 
   const currentPath = req.nextUrl.pathname;
-  const isProtectedRoute = (PROTECTED_ROUTES as readonly string[]).includes(currentPath);
+  const isProtectedRoute = (
+    PROTECTED_ROUTES as readonly string[]
+  ).includes(currentPath);
 
   if (isProtectedRoute && !isSignedIn) {
     const loginUrl = new URL(LOGIN_PATH, req.url);
-    const redirectPath = validateRedirectPath(req.nextUrl.pathname);
+    const redirectPath = validateRedirectPath(
+      req.nextUrl.pathname
+    );
     loginUrl.searchParams.set("redirect", redirectPath);
 
-    const redirectResponse = NextResponse.redirect(loginUrl);
-    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
-    redirectResponse.headers.set("Content-Security-Policy", contentSecurityPolicy);
+    const redirectResponse =
+      NextResponse.redirect(loginUrl);
+    response.cookies
+      .getAll()
+      .forEach((cookie) =>
+        redirectResponse.cookies.set(cookie)
+      );
+    redirectResponse.headers.set(
+      "Content-Security-Policy",
+      contentSecurityPolicy
+    );
     return redirectResponse;
   }
 
-  response.headers.set("Content-Security-Policy", contentSecurityPolicy);
+  response.headers.set(
+    "Content-Security-Policy",
+    contentSecurityPolicy
+  );
   return response;
 }
 

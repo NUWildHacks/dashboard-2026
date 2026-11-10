@@ -1,15 +1,26 @@
 import "server-only";
 
 import supabaseAdmin from "@/config/supabase-admin";
-import { CROWD_FAVORITES_TABLE, CROWD_FAVORITE_VOTES_TABLE, PARTICIPANT, USERS_TABLE } from "@/constants";
+import {
+  CROWD_FAVORITES_TABLE,
+  CROWD_FAVORITE_VOTES_TABLE,
+  PARTICIPANT,
+  USERS_TABLE,
+} from "@/constants";
 import { fromRow, fromRows, selectAllRows } from "@/lib";
-import type { CrowdFavoriteProject, ParticipantUser } from "@/types";
+import type {
+  CrowdFavoriteProject,
+  ParticipantUser,
+} from "@/types";
 
-type CrowdFavoriteProjectWithVotes = CrowdFavoriteProject & {
-  vote_count: number;
-};
+type CrowdFavoriteProjectWithVotes =
+  CrowdFavoriteProject & {
+    vote_count: number;
+  };
 
-const getCrowdFavoriteProject = async (projectId: string): Promise<CrowdFavoriteProject | null> => {
+const getCrowdFavoriteProject = async (
+  projectId: string
+): Promise<CrowdFavoriteProject | null> => {
   const { data } = await supabaseAdmin
     .from(CROWD_FAVORITES_TABLE)
     .select()
@@ -21,7 +32,9 @@ const getCrowdFavoriteProject = async (projectId: string): Promise<CrowdFavorite
   return fromRow<CrowdFavoriteProject>(data);
 };
 
-const getCrowdFavoriteProjectForUser = async (userId: string): Promise<CrowdFavoriteProject | null> => {
+const getCrowdFavoriteProjectForUser = async (
+  userId: string
+): Promise<CrowdFavoriteProject | null> => {
   const { data } = await supabaseAdmin
     .from(CROWD_FAVORITES_TABLE)
     .select()
@@ -36,17 +49,34 @@ const getCrowdFavoriteProjectForUser = async (userId: string): Promise<CrowdFavo
   return fromRow<CrowdFavoriteProject>(data);
 };
 
-const getAllParticipantUsers = async (): Promise<ParticipantUser[]> => {
+const getAllParticipantUsers = async (): Promise<
+  ParticipantUser[]
+> => {
   const data = await selectAllRows((from, to) =>
-    supabaseAdmin.from(USERS_TABLE).select().eq("role", PARTICIPANT).order("id").range(from, to).throwOnError()
+    supabaseAdmin
+      .from(USERS_TABLE)
+      .select()
+      .eq("role", PARTICIPANT)
+      .order("id")
+      .range(from, to)
+      .throwOnError()
   );
 
-  return fromRows<ParticipantUser>(data).filter((user) => user.first_name);
+  return fromRows<ParticipantUser>(data).filter(
+    (user) => user.first_name
+  );
 };
 
-const getAllCrowdFavoriteProjects = async (): Promise<CrowdFavoriteProject[]> => {
+const getAllCrowdFavoriteProjects = async (): Promise<
+  CrowdFavoriteProject[]
+> => {
   const data = await selectAllRows((from, to) =>
-    supabaseAdmin.from(CROWD_FAVORITES_TABLE).select().order("id").range(from, to).throwOnError()
+    supabaseAdmin
+      .from(CROWD_FAVORITES_TABLE)
+      .select()
+      .order("id")
+      .range(from, to)
+      .throwOnError()
   );
 
   return fromRows<CrowdFavoriteProject>(data);
@@ -66,9 +96,16 @@ const getCrowdFavoriteProjectsWithVoteCount = async (
   }
 
   // Votes are kept when a user is deleted, but only votes from current users count.
-  const { data: voteCountRows } = await supabaseAdmin.rpc("crowd_favorite_vote_counts").throwOnError();
+  const { data: voteCountRows } = await supabaseAdmin
+    .rpc("crowd_favorite_vote_counts")
+    .throwOnError();
   const voteCounts = new Map(
-    ((voteCountRows ?? []) as { crowd_favorite_id: string; vote_count: number }[]).map((row) => [
+    (
+      (voteCountRows ?? []) as {
+        crowd_favorite_id: string;
+        vote_count: number;
+      }[]
+    ).map((row) => [
       row.crowd_favorite_id,
       Number(row.vote_count),
     ])
@@ -88,7 +125,9 @@ const getCrowdFavoriteProjectsWithVoteCount = async (
   });
 };
 
-const getUserVotedProjectId = async (userId: string): Promise<string | null> => {
+const getUserVotedProjectId = async (
+  userId: string
+): Promise<string | null> => {
   try {
     const { data } = await supabaseAdmin
       .from(CROWD_FAVORITE_VOTES_TABLE)

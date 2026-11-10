@@ -10,14 +10,18 @@ type EventsTableProps = {
   table: Table<Event>;
 };
 
-const EventsTable = ({ columns, table }: EventsTableProps) => {
+const EventsTable = ({
+  columns,
+  table,
+}: EventsTableProps) => {
   return (
     <>
       <DataTable columns={columns} table={table} />
       <div className="flex justify-between items-center">
         <div className="text-muted-foreground text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
+          {table.getFilteredSelectedRowModel().rows.length}{" "}
+          of {table.getFilteredRowModel().rows.length}{" "}
+          row(s) selected.
         </div>
         <div className="flex items-center justify-end space-x-2">
           <Button
@@ -28,7 +32,12 @@ const EventsTable = ({ columns, table }: EventsTableProps) => {
           >
             Previous
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>

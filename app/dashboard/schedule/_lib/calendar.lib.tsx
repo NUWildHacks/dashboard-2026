@@ -5,8 +5,17 @@ import { ONE_MINUTE } from "@/constants";
 import type { UseItemDialogReturn } from "@/hooks";
 import { WildHacksConfig } from "@/types";
 
-import { BASE_Z_INDEX, CALENDAR_ROWS, ROW_HEIGHT, ROW_WIDTH_PERCENTAGE } from "../constants";
-import type { CalendarDay, CalendarRowConfig, Event } from "../types";
+import {
+  BASE_Z_INDEX,
+  CALENDAR_ROWS,
+  ROW_HEIGHT,
+  ROW_WIDTH_PERCENTAGE,
+} from "../constants";
+import type {
+  CalendarDay,
+  CalendarRowConfig,
+  Event,
+} from "../types";
 
 /**
  * Get the start of a day (midnight) in milliseconds for a given timestamp.
@@ -19,7 +28,9 @@ import type { CalendarDay, CalendarRowConfig, Event } from "../types";
  * const dayStart = getDayStart(timestamp); // Returns midnight (00:00:00) of April 11, 2026
  * ```
  */
-const getDayStartFromMilliseconds = (milliseconds: number): number => {
+const getDayStartFromMilliseconds = (
+  milliseconds: number
+): number => {
   const date = new Date(milliseconds);
   date.setHours(0, 0, 0, 0);
   return date.getTime();
@@ -38,7 +49,10 @@ const getDayStartFromMilliseconds = (milliseconds: number): number => {
  * const minutes = millisecondsToMinutesInDay(eventTime, dayStart); // Returns 870 (14 * 60 + 30)
  * ```
  */
-const millisecondsToMinutesInDay = (milliseconds: number, dayStart: number): number => {
+const millisecondsToMinutesInDay = (
+  milliseconds: number,
+  dayStart: number
+): number => {
   const millisecondsFromDayStart = milliseconds - dayStart;
   return Math.floor(millisecondsFromDayStart / ONE_MINUTE);
 };
@@ -62,18 +76,31 @@ const millisecondsToMinutesInDay = (milliseconds: number, dayStart: number): num
  * // Returns: Map { '1' => Set(['2']), '3' => Set() }
  * ```
  */
-const createOverlapGroups = (events: Event[]): Map<Event["id"], Set<Event["id"]>> => {
-  const overlapGroups = new Map<Event["id"], Set<Event["id"]>>();
+const createOverlapGroups = (
+  events: Event[]
+): Map<Event["id"], Set<Event["id"]>> => {
+  const overlapGroups = new Map<
+    Event["id"],
+    Set<Event["id"]>
+  >();
 
   // Sort events by start time
-  const sortedEvents = [...events].sort((a, b) => a.start_time - b.start_time);
+  const sortedEvents = [...events].sort(
+    (a, b) => a.start_time - b.start_time
+  );
 
   let currentEvent = undefined;
   for (let i = 0; i < sortedEvents.length; i++) {
     const event = sortedEvents[i]!;
-    if (!currentEvent || event.start_time >= currentEvent.end_time) {
+    if (
+      !currentEvent ||
+      event.start_time >= currentEvent.end_time
+    ) {
       currentEvent = event;
-      overlapGroups.set(currentEvent.id, new Set<Event["id"]>());
+      overlapGroups.set(
+        currentEvent.id,
+        new Set<Event["id"]>()
+      );
 
       continue;
     }
@@ -120,19 +147,40 @@ const getVisibleCalendarRows = (
   calendarDayStartMs: CalendarDay["startMs"],
   calendarDayEndMs: CalendarDay["endMs"]
 ): CalendarRowConfig[] => {
-  const eventStartOnDay = Math.max(wildhacksStartTime, calendarDayStartMs);
-  const eventEndOnDay = Math.min(wildhacksEndTime, calendarDayEndMs);
+  const eventStartOnDay = Math.max(
+    wildhacksStartTime,
+    calendarDayStartMs
+  );
+  const eventEndOnDay = Math.min(
+    wildhacksEndTime,
+    calendarDayEndMs
+  );
 
-  const startMinutes = millisecondsToMinutesInDay(eventStartOnDay, calendarDayStartMs);
-  const endMinutes = millisecondsToMinutesInDay(eventEndOnDay, calendarDayStartMs);
+  const startMinutes = millisecondsToMinutesInDay(
+    eventStartOnDay,
+    calendarDayStartMs
+  );
+  const endMinutes = millisecondsToMinutesInDay(
+    eventEndOnDay,
+    calendarDayStartMs
+  );
 
   const firstVisibleRowIndex = CALENDAR_ROWS.findIndex(
-    (interval) => interval.startMin <= startMinutes && interval.endMin > startMinutes
+    (interval) =>
+      interval.startMin <= startMinutes &&
+      interval.endMin > startMinutes
   );
   const lastVisibleRowIndex =
-    CALENDAR_ROWS.findIndex((interval) => interval.startMin < endMinutes && interval.endMin >= endMinutes) + 1;
+    CALENDAR_ROWS.findIndex(
+      (interval) =>
+        interval.startMin < endMinutes &&
+        interval.endMin >= endMinutes
+    ) + 1;
 
-  return CALENDAR_ROWS.slice(firstVisibleRowIndex, lastVisibleRowIndex + 1);
+  return CALENDAR_ROWS.slice(
+    firstVisibleRowIndex,
+    lastVisibleRowIndex + 1
+  );
 };
 
 /**
@@ -154,10 +202,21 @@ const getVisibleCalendarRows = (
  * // Returns: (90 / 60) * ROW_HEIGHT = 1.5 * ROW_HEIGHT pixels
  * ```
  */
-const calculateItemHeight = (event: Event, slotDuration: number, dayStart: number): number => {
-  const eventStartMinutes = millisecondsToMinutesInDay(event.start_time, dayStart);
-  const eventEndMinutes = millisecondsToMinutesInDay(event.end_time, dayStart);
-  const eventDurationMinutes = eventEndMinutes - eventStartMinutes;
+const calculateItemHeight = (
+  event: Event,
+  slotDuration: number,
+  dayStart: number
+): number => {
+  const eventStartMinutes = millisecondsToMinutesInDay(
+    event.start_time,
+    dayStart
+  );
+  const eventEndMinutes = millisecondsToMinutesInDay(
+    event.end_time,
+    dayStart
+  );
+  const eventDurationMinutes =
+    eventEndMinutes - eventStartMinutes;
   const numberOfSlots = eventDurationMinutes / slotDuration;
   return numberOfSlots * ROW_HEIGHT;
 };
@@ -180,8 +239,16 @@ const calculateItemHeight = (event: Event, slotDuration: number, dayStart: numbe
  * // Returns: (15 / 60) * 100 = 25% (event starts 15 minutes into the hour)
  * ```
  */
-const calculateTopPosition = (event: Event, start: number, slotDuration: number, dayStart: number): number => {
-  const eventStartMinutes = millisecondsToMinutesInDay(event.start_time, dayStart);
+const calculateTopPosition = (
+  event: Event,
+  start: number,
+  slotDuration: number,
+  dayStart: number
+): number => {
+  const eventStartMinutes = millisecondsToMinutesInDay(
+    event.start_time,
+    dayStart
+  );
   const minutesFromSlotStart = eventStartMinutes - start;
   return (minutesFromSlotStart / slotDuration) * 100;
 };
@@ -209,7 +276,10 @@ const findOverlapGroupAnchor = (
 ): Event["id"] | null => {
   if (overlapGroups.has(eventId)) return eventId;
 
-  for (const [anchorId, groupSet] of overlapGroups.entries()) {
+  for (const [
+    anchorId,
+    groupSet,
+  ] of overlapGroups.entries()) {
     if (groupSet.has(eventId)) return anchorId;
   }
 
@@ -240,7 +310,10 @@ const getOverlapGroupEvents = (
   events: Event[],
   overlapGroups: Map<Event["id"], Set<Event["id"]>>
 ): Event[] => {
-  const groupEventIds = new Set([anchorId, ...Array.from(overlapGroups.get(anchorId) || [])]);
+  const groupEventIds = new Set([
+    anchorId,
+    ...Array.from(overlapGroups.get(anchorId) || []),
+  ]);
   return events.filter((e) => groupEventIds.has(e.id));
 };
 
@@ -259,11 +332,18 @@ const getOverlapGroupEvents = (
  * const isStandalone3 = isStandaloneEvent('3', overlapGroups); // Returns true (no overlap)
  * ```
  */
-const isStandaloneEvent = (eventId: Event["id"], overlapGroups: Map<Event["id"], Set<Event["id"]>>): boolean => {
-  const anchorId = findOverlapGroupAnchor(eventId, overlapGroups);
+const isStandaloneEvent = (
+  eventId: Event["id"],
+  overlapGroups: Map<Event["id"], Set<Event["id"]>>
+): boolean => {
+  const anchorId = findOverlapGroupAnchor(
+    eventId,
+    overlapGroups
+  );
   if (!anchorId) return true;
 
-  const groupSize = (overlapGroups.get(anchorId)?.size || 0) + 1;
+  const groupSize =
+    (overlapGroups.get(anchorId)?.size || 0) + 1;
   return groupSize === 1;
 };
 
@@ -303,29 +383,52 @@ const getCalendarItems = (
   calendarDayStartMs: CalendarDay["startMs"]
 ): JSX.Element[] => {
   const calendarItems: JSX.Element[] = [];
-  const slotDuration = calendarRowEndMin - calendarRowStartMin;
+  const slotDuration =
+    calendarRowEndMin - calendarRowStartMin;
 
   // Convert event times to minutes and filter by the calendar row time range
   const filteredEvents = events
     .map((event) => ({
       event,
-      startMinutes: millisecondsToMinutesInDay(event.start_time, calendarDayStartMs),
-      endMinutes: millisecondsToMinutesInDay(event.end_time, calendarDayStartMs),
+      startMinutes: millisecondsToMinutesInDay(
+        event.start_time,
+        calendarDayStartMs
+      ),
+      endMinutes: millisecondsToMinutesInDay(
+        event.end_time,
+        calendarDayStartMs
+      ),
     }))
-    .filter(({ startMinutes }) => startMinutes >= calendarRowStartMin && startMinutes < calendarRowEndMin)
+    .filter(
+      ({ startMinutes }) =>
+        startMinutes >= calendarRowStartMin &&
+        startMinutes < calendarRowEndMin
+    )
     .sort((a, b) => a.startMinutes - b.startMinutes)
     .map(({ event }) => event);
 
   for (let i = 0; i < filteredEvents.length; i++) {
     const event = filteredEvents[i]!;
 
-    const top = calculateTopPosition(event, calendarRowStartMin, slotDuration, calendarDayStartMs);
-    const height = calculateItemHeight(event, slotDuration, calendarDayStartMs);
+    const top = calculateTopPosition(
+      event,
+      calendarRowStartMin,
+      slotDuration,
+      calendarDayStartMs
+    );
+    const height = calculateItemHeight(
+      event,
+      slotDuration,
+      calendarDayStartMs
+    );
 
     let zIndex = BASE_Z_INDEX;
     for (let j = 0; j < i; j++) {
       const previousEvent = filteredEvents[j]!;
-      if (previousEvent.start_time < event.end_time && previousEvent.end_time > event.start_time) {
+      if (
+        previousEvent.start_time < event.end_time &&
+        previousEvent.end_time > event.start_time
+      ) {
         zIndex++;
       }
     }
@@ -347,7 +450,10 @@ const getCalendarItems = (
       continue;
     }
 
-    const anchorId = findOverlapGroupAnchor(event.id, overlapGroups);
+    const anchorId = findOverlapGroupAnchor(
+      event.id,
+      overlapGroups
+    );
     if (!anchorId) {
       calendarItems.push(
         <CalendarItem
@@ -366,13 +472,20 @@ const getCalendarItems = (
     }
 
     // Get ALL events in the overlap group
-    const groupEvents = getOverlapGroupEvents(anchorId, events, overlapGroups);
+    const groupEvents = getOverlapGroupEvents(
+      anchorId,
+      events,
+      overlapGroups
+    );
 
     // Find the index of the current event within the group (based on start time)
-    const eventIndexInGroup = groupEvents.findIndex((e) => e.id === event.id);
+    const eventIndexInGroup = groupEvents.findIndex(
+      (e) => e.id === event.id
+    );
 
     // Width is based on the TOTAL number of events in the group
-    const columnWidth = ROW_WIDTH_PERCENTAGE / groupEvents.length;
+    const columnWidth =
+      ROW_WIDTH_PERCENTAGE / groupEvents.length;
 
     calendarItems.push(
       <CalendarItem
@@ -392,4 +505,9 @@ const getCalendarItems = (
   return calendarItems;
 };
 
-export { createOverlapGroups, getCalendarItems, getDayStartFromMilliseconds, getVisibleCalendarRows };
+export {
+  createOverlapGroups,
+  getCalendarItems,
+  getDayStartFromMilliseconds,
+  getVisibleCalendarRows,
+};

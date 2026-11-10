@@ -28,7 +28,9 @@ const getSecrets = async (): Promise<WildHacksSecrets> => {
     throw new Error("WildHacks secrets not found");
   }
 
-  const secrets = fromRow<WildHacksSecrets & { id?: string }>(data);
+  const secrets = fromRow<
+    WildHacksSecrets & { id?: string }
+  >(data);
   delete secrets.id;
   return secrets;
 };

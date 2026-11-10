@@ -26,7 +26,11 @@ const GoogleLoginButton = () => {
   };
 
   return (
-    <Button variant="outline" size="lg" onClick={handleGoogleLogin}>
+    <Button
+      variant="outline"
+      size="lg"
+      onClick={handleGoogleLogin}
+    >
       <Google />
       Login with Google
     </Button>
