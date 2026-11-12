@@ -6,7 +6,7 @@ import {
   BookOpenCheck,
   GraduationCap,
   Headset,
-  SquareCode,
+  // SquareCode,
   QrCode,
   UsersRound,
 } from "lucide-react";
@@ -26,7 +26,7 @@ import {
   DASHBOARD_JUDGING_ROUND_2_PATH,
   DASHBOARD_MENTORING_PATH,
   VIRTUAL_ZOOM_JUDGING_PATH,
-  DEVPOST_PATH,
+  // DEVPOST_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
