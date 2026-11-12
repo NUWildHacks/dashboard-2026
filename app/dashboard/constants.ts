@@ -98,13 +98,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       },
     ],
   },
-  {
-    title: "Devpost",
-    hasSubItems: false,
-    url: DEVPOST_PATH,
-    icon: SquareCode,
-    visibleTo: [PARTICIPANT, ADMIN],
-  },
+  // {
+  //   title: "Devpost",
+  //   hasSubItems: false,
+  //   url: DEVPOST_PATH,
+  //   icon: SquareCode,
+  //   visibleTo: [PARTICIPANT, ADMIN],
+  // },
   {
     title: "Virtual Judging Zoom",
     hasSubItems: false,
