@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ComponentProps, PropsWithChildren } from "react";
 
 import { SidebarLogoutButton } from "@/app/dashboard/_components";
-// import Discord from "@/components/icon/discord";
+import Discord from "@/components/icon/discord";
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -25,7 +25,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
-  // DISCORD_INVITE_PATH,
+  DISCORD_INVITE_PATH,
   DASHBOARD_SETTINGS_PATH,
 } from "@/constants";
 import { Role } from "@/types";
@@ -140,7 +140,7 @@ const DashboardSidebar = ({
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu className="gap-2">
-            {/* <SidebarMenuItem>
+            <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <a
                   href={DISCORD_INVITE_PATH}
@@ -151,7 +151,7 @@ const DashboardSidebar = ({
                   Join our Discord
                 </a>
               </SidebarMenuButton>
-            </SidebarMenuItem> */}
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link
