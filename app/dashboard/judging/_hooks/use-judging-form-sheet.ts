@@ -26,8 +26,7 @@ export type UseJudgingFormSheetReturn = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   selectedJudgingAssignmentWithProject:
-    | JudgingAssignmentWithProject
-    | undefined;
+    JudgingAssignmentWithProject | undefined;
   handleOpenJudgingForm: (
     judgingAssignmentWithProject?: JudgingAssignmentWithProject
   ) => void;

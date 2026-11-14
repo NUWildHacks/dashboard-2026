@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import { EventDialog } from "@/app/dashboard/schedule/_components";
 import { useEvents } from "@/app/dashboard/schedule/_hooks";
@@ -15,7 +16,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DASHBOARD_SCHEDULE_PATH } from "@/constants";
+import {
+  DASHBOARD_SCHEDULE_PATH,
+  ONE_MINUTE,
+} from "@/constants";
 import { useItemDialog } from "@/hooks";
 
 import { EventsList } from "..";
@@ -27,8 +31,19 @@ const UpcomingEvents = () => {
   });
   const { events, isLoading } = useEventsReturn;
 
+  // Date.now() cannot run during render, so keep the time in state and
+  // update it every minute. Events that end drop off the list on time.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setNow(Date.now()),
+      ONE_MINUTE
+    );
+    return () => clearInterval(intervalId);
+  }, []);
+
   const upcomingEvents = events.filter(
-    (event) => event.end_time > Date.now()
+    (event) => event.end_time > now
   );
 
   const useEventDialogReturn = useItemDialog<Event>(

@@ -27,8 +27,7 @@ type Props = {
   hasSubmitted: boolean;
   initialSuggestions: TeamSuggestion[];
   releasedField?:
-    | "results_released"
-    | "results_released_dev";
+    "results_released" | "results_released_dev";
   firstName: string;
   lastName: string;
   email: string;

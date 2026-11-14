@@ -172,8 +172,6 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     };
 
     if (!enabled) {
-      setIsInitializing(false);
-      setIsScanning(false);
       activeCameraIdRef.current = null;
       void stopAndClearScanner();
       return;
@@ -217,6 +215,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
     const initializeScanner = async () => {
       try {
         setIsInitializing(true);
+        setIsScanning(false);
         setError(null);
 
         if (cancelled) return;
@@ -473,7 +472,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
         />
 
         {/* Loading overlay */}
-        {isInitializing && (
+        {enabled && isInitializing && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950/80 backdrop-blur-sm">
             <Loader2 className="h-10 w-10 animate-spin text-slate-300" />
             <p className="text-sm text-slate-300">
@@ -518,7 +517,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({
       </div>
 
       {/* Status indicator */}
-      {isScanning && (
+      {enabled && isScanning && (
         <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 px-3 py-2">
           <div className="h-2 w-2 rounded-full bg-green-600 animate-pulse" />
           <p className="text-xs font-medium text-green-700">

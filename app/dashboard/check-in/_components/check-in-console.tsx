@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import {
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -159,44 +158,18 @@ const CheckInConsole = ({
     at: number;
   } | null>(null);
 
-  // Effective event ID based on mode
-  const effectiveEventId =
-    checkInMode === "wildhacks"
-      ? WILDHACKS_EVENT_ID
-      : selectedEventId;
-
-  useEffect(() => {
-    if (checkInMode === "wildhacks") {
-      setSelectedEventId("");
-      return;
-    }
-
-    if (!events.length) {
-      setSelectedEventId("");
-      setIsScannerEnabled(false);
-      return;
-    }
-
-    const selectedEventExists = events.some(
-      (event) => event.id === selectedEventId
-    );
-    if (!selectedEventExists && selectedEventId !== "") {
-      setSelectedEventId("");
-      setIsScannerEnabled(false);
-    }
-  }, [events, selectedEventId, checkInMode]);
-
-  useEffect(() => {
-    if (!effectiveEventId) {
-      setIsScannerEnabled(false);
-    }
-  }, [effectiveEventId]);
-
   const selectedEvent = useMemo(() => {
     return events.find(
       (event) => event.id === selectedEventId
     );
   }, [events, selectedEventId]);
+
+  // Effective event ID based on mode. A selected event that is no longer
+  // in the list counts as no selection, so no effect has to reset it.
+  const effectiveEventId =
+    checkInMode === "wildhacks"
+      ? WILDHACKS_EVENT_ID
+      : (selectedEvent?.id ?? "");
 
   const refreshRecentActivity = useCallback(
     async (eventId: string) => {
@@ -393,11 +366,15 @@ const CheckInConsole = ({
               </p>
               <Tabs
                 value={checkInMode}
-                onValueChange={(value) =>
-                  setCheckInMode(
-                    value as "event" | "wildhacks"
-                  )
-                }
+                onValueChange={(value) => {
+                  const mode = value as
+                    "event" | "wildhacks";
+                  setCheckInMode(mode);
+                  setSelectedEventId("");
+                  // Event mode starts with no event, so the camera must stay off.
+                  if (mode === "event")
+                    setIsScannerEnabled(false);
+                }}
               >
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="event">
@@ -416,8 +393,13 @@ const CheckInConsole = ({
               <div className="space-y-2 min-w-0">
                 <p className="text-sm font-medium">Event</p>
                 <Select
-                  value={selectedEventId}
-                  onValueChange={setSelectedEventId}
+                  value={selectedEvent?.id ?? ""}
+                  onValueChange={(eventId) => {
+                    // Picking an event after the old one disappeared does not turn the camera on by itself.
+                    if (!effectiveEventId)
+                      setIsScannerEnabled(false);
+                    setSelectedEventId(eventId);
+                  }}
                   disabled={
                     !events.length ||
                     isSubmitting ||
