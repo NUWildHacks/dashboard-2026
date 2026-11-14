@@ -16,30 +16,32 @@ const text = (content: string): InlineSegment[] => [
 // TODO: update Saturday spaces with the actual rooms
 export const saturdaySpaces: MapRow[] = [
   {
-    name: text("LR2"),
+    name: text("To be Announced"),
     location: [
       {
-        content: "Tech LR2",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=Lr2&room-floor=1&room-id=789&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=Lr2&room-floor=1&room-id=789&room-ingress=",
       },
     ],
     description: "Opening Ceremony",
-    capacity: "284",
+    capacity: "0",
     notes: "Main stage room for opening ceremony.",
   },
+
   {
-    name: text("LR4"),
+    name: text("To be Announced"),
     location: [
       {
-        content: "Tech LR4",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M113&room-floor=1&room-id=863&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M113&room-floor=1&room-id=863&room-ingress=",
       },
     ],
     description: "Overflow room for Opening Ceremony",
-    capacity: "91",
+    capacity: "0",
     notes:
       "Ensure you arrive early to Opening Ceremony to claim a spot in the main room.",
   },
+
   // {
   //   name: text("Sponsor Fair — Claude + Redbull"),
   //   location: [
@@ -64,42 +66,80 @@ export const saturdaySpaces: MapRow[] = [
   //   capacity: "25",
   //   notes: "Drop in anytime during expo hours.",
   // },
+
   {
     name: text("Meals"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: ""
+      },
+    ],
     description: "Meal Distribution",
   },
+
   {
     name: text("Help Desk / WildSnacks"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: ""
+      },
+    ],
     description: "Help Desk and Snacks",
     notes:
       "Organizer staffed area with snacks and supplies.",
   },
+
   {
     name: text("General Collaboration"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: "",
+      },
+    ],
     description: "Collaboration Space",
     notes: "Open collaboration zone.",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 1"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: ""
+      },
+    ],
     description: "Collaboration Space",
-    // capacity: "TBD",
+    // capacity: "0",
   },
+
   {
     name: text("Collaboration 2"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: ""
+      },
+    ],
     description: "Collaboration Space",
-    // capacity: "TBD",
+    // capacity: "0",
   },
+
   {
     name: text("Collaboration 3"),
-    location: text("Tech XXXX"),
+    location: [
+      {
+        content: "To be Announced",
+        // href: ""
+      },
+    ],
     description: "Collaboration Space",
-    // capacity: "TBD",
+    capacity: "0",
   },
+
   //
   // TECH: GROUND FLOOR
   //
@@ -107,68 +147,74 @@ export const saturdaySpaces: MapRow[] = [
     name: text("Collaboration 4"),
     location: [
       {
-        content: "Tech LG52",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG52&room-floor=0&room-id=850&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG52&room-floor=0&room-id=850&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "36",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 5"),
     location: [
       {
-        content: "Tech LG62",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG62&room-floor=0&room-id=853&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG62&room-floor=0&room-id=853&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "20",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 6"),
     location: [
       {
-        content: "Tech LG66",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG66&room-floor=0&room-id=855&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG66&room-floor=0&room-id=855&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "35",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 7"),
     location: [
       {
-        content: "Tech LG68",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG68&room-floor=0&room-id=850&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG68&room-floor=0&room-id=850&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "23",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 8"),
     location: [
       {
-        content: "Tech LG72",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG72&room-floor=0&room-id=857&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=LG72&room-floor=0&room-id=857&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "20",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 9"),
     location: [
       {
-        content: "Tech MG28",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=MG28&room-floor=0&room-id=971&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=MG28&room-floor=0&room-id=971&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "35",
+    capacity: "0",
   },
+
   //
   // TECH: FIRST FLOOR
   //
@@ -176,57 +222,62 @@ export const saturdaySpaces: MapRow[] = [
     name: text("Collaboration 10"),
     location: [
       {
-        content: "Tech M128",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M128&room-floor=1&room-id=867&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M128&room-floor=1&room-id=867&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "40",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 11"),
     location: [
       {
-        content: "Tech M120",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M120&room-floor=1&room-id=867&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M120&room-floor=1&room-id=867&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "28",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 12"),
     location: [
       {
-        content: "Tech M166",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M166&room-floor=1&room-id=876&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M166&room-floor=1&room-id=876&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "21",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 13"),
     location: [
       {
-        content: "Tech M177",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M177&room-floor=1&room-id=877&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M177&room-floor=1&room-id=877&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "40",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 14"),
     location: [
       {
-        content: "Tech L158",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L158&room-floor=1&room-id=785&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L158&room-floor=1&room-id=785&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "21",
+    capacity: "0",
   },
+
   //
   // TECH: SECOND FLOOR
   //
@@ -234,57 +285,62 @@ export const saturdaySpaces: MapRow[] = [
     name: text("Collaboration 15"),
     location: [
       {
-        content: "Tech F280",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F280&room-floor=2&room-id=1107&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F280&room-floor=2&room-id=1107&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "24",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 16"),
     location: [
       {
-        content: "Tech F281",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F281&room-floor=2&room-id=1108&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=F281&room-floor=2&room-id=1108&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "28",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 17"),
     location: [
       {
-        content: "Tech L211",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L211&room-floor=2&room-id=792&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L211&room-floor=2&room-id=792&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "168",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 18"),
     location: [
       {
-        content: "Tech L221",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L221&room-floor=2&room-id=796&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L221&room-floor=2&room-id=796&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "43",
+    capacity: "0",
   },
+
   {
     name: text("Collaboration 19"),
     location: [
       {
-        content: "Tech L251",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L251&room-floor=2&room-id=800&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=L251&room-floor=2&room-id=800&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "55",
+    capacity: "0",
   },
+
   //
   // TECH: THIRD FLOOR
   //
@@ -292,12 +348,12 @@ export const saturdaySpaces: MapRow[] = [
     name: text("Collaboration 20"),
     location: [
       {
-        content: "Tech M338",
-        href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
+        content: "To be Announced",
+        // href: "https://www.mccormick.northwestern.edu/contact/tech-room-finder-map.php?id=M338&room-floor=3&room-id=933&room-ingress=",
       },
     ],
     description: "Collaboration Space",
-    capacity: "22",
+    capacity: "0",
   },
 ];
 
