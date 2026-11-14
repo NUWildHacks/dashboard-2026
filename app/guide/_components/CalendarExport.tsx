@@ -1,5 +1,7 @@
 "use client";
 
+import { EVENT_NAME_YEAR } from "@/constants";
+
 import type { CalendarEvent } from "./calendar-utils";
 import {
   downloadICS,
@@ -19,7 +21,7 @@ const formatFilename = (calendarName: string) =>
 
 const CalendarExport = ({
   events,
-  calendarName = "WildHacks 2027",
+  calendarName = EVENT_NAME_YEAR,
 }: CalendarExportProps) => {
   if (events.length === 0) {
     return null;
@@ -53,7 +55,7 @@ const CalendarExport = ({
       <header className="guide-calendar-header">
         <h3>📅 Add to Calendar</h3>
         <p>
-          Add every WildHacks 2027 milestone to your
+          Add every {EVENT_NAME_YEAR} milestone to your
           personal calendar.
         </p>
       </header>

@@ -11,7 +11,7 @@ import { getConfig, verifySession } from "@/lib/server";
 import type { ActionResult } from "@/types";
 
 export const REGISTRATION_CLOSED_MESSAGE =
-  "Registration is closed! Check back in the future for WildHacks 2027.";
+  "Registration is closed! Please check back next year.";
 
 /**
  * Check that the signed-in user is allowed to use the dashboard.

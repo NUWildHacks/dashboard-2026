@@ -5,20 +5,20 @@ import { Button } from "@/components/ui/button";
 import {
   REGISTRATION_PATH,
   JUDGE_REGISTRATION_PATH,
+  EVENT_NAME_YEAR,
 } from "@/constants";
 
 const Ongoing = () => {
   return (
     <>
       <h2 className="text-4xl sm:text-5xl font-semibold">
-        Welcome to WildHacks 2026! 🚀
+        Welcome to {EVENT_NAME_YEAR}! 🚀
       </h2>
       <p>
         Whether you&apos;re a first-time coder or a seasoned
         developer, this is your chance to build something
-        amazing in 24 hours. Join hundreds of students for a
-        weekend of innovation, collaboration, and
-        creativity!
+        amazing in nine hours. Join hundreds of students for
+        a day of innovation, collaboration, and creativity!
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
         <Button variant="outline" asChild>

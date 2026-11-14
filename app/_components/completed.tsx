@@ -23,7 +23,7 @@ const Completed = () => {
           </Link>
         </Button>
         <Button disabled aria-disabled="true">
-          Get notified for WildHacks 2027
+          Get notified for WildHacks 2028
         </Button>
       </div>
     </>

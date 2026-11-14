@@ -1,3 +1,5 @@
+import { EVENT_NAME_YEAR } from "@/constants";
+
 import type { CalendarEvent } from "../_components/calendar-utils";
 
 // TODO: update event rooms
@@ -99,7 +101,7 @@ export const scheduleEvents: CalendarEvent[] = [
 
   {
     title: "Opening Ceremony",
-    description: "WildHacks 2026 Opening Ceremony",
+    description: `${EVENT_NAME_YEAR} Opening Ceremony`,
     start: new Date("2027-01-16T09:30:00-06:00"),
     end: new Date("2027-01-16T10:00:00-06:00"),
     location: "To be Announced",

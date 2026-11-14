@@ -5,11 +5,13 @@ import {
   Footer,
   Navbar,
   Closed,
+  Ongoing,
 } from "@/app/_components";
 import { getConfig } from "@/lib/server";
 
 const RootPage = async () => {
-  const { end_time } = await getConfig();
+  const { end_time, registration_deadline } =
+    await getConfig();
 
   const now = new Date().getTime();
 
@@ -25,8 +27,9 @@ const RootPage = async () => {
             height={260}
             loading="eager"
           />
-          {/* patch: close registration completely */}
-          {now < end_time && <Closed />}
+          {now < registration_deadline && <Ongoing />}
+          {now >= registration_deadline &&
+            now < end_time && <Closed />}
           {now >= end_time && <Completed />}
         </div>
       </main>

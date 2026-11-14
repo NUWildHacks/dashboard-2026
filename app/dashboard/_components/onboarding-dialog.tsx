@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { JUDGE } from "@/constants";
+import { JUDGE, EVENT_NAME_YEAR } from "@/constants";
 import { JudgeUser, JudgeAndMentorUser } from "@/types";
 
 type OnboardingDialogProps = {
@@ -46,7 +46,7 @@ const OnboardingDialog = ({
         <DialogHeader>
           <DialogTitle>Welcome!</DialogTitle>
           <DialogDescription>
-            You&apos;re now officially a WildHacks 2026{" "}
+            You&apos;re now officially a {EVENT_NAME_YEAR}{" "}
             {roleText}! Please take a moment to review your
             personal details and modality under settings.
             <br /> <br />

@@ -1,3 +1,5 @@
+import { EVENT_NAME_YEAR } from "@/constants";
+
 export type CalendarEvent = {
   readonly title: string;
   readonly description?: string;
@@ -37,7 +39,7 @@ const formatICSDate = (date: Date) => {
 
 export const generateICS = (
   events: CalendarEvent[],
-  calendarName = "WildHacks 2027"
+  calendarName = EVENT_NAME_YEAR
 ) => {
   let ics = "BEGIN:VCALENDAR\r\n";
   ics += "VERSION:2.0\r\n";
@@ -113,10 +115,9 @@ const makeAbsoluteURL = (
   return `${base}${path}`;
 };
 
-// TODO: update this ics file
 export const downloadICS = (
   events: CalendarEvent[],
-  filename = "wildhacks-2026.ics"
+  filename = "wildhacks-2027.ics"
 ) => {
   const baseURL =
     typeof window !== "undefined"

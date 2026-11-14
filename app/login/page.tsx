@@ -36,7 +36,7 @@ const LoginPage = async () => {
             </Link>
             <p className="text-sm text-center">
               Before we continue, let&apos;s make sure
-              you&apos;re logged in first
+              you&apos;re logged in first.
             </p>
             <div className="flex flex-col items-center gap-2">
               <GithubLoginButton />

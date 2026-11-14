@@ -47,6 +47,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { EVENT_NAME_YEAR } from "@/constants";
 import {
   getEventTimeRange,
   getSendTime,
@@ -426,7 +427,7 @@ const CheckInConsole = ({
             {checkInMode === "wildhacks" && (
               <div className="rounded-lg border bg-muted/40 px-3 py-2">
                 <p className="text-sm font-medium">
-                  WildHacks 2026
+                  {EVENT_NAME_YEAR}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Main event check-in
