@@ -5,7 +5,11 @@ import { Controller } from "react-hook-form";
 
 import { useEditParticipantProfileForm } from "@/app/dashboard/settings/_hooks";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import {
   FieldGroup,
   FieldSet,
@@ -31,14 +35,25 @@ type EditParticipantProfileFormProps = {
   participantUser: ParticipantUser;
 };
 
-const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset } =
-    useEditParticipantProfileForm(participantUser);
+const EditParticipantProfileForm = ({
+  participantUser,
+}: EditParticipantProfileFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    onSubmit,
+    isSubmitting,
+    isDirty,
+    handleReset,
+  } = useEditParticipantProfileForm(participantUser);
 
   return (
     <Card className="shadow-sm">
       <CardContent>
-        <form id="edit-profile-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="edit-profile-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
               <FieldGroup>
@@ -47,7 +62,9 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                     name="first_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -61,7 +78,12 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                           aria-invalid={fieldState.invalid}
                           autoComplete="given-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -70,7 +92,9 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                     name="last_name"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -84,32 +108,56 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                           aria-invalid={fieldState.invalid}
                           autoComplete="family-name"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
                 </div>
 
                 <Field>
-                  <FieldLabel htmlFor="email" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  <FieldLabel
+                    htmlFor="email"
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
                     Email
                   </FieldLabel>
-                  <Input id="email" value={participantUser.email} disabled />
+                  <Input
+                    id="email"
+                    value={participantUser.email}
+                    disabled
+                  />
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="role" className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                  <FieldLabel
+                    htmlFor="role"
+                    className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                  >
                     Role
                   </FieldLabel>
-                  <Input id="role" value={participantUser.role} disabled />
+                  <Input
+                    id="role"
+                    value={participantUser.role}
+                    disabled
+                  />
                 </Field>
 
                 <Controller
                   name="phone"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Phone
                       </FieldLabel>
                       <Input
@@ -119,7 +167,12 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                         placeholder="Enter your phone number"
                         autoComplete="tel"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -134,12 +187,18 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                   name="github_username"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Github Username
                       </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        Please enter what you use to login to your Github account
+                        Please enter what you use to login
+                        to your Github account
                       </FieldDescription>
                       <Input
                         {...field}
@@ -148,7 +207,12 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                         placeholder="Enter your Github username"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -163,25 +227,49 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                   name="dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name} className="after:content-['*'] after:ml-0.5 after:text-red-500">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                      >
                         Dietary Restrictions
                       </FieldLabel>
-                      <MultiSelect values={field.value} onValuesChange={field.onChange}>
-                        <MultiSelectTrigger id={field.name} aria-invalid={fieldState.invalid} className="w-full">
+                      <MultiSelect
+                        values={field.value}
+                        onValuesChange={field.onChange}
+                      >
+                        <MultiSelectTrigger
+                          id={field.name}
+                          aria-invalid={fieldState.invalid}
+                          className="w-full"
+                        >
                           <MultiSelectValue placeholder="Select all of your dietary restrictions" />
                         </MultiSelectTrigger>
                         <MultiSelectContent>
                           <MultiSelectGroup>
-                            {DIETARY_RESTRICTIONS.map((dietary_restriction) => (
-                              <MultiSelectItem key={dietary_restriction} value={dietary_restriction}>
-                                {dietary_restriction}
-                              </MultiSelectItem>
-                            ))}
+                            {DIETARY_RESTRICTIONS.map(
+                              (dietary_restriction) => (
+                                <MultiSelectItem
+                                  key={dietary_restriction}
+                                  value={
+                                    dietary_restriction
+                                  }
+                                >
+                                  {dietary_restriction}
+                                </MultiSelectItem>
+                              )
+                            )}
                           </MultiSelectGroup>
                         </MultiSelectContent>
                       </MultiSelect>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -190,10 +278,15 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                   name="other_dietary_restrictions"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}>Other Dietary Restrictions</FieldLabel>
+                    <Field
+                      data-invalid={fieldState.invalid}
+                    >
+                      <FieldLabel htmlFor={field.name}>
+                        Other Dietary Restrictions
+                      </FieldLabel>
                       <FieldDescription className="w-full text-start">
-                        If you selected &quot;Other&quot;, please specify below
+                        If you selected &quot;Other&quot;,
+                        please specify below
                       </FieldDescription>
                       <Input
                         {...field}
@@ -202,7 +295,12 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
                         placeholder="Enter your other dietary restrictions"
                         autoComplete="off"
                       />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                      {fieldState.invalid && (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="w-full text-start"
+                        />
+                      )}
                     </Field>
                   )}
                 />
@@ -212,11 +310,27 @@ const EditParticipantProfileForm = ({ participantUser }: EditParticipantProfileF
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="edit-profile-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
+        <Field
+          orientation="horizontal"
+          className="flex-row-reverse"
+        >
+          <Button
+            type="submit"
+            form="edit-profile-form"
+            disabled={isSubmitting || !isDirty}
+          >
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Save changes"
+            )}
           </Button>
-          <Button type="button" variant="outline" disabled={isSubmitting || !isDirty} onClick={handleReset}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isSubmitting || !isDirty}
+            onClick={handleReset}
+          >
             Reset
           </Button>
         </Field>

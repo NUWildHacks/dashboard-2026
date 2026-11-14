@@ -17,7 +17,10 @@ import Papa from "papaparse";
 import { useMemo, useState } from "react";
 
 import { PARTICIPANT } from "@/constants";
-import { UseConfirmDeleteDialogReturn, useFilters } from "@/hooks";
+import {
+  UseConfirmDeleteDialogReturn,
+  useFilters,
+} from "@/hooks";
 import { User } from "@/types";
 
 import { getUsersColumns } from "../_lib/client";
@@ -37,17 +40,25 @@ export const useUsersTable = (
   data: User[],
   handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<User>["handleOpenConfirmDeleteDialog"]
 ): UseUsersTableReturn => {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "created_at", desc: true }]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "created_at", desc: true },
+  ]);
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>([]);
+  const [rowSelection, setRowSelection] =
+    useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] =
+    useState<VisibilityState>({});
 
   const {
     category: role,
     setCategory: setRole,
     search,
     setSearch,
-  } = useFilters<User["role"]>({ includeAll: false, defaultCategory: PARTICIPANT });
+  } = useFilters<User["role"]>({
+    includeAll: false,
+    defaultCategory: PARTICIPANT,
+  });
 
   const filteredUsers = useMemo(() => {
     let result = data;
@@ -58,8 +69,12 @@ export const useUsersTable = (
       const searchLower = search.toLowerCase();
       result = result.filter((user) => {
         return (
-          user.first_name.toLowerCase().includes(searchLower) ||
-          user.last_name.toLowerCase().includes(searchLower) ||
+          user.first_name
+            .toLowerCase()
+            .includes(searchLower) ||
+          user.last_name
+            .toLowerCase()
+            .includes(searchLower) ||
           user.email.toLowerCase().includes(searchLower)
         );
       });
@@ -79,7 +94,10 @@ export const useUsersTable = (
     URL.revokeObjectURL(url);
   };
 
-  const usersColumns = getUsersColumns(role, handleOpenConfirmDeleteDialog);
+  const usersColumns = getUsersColumns(
+    role,
+    handleOpenConfirmDeleteDialog
+  );
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -106,7 +124,9 @@ export const useUsersTable = (
     },
   });
 
-  const selectedUserIds = table.getFilteredSelectedRowModel().rows.map((row) => (row.original as User).id);
+  const selectedUserIds = table
+    .getFilteredSelectedRowModel()
+    .rows.map((row) => (row.original as User).id);
 
   return {
     role,

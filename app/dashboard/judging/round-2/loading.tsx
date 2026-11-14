@@ -15,7 +15,10 @@ const JudgingRound2Loading = async () => {
       </div>
       <div className="flex flex-col gap-4">
         {Array.from({ length: 6 }).map((_, index) => (
-          <Skeleton key={index} className="w-full h-[85px]" />
+          <Skeleton
+            key={index}
+            className="w-full h-[85px]"
+          />
         ))}
       </div>
     </div>

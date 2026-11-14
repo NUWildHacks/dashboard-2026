@@ -1,15 +1,26 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm, UseFormHandleSubmit } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  UseFormHandleSubmit,
+} from "react-hook-form";
 import { Control } from "react-hook-form";
-import { UseFormGetValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import {
+  UseFormGetValues,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 import { WildHacksConfig, WildHacksSecrets } from "@/types";
 
 import { editWildhacksConfig } from "../_actions";
-import { type EditWildhacksConfigFormSchema, editWildhacksConfigFormSchema } from "../_schemas";
+import {
+  type EditWildhacksConfigFormSchema,
+  editWildhacksConfigFormSchema,
+} from "../_schemas";
 
 export type UseEditWildhacksConfigFormReturn = {
   isSubmitting: boolean;
@@ -58,15 +69,22 @@ export const useEditWildhacksConfigForm = (
       start_time,
       submission_deadline,
       end_time,
-      crowd_favorite_password: crowd_favorite_password || "",
-      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
-      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
-      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
-      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
+      crowd_favorite_password:
+        crowd_favorite_password || "",
+      crowd_favorite_opt_in_started:
+        crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open:
+        crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started:
+        crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open:
+        crowd_favorite_voting_open || false,
     },
   });
 
-  const onSubmit = async (data: EditWildhacksConfigFormSchema) => {
+  const onSubmit = async (
+    data: EditWildhacksConfigFormSchema
+  ) => {
     try {
       const result = await editWildhacksConfig(data);
       const { success } = result;
@@ -86,12 +104,22 @@ export const useEditWildhacksConfigForm = (
       }
 
       reset(data);
-      toast.success("WildHacks config updated successfully");
+      toast.success(
+        "WildHacks config updated successfully"
+      );
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Edit wildhacks config error:", errorMessage);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
+      console.error(
+        "Edit wildhacks config error:",
+        errorMessage
+      );
 
-      toast.error("Failed to update wildhacks config", { description: errorMessage });
+      toast.error("Failed to update wildhacks config", {
+        description: errorMessage,
+      });
     }
   };
 
@@ -103,11 +131,16 @@ export const useEditWildhacksConfigForm = (
       start_time,
       submission_deadline,
       end_time,
-      crowd_favorite_password: crowd_favorite_password || "",
-      crowd_favorite_opt_in_started: crowd_favorite_opt_in_started || false,
-      crowd_favorite_opt_in_open: crowd_favorite_opt_in_open || false,
-      crowd_favorite_voting_started: crowd_favorite_voting_started || false,
-      crowd_favorite_voting_open: crowd_favorite_voting_open || false,
+      crowd_favorite_password:
+        crowd_favorite_password || "",
+      crowd_favorite_opt_in_started:
+        crowd_favorite_opt_in_started || false,
+      crowd_favorite_opt_in_open:
+        crowd_favorite_opt_in_open || false,
+      crowd_favorite_voting_started:
+        crowd_favorite_voting_started || false,
+      crowd_favorite_voting_open:
+        crowd_favorite_voting_open || false,
     });
   };
 

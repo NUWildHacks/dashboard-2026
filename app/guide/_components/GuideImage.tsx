@@ -11,12 +11,19 @@ type GuideImageProps = {
  * Pass src as path relative to /guide, e.g. "map.png" or "img/parking.png".
  */
 const GuideImage = ({ src, alt }: GuideImageProps) => {
-  const resolvedSrc = src.startsWith("/") ? src : `${GUIDE_ASSETS_BASE}/${src.replace(/^\//, "")}`;
+  const resolvedSrc = src.startsWith("/")
+    ? src
+    : `${GUIDE_ASSETS_BASE}/${src.replace(/^\//, "")}`;
 
   return (
     <span className="guide-content-img">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={resolvedSrc} alt={alt} className="guide-img" loading="lazy" />
+      <img
+        src={resolvedSrc}
+        alt={alt}
+        className="guide-img"
+        loading="lazy"
+      />
     </span>
   );
 };

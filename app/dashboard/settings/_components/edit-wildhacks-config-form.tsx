@@ -5,8 +5,18 @@ import { Controller } from "react-hook-form";
 
 import DateTimePickerField from "@/components/form/datetime-picker";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { WildHacksConfig, WildHacksSecrets } from "@/types";
 
@@ -16,13 +26,28 @@ type EditWildhacksConfigFormProps = {
   wildhacksConfig: WildHacksConfig & WildHacksSecrets;
 };
 
-const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormProps) => {
-  const { control, handleSubmit, onSubmit, isSubmitting, isDirty, handleReset, watch, setValue, getValues } =
-    useEditWildhacksConfigForm(wildhacksConfig);
+const EditWildhacksConfigForm = ({
+  wildhacksConfig,
+}: EditWildhacksConfigFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    onSubmit,
+    isSubmitting,
+    isDirty,
+    handleReset,
+    watch,
+    setValue,
+    getValues,
+  } = useEditWildhacksConfigForm(wildhacksConfig);
 
-  const hasOptInStarted = watch("crowd_favorite_opt_in_started");
+  const hasOptInStarted = watch(
+    "crowd_favorite_opt_in_started"
+  );
   const isOptInOpen = watch("crowd_favorite_opt_in_open");
-  const hasVotingStarted = watch("crowd_favorite_voting_started");
+  const hasVotingStarted = watch(
+    "crowd_favorite_voting_started"
+  );
   const isVotingOpen = watch("crowd_favorite_voting_open");
 
   const isOptInClosed = hasOptInStarted && !isOptInOpen;
@@ -42,17 +67,25 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
 
   const handleToggleOptIn = () => {
     if (isOptInOpen) {
-      setValue("crowd_favorite_opt_in_open", false, { shouldDirty: true });
+      setValue("crowd_favorite_opt_in_open", false, {
+        shouldDirty: true,
+      });
       return;
     }
 
-    setValue("crowd_favorite_opt_in_started", true, { shouldDirty: true });
-    setValue("crowd_favorite_opt_in_open", true, { shouldDirty: true });
+    setValue("crowd_favorite_opt_in_started", true, {
+      shouldDirty: true,
+    });
+    setValue("crowd_favorite_opt_in_open", true, {
+      shouldDirty: true,
+    });
   };
 
   const handleToggleVoting = () => {
     if (isVotingOpen) {
-      setValue("crowd_favorite_voting_open", false, { shouldDirty: true });
+      setValue("crowd_favorite_voting_open", false, {
+        shouldDirty: true,
+      });
       return;
     }
 
@@ -61,15 +94,24 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
     }
 
     // Starting voting automatically closes opt-in to preserve phase ordering.
-    setValue("crowd_favorite_opt_in_open", false, { shouldDirty: true });
-    setValue("crowd_favorite_voting_started", true, { shouldDirty: true });
-    setValue("crowd_favorite_voting_open", true, { shouldDirty: true });
+    setValue("crowd_favorite_opt_in_open", false, {
+      shouldDirty: true,
+    });
+    setValue("crowd_favorite_voting_started", true, {
+      shouldDirty: true,
+    });
+    setValue("crowd_favorite_voting_open", true, {
+      shouldDirty: true,
+    });
   };
 
   return (
     <Card>
       <CardContent>
-        <form id="edit-wildhacks-config-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="edit-wildhacks-config-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FieldGroup>
             <FieldSet disabled={isSubmitting}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -125,34 +167,55 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
               </div>
 
               <div className="mt-6 border-t pt-6">
-                <h3 className="mb-4 text-sm font-semibold">Crowd Favorite Controls</h3>
+                <h3 className="mb-4 text-sm font-semibold">
+                  Crowd Favorite Controls
+                </h3>
                 <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
                   <AlertCircle className="mt-0.5 size-4 shrink-0" />
                   <span>
-                    These buttons stage changes locally. You must click <strong>Save changes</strong> at the bottom to
-                    persist them.
+                    These buttons stage changes locally. You
+                    must click <strong>Save changes</strong>{" "}
+                    at the bottom to persist them.
                   </span>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="rounded-md border p-4">
-                    <p className="text-sm font-medium">Crowd Favorite Opt-in</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{optInStatusText}</p>
+                    <p className="text-sm font-medium">
+                      Crowd Favorite Opt-in
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {optInStatusText}
+                    </p>
                     <Button
                       type="button"
-                      variant={isOptInOpen ? "destructive" : "default"}
+                      variant={
+                        isOptInOpen
+                          ? "destructive"
+                          : "default"
+                      }
                       className="mt-3"
                       onClick={handleToggleOptIn}
                     >
-                      {!hasOptInStarted || isOptInClosed ? "Start crowd favorite opt-in" : "Stop crowd favorite opt-in"}
+                      {!hasOptInStarted || isOptInClosed
+                        ? "Start crowd favorite opt-in"
+                        : "Stop crowd favorite opt-in"}
                     </Button>
                   </div>
 
                   <div className="rounded-md border p-4">
-                    <p className="text-sm font-medium">Crowd Favorite Voting</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{votingStatusText}</p>
+                    <p className="text-sm font-medium">
+                      Crowd Favorite Voting
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {votingStatusText}
+                    </p>
                     <Button
                       type="button"
-                      variant={isVotingOpen ? "destructive" : "default"}
+                      variant={
+                        isVotingOpen
+                          ? "destructive"
+                          : "default"
+                      }
                       className="mt-3"
                       onClick={handleToggleVoting}
                       disabled={!hasOptInStarted}
@@ -163,7 +226,8 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                     </Button>
                     {!hasOptInStarted && (
                       <p className="mt-2 text-xs text-muted-foreground">
-                        Start crowd favorite opt-in before enabling voting.
+                        Start crowd favorite opt-in before
+                        enabling voting.
                       </p>
                     )}
                   </div>
@@ -174,8 +238,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                     name="crowd_favorite_password"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Crowd Favorite Voting Password</FieldLabel>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
+                        <FieldLabel htmlFor={field.name}>
+                          Crowd Favorite Voting Password
+                        </FieldLabel>
                         <Input
                           {...field}
                           id={field.name}
@@ -183,7 +251,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                           placeholder="Enter voting password"
                           aria-invalid={fieldState.invalid}
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -196,8 +269,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                     name="max_team_size"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Max Team Size</FieldLabel>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
+                        <FieldLabel htmlFor={field.name}>
+                          Max Team Size
+                        </FieldLabel>
                         <Input
                           {...field}
                           id={field.name}
@@ -208,7 +285,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                           aria-invalid={fieldState.invalid}
                           className="bg-muted cursor-not-allowed"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -217,8 +299,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                     name="max_participants"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Max Participants</FieldLabel>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
+                        <FieldLabel htmlFor={field.name}>
+                          Max Participants
+                        </FieldLabel>
                         <Input
                           {...field}
                           id={field.name}
@@ -229,7 +315,12 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
                           aria-invalid={fieldState.invalid}
                           className="bg-muted cursor-not-allowed"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -244,15 +335,32 @@ const EditWildhacksConfigForm = ({ wildhacksConfig }: EditWildhacksConfigFormPro
           <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-700 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
             <AlertCircle className="size-4 shrink-0" />
             <span>
-              You have unsaved changes — click <strong>Save changes</strong> to apply them.
+              You have unsaved changes — click{" "}
+              <strong>Save changes</strong> to apply them.
             </span>
           </div>
         )}
-        <Field orientation="horizontal" className="flex-row-reverse">
-          <Button type="submit" form="edit-wildhacks-config-form" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Save changes"}
+        <Field
+          orientation="horizontal"
+          className="flex-row-reverse"
+        >
+          <Button
+            type="submit"
+            form="edit-wildhacks-config-form"
+            disabled={isSubmitting || !isDirty}
+          >
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Save changes"
+            )}
           </Button>
-          <Button type="button" variant="outline" onClick={handleReset} disabled={isSubmitting || !isDirty}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleReset}
+            disabled={isSubmitting || !isDirty}
+          >
             Reset
           </Button>
         </Field>

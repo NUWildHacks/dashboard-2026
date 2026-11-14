@@ -6,7 +6,9 @@ export type GuideSearchEntry = {
   readonly href: string;
 };
 
-function flattenNavItems(items: GuideNavItem[]): GuideSearchEntry[] {
+function flattenNavItems(
+  items: GuideNavItem[]
+): GuideSearchEntry[] {
   const entries: GuideSearchEntry[] = [];
 
   for (const item of items) {
@@ -14,7 +16,11 @@ function flattenNavItems(items: GuideNavItem[]): GuideSearchEntry[] {
       entries.push(...flattenNavItems(item.children));
       continue;
     }
-    if (item.href && !item.external && item.href.startsWith("/guide")) {
+    if (
+      item.href &&
+      !item.external &&
+      item.href.startsWith("/guide")
+    ) {
       entries.push({ title: item.title, href: item.href });
     }
   }
@@ -23,4 +29,5 @@ function flattenNavItems(items: GuideNavItem[]): GuideSearchEntry[] {
 }
 
 /** Flat list of all guide MDX pages for search (title + href). */
-export const GUIDE_SEARCH_ENTRIES: GuideSearchEntry[] = flattenNavItems(GUIDE_NAV_ITEMS);
+export const GUIDE_SEARCH_ENTRIES: GuideSearchEntry[] =
+  flattenNavItems(GUIDE_NAV_ITEMS);

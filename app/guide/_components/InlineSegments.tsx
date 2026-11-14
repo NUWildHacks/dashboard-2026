@@ -6,7 +6,9 @@ type InlineSegmentsProps = {
   readonly segments: InlineSegment[];
 };
 
-export const InlineSegments = ({ segments }: InlineSegmentsProps) => {
+export const InlineSegments = ({
+  segments,
+}: InlineSegmentsProps) => {
   if (!Array.isArray(segments) || segments.length === 0) {
     return null;
   }
@@ -15,14 +17,29 @@ export const InlineSegments = ({ segments }: InlineSegmentsProps) => {
     <>
       {segments.map((segment, index) => {
         const key = `${segment.content}-${index}`;
-        const isExternal = segment.href ? segment.href.startsWith("http") : false;
-        const content = segment.bold ? <strong>{segment.content}</strong> : segment.content;
+        const isExternal = segment.href
+          ? segment.href.startsWith("http")
+          : false;
+        const content = segment.bold ? (
+          <strong>{segment.content}</strong>
+        ) : (
+          segment.content
+        );
 
         if (segment.href) {
-          const externalProps = isExternal ? { target: "_blank", rel: "noopener noreferrer" } : undefined;
+          const externalProps = isExternal
+            ? {
+                target: "_blank",
+                rel: "noopener noreferrer",
+              }
+            : undefined;
 
           return (
-            <a key={key} href={segment.href} {...externalProps}>
+            <a
+              key={key}
+              href={segment.href}
+              {...externalProps}
+            >
               {content}
             </a>
           );

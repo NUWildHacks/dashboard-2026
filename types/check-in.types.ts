@@ -1,6 +1,9 @@
 import type { ActionResult } from "./action-result.types";
 import type { BaseModel } from "./base-model.types";
-import type { DietaryRestriction, Role } from "./user.types";
+import type {
+  DietaryRestriction,
+  Role,
+} from "./user.types";
 
 export type QRCodeScanPayload = {
   user_id: string;
@@ -8,6 +11,7 @@ export type QRCodeScanPayload = {
   email?: string;
   role?: Role;
   issued_at?: number;
+  sig?: string;
 };
 
 export type EventCheckIn = BaseModel & {
@@ -25,6 +29,7 @@ export type CheckInActionResponse = ActionResult & {
   requires_wildhacks_check_in?: boolean;
 };
 
-export type GetEventCheckInsActionResponse = ActionResult & {
-  check_ins?: EventCheckIn[];
-};
+export type GetEventCheckInsActionResponse =
+  ActionResult & {
+    check_ins?: EventCheckIn[];
+  };

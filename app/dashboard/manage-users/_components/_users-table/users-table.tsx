@@ -10,9 +10,24 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
-import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JUDGE, JUDGE_AND_MENTOR, PARTICIPANT, ROLES } from "@/constants";
+import {
+  InputGroup,
+  InputGroupInput,
+  InputGroupAddon,
+} from "@/components/ui/input-group";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  JUDGE,
+  JUDGE_AND_MENTOR,
+  PARTICIPANT,
+  ROLES,
+} from "@/constants";
 import { useConfirmDeleteDialog } from "@/hooks";
 import { User } from "@/types";
 
@@ -26,13 +41,21 @@ type UsersTableProps = {
 };
 
 const UsersTable = ({ userId, users }: UsersTableProps) => {
-  const useConfirmDeleteDialogReturn = useConfirmDeleteDialog<User>(deleteUsers, "users");
-  const { handleOpenConfirmDeleteDialog } = useConfirmDeleteDialogReturn;
+  const useConfirmDeleteDialogReturn =
+    useConfirmDeleteDialog<User>(deleteUsers, "users");
+  const { handleOpenConfirmDeleteDialog } =
+    useConfirmDeleteDialogReturn;
 
-  const { role, setRole, search, setSearch, table, selectedUserIds, usersColumns, handleDownloadCSV } = useUsersTable(
-    users,
-    handleOpenConfirmDeleteDialog
-  );
+  const {
+    role,
+    setRole,
+    search,
+    setSearch,
+    table,
+    selectedUserIds,
+    usersColumns,
+    handleDownloadCSV,
+  } = useUsersTable(users, handleOpenConfirmDeleteDialog);
 
   return (
     <>
@@ -40,7 +63,12 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="w-full flex flex-col md:flex-row gap-4">
             <div className="flex flex-col md:flex-row gap-4">
-              <Select value={role} onValueChange={(value) => setRole(value as User["role"])}>
+              <Select
+                value={role}
+                onValueChange={(value) =>
+                  setRole(value as User["role"])
+                }
+              >
                 <SelectTrigger
                   id="role-filter"
                   className="min-w-[125px] md:w-[125px] w-full"
@@ -56,8 +84,13 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
                   ))}
                 </SelectContent>
               </Select>
-              {(role === PARTICIPANT || role === JUDGE || role === JUDGE_AND_MENTOR) && (
-                <Button className="w-full md:w-auto" onClick={handleDownloadCSV}>
+              {(role === PARTICIPANT ||
+                role === JUDGE ||
+                role === JUDGE_AND_MENTOR) && (
+                <Button
+                  className="w-full md:w-auto"
+                  onClick={handleDownloadCSV}
+                >
                   Download CSV
                 </Button>
               )}
@@ -65,7 +98,11 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
             {selectedUserIds.length > 0 && (
               <Button
                 variant="destructive"
-                onClick={() => handleOpenConfirmDeleteDialog(selectedUserIds)}
+                onClick={() =>
+                  handleOpenConfirmDeleteDialog(
+                    selectedUserIds
+                  )
+                }
                 className="w-full md:w-auto"
               >
                 Delete user(s)
@@ -88,7 +125,9 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
                       >
                         {column.columnDef.header?.toString()}
                       </DropdownMenuCheckboxItem>
@@ -114,8 +153,12 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
         <DataTable columns={usersColumns} table={table} />
         <div className="flex justify-between items-center">
           <div className="text-muted-foreground text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-            selected.
+            {
+              table.getFilteredSelectedRowModel().rows
+                .length
+            }{" "}
+            of {table.getFilteredRowModel().rows.length}{" "}
+            row(s) selected.
           </div>
           <div className="flex items-center justify-end space-x-2">
             <Button
@@ -126,13 +169,21 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
             >
               Previous
             </Button>
-            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
               Next
             </Button>
           </div>
         </div>
       </div>
-      <ConfirmDeleteUsersDialog userId={userId} {...useConfirmDeleteDialogReturn} />
+      <ConfirmDeleteUsersDialog
+        userId={userId}
+        {...useConfirmDeleteDialogReturn}
+      />
     </>
   );
 };

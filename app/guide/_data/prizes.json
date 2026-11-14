@@ -1,25 +1,24 @@
 {
   "notices": {
-    "info": "Prizes may be distributed in-person or shipped post-hackathon. Each member of each winning team will get the prize. Prizes will be distributed during closing ceremony.",
-    "warning": "A team may not win more than one prize total from the Grand Prizes and Track Prizes. They may win multiple prizes from Challenge Prizes, even in addition to a grand or track prize."
+    "info": "Prizes may be distributed in-person or shipped post-hackathon. Each member of each winning team will get the prize. Prizes will be distributed during closing ceremony."
   },
   "grandPrizes": [
     {
       "title": "1st Place Overall",
       "description": "This prize is awarded to the first-place project across all tracks.",
-      "award": "Soundcore by Anker Space Q45 Adaptive Active Noise Cancelling Headphones",
+      "award": "To be Announced",
       "emoji": "🥇"
     },
     {
       "title": "2nd Place Overall",
       "description": "This prize is awarded to the second-place project across all tracks.",
-      "award": "Polaroid camera",
+      "award": "To be Announced",
       "emoji": "🥈"
     },
     {
       "title": "3rd Place Overall",
       "description": "This prize is awarded to the third-place project across all tracks.",
-      "award": "JBL Go 3 - Portable Mini Speaker",
+      "award": "To be Announced",
       "emoji": "🥉"
     }
   ],

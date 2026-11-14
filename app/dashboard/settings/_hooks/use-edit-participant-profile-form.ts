@@ -1,20 +1,32 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import {
+  SubmitHandler,
+  useForm,
+  UseFormReturn,
+} from "react-hook-form";
 import { toast } from "sonner";
 
 import type { ParticipantUser } from "@/types";
 
 import { editProfile } from "../_actions";
-import { type EditParticipantProfileFormSchema, editParticipantProfileFormSchema } from "../_schemas";
+import {
+  type EditParticipantProfileFormSchema,
+  editParticipantProfileFormSchema,
+} from "../_schemas";
 
 export type UseEditParticipantProfileFormReturn = {
   onSubmit: SubmitHandler<EditParticipantProfileFormSchema>;
   isSubmitting: boolean;
   isDirty: boolean;
   handleReset: () => void;
-} & Pick<UseFormReturn<EditParticipantProfileFormSchema>, "control" | "handleSubmit">;
+} & Pick<
+  UseFormReturn<EditParticipantProfileFormSchema>,
+  "control" | "handleSubmit"
+>;
 
-export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditParticipantProfileFormReturn => {
+export const useEditParticipantProfileForm = (
+  user: ParticipantUser
+): UseEditParticipantProfileFormReturn => {
   const {
     control,
     handleSubmit,
@@ -26,9 +38,14 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
     defaultValues: user,
   });
 
-  const onSubmit = async (data: EditParticipantProfileFormSchema) => {
+  const onSubmit = async (
+    data: EditParticipantProfileFormSchema
+  ) => {
     try {
-      const result = await editProfile<EditParticipantProfileFormSchema>(data);
+      const result =
+        await editProfile<EditParticipantProfileFormSchema>(
+          data
+        );
       const { success } = result;
 
       if (!success) {
@@ -47,10 +64,15 @@ export const useEditParticipantProfileForm = (user: ParticipantUser): UseEditPar
 
       toast.success("Profile updated successfully");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
       console.error("Edit profile error:", errorMessage);
 
-      toast.error("Failed to update profile", { description: errorMessage });
+      toast.error("Failed to update profile", {
+        description: errorMessage,
+      });
     }
   };
 

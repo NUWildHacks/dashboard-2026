@@ -3,13 +3,21 @@
 import { MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from "@/components/ui/item";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import { TRACKS_MAP } from "../constants";
 import type { JudgingAssignmentWithProject } from "../types";
 
-type AssignedProjectItemProps = Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown"> & {
+type AssignedProjectItemProps = Pick<
+  UseJudgingFormSheetReturn,
+  "handleOpenJudgingForm" | "handleKeyDown"
+> & {
   judgingAssignmentWithProject: JudgingAssignmentWithProject;
 };
 
@@ -18,7 +26,8 @@ const AssignedProjectItem = ({
   handleKeyDown,
   judgingAssignmentWithProject,
 }: AssignedProjectItemProps) => {
-  const { project, judging_form, room_id } = judgingAssignmentWithProject;
+  const { project, judging_form, room_id } =
+    judgingAssignmentWithProject;
   const { name, track } = project;
 
   return (
@@ -26,8 +35,12 @@ const AssignedProjectItem = ({
       variant="outline"
       tabIndex={0}
       aria-label={`Judge project: ${name}`}
-      onClick={() => handleOpenJudgingForm(judgingAssignmentWithProject)}
-      onKeyDown={(event) => handleKeyDown(event, judgingAssignmentWithProject)}
+      onClick={() =>
+        handleOpenJudgingForm(judgingAssignmentWithProject)
+      }
+      onKeyDown={(event) =>
+        handleKeyDown(event, judgingAssignmentWithProject)
+      }
       className="w-full shadow-xs transition-colors hover:bg-secondary hover:cursor-pointer"
     >
       <ItemContent className="gap-2 min-w-0">
@@ -35,7 +48,9 @@ const AssignedProjectItem = ({
           <span className="truncate">{name}</span>
         </ItemTitle>
         <ItemDescription className="flex flex-row items-center gap-2">
-          <Badge variant="secondary">{TRACKS_MAP[track]}</Badge>
+          <Badge variant="secondary">
+            {TRACKS_MAP[track]}
+          </Badge>
           {judging_form && (
             <Badge
               variant="outline"
@@ -46,7 +61,10 @@ const AssignedProjectItem = ({
           )}
           {room_id && (
             <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-              <MapPin className="size-3 shrink-0" aria-hidden="true" />
+              <MapPin
+                className="size-3 shrink-0"
+                aria-hidden="true"
+              />
               {room_id}
             </span>
           )}

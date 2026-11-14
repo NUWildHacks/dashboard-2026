@@ -1,5 +1,16 @@
-import { ADMIN, DASHBOARD_SETTINGS_PATH, JUDGE, LOGIN_PATH, JUDGE_AND_MENTOR, PARTICIPANT } from "@/constants";
-import { getAuthenticatedUser, getConfigDocSnapshot, getSecretsDocSnapshot } from "@/lib";
+import {
+  ADMIN,
+  DASHBOARD_SETTINGS_PATH,
+  JUDGE,
+  LOGIN_PATH,
+  JUDGE_AND_MENTOR,
+  PARTICIPANT,
+} from "@/constants";
+import { getSecrets } from "@/lib/secrets.lib";
+import {
+  getAuthenticatedUser,
+  getConfig,
+} from "@/lib/server";
 import type {
   AdminUser,
   JudgeUser,
@@ -23,16 +34,14 @@ const SettingsPage = async () => {
 
   const user = await getAuthenticatedUser(redirectPath);
 
-  let wildHacksConfig: (WildHacksConfig & WildHacksSecrets) | undefined;
+  let wildHacksConfig:
+    (WildHacksConfig & WildHacksSecrets) | undefined;
   if (user.role === ADMIN) {
-    const [configDocSnapshot, secretsDocSnapshot] = await Promise.all([
-      getConfigDocSnapshot(),
-      getSecretsDocSnapshot(),
+    const [config, secrets] = await Promise.all([
+      getConfig(),
+      getSecrets(),
     ]);
-    wildHacksConfig = {
-      ...(configDocSnapshot.data() as WildHacksConfig),
-      ...(secretsDocSnapshot.data() as WildHacksSecrets),
-    };
+    wildHacksConfig = { ...config, ...secrets };
   }
 
   return (
@@ -44,17 +53,32 @@ const SettingsPage = async () => {
       </div>
       {wildHacksConfig && (
         <div className="flex flex-col gap-4">
-          <h2 className="text-md font-semibold">WildHacks Configuration</h2>
-          <EditWildhacksConfigForm wildhacksConfig={wildHacksConfig} />
+          <h2 className="text-md font-semibold">
+            WildHacks Configuration
+          </h2>
+          <EditWildhacksConfigForm
+            wildhacksConfig={wildHacksConfig}
+          />
         </div>
       )}
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>
-        {user.role === PARTICIPANT && <EditParticipantProfileForm participantUser={user as ParticipantUser} />}
-        {(user.role === JUDGE || user.role === JUDGE_AND_MENTOR) && (
-          <EditJudgeMentorProfileForm user={user as JudgeUser | JudgeAndMentorUser} />
+        {user.role === PARTICIPANT && (
+          <EditParticipantProfileForm
+            participantUser={user as ParticipantUser}
+          />
         )}
-        {user.role === ADMIN && <EditAdminProfileForm adminUser={user as AdminUser} />}
+        {(user.role === JUDGE ||
+          user.role === JUDGE_AND_MENTOR) && (
+          <EditJudgeMentorProfileForm
+            user={user as JudgeUser | JudgeAndMentorUser}
+          />
+        )}
+        {user.role === ADMIN && (
+          <EditAdminProfileForm
+            adminUser={user as AdminUser}
+          />
+        )}
       </div>
     </div>
   );

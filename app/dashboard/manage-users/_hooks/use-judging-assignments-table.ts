@@ -12,21 +12,37 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Papa from "papaparse";
-import { ChangeEvent, RefObject, useMemo, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  RefObject,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 
-import { useFilters, UseFiltersReturnWithoutAll } from "@/hooks";
+import {
+  useFilters,
+  UseFiltersReturnWithoutAll,
+} from "@/hooks";
 import { JudgeAndMentorUser, JudgeUser } from "@/types";
 
 import { uploadAssignments } from "../_actions";
 import { getJudgingAssignmentsColumns } from "../_lib/client";
 import { judgingAssignmentsCsvArraySchema } from "../_schemas";
 import { ROUND_1 } from "../../judging/constants";
-import { JudgingAssignment, JudgingAssignmentWithProject, JudgingRound, Project } from "../../judging/types";
+import {
+  JudgingAssignment,
+  JudgingAssignmentWithProject,
+  JudgingRound,
+  Project,
+} from "../../judging/types";
 
 export type UseJudgingAssignmentsTableReturn = {
   selectedJudge: JudgeUser | JudgeAndMentorUser | null;
-  setSelectedJudge: (judgeUser: JudgeUser | JudgeAndMentorUser | null) => void;
+  setSelectedJudge: (
+    judgeUser: JudgeUser | JudgeAndMentorUser | null
+  ) => void;
   search: UseFiltersReturnWithoutAll<JudgingRound>["search"];
   setSearch: UseFiltersReturnWithoutAll<JudgingRound>["setSearch"];
   round: UseFiltersReturnWithoutAll<JudgingRound>["category"];
@@ -35,11 +51,16 @@ export type UseJudgingAssignmentsTableReturn = {
   judgingAssignmentsColumns: ColumnDef<JudgingAssignmentWithProject>[];
   fileInputRef: RefObject<HTMLInputElement | null>;
   handleUploadAssignments: (round: JudgingRound) => void;
-  handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleFileChange: (
+    event: ChangeEvent<HTMLInputElement>
+  ) => void;
 };
 
 export const useJudgingAssignmentsTable = (
-  judgingAssignmentsMap: Map<JudgingRound, JudgingAssignment[]>,
+  judgingAssignmentsMap: Map<
+    JudgingRound,
+    JudgingAssignment[]
+  >,
   projectsMap: Map<JudgingRound, Project[]>
 ): UseJudgingAssignmentsTableReturn => {
   const {
@@ -47,21 +68,35 @@ export const useJudgingAssignmentsTable = (
     setCategory: setRound,
     search,
     setSearch,
-  } = useFilters<JudgingRound>({ includeAll: false, defaultCategory: ROUND_1 });
+  } = useFilters<JudgingRound>({
+    includeAll: false,
+    defaultCategory: ROUND_1,
+  });
 
-  const [uploadRound, setUploadRound] = useState<JudgingRound | undefined>(undefined);
-  const [selectedJudge, setSelectedJudge] = useState<JudgeUser | JudgeAndMentorUser | null>(null);
-  const [sorting, setSorting] = useState<SortingState>([{ id: "project.name", desc: false }]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [uploadRound, setUploadRound] = useState<
+    JudgingRound | undefined
+  >(undefined);
+  const [selectedJudge, setSelectedJudge] = useState<
+    JudgeUser | JudgeAndMentorUser | null
+  >(null);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "project.name", desc: false },
+  ]);
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>([]);
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(
+    null
+  );
 
   const handleUploadAssignments = (round: JudgingRound) => {
     setUploadRound(round);
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     if (!uploadRound) return;
 
     const file = event.target.files?.[0];
@@ -70,10 +105,15 @@ export const useJudgingAssignmentsTable = (
         header: true,
         skipEmptyLines: true,
         complete: async (results) => {
-          const parseResult = judgingAssignmentsCsvArraySchema.safeParse(results.data);
+          const parseResult =
+            judgingAssignmentsCsvArraySchema.safeParse(
+              results.data
+            );
 
           if (!parseResult.success) {
-            toast.error("Invalid CSV file. Please check the columns and try again.");
+            toast.error(
+              "Invalid CSV file. Please check the columns and try again."
+            );
             if (fileInputRef.current) {
               fileInputRef.current.value = "";
             }
@@ -81,7 +121,10 @@ export const useJudgingAssignmentsTable = (
           }
 
           try {
-            const result = await uploadAssignments(parseResult.data, uploadRound);
+            const result = await uploadAssignments(
+              parseResult.data,
+              uploadRound
+            );
             const { success } = result;
 
             if (!success) {
@@ -89,12 +132,22 @@ export const useJudgingAssignmentsTable = (
               throw new Error(error);
             }
 
-            toast.success("Assignments uploaded successfully");
+            toast.success(
+              "Assignments uploaded successfully"
+            );
           } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-            console.error("Failed to upload assignments", errorMessage);
+            const errorMessage =
+              error instanceof Error
+                ? error.message
+                : "An unknown error occurred";
+            console.error(
+              "Failed to upload assignments",
+              errorMessage
+            );
 
-            toast.error("Failed to upload assignments", { description: errorMessage });
+            toast.error("Failed to upload assignments", {
+              description: errorMessage,
+            });
           } finally {
             if (fileInputRef.current) {
               fileInputRef.current.value = "";
@@ -102,7 +155,10 @@ export const useJudgingAssignmentsTable = (
           }
         },
         error: (error) => {
-          console.error("Failed to parse CSV file", error.message);
+          console.error(
+            "Failed to parse CSV file",
+            error.message
+          );
 
           toast.error("Failed to parse CSV file", {
             description: error.message,
@@ -116,36 +172,63 @@ export const useJudgingAssignmentsTable = (
     }
   };
 
-  const projectMap: Map<Project["id"], Project> = useMemo(() => {
-    return new Map(projectsMap.get(round)?.map((project) => [project.id, project]) ?? []);
-  }, [projectsMap, round]);
+  const projectMap: Map<Project["id"], Project> =
+    useMemo(() => {
+      return new Map(
+        projectsMap
+          .get(round)
+          ?.map((project) => [project.id, project]) ?? []
+      );
+    }, [projectsMap, round]);
 
-  const judgingAssignmentsForSelectedJudge: JudgingAssignmentWithProject[] = useMemo(() => {
-    if (!selectedJudge) return [];
+  const judgingAssignmentsForSelectedJudge: JudgingAssignmentWithProject[] =
+    useMemo(() => {
+      if (!selectedJudge) return [];
 
-    let result: JudgingAssignmentWithProject[] = judgingAssignmentsMap
-      .get(round)
-      ?.filter((assignment) => assignment.judge_id === selectedJudge?.id)
-      .map((assignment) => ({
-        ...assignment,
-        project: projectMap.get(assignment.project_id) as Project,
-      })) as JudgingAssignmentWithProject[];
+      let result: JudgingAssignmentWithProject[] =
+        judgingAssignmentsMap
+          .get(round)
+          ?.filter(
+            (assignment) =>
+              assignment.judge_id === selectedJudge?.id
+          )
+          .map((assignment) => ({
+            ...assignment,
+            project: projectMap.get(
+              assignment.project_id
+            ) as Project,
+          })) as JudgingAssignmentWithProject[];
 
-    if (search && search !== "") {
-      const searchLower = search.toLowerCase();
-      result = result.filter((judgingAssignmentWithProject) => {
-        return (
-          judgingAssignmentWithProject.project.name.toLowerCase().includes(searchLower) ||
-          judgingAssignmentWithProject.project.track.toLowerCase().includes(searchLower) ||
-          judgingAssignmentWithProject.project.devpost_url.toLowerCase().includes(searchLower)
+      if (search && search !== "") {
+        const searchLower = search.toLowerCase();
+        result = result.filter(
+          (judgingAssignmentWithProject) => {
+            return (
+              judgingAssignmentWithProject.project.name
+                .toLowerCase()
+                .includes(searchLower) ||
+              judgingAssignmentWithProject.project.track
+                .toLowerCase()
+                .includes(searchLower) ||
+              judgingAssignmentWithProject.project.devpost_url
+                .toLowerCase()
+                .includes(searchLower)
+            );
+          }
         );
-      });
-    }
+      }
 
-    return result;
-  }, [selectedJudge, judgingAssignmentsMap, projectMap, search, round]);
+      return result;
+    }, [
+      selectedJudge,
+      judgingAssignmentsMap,
+      projectMap,
+      search,
+      round,
+    ]);
 
-  const judgingAssignmentsColumns = getJudgingAssignmentsColumns();
+  const judgingAssignmentsColumns =
+    getJudgingAssignmentsColumns();
 
   const table = useReactTable({
     data: judgingAssignmentsForSelectedJudge,

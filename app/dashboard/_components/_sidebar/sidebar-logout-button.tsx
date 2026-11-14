@@ -5,7 +5,10 @@ import { deleteSession } from "@/lib";
 
 const SidebarLogoutButton = () => {
   return (
-    <SidebarMenuButton onClick={deleteSession} className="text-nowrap">
+    <SidebarMenuButton
+      onClick={deleteSession}
+      className="text-nowrap"
+    >
       <LogOut />
       Log out
     </SidebarMenuButton>

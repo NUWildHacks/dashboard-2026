@@ -10,8 +10,14 @@ import {
 import { generateProsCons, scoreTeam } from "./score";
 import { UnionFind } from "./union-find";
 
-const MAX_TEAM_SIZE = DEFAULT_TEAM_MATCHING_SETTINGS.default_team_size;
-const TECH_ROLES = new Set(["Frontend Engineer", "Backend Engineer", "Full Stack Engineer", "Mobile Engineer"]);
+const MAX_TEAM_SIZE =
+  DEFAULT_TEAM_MATCHING_SETTINGS.default_team_size;
+const TECH_ROLES = new Set([
+  "Frontend Engineer",
+  "Backend Engineer",
+  "Full Stack Engineer",
+  "Mobile Engineer",
+]);
 // picks the best result by hard violations then soft score
 const RESTARTS = 8;
 
@@ -39,11 +45,19 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
   return result;
 }
 
-const isTech = (r: IntakeRecord) => r.preferred_roles.some((role) => TECH_ROLES.has(role));
+const isTech = (r: IntakeRecord) =>
+  r.preferred_roles.some((role) => TECH_ROLES.has(role));
 
-function splitsPair(team: IntakeRecord[], requiredWith: Map<string, string[]>): boolean {
+function splitsPair(
+  team: IntakeRecord[],
+  requiredWith: Map<string, string[]>
+): boolean {
   const ids = new Set(team.map((m) => m.user_id));
-  return team.some((m) => (requiredWith.get(m.user_id) ?? []).some((id) => !ids.has(id)));
+  return team.some((m) =>
+    (requiredWith.get(m.user_id) ?? []).some(
+      (id) => !ids.has(id)
+    )
+  );
 }
 
 // HARD CONSTRAINTS
@@ -73,7 +87,9 @@ function preflight(
         });
       } else {
         const other = pool.get(reqId)!;
-        if (!other.required_teammates.includes(intake.user_id)) {
+        if (
+          !other.required_teammates.includes(intake.user_id)
+        ) {
           warnings.push({
             type: "missing_teammate",
             user_ids: [intake.user_id, reqId],
@@ -144,11 +160,14 @@ function greedyAssign(
   const teams: IntakeRecord[][] = [];
 
   const pool = seededShuffle(singletons, seed);
-  const available = () => pool.filter((r) => !assigned.has(r.user_id));
+  const available = () =>
+    pool.filter((r) => !assigned.has(r.user_id));
 
   // 1. Fill locked clusters first (hard: required teammates already together)
   for (const cluster of lockedClusters) {
-    const clusterMembers = cluster.map((id) => intakeMap.get(id)!);
+    const clusterMembers = cluster.map((id) =>
+      intakeMap.get(id)!
+    );
     cluster.forEach((id) => assigned.add(id));
 
     const spots = MAX_TEAM_SIZE - clusterMembers.length;
@@ -165,7 +184,11 @@ function greedyAssign(
       }
       // Fill remaining by soft score
       for (let i = toAdd.length; i < spots; i++) {
-        const best = pickBest([...clusterMembers, ...toAdd], available(), settings);
+        const best = pickBest(
+          [...clusterMembers, ...toAdd],
+          available(),
+          settings
+        );
         if (!best) break;
         toAdd.push(best);
         assigned.add(best.user_id);
@@ -177,15 +200,24 @@ function greedyAssign(
 
   // 2. Form new teams from remaining singletons
   const unmatched: IntakeRecord[] = [];
-  const remainingPool = pool.filter((r) => !assigned.has(r.user_id));
+  const remainingPool = pool.filter(
+    (r) => !assigned.has(r.user_id)
+  );
 
   while (remainingPool.length >= 2) {
     const seedPerson = remainingPool.shift()!;
     assigned.add(seedPerson.user_id);
 
     // Avoid leaving exactly 1 person stranded
-    let target = Math.min(MAX_TEAM_SIZE, remainingPool.length + 1);
-    if (remainingPool.length - (target - 1) === 1 && target > 2) target--;
+    let target = Math.min(
+      MAX_TEAM_SIZE,
+      remainingPool.length + 1
+    );
+    if (
+      remainingPool.length - (target - 1) === 1 &&
+      target > 2
+    )
+      target--;
 
     const team: IntakeRecord[] = [seedPerson];
 
@@ -193,7 +225,10 @@ function greedyAssign(
     if (enforceTech && !isTech(seedPerson) && target > 1) {
       const techIdx = remainingPool.findIndex(isTech);
       if (techIdx >= 0) {
-        const techMember = remainingPool.splice(techIdx, 1)[0];
+        const techMember = remainingPool.splice(
+          techIdx,
+          1
+        )[0];
         team.push(techMember);
         assigned.add(techMember.user_id);
       }
@@ -201,20 +236,25 @@ function greedyAssign(
 
     // Fill remaining by soft score
     while (team.length < target) {
-      const avail = remainingPool.filter((r) => !assigned.has(r.user_id));
+      const avail = remainingPool.filter(
+        (r) => !assigned.has(r.user_id)
+      );
       if (avail.length === 0) break;
       const best = pickBest(team, avail, settings);
       if (!best) break;
       team.push(best);
       assigned.add(best.user_id);
-      const idx = remainingPool.findIndex((r) => r.user_id === best.user_id);
+      const idx = remainingPool.findIndex(
+        (r) => r.user_id === best.user_id
+      );
       if (idx >= 0) remainingPool.splice(idx, 1);
     }
 
     teams.push(team);
   }
 
-  if (remainingPool.length === 1) unmatched.push(remainingPool[0]);
+  if (remainingPool.length === 1)
+    unmatched.push(remainingPool[0]);
 
   return { teams, unmatched };
 }
@@ -226,20 +266,28 @@ function repairTechConstraint(
   teams: IntakeRecord[][],
   unmatched: IntakeRecord[],
   requiredWith: Map<string, string[]>
-): { teams: IntakeRecord[][]; unmatched: IntakeRecord[]; warnings: TeamMatchingRunWarning[] } {
+): {
+  teams: IntakeRecord[][];
+  unmatched: IntakeRecord[];
+  warnings: TeamMatchingRunWarning[];
+} {
   const warnings: TeamMatchingRunWarning[] = [];
 
   // First: absorb any unmatched tech members into tech-less teams
   const absorbed = new Set<string>();
   for (const u of unmatched) {
     if (!isTech(u)) continue;
-    const idx = teams.findIndex((t) => !t.some(isTech) && t.length < MAX_TEAM_SIZE);
+    const idx = teams.findIndex(
+      (t) => !t.some(isTech) && t.length < MAX_TEAM_SIZE
+    );
     if (idx >= 0) {
       teams[idx] = [...teams[idx], u];
       absorbed.add(u.user_id);
     }
   }
-  const remainingUnmatched = unmatched.filter((u) => !absorbed.has(u.user_id));
+  const remainingUnmatched = unmatched.filter(
+    (u) => !absorbed.has(u.user_id)
+  );
 
   // Then: swap a non-tech member out of tech-less team with a spare tech from another team
   for (let i = 0; i < teams.length; i++) {
@@ -252,13 +300,26 @@ function repairTechConstraint(
       if (techInJ.length < 2) continue; // can't give away their only tech member
 
       for (const tech of techInJ) {
-        const jTechIdx = teams[j].findIndex((m) => m.user_id === tech.user_id);
+        const jTechIdx = teams[j].findIndex(
+          (m) => m.user_id === tech.user_id
+        );
         for (let mi = 0; mi < teams[i].length; mi++) {
           const nonTech = teams[i][mi];
-          const newI = [...teams[i].slice(0, mi), tech, ...teams[i].slice(mi + 1)];
-          const newJ = [...teams[j].slice(0, jTechIdx), nonTech, ...teams[j].slice(jTechIdx + 1)];
+          const newI = [
+            ...teams[i].slice(0, mi),
+            tech,
+            ...teams[i].slice(mi + 1),
+          ];
+          const newJ = [
+            ...teams[j].slice(0, jTechIdx),
+            nonTech,
+            ...teams[j].slice(jTechIdx + 1),
+          ];
 
-          if (!splitsPair(newI, requiredWith) && !splitsPair(newJ, requiredWith)) {
+          if (
+            !splitsPair(newI, requiredWith) &&
+            !splitsPair(newJ, requiredWith)
+          ) {
             teams[i] = newI;
             teams[j] = newJ;
             fixed = true;
@@ -300,19 +361,43 @@ function swapOptimize(
           for (let mj = 0; mj < teams[j].length; mj++) {
             const m1 = teams[i][mi];
             const m2 = teams[j][mj];
-            const newT1 = [...teams[i].slice(0, mi), m2, ...teams[i].slice(mi + 1)];
-            const newT2 = [...teams[j].slice(0, mj), m1, ...teams[j].slice(mj + 1)];
+            const newT1 = [
+              ...teams[i].slice(0, mi),
+              m2,
+              ...teams[i].slice(mi + 1),
+            ];
+            const newT2 = [
+              ...teams[j].slice(0, mj),
+              m1,
+              ...teams[j].slice(mj + 1),
+            ];
 
             // Hard: never split a required pair
-            if (splitsPair(newT1, requiredWith) || splitsPair(newT2, requiredWith)) continue;
+            if (
+              splitsPair(newT1, requiredWith) ||
+              splitsPair(newT2, requiredWith)
+            )
+              continue;
             // Hard: never leave a team without a tech member (when enforced)
-            if (enforceTech && isTech(m1) && !newT1.some(isTech)) continue;
-            if (enforceTech && isTech(m2) && !newT2.some(isTech)) continue;
+            if (
+              enforceTech &&
+              isTech(m1) &&
+              !newT1.some(isTech)
+            )
+              continue;
+            if (
+              enforceTech &&
+              isTech(m2) &&
+              !newT2.some(isTech)
+            )
+              continue;
 
             // Soft: only swap if it improves total score
             if (
-              scoreTeam(newT1, settings) + scoreTeam(newT2, settings) >
-              scoreTeam(teams[i], settings) + scoreTeam(teams[j], settings)
+              scoreTeam(newT1, settings) +
+                scoreTeam(newT2, settings) >
+              scoreTeam(teams[i], settings) +
+                scoreTeam(teams[j], settings)
             ) {
               teams[i] = newT1;
               teams[j] = newT2;
@@ -365,7 +450,9 @@ function intakeToMember(intake: IntakeRecord): TeamMember {
   };
 }
 
-function candidateFingerprint(teams: IntakeRecord[][]): string {
+function candidateFingerprint(
+  teams: IntakeRecord[][]
+): string {
   return teams
     .map((t) =>
       t
@@ -378,27 +465,38 @@ function candidateFingerprint(teams: IntakeRecord[][]): string {
 }
 
 function candidateToResult(
-  candidate: { teams: IntakeRecord[][]; unmatched: IntakeRecord[]; repairWarnings: TeamMatchingRunWarning[] },
+  candidate: {
+    teams: IntakeRecord[][];
+    unmatched: IntakeRecord[];
+    repairWarnings: TeamMatchingRunWarning[];
+  },
   preflightWarnings: TeamMatchingRunWarning[],
   settings: TeamMatchingSettings,
   whereToMeet: string
 ): AlgorithmResult {
   const fp = candidateFingerprint(candidate.teams);
-  const teams: Omit<MatchedTeam, "id">[] = candidate.teams.map((members) => {
-    const { pros, cons } = generateProsCons(members, settings);
-    return {
-      run_id: "",
-      members: members.map(intakeToMember),
-      score: Math.round(scoreTeam(members, settings)),
-      match_reasons: pros,
-      where_to_meet: whereToMeet,
-      notes: cons,
-    };
-  });
+  const teams: Omit<MatchedTeam, "id">[] =
+    candidate.teams.map((members) => {
+      const { pros, cons } = generateProsCons(
+        members,
+        settings
+      );
+      return {
+        run_id: "",
+        members: members.map(intakeToMember),
+        score: Math.round(scoreTeam(members, settings)),
+        match_reasons: pros,
+        where_to_meet: whereToMeet,
+        notes: cons,
+      };
+    });
   return {
     teams,
     unmatched: candidate.unmatched.map((r) => r.user_id),
-    warnings: [...preflightWarnings, ...candidate.repairWarnings],
+    warnings: [
+      ...preflightWarnings,
+      ...candidate.repairWarnings,
+    ],
     fingerprint: fp,
   };
 }
@@ -412,9 +510,19 @@ export function runMatchingAlgorithm(
   settings: TeamMatchingSettings,
   whereToMeet: string,
   baseSeed = 0
-): AlgorithmResult & { preflightFailed: boolean; alternatives: AlgorithmResult[] } {
+): AlgorithmResult & {
+  preflightFailed: boolean;
+  alternatives: AlgorithmResult[];
+} {
   const enforceTech = settings.enforce_tech_member ?? true;
-  const { warnings: preflightWarnings, mutualEdges, blocked } = preflight(intakes, settings.enforce_mutual_requirement);
+  const {
+    warnings: preflightWarnings,
+    mutualEdges,
+    blocked,
+  } = preflight(
+    intakes,
+    settings.enforce_mutual_requirement
+  );
 
   if (blocked) {
     return {
@@ -427,7 +535,9 @@ export function runMatchingAlgorithm(
     };
   }
 
-  const intakeMap = new Map(intakes.map((r) => [r.user_id, r]));
+  const intakeMap = new Map(
+    intakes.map((r) => [r.user_id, r])
+  );
 
   // Lock required-teammate clusters (hard constraint)
   const uf = new UnionFind(intakes.map((r) => r.user_id));
@@ -464,13 +574,25 @@ export function runMatchingAlgorithm(
     // Spread restarts across seed space regardless of baseSeed value
     const seed = (baseSeed ^ (r * 0x9e3779b9)) >>> 0;
 
-    const { teams, unmatched } = greedyAssign(lockedClusters, singletons, intakeMap, settings, seed, enforceTech);
+    const { teams, unmatched } = greedyAssign(
+      lockedClusters,
+      singletons,
+      intakeMap,
+      settings,
+      seed,
+      enforceTech
+    );
     const {
       teams: repairedTeams,
       unmatched: repairedUnmatched,
       warnings: repairWarnings,
-    } = enforceTech ? repairTechConstraint(teams, unmatched, requiredWith) : { teams, unmatched, warnings: [] };
-    const { teams: optimizedTeams, unmatched: finalUnmatched } = swapOptimize(
+    } = enforceTech
+      ? repairTechConstraint(teams, unmatched, requiredWith)
+      : { teams, unmatched, warnings: [] };
+    const {
+      teams: optimizedTeams,
+      unmatched: finalUnmatched,
+    } = swapOptimize(
       repairedTeams,
       repairedUnmatched,
       settings,
@@ -483,7 +605,10 @@ export function runMatchingAlgorithm(
     seen.add(fp);
 
     const hardViolations = repairWarnings.length;
-    const softScore = optimizedTeams.reduce((sum, t) => sum + scoreTeam(t, settings), 0);
+    const softScore = optimizedTeams.reduce(
+      (sum, t) => sum + scoreTeam(t, settings),
+      0
+    );
 
     topCandidates.push({
       teams: optimizedTeams,
@@ -494,15 +619,29 @@ export function runMatchingAlgorithm(
       fingerprint: fp,
     });
     topCandidates.sort((a, b) =>
-      a.hardViolations !== b.hardViolations ? a.hardViolations - b.hardViolations : b.softScore - a.softScore
+      a.hardViolations !== b.hardViolations
+        ? a.hardViolations - b.hardViolations
+        : b.softScore - a.softScore
     );
     if (topCandidates.length > 3) topCandidates.pop();
   }
 
   const [best, ...runnerUps] = topCandidates;
 
-  const primaryResult = candidateToResult(best, preflightWarnings, settings, whereToMeet);
-  const alternatives = runnerUps.map((c) => candidateToResult(c, preflightWarnings, settings, whereToMeet));
+  const primaryResult = candidateToResult(
+    best,
+    preflightWarnings,
+    settings,
+    whereToMeet
+  );
+  const alternatives = runnerUps.map((c) =>
+    candidateToResult(
+      c,
+      preflightWarnings,
+      settings,
+      whereToMeet
+    )
+  );
 
   return {
     ...primaryResult,

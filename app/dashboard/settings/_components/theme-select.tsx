@@ -2,8 +2,20 @@
 
 import { useTheme } from "next-themes";
 
-import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader } from "@/components/ui/item";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+} from "@/components/ui/item";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ThemeSelect = () => {
   const { setTheme, theme = "dark" } = useTheme();
@@ -12,16 +24,32 @@ const ThemeSelect = () => {
     setTheme(theme);
   };
 
-  const currentTheme = theme === "system" ? "System" : theme === "light" ? "Light" : "Dark";
+  const currentTheme =
+    theme === "system"
+      ? "System"
+      : theme === "light"
+        ? "Light"
+        : "Dark";
 
   return (
-    <Item variant="outline" className="w-full shadow-sm bg-card">
+    <Item
+      variant="outline"
+      className="w-full shadow-sm bg-card"
+    >
       <ItemContent>
-        <ItemHeader className="font-medium">Appearance</ItemHeader>
-        <ItemDescription>Select the theme you want to use for the dashboard.</ItemDescription>
+        <ItemHeader className="font-medium">
+          Appearance
+        </ItemHeader>
+        <ItemDescription>
+          Select the theme you want to use for the
+          dashboard.
+        </ItemDescription>
       </ItemContent>
       <ItemActions>
-        <Select onValueChange={handleThemeChange} value={theme}>
+        <Select
+          onValueChange={handleThemeChange}
+          value={theme}
+        >
           <SelectTrigger className="w-[150px]">
             <SelectValue placeholder={currentTheme} />
           </SelectTrigger>

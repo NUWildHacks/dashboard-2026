@@ -1,0 +1,2 @@
+export const TIMESLOT_CONFIRMATION_DEADLINE =
+  1775710799000 as const;

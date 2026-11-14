@@ -1,6 +1,11 @@
 import QRCodeComponent from "react-qr-code";
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,13 +14,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { User } from "@/types";
-
 type QRCodeProps = {
-  userId: User["id"];
+  /** The signed check-in code from `createCheckInCode`. */
+  code: string;
 };
 
-const QRCode = ({ userId }: QRCodeProps) => {
+const QRCode = ({ code }: QRCodeProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -23,7 +27,8 @@ const QRCode = ({ userId }: QRCodeProps) => {
           <CardHeader>
             <CardTitle>View QR Code</CardTitle>
             <CardDescription>
-              Your all-access pass to WildHacks. Scan at registration, workshops, and meal stations.
+              Your all-access pass to WildHacks. Scan at
+              registration, workshops, and meal stations.
             </CardDescription>
           </CardHeader>
         </Card>
@@ -32,13 +37,14 @@ const QRCode = ({ userId }: QRCodeProps) => {
         <DialogHeader>
           <DialogTitle>View QR Code</DialogTitle>
           <DialogDescription className="text-zinc-600">
-            Present your QR code to access workshops, food, and merch.
+            Present your QR code to access workshops, food,
+            and merch.
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-center items-center rounded-md bg-white p-2">
           <QRCodeComponent
             className="size-[192px] sm:size-[256px]"
-            value={userId}
+            value={code}
             bgColor="#FFFFFF"
             fgColor="#000000"
           />

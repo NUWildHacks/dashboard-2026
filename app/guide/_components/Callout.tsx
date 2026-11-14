@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-type CalloutKind = "info" | "warning" | "error" | "note" | "highlight";
+type CalloutKind =
+  "info" | "warning" | "error" | "note" | "highlight";
 
 type CalloutProps = {
   readonly type?: CalloutKind;
@@ -16,11 +17,18 @@ const emojiByKind: Record<CalloutKind, string> = {
   highlight: "🎉",
 };
 
-const Callout = ({ type = "info", emoji, children }: CalloutProps) => {
+const Callout = ({
+  type = "info",
+  emoji,
+  children,
+}: CalloutProps) => {
   const glyph = emoji ?? emojiByKind[type];
 
   return (
-    <div className={`guide-callout guide-callout-${type}`} role="note">
+    <div
+      className={`guide-callout guide-callout-${type}`}
+      role="note"
+    >
       <span aria-hidden className="guide-callout-icon">
         {glyph}
       </span>
