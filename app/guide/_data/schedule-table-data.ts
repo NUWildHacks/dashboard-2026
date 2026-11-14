@@ -106,13 +106,13 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         href: "/guide/logistics/checking-in",
       },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
 
   {
     time: "9:30 - 10:00 AM",
     event: [{ content: "Opening Ceremony", bold: true }],
-    location: "XXXX",
+    location: "To be Announced",
     remote_location: "zoom link", // TODO: add zoom link here when it's determined
   },
 
@@ -130,7 +130,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
       },
       // { content: " from Tomate Fresh Kitchen" },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
 
   {
@@ -142,7 +142,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
       },
       // { content: " from Papa John's Pizza" },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
 
   {
@@ -166,7 +166,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         // href: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
       },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
   {
     time: "8:30 - 9:30 PM",
@@ -176,7 +176,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         // href: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
       },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
   {
     time: "9:30 - 10:00 PM",
@@ -187,7 +187,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
         // href: ""
       },
     ],
-    location: "XXXX",
+    location: "To be Announced",
   },
 ];
 
@@ -204,7 +204,7 @@ export const saturdayScheduleRows: DayScheduleRow[] = [
 // {
 //   time: "11:00 - 11:30 AM",
 //   event: [{ content: "Team Formation Event" }],
-//   location: "XXXX",
+//   location: "To be Announced",
 // },
 // {
 //   time: "1:00 - 5:00 PM",
