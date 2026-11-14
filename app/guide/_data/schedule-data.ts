@@ -1,5 +1,6 @@
 import type { CalendarEvent } from "../_components/calendar-utils";
 
+// TODO: update event rooms
 export const scheduleEvents: CalendarEvent[] = [
   // {
   //   title: "DISC X WildHacks Git/GitHub Workshop",
@@ -95,28 +96,80 @@ export const scheduleEvents: CalendarEvent[] = [
   //   end: new Date("2026-04-11T10:00:00-05:00"),
   //   location: "Tech L170",
   // },
-  // {
-  //   title: "Opening Ceremony",
-  //   description: "WildHacks 2026 Opening Ceremony",
-  //   start: new Date("2026-04-11T10:00:00-05:00"),
-  //   end: new Date("2026-04-11T10:45:00-05:00"),
-  //   location: "LR2",
-  // },
-  // {
-  //   title: "Hacking Starts",
-  //   description: "The hackathon officially begins!",
-  //   start: new Date("2026-04-11T11:00:00-05:00"),
-  //   end: new Date("2026-04-11T11:00:00-05:00"),
-  //   location: "Mudd Library & Technological Institute",
-  // },
-  // {
-  //   title: "Team Formation Event",
-  //   description:
-  //     "Find teammates for your hackathon project",
-  //   start: new Date("2026-04-11T11:00:00-05:00"),
-  //   end: new Date("2026-04-11T11:30:00-05:00"),
-  //   location: "LR4",
-  // },
+
+  {
+    title: "Opening Ceremony",
+    description: "WildHacks 2026 Opening Ceremony",
+    start: new Date("2027-01-16T09:30:00-06:00"),
+    end: new Date("2027-01-16T10:00:00-06:00"),
+    location: "To be Announced",
+  },
+
+  {
+    title: "Hacking Starts",
+    description: "The hackathon officially begins!",
+    start: new Date("2027-01-16T10:00:00-06:00"),
+    end: new Date("2027-01-16T10:00:00-06:00"),
+    location: "To be Announced",
+  },
+
+  {
+    title: "Team Formation Event",
+    description:
+      "Find teammates for your hackathon project",
+    start: new Date("2027-01-16T10:00:00-06:00"),
+    end: new Date("2027-01-16T10:20:00-06:00"),
+    location: "To be Announced",
+  },
+
+  // TODO: update lunch provider and spot, update url
+  {
+    title: "Lunch",
+    description: "Saturday lunch provided by someone",
+    start: new Date("2027-01-16T12:30:00-06:00"),
+    end: new Date("2027-01-16T01:00:00-06:00"),
+    location: "To be Announced",
+    url: "/guide/logistics/food-and-drinks",
+  },
+
+  // TODO: update dinner provider and spot, update url
+  {
+    title: "Dinner",
+    description: "Saturday dinner provided by someone",
+    start: new Date("2027-01-16T18:00:00-06:00"),
+    end: new Date("2027-01-16T18:30:00-06:00"),
+    location: "To be Announced",
+    url: "/guide/logistics/food-and-drinks",
+  },
+
+  // TODO: double check url
+  {
+    title: "Round 1 of Judging",
+    description: "Initial judging round for awards",
+    start: new Date("2027-01-16T19:00:00-06:00"),
+    end: new Date("2027-01-16T20:15:00-06:00"),
+    location: "To be Announced",
+    url: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
+  },
+
+  {
+    title: "Finalist Presentations",
+    description: "Live presentations for final judging",
+    start: new Date("2027-01-16T20:30:00-06:00"),
+    end: new Date("2027-01-16T21:30:00-06:00"),
+    location: "To Be Announced Per Team",
+    url: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
+  },
+
+  {
+    title: "Closing Ceremony",
+    description:
+      "WildHacks 2027 Closing Ceremony and Awards",
+    start: new Date("2027-01-16T21:30:00-06:00"),
+    end: new Date("2027-01-16T22:00:00-06:00"),
+    location: "To be Announced",
+  },
+
   // {
   //   title: "Lunch from Tomate Fresh Kitchen",
   //   description:
@@ -246,29 +299,12 @@ export const scheduleEvents: CalendarEvent[] = [
   //   location: "Mudd 2nd Floor",
   // },
   // {
-  //   title: "Round 1 of Track Judging",
-  //   description: "Initial judging round for track awards",
-  //   start: new Date("2026-04-12T11:15:00-05:00"),
-  //   end: new Date("2026-04-12T13:15:00-05:00"),
-  //   url: "/guide/judging-and-awards/how-judging-works#round-1---initial-judging",
-  //   location: "LR5",
-  // },
-  // {
   //   title: "Lunch from 10Q Chicken",
   //   description: "Sunday lunch provided by 10Q Chicken",
   //   start: new Date("2026-04-12T12:30:00-05:00"),
   //   end: new Date("2026-04-12T13:30:00-05:00"),
   //   location: "Mudd 1st Floor",
   //   url: "/guide/logistics/food-and-drinks#sunday-lunch-from-10q-chicken",
-  // },
-  // {
-  //   title: "Round 2 of Track Judging",
-  //   description:
-  //     "Live presentations for final track judging",
-  //   start: new Date("2026-04-12T14:00:00-05:00"),
-  //   end: new Date("2026-04-12T15:30:00-05:00"),
-  //   location: "To Be Announced Per Team",
-  //   url: "/guide/judging-and-awards/how-judging-works#round-2---live-presentations",
   // },
   // {
   //   title:
@@ -285,13 +321,5 @@ export const scheduleEvents: CalendarEvent[] = [
   //   end: new Date("2026-04-12T15:30:00-05:00"),
   //   location: "LR4",
   //   url: "/guide/judging-and-awards/how-judging-works#crowd-favorite",
-  // },
-  // {
-  //   title: "Closing Ceremony",
-  //   description:
-  //     "WildHacks 2026 Closing Ceremony and Awards",
-  //   start: new Date("2026-04-12T15:45:00-05:00"),
-  //   end: new Date("2026-04-12T17:00:00-05:00"),
-  //   location: "LR2",
   // },
 ];
