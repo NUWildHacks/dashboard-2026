@@ -11,22 +11,27 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
     title: "Back to Dashboard",
     href: "/dashboard",
   },
+
   {
     title: "Overview",
     href: "/guide",
   },
+
   {
     title: "Schedule",
     href: "/guide/schedule",
   },
+
   {
     title: "Map",
     href: "/guide/map",
   },
+
   // {
   //   title: "Workshops",
   //   href: "/guide/workshops",
   // },
+
   {
     title: "Logistics",
     children: [
@@ -53,13 +58,15 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
       },
     ],
   },
+
   {
     title: "Project Guidelines",
     children: [
-      {
-        title: "Tracks and Challenges",
-        href: "/guide/project-guidelines/tracks-and-challenges",
-      },
+      // TODO: uncomment this once the event starts
+      // {
+      //   title: "Theme and Challenges",
+      //   href: "/guide/project-guidelines/tracks-and-challenges",
+      // },
       {
         title: "Rules",
         href: "/guide/project-guidelines/rules",
@@ -74,6 +81,7 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
       },
     ],
   },
+
   {
     title: "Judging and Awards",
     children: [
@@ -99,10 +107,12 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
       },
     ],
   },
+
   {
     title: "Help Desk",
     href: "/guide/help-desk",
   },
+
   {
     title: "Judging Guide",
     href: "/guide/judging-guide",
