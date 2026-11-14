@@ -17,8 +17,8 @@ const Ongoing = () => {
       <p>
         Whether you&apos;re a first-time coder or a seasoned
         developer, this is your chance to build something
-        amazing in nine hours. Join hundreds of students for
-        a day of innovation, collaboration, and creativity!
+        amazing in 9 hours. Join hundreds of students for a
+        day of innovation, collaboration, and creativity!
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
         <Button variant="outline" asChild>

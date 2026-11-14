@@ -62,7 +62,7 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
   {
     title: "Project Guidelines",
     children: [
-      // TODO: uncomment this once the event starts
+      // TODO: uncomment this once the event starts and remove underscore from directory name
       // {
       //   title: "Theme and Challenges",
       //   href: "/guide/project-guidelines/tracks-and-challenges",
@@ -89,18 +89,23 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
         title: "Judging Rounds",
         href: "/guide/judging-and-awards/how-judging-works",
       },
-      {
-        title: "Project Evaluation Criteria",
-        href: "/guide/judging-and-awards/project-evaluation",
-      },
+
+      // TODO: uncomment this once this is finalized and remove underscore from directory name
+      // {
+      //   title: "Project Evaluation Criteria",
+      //   href: "/guide/judging-and-awards/project-evaluation",
+      // },
+
       {
         title: "Prizes",
         href: "/guide/judging-and-awards/prizes",
       },
+
       {
         title: "Understanding Your Scores",
         href: "/guide/judging-and-awards/understanding-your-scores",
       },
+
       {
         title: "How We Calculate Scores",
         href: "/guide/judging-and-awards/scoring-formula",
@@ -113,9 +118,10 @@ export const GUIDE_NAV_ITEMS: GuideNavItem[] = [
     href: "/guide/help-desk",
   },
 
-  {
-    title: "Judging Guide",
-    href: "/guide/judging-guide",
-    hidden: true,
-  },
+  // TODO: uncomment this once judging guide is updated
+  // {
+  //   title: "Judging Guide",
+  //   href: "/guide/judging-guide",
+  //   hidden: true,
+  // },
 ];
