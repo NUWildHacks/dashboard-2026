@@ -87,3 +87,8 @@ export {
   PARTICIPANT_USER_FIELDS,
   MENTORING_TIMESLOTS,
 } from "./user.constants";
+
+export {
+  EVENT_NAME,
+  EVENT_NAME_YEAR,
+} from "./site.constants";
