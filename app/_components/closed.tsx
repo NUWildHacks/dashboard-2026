@@ -12,7 +12,7 @@ const Closed = () => {
       </h2>
       <p>
         Registration is open! Join us and 100+ other hackers
-        this January for an amazing weekend.
+        this January for an amazing day.
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
         <Button asChild>

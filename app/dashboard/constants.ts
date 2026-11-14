@@ -24,8 +24,8 @@ import {
   GUIDE_PATH,
   DASHBOARD_JUDGING_ROUND_1_PATH,
   DASHBOARD_JUDGING_ROUND_2_PATH,
-  DASHBOARD_MENTORING_PATH,
-  VIRTUAL_ZOOM_JUDGING_PATH,
+  // DASHBOARD_MENTORING_PATH,
+  // VIRTUAL_ZOOM_JUDGING_PATH,
   // DEVPOST_PATH,
 } from "@/constants";
 
@@ -75,13 +75,15 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       JUDGE_AND_MENTOR,
     ],
   },
-  {
-    title: "Mentoring",
-    hasSubItems: false,
-    url: DASHBOARD_MENTORING_PATH,
-    icon: GraduationCap,
-    visibleTo: [JUDGE_AND_MENTOR],
-  },
+
+  // {
+  //   title: "Mentoring",
+  //   hasSubItems: false,
+  //   url: DASHBOARD_MENTORING_PATH,
+  //   icon: GraduationCap,
+  //   visibleTo: [JUDGE_AND_MENTOR],
+  // },
+
   {
     title: "Judging",
     hasSubItems: true,
@@ -105,13 +107,15 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   //   icon: SquareCode,
   //   visibleTo: [PARTICIPANT, ADMIN],
   // },
-  {
-    title: "Virtual Judging Zoom",
-    hasSubItems: false,
-    url: VIRTUAL_ZOOM_JUDGING_PATH,
-    icon: Headset,
-    visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
-  },
+
+  // {
+  //   title: "Virtual Judging Zoom",
+  //   hasSubItems: false,
+  //   url: VIRTUAL_ZOOM_JUDGING_PATH,
+  //   icon: Headset,
+  //   visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
+  // },
+
   {
     title: "Check-in",
     hasSubItems: false,

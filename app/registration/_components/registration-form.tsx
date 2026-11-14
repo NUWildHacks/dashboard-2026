@@ -11,7 +11,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
   FieldDescription,
@@ -21,7 +21,7 @@ import {
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
+  // FieldContent,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -713,6 +713,8 @@ const RegistrationForm = ({
               </FieldGroup>
             </FieldSet>
 
+            {/*
+
             <FieldSeparator />
 
             <FieldSet disabled={isSubmitting}>
@@ -872,6 +874,7 @@ const RegistrationForm = ({
                 />
               </FieldGroup>
             </FieldSet>
+            */}
           </FieldGroup>
         </form>
       </CardContent>

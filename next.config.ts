@@ -59,6 +59,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // TODO: double check all redirects, especially the devpost and zoom links
   async redirects() {
     return [
       {
@@ -67,6 +69,8 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: false,
       },
+
+      // TODO: update google form
       {
         source: JUDGE_REGISTRATION_PATH,
         destination:
@@ -74,6 +78,7 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: false,
       },
+
       {
         source: TECH_ROOM_FINDER_PATH,
         destination:
@@ -81,6 +86,7 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: false,
       },
+
       {
         source: JUDGING_GUIDE_PATH,
         destination:
@@ -88,24 +94,28 @@ const nextConfig: NextConfig = {
         basePath: false,
         permanent: false,
       },
+
       {
         source: DISCORD_INVITE_PATH,
         destination: discordInviteDestination,
         basePath: false,
         permanent: false,
       },
+
       {
         source: DISCORD_TEAM_PATH,
         destination: discordTeamDestination,
         basePath: false,
         permanent: false,
       },
+
       {
         source: DEVPOST_PATH,
         destination: "https://wildhacks-2026.devpost.com/",
         basePath: false,
         permanent: false,
       },
+
       {
         source: VIRTUAL_ZOOM_JUDGING_PATH,
         destination: virtualZoomJudgingDestination,

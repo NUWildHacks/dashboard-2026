@@ -13,10 +13,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { JUDGE, EVENT_NAME_YEAR } from "@/constants";
-import { JudgeUser, JudgeAndMentorUser } from "@/types";
+import { JudgeUser } from "@/types";
 
 type OnboardingDialogProps = {
-  role: JudgeUser["role"] | JudgeAndMentorUser["role"];
+  role: JudgeUser["role"];
   onboarded: boolean;
 };
 

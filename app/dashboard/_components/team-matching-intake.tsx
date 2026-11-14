@@ -108,21 +108,21 @@ const GENDER_PREFERENCE_OPTIONS = [
   },
 ] as const;
 
-const WHERE_STAYING_OPTIONS = [
-  {
-    value: "prefer_not_to_say",
-    label: "Prefer not to say",
-  },
-  {
-    value: "on_site",
-    label: "On-site (staying at the venue)",
-  },
-  { value: "on_campus", label: "On-campus housing (dorm)" },
-  {
-    value: "off_campus",
-    label: "Off-campus accommodation",
-  },
-] as const;
+// const WHERE_STAYING_OPTIONS = [
+//   {
+//     value: "prefer_not_to_say",
+//     label: "Prefer not to say",
+//   },
+//   {
+//     value: "on_site",
+//     label: "On-site (staying at the venue)",
+//   },
+//   { value: "on_campus", label: "On-campus housing (dorm)" },
+//   {
+//     value: "off_campus",
+//     label: "Off-campus accommodation",
+//   },
+// ] as const;
 
 const MAX_REQUIRED_TEAMMATES = 3;
 const MAX_ADDITIONAL_NOTES_LENGTH = 1000;
@@ -300,7 +300,7 @@ const TeamMatchingIntake = ({
     if (!form.work_style) missing.push("Work style");
     if (!form.gender_preference)
       missing.push("Team gender preference");
-    if (!form.where_staying) missing.push("Overnight stay");
+    // if (!form.where_staying) missing.push("Overnight stay");
     if (!consentChecked) missing.push("Consent");
 
     if (missing.length > 0) {
@@ -392,15 +392,15 @@ const TeamMatchingIntake = ({
         <CardFooter className="flex items-center justify-between">
           <p className="text-muted-foreground text-xs">
             Available until{" "}
-            {new Date(eventStartTime).toLocaleDateString(
-              "en-US",
-              {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              }
-            )}{" "}
-            10:30AM
+            {new Intl.DateTimeFormat("en-US", {
+              timeZone: "America/Chicago",
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+              timeZoneName: "short",
+            }).format(new Date(eventStartTime))}
           </p>
         </CardFooter>
       </Card>
@@ -747,6 +747,7 @@ const TeamMatchingIntake = ({
                         </Select>
                       </Field>
 
+                      {/*
                       <Field>
                         <FieldLabel htmlFor="where_staying">
                           Where are you staying?{" "}
@@ -780,6 +781,7 @@ const TeamMatchingIntake = ({
                           </SelectContent>
                         </Select>
                       </Field>
+                     */}
 
                       <Field>
                         <FieldLabel>

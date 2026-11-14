@@ -61,7 +61,7 @@ const TeamMatchingResults = ({
         </CardContent>
         <CardFooter className="flex items-center justify-between">
           <p className="text-xs text-muted-foreground">
-            Results available until Sunday 11AM (submission
+            Results available until Saturday 7PM (submission
             deadline)
           </p>
         </CardFooter>

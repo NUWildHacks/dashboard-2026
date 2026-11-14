@@ -76,17 +76,17 @@ export const registrationFormBaseSchema = z.object({
   //   .regex(/^[a-zA-Z0-9]{20}$/, "Invalid permission code")
   //   .or(z.literal("")),
 
-  mlh_code_of_conduct: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must agree to the MLH Code of Conduct",
-    }),
-  mlh_privacy_policy: z
-    .boolean()
-    .refine((val) => val === true, {
-      message: "You must agree to the MLH Privacy Policy",
-    }),
-  mlh_marketing: z.boolean(),
+  // mlh_code_of_conduct: z
+  //   .boolean()
+  //   .refine((val) => val === true, {
+  //     message: "You must agree to the MLH Code of Conduct",
+  //   }),
+  // mlh_privacy_policy: z
+  //   .boolean()
+  //   .refine((val) => val === true, {
+  //     message: "You must agree to the MLH Privacy Policy",
+  //   }),
+  // mlh_marketing: z.boolean(),
 });
 
 export const registrationFormSchema =

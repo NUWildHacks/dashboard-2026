@@ -60,9 +60,9 @@ export const useRegistrationForm = (
       dietary_restrictions: [],
       other_dietary_restrictions: "",
 
-      mlh_code_of_conduct: false,
-      mlh_privacy_policy: false,
-      mlh_marketing: false,
+      // mlh_code_of_conduct: false,
+      // mlh_privacy_policy: false,
+      // mlh_marketing: false,
     },
   });
 

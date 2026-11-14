@@ -1,7 +1,7 @@
 import {
-  CrowdFavoriteAdminLink,
-  CrowdFavoriteParticipantLink,
-  CrowdFavoritePresentationTile,
+  // CrowdFavoriteAdminLink,
+  // CrowdFavoriteParticipantLink,
+  // CrowdFavoritePresentationTile,
   QRCode,
   Statistics,
   Countdown,
@@ -9,17 +9,17 @@ import {
   VenueMap,
   ResumeUpload,
 } from "@/app/dashboard/_components";
-import {
-  getAllCrowdFavoriteProjects,
-  getCrowdFavoriteProjectForUser,
-  getUserVotedProjectId,
-} from "@/app/dashboard/crowd-favorite/_lib";
-import {
-  hasCrowdFavoriteOptInStarted,
-  isCrowdFavoriteOptInOpen,
-  isCrowdFavoritePresentationPhase,
-  isCrowdFavoriteVotingOpen,
-} from "@/app/dashboard/crowd-favorite/constants";
+// import {
+//   getAllCrowdFavoriteProjects,
+//   getCrowdFavoriteProjectForUser,
+//   getUserVotedProjectId,
+// } from "@/app/dashboard/crowd-favorite/_lib";
+// import {
+//   hasCrowdFavoriteOptInStarted,
+//   isCrowdFavoriteOptInOpen,
+//   isCrowdFavoritePresentationPhase,
+//   isCrowdFavoriteVotingOpen,
+// } from "@/app/dashboard/crowd-favorite/constants";
 import supabaseAdmin from "@/config/supabase-admin";
 import {
   ADMIN,
@@ -169,39 +169,39 @@ const DashboardPage = async () => {
 
   const resumeMetadata = await getResumeMetadata(userId);
   const fileName = resumeMetadata?.file_name;
-  const showAdminCrowdFavoriteLink =
-    role === ADMIN &&
-    (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
-  const participantOptInOpen =
-    await isCrowdFavoriteOptInOpen(wildhacksConfig);
-  const participantVotingOpen =
-    await isCrowdFavoriteVotingOpen(wildhacksConfig);
-  const showParticipantCrowdFavoriteLink =
-    role === PARTICIPANT &&
-    (participantOptInOpen || participantVotingOpen);
-  const showPresentationTile =
-    role === PARTICIPANT &&
-    (await isCrowdFavoritePresentationPhase(
-      wildhacksConfig
-    ));
+  // const showAdminCrowdFavoriteLink =
+  //   role === ADMIN &&
+  //   (await hasCrowdFavoriteOptInStarted(wildhacksConfig));
+  // const participantOptInOpen =
+  //   await isCrowdFavoriteOptInOpen(wildhacksConfig);
+  // const participantVotingOpen =
+  //   await isCrowdFavoriteVotingOpen(wildhacksConfig);
+  // const showParticipantCrowdFavoriteLink =
+  //   role === PARTICIPANT &&
+  //   (participantOptInOpen || participantVotingOpen);
+  // const showPresentationTile =
+  //   role === PARTICIPANT &&
+  //   (await isCrowdFavoritePresentationPhase(
+  //     wildhacksConfig
+  //   ));
 
-  const [
-    crowdFavoriteProject,
-    votingProjects,
-    votedForProjectId,
-  ] = await Promise.all([
-    role === PARTICIPANT
-      ? getCrowdFavoriteProjectForUser(userId)
-      : Promise.resolve(null),
-    participantVotingOpen
-      ? getAllCrowdFavoriteProjects()
-      : Promise.resolve([]),
-    participantVotingOpen && role === PARTICIPANT
-      ? getUserVotedProjectId(userId)
-      : Promise.resolve(null),
-  ]);
+  // const [
+  //   crowdFavoriteProject,
+  //   votingProjects,
+  //   votedForProjectId,
+  // ] = await Promise.all([
+  //   role === PARTICIPANT
+  //     ? getCrowdFavoriteProjectForUser(userId)
+  //     : Promise.resolve(null),
+  //   participantVotingOpen
+  //     ? getAllCrowdFavoriteProjects()
+  //     : Promise.resolve([]),
+  //   participantVotingOpen && role === PARTICIPANT
+  //     ? getUserVotedProjectId(userId)
+  //     : Promise.resolve(null),
+  // ]);
 
-  const isOptedIn = crowdFavoriteProject !== null;
+  // const isOptedIn = crowdFavoriteProject !== null;
 
   let hasSubmittedTeamMatching = false;
   if (role === PARTICIPANT || role === ADMIN) {
@@ -267,24 +267,28 @@ const DashboardPage = async () => {
         )}
         <div
           className={cn(
-            role === PARTICIPANT ||
-              showAdminCrowdFavoriteLink
-              ? "md:col-span-1"
+            role === PARTICIPANT
+              ? // ||
+                // showAdminCrowdFavoriteLink
+                "md:col-span-1"
               : "md:col-span-2"
           )}
         >
           <VenueMap />
         </div>
+        {/*
         {showAdminCrowdFavoriteLink && (
           <div className="md:col-span-1">
             <CrowdFavoriteAdminLink />
           </div>
         )}
+        */}
       </div>
 
       {role === PARTICIPANT && now < end && (
         <div className="grid gap-4 auto-rows-min md:grid-cols-2">
           <ResumeUpload fileName={fileName} />
+          {/*
           {showParticipantCrowdFavoriteLink ? (
             <CrowdFavoriteParticipantLink
               votingOpen={participantVotingOpen}
@@ -304,17 +308,18 @@ const DashboardPage = async () => {
           ) : showPresentationTile ? (
             <CrowdFavoritePresentationTile />
           ) : (
-            <TeamMatchingGate
-              hasSubmitted={hasSubmittedTeamMatching}
-              initialSuggestions={initialSuggestions}
-              firstName={first_name}
-              lastName={last_name}
-              email={email}
-              school={school as string}
-              fieldOfStudy={field_of_study as string}
-              eventStartTime={wildhacksConfig.start_time}
-            />
-          )}
+          */}
+          <TeamMatchingGate
+            hasSubmitted={hasSubmittedTeamMatching}
+            initialSuggestions={initialSuggestions}
+            firstName={first_name}
+            lastName={last_name}
+            email={email}
+            school={school as string}
+            fieldOfStudy={field_of_study as string}
+            eventStartTime={wildhacksConfig.start_time}
+          />
+          {/* )} */}
         </div>
       )}
 
