@@ -17,7 +17,7 @@ const Ongoing = () => {
       <p>
         Whether you&apos;re a first-time coder or a seasoned
         developer, this is your chance to build something
-        amazing in 9 hours. Join hundreds of students for a
+        amazing in a day. Join hundreds of students for a
         day of innovation, collaboration, and creativity!
       </p>
       <div className="flex justify-center items-center gap-2 flex-wrap">
@@ -33,7 +33,7 @@ const Ongoing = () => {
             rel="noreferrer"
             href={JUDGE_REGISTRATION_PATH}
           >
-            Register as a judge or mentor
+            Register as a judge
           </a>
         </Button>
       </div>
