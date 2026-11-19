@@ -369,7 +369,8 @@ const CheckInConsole = ({
                 value={checkInMode}
                 onValueChange={(value) => {
                   const mode = value as
-                    "event" | "wildhacks";
+                    | "event"
+                    | "wildhacks";
                   setCheckInMode(mode);
                   setSelectedEventId("");
                   // Event mode starts with no event, so the camera must stay off.

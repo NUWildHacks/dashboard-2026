@@ -1,7 +1,11 @@
 import type { ReactNode } from "react";
 
 type CalloutKind =
-  "info" | "warning" | "error" | "note" | "highlight";
+  | "info"
+  | "warning"
+  | "error"
+  | "note"
+  | "highlight";
 
 type CalloutProps = {
   readonly type?: CalloutKind;

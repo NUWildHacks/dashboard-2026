@@ -66,7 +66,8 @@ export const runMatching = async (
 
     const mode: TeamMatchingMode =
       (configResult.data?.team_matching_mode as
-        TeamMatchingMode | undefined) ?? "dev";
+        | TeamMatchingMode
+        | undefined) ?? "dev";
     const intakeTable =
       mode === "prod"
         ? TEAM_MATCHING_INTAKE_TABLE

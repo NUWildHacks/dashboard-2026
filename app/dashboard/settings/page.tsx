@@ -35,7 +35,8 @@ const SettingsPage = async () => {
   const user = await getAuthenticatedUser(redirectPath);
 
   let wildHacksConfig:
-    (WildHacksConfig & WildHacksSecrets) | undefined;
+    | (WildHacksConfig & WildHacksSecrets)
+    | undefined;
   if (user.role === ADMIN) {
     const [config, secrets] = await Promise.all([
       getConfig(),
