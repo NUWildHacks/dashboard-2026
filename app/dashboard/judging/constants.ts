@@ -18,7 +18,8 @@ export const TRACKS = [
 
 export const ROOMS = rooms;
 
-export const ROUND_1_DEADLINE = 1776017700000; // April 12, 2026 1:00 PM CT
+// TODO: double check round 1 judging deadline
+export const ROUND_1_DEADLINE = 1800152100000; // January 16, 2027 8:15 PM CT
 
 export const SUBMITTED_STATUS = "Submitted" as const;
 export const NOT_SUBMITTED_STATUS =

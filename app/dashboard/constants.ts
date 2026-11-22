@@ -23,7 +23,7 @@ import {
   DASHBOARD_TEAM_MATCHING_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_ROUND_1_PATH,
-  DASHBOARD_JUDGING_ROUND_2_PATH,
+  // DASHBOARD_JUDGING_ROUND_2_PATH,
   // DASHBOARD_MENTORING_PATH,
   // VIRTUAL_ZOOM_JUDGING_PATH,
   // DEVPOST_PATH,
@@ -94,10 +94,10 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         title: "Round 1",
         url: DASHBOARD_JUDGING_ROUND_1_PATH,
       },
-      {
-        title: "Round 2",
-        url: DASHBOARD_JUDGING_ROUND_2_PATH,
-      },
+      // {
+      //   title: "Round 2",
+      //   url: DASHBOARD_JUDGING_ROUND_2_PATH,
+      // },
     ],
   },
   // {
