@@ -70,11 +70,9 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
 
-      // TODO: update google form
       {
         source: JUDGE_REGISTRATION_PATH,
-        destination:
-          "https://docs.google.com/forms/d/e/1FAIpQLScyJ4OXjGQOlXSNj-nAZzdcXA1eQWc1URs2fsVpe2dahjlzXw/viewform?usp=dialog",
+        destination: "https://forms.gle/RBVubrRMQf71W3AXA",
         basePath: false,
         permanent: false,
       },
