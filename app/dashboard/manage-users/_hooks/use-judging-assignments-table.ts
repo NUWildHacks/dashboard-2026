@@ -230,6 +230,7 @@ export const useJudgingAssignmentsTable = (
   const judgingAssignmentsColumns =
     getJudgingAssignmentsColumns();
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: judgingAssignmentsForSelectedJudge,
     columns: judgingAssignmentsColumns,
