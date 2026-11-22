@@ -12,24 +12,33 @@ export type UseDashboardSidebarReturn = {
   headerText: string;
 };
 
-export const useDashboardSidebar = (): UseDashboardSidebarReturn => {
-  const pathname = usePathname();
+export const useDashboardSidebar =
+  (): UseDashboardSidebarReturn => {
+    const pathname = usePathname();
 
-  const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({});
+    const [openSubMenus, setOpenSubMenus] = useState<
+      Record<string, boolean>
+    >({});
 
-  const handleOpenSubMenu = (title: string) => {
-    setOpenSubMenus((prev) => ({
-      ...prev,
-      [title]: !(prev[title] ?? false),
-    }));
+    const handleOpenSubMenu = (title: string) => {
+      setOpenSubMenus((prev) => ({
+        ...prev,
+        [title]: !(prev[title] ?? false),
+      }));
+    };
+
+    const headerText = useMemo(() => {
+      const subpath = pathname.split("/").at(-1);
+      return HEADER_TEXT_MAP[subpath ?? ""] || "Home";
+    }, [pathname]);
+
+    const isPathActive = (url: string) =>
+      pathname === url || pathname.startsWith(`${url}/`);
+
+    return {
+      openSubMenus,
+      handleOpenSubMenu,
+      isPathActive,
+      headerText,
+    };
   };
-
-  const headerText = useMemo(() => {
-    const subpath = pathname.split("/").at(-1);
-    return HEADER_TEXT_MAP[subpath ?? ""] || "Home";
-  }, [pathname]);
-
-  const isPathActive = (url: string) => pathname === url || pathname.startsWith(`${url}/`);
-
-  return { openSubMenus, handleOpenSubMenu, isPathActive, headerText };
-};

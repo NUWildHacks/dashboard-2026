@@ -7,7 +7,12 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun } from "@/types";
+import type {
+  MatchedTeam,
+  TeamFormation,
+  TeamMatchingMode,
+  TeamMatchingRun,
+} from "@/types";
 
 import { runMatching } from "../_actions/run-matching.actions";
 
@@ -20,7 +25,10 @@ type AlgorithmTabProps = {
   entryCount: number;
   onRunAdded: (run: TeamMatchingRun) => void;
   onRunDeleted: (runId: string) => void;
-  onRunUpdated: (runId: string, patch: Partial<TeamMatchingRun>) => void;
+  onRunUpdated: (
+    runId: string,
+    patch: Partial<TeamMatchingRun>
+  ) => void;
   teams: MatchedTeam[];
   formations: TeamFormation[];
   loadingTeams: boolean;
@@ -49,7 +57,9 @@ export const AlgorithmTab = ({
 }: AlgorithmTabProps) => {
   const [running, setRunning] = useState(false);
   const [runName, setRunName] = useState("");
-  const [formationIndex, setFormationIndex] = useState<0 | 1 | 2>(0);
+  const [formationIndex, setFormationIndex] = useState<
+    0 | 1 | 2
+  >(0);
 
   const handleRun = async () => {
     setRunning(true);
@@ -57,7 +67,9 @@ export const AlgorithmTab = ({
     setRunning(false);
 
     if (!result.success) {
-      toast.error("Matching failed", { description: result.error });
+      toast.error("Matching failed", {
+        description: result.error,
+      });
       return;
     }
 
@@ -79,9 +91,17 @@ export const AlgorithmTab = ({
   };
 
   const visibleTeams: MatchedTeam[] =
-    formationIndex === 0 ? teams : (formations.find((f) => f.formation_index === formationIndex)?.teams ?? []);
+    formationIndex === 0
+      ? teams
+      : (formations.find(
+          (f) => f.formation_index === formationIndex
+        )?.teams ?? []);
 
-  const formationLabels = ["Primary", "Alternative 1", "Alternative 2"] as const;
+  const formationLabels = [
+    "Primary",
+    "Alternative 1",
+    "Alternative 2",
+  ] as const;
 
   return (
     <div className="flex flex-col gap-6">
@@ -89,12 +109,19 @@ export const AlgorithmTab = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <p className="text-sm font-medium">Run matching algorithm</p>
-              <Badge variant="outline" className="text-xs font-mono">
+              <p className="text-sm font-medium">
+                Run matching algorithm
+              </p>
+              <Badge
+                variant="outline"
+                className="text-xs font-mono"
+              >
                 {mode.toUpperCase()}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground">{entryCount} intake submissions in pool</p>
+            <p className="text-xs text-muted-foreground">
+              {entryCount} intake submissions in pool
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <Input
@@ -104,16 +131,24 @@ export const AlgorithmTab = ({
               onChange={(e) => setRunName(e.target.value)}
               disabled={running}
             />
-            <Button onClick={handleRun} disabled={running || entryCount === 0} className="shrink-0">
+            <Button
+              onClick={handleRun}
+              disabled={running || entryCount === 0}
+              className="shrink-0"
+            >
               {running ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
-                  <span className="hidden sm:inline">Running...</span>
+                  <span className="hidden sm:inline">
+                    Running...
+                  </span>
                 </>
               ) : (
                 <>
                   <Play className="size-4" />
-                  <span className="hidden sm:inline">Run matching</span>
+                  <span className="hidden sm:inline">
+                    Run matching
+                  </span>
                 </>
               )}
             </Button>
@@ -124,9 +159,13 @@ export const AlgorithmTab = ({
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(320px,400px)_1fr] gap-6 min-h-0">
         {/* Left: run list */}
         <div className="flex flex-col gap-2 lg:overflow-y-auto lg:max-h-[65vh] lg:pr-1">
-          <p className="text-sm font-medium lg:sticky lg:top-0 bg-background pb-1">Run history</p>
+          <p className="text-sm font-medium lg:sticky lg:top-0 bg-background pb-1">
+            Run history
+          </p>
           {runs.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No runs yet.</p>
+            <p className="text-sm text-muted-foreground">
+              No runs yet.
+            </p>
           ) : (
             runs.map((run) => (
               <RunHistoryItem
@@ -139,7 +178,9 @@ export const AlgorithmTab = ({
                 onUpdated={onRunUpdated}
                 resultsReleased={resultsReleased}
                 atTopLimit={atTopLimit}
-                duplicateRunNames={fingerprintDuplicates.get(run.id) ?? []}
+                duplicateRunNames={
+                  fingerprintDuplicates.get(run.id) ?? []
+                }
               />
             ))
           )}
@@ -152,9 +193,12 @@ export const AlgorithmTab = ({
               <div className="sticky top-0 bg-background pb-1 flex items-center justify-between gap-4">
                 <p className="text-sm font-medium">
                   {formationLabels[formationIndex]}
-                  {!loadingTeams && visibleTeams.length > 0 && (
-                    <span className="ml-2 font-normal text-muted-foreground">({visibleTeams.length} teams)</span>
-                  )}
+                  {!loadingTeams &&
+                    visibleTeams.length > 0 && (
+                      <span className="ml-2 font-normal text-muted-foreground">
+                        ({visibleTeams.length} teams)
+                      </span>
+                    )}
                 </p>
                 {!loadingTeams && (
                   <div className="flex items-center gap-1">
@@ -162,10 +206,19 @@ export const AlgorithmTab = ({
                       <Button
                         key={i}
                         size="sm"
-                        variant={formationIndex === i ? "default" : "outline"}
+                        variant={
+                          formationIndex === i
+                            ? "default"
+                            : "outline"
+                        }
                         className="h-7 px-2 text-xs"
                         onClick={() => setFormationIndex(i)}
-                        disabled={i > 0 && formations.find((f) => f.formation_index === i) === undefined}
+                        disabled={
+                          i > 0 &&
+                          formations.find(
+                            (f) => f.formation_index === i
+                          ) === undefined
+                        }
                       >
                         {formationLabels[i]}
                       </Button>
@@ -181,15 +234,22 @@ export const AlgorithmTab = ({
               ) : visibleTeams.length > 0 ? (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                   {visibleTeams.map((team) => (
-                    <TeamResultCard key={team.id} team={team} />
+                    <TeamResultCard
+                      key={team.id}
+                      team={team}
+                    />
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No teams found for this formation.</p>
+                <p className="text-sm text-muted-foreground">
+                  No teams found for this formation.
+                </p>
               )}
             </>
           ) : (
-            <p className="text-sm text-muted-foreground mt-6">Select a run to view its teams.</p>
+            <p className="text-sm text-muted-foreground mt-6">
+              Select a run to view its teams.
+            </p>
           )}
         </div>
       </div>

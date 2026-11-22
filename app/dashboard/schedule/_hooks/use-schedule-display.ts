@@ -21,30 +21,46 @@ export const useScheduleDisplay = (
 ): UseScheduleDisplayReturn => {
   const availableDays = useMemo(() => {
     const days: CalendarDay[] = [];
-    let currentDayStartMs = getDayStartFromMilliseconds(start_time);
+    let currentDayStartMs =
+      getDayStartFromMilliseconds(start_time);
 
     while (currentDayStartMs < end_time) {
       const dayEndMs = currentDayStartMs + ONE_DAY;
-      const dayLabel = getDateFromMilliseconds(currentDayStartMs);
-      days.push({ startMs: currentDayStartMs, endMs: dayEndMs, label: dayLabel });
+      const dayLabel = getDateFromMilliseconds(
+        currentDayStartMs
+      );
+      days.push({
+        startMs: currentDayStartMs,
+        endMs: dayEndMs,
+        label: dayLabel,
+      });
       currentDayStartMs = dayEndMs;
     }
 
     return days;
   }, [start_time, end_time]);
 
-  const [selectedDay, setSelectedDay] = useState<CalendarDay>(() => {
-    const now = new Date().getTime();
-    const todayStartMs = getDayStartFromMilliseconds(now);
+  const [selectedDay, setSelectedDay] =
+    useState<CalendarDay>(() => {
+      const now = new Date().getTime();
+      const todayStartMs = getDayStartFromMilliseconds(now);
 
-    const currentDay = availableDays.find((day) => day.startMs === todayStartMs);
+      const currentDay = availableDays.find(
+        (day) => day.startMs === todayStartMs
+      );
 
-    return currentDay ?? availableDays[0]!;
-  });
-  const [display, setDisplay] = useState<"calendar" | "table">("calendar");
+      return currentDay ?? availableDays[0]!;
+    });
+  const [display, setDisplay] = useState<
+    "calendar" | "table"
+  >("calendar");
 
-  const handleSelectDay = (dayLabel: CalendarDay["label"]) => {
-    const newSelectedDay = availableDays.find((day) => day.label === dayLabel);
+  const handleSelectDay = (
+    dayLabel: CalendarDay["label"]
+  ) => {
+    const newSelectedDay = availableDays.find(
+      (day) => day.label === dayLabel
+    );
     setSelectedDay(newSelectedDay ?? availableDays[0]!);
   };
 

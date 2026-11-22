@@ -11,7 +11,10 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-import { UseConfirmDeleteDialogReturn, UseItemDialogReturn } from "@/hooks";
+import {
+  UseConfirmDeleteDialogReturn,
+  UseItemDialogReturn,
+} from "@/hooks";
 
 import { getEventsColumns } from "../_lib";
 import type { Event } from "../types";
@@ -30,9 +33,15 @@ export const useEventsTable = (
   handleOpenEventFormDialog: UseEventFormDialogReturn["handleOpenEventFormDialog"],
   handleOpenConfirmDeleteDialog: UseConfirmDeleteDialogReturn<Event>["handleOpenConfirmDeleteDialog"]
 ): UseEventsTableReturn => {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "start_time", desc: false }]);
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "start_time", desc: false },
+  ]);
 
-  const eventsColumns = getEventsColumns(handleSelectItem, handleOpenEventFormDialog, handleOpenConfirmDeleteDialog);
+  const eventsColumns = getEventsColumns(
+    handleSelectItem,
+    handleOpenEventFormDialog,
+    handleOpenConfirmDeleteDialog
+  );
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -52,7 +61,9 @@ export const useEventsTable = (
     },
   });
 
-  const selectedEventIds = table.getSelectedRowModel().rows.map((row) => row.original.id);
+  const selectedEventIds = table
+    .getSelectedRowModel()
+    .rows.map((row) => row.original.id);
 
   return {
     table,

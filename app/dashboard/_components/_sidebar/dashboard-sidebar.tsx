@@ -24,7 +24,10 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { DISCORD_INVITE_PATH, DASHBOARD_SETTINGS_PATH } from "@/constants";
+import {
+  DISCORD_INVITE_PATH,
+  DASHBOARD_SETTINGS_PATH,
+} from "@/constants";
 import { Role } from "@/types";
 
 import { useDashboardSidebar } from "../../_hooks";
@@ -35,8 +38,17 @@ type DashboardSidebarProps = PropsWithChildren<{
 }> &
   ComponentProps<typeof Sidebar>;
 
-const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) => {
-  const { openSubMenus, handleOpenSubMenu, isPathActive, headerText } = useDashboardSidebar();
+const DashboardSidebar = ({
+  role,
+  children,
+  ...props
+}: DashboardSidebarProps) => {
+  const {
+    openSubMenus,
+    handleOpenSubMenu,
+    isPathActive,
+    headerText,
+  } = useDashboardSidebar();
 
   return (
     <SidebarProvider>
@@ -44,8 +56,16 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton size="lg" className="font-semibold text-lg text-nowrap px-2 flex items-center gap-3">
-                <Image src="/wildhacks.svg" alt="Dashboard Logo" width={30} height={39} />
+              <SidebarMenuButton
+                size="lg"
+                className="font-semibold text-lg text-nowrap px-2 flex items-center gap-3"
+              >
+                <Image
+                  src="/wildhacks.svg"
+                  alt="Dashboard Logo"
+                  width={30}
+                  height={39}
+                />
                 <span>Dashboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -55,14 +75,25 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
           <SidebarGroup className="flex flex-col gap-4">
             <SidebarMenu className="gap-2">
               {SIDEBAR_ITEMS.map((item) => {
-                if (!item.visibleTo.includes(role)) return null;
+                if (!item.visibleTo.includes(role))
+                  return null;
                 if (item.hasSubItems) {
-                  const hasActiveSubItem = item.subItems.some((subItem) => isPathActive(subItem.url));
-                  const isSubMenuOpen = openSubMenus[item.title] ?? hasActiveSubItem;
+                  const hasActiveSubItem =
+                    item.subItems.some((subItem) =>
+                      isPathActive(subItem.url)
+                    );
+                  const isSubMenuOpen =
+                    openSubMenus[item.title] ??
+                    hasActiveSubItem;
 
                   return (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton className="font-regular" onClick={() => handleOpenSubMenu(item.title)}>
+                      <SidebarMenuButton
+                        className="font-regular"
+                        onClick={() =>
+                          handleOpenSubMenu(item.title)
+                        }
+                      >
                         <item.icon />
                         <span>{item.title}</span>
                         <ChevronRight
@@ -72,9 +103,14 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
                       {isSubMenuOpen && (
                         <SidebarMenuSub>
                           {item.subItems.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubItem
+                              key={subItem.title}
+                            >
                               <SidebarMenuSubButton asChild>
-                                <Link href={subItem.url} className="font-regular">
+                                <Link
+                                  href={subItem.url}
+                                  className="font-regular"
+                                >
                                   {subItem.title}
                                 </Link>
                               </SidebarMenuSubButton>
@@ -88,7 +124,10 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.url} className="font-regular">
+                      <Link
+                        href={item.url}
+                        className="font-regular"
+                      >
                         <item.icon />
                         {item.title}
                       </Link>
@@ -103,7 +142,11 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
           <SidebarMenu className="gap-2">
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href={DISCORD_INVITE_PATH} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={DISCORD_INVITE_PATH}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Discord />
                   Join our Discord
                 </a>
@@ -111,7 +154,10 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <Link href={DASHBOARD_SETTINGS_PATH} className="font-regular">
+                <Link
+                  href={DASHBOARD_SETTINGS_PATH}
+                  className="font-regular"
+                >
                   <Settings />
                   Settings
                 </Link>
@@ -127,10 +173,15 @@ const DashboardSidebar = ({ role, children, ...props }: DashboardSidebarProps) =
         <div className="h-full flex flex-col rounded-lg min-w-0">
           <div className="flex h-12 shrink-0 items-center gap-2 px-4 border-b border-border">
             <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
             <p className="flex-1">{headerText}</p>
           </div>
-          <main className="flex-1 flex flex-col gap-4 p-4">{children}</main>
+          <main className="flex-1 flex flex-col gap-4 p-4">
+            {children}
+          </main>
         </div>
       </SidebarInset>
     </SidebarProvider>

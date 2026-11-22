@@ -13,9 +13,21 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { FieldError, Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import {
+  FieldError,
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 import { UseEventFormDialogReturn } from "../../_hooks";
@@ -26,7 +38,13 @@ type EventFormDialogProps = {
   availableDays: CalendarDay[];
 } & Pick<
   UseEventFormDialogReturn,
-  "isOpen" | "setIsOpen" | "eventId" | "handleSubmit" | "onSubmit" | "isSubmitting" | "control"
+  | "isOpen"
+  | "setIsOpen"
+  | "eventId"
+  | "handleSubmit"
+  | "onSubmit"
+  | "isSubmitting"
+  | "control"
 >;
 
 const EventFormDialog = ({
@@ -43,10 +61,17 @@ const EventFormDialog = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[600px] md:max-w-[800px] lg:max-w-[1000px] flex flex-col">
         <DialogHeader>
-          <DialogTitle>{eventId ? "Edit event" : "Create event"}</DialogTitle>
-          <DialogDescription>Please enter event details to continue.</DialogDescription>
+          <DialogTitle>
+            {eventId ? "Edit event" : "Create event"}
+          </DialogTitle>
+          <DialogDescription>
+            Please enter event details to continue.
+          </DialogDescription>
         </DialogHeader>
-        <form id="event-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="event-form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="flex gap-6">
             <div className="flex-3">
               <FieldGroup>
@@ -55,7 +80,9 @@ const EventFormDialog = ({
                     name="title"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -69,7 +96,12 @@ const EventFormDialog = ({
                           aria-invalid={fieldState.invalid}
                           autoComplete="off"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -79,7 +111,9 @@ const EventFormDialog = ({
                     name="body"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -94,7 +128,12 @@ const EventFormDialog = ({
                           autoComplete="off"
                           className="min-h-32 max-h-64 break-all"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -104,26 +143,47 @@ const EventFormDialog = ({
                     name="category"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
                           Category
                         </FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger
+                            id={field.name}
+                            aria-invalid={
+                              fieldState.invalid
+                            }
+                            tabIndex={0}
+                          >
                             <SelectValue placeholder="Select event category" />
                           </SelectTrigger>
                           <SelectContent>
-                            {EVENT_CATEGORIES.map((category) => (
-                              <SelectItem key={category} value={category}>
-                                {category}
-                              </SelectItem>
-                            ))}
+                            {EVENT_CATEGORIES.map(
+                              (category) => (
+                                <SelectItem
+                                  key={category}
+                                  value={category}
+                                >
+                                  {category}
+                                </SelectItem>
+                              )
+                            )}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -138,26 +198,45 @@ const EventFormDialog = ({
                     name="day"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
                         >
                           Day
                         </FieldLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id={field.name} aria-invalid={fieldState.invalid} tabIndex={0}>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger
+                            id={field.name}
+                            aria-invalid={
+                              fieldState.invalid
+                            }
+                            tabIndex={0}
+                          >
                             <SelectValue placeholder="Select event day" />
                           </SelectTrigger>
                           <SelectContent>
                             {availableDays.map((day) => (
-                              <SelectItem key={day.label} value={day.label}>
+                              <SelectItem
+                                key={day.label}
+                                value={day.label}
+                              >
                                 {day.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -167,7 +246,9 @@ const EventFormDialog = ({
                     name="start_time"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -183,7 +264,12 @@ const EventFormDialog = ({
                           aria-invalid={fieldState.invalid}
                           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -191,7 +277,9 @@ const EventFormDialog = ({
                     name="end_time"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -207,7 +295,12 @@ const EventFormDialog = ({
                           aria-invalid={fieldState.invalid}
                           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -215,7 +308,9 @@ const EventFormDialog = ({
                     name="location"
                     control={control}
                     render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
+                      <Field
+                        data-invalid={fieldState.invalid}
+                      >
                         <FieldLabel
                           htmlFor={field.name}
                           className="after:content-['*'] after:ml-0.5 after:text-red-500"
@@ -229,7 +324,12 @@ const EventFormDialog = ({
                           aria-invalid={fieldState.invalid}
                           autoComplete="off"
                         />
-                        {fieldState.invalid && <FieldError errors={[fieldState.error]} className="w-full text-start" />}
+                        {fieldState.invalid && (
+                          <FieldError
+                            errors={[fieldState.error]}
+                            className="w-full text-start"
+                          />
+                        )}
                       </Field>
                     )}
                   />
@@ -240,12 +340,26 @@ const EventFormDialog = ({
         </form>
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="outline" disabled={isSubmitting}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+            >
               Go back
             </Button>
           </DialogClose>
-          <Button type="submit" form="event-form" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : eventId ? "Update event" : "Create event"}
+          <Button
+            type="submit"
+            form="event-form"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : eventId ? (
+              "Update event"
+            ) : (
+              "Create event"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,24 +1,52 @@
 import { CalendarX } from "lucide-react";
 
 import { UseEventsReturn } from "@/app/dashboard/schedule/_hooks";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { UseItemDialogReturn } from "@/hooks";
 
 import { EventItem } from "..";
 import type { Event } from "../../schedule/types";
 
-type EventsListProps = Pick<UseEventsReturn, "events" | "isLoading"> &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown">;
+type EventsListProps = Pick<
+  UseEventsReturn,
+  "events" | "isLoading"
+> &
+  Pick<
+    UseItemDialogReturn<Event>,
+    "handleSelectItem" | "handleKeyDown"
+  >;
 
-const EventsList = ({ events, isLoading, handleSelectItem, handleKeyDown }: EventsListProps) => {
+const EventsList = ({
+  events,
+  isLoading,
+  handleSelectItem,
+  handleKeyDown,
+}: EventsListProps) => {
   if (isLoading) {
     return (
       <>
-        <span className="sr-only">Loading events, please wait</span>
-        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
-        <Skeleton className="h-[80px] w-full" aria-hidden="true" />
+        <span className="sr-only">
+          Loading events, please wait
+        </span>
+        <Skeleton
+          className="h-[80px] w-full"
+          aria-hidden="true"
+        />
+        <Skeleton
+          className="h-[80px] w-full"
+          aria-hidden="true"
+        />
+        <Skeleton
+          className="h-[80px] w-full"
+          aria-hidden="true"
+        />
       </>
     );
   }
@@ -31,17 +59,27 @@ const EventsList = ({ events, isLoading, handleSelectItem, handleKeyDown }: Even
             <CalendarX aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No upcoming events</EmptyTitle>
-          <EmptyDescription>More events will be added in the future. Check back soon!</EmptyDescription>
+          <EmptyDescription>
+            More events will be added in the future. Check
+            back soon!
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
   }
 
   return (
-    <ul className="flex flex-col gap-4 w-full" aria-label="Events list">
+    <ul
+      className="flex flex-col gap-4 w-full"
+      aria-label="Events list"
+    >
       {events.map((event) => (
         <li key={event.id}>
-          <EventItem handleSelectItem={handleSelectItem} handleKeyDown={handleKeyDown} {...event} />
+          <EventItem
+            handleSelectItem={handleSelectItem}
+            handleKeyDown={handleKeyDown}
+            {...event}
+          />
         </li>
       ))}
     </ul>

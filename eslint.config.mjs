@@ -14,8 +14,12 @@ const eslintConfig = defineConfig([
       tseslint,
     },
     rules: {
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/explicit-module-boundary-types":
+        "off",
       "@typescript-eslint/no-explicit-any": "warn",
     },
   },
@@ -28,7 +32,14 @@ const eslintConfig = defineConfig([
         "error",
         {
           type: "alphabetical",
-          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+          ],
         },
       ],
     },
@@ -68,6 +79,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "components/ui",
+    // Local Claude Code worktrees and settings
+    ".claude/**",
   ]),
 ]);
 

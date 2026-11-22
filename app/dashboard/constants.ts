@@ -4,9 +4,9 @@ import {
   Users,
   TableCellsMerge,
   BookOpenCheck,
-  GraduationCap,
-  Headset,
-  SquareCode,
+  // GraduationCap,
+  // Headset,
+  // SquareCode,
   QrCode,
   UsersRound,
 } from "lucide-react";
@@ -23,10 +23,10 @@ import {
   DASHBOARD_TEAM_MATCHING_PATH,
   GUIDE_PATH,
   DASHBOARD_JUDGING_ROUND_1_PATH,
-  DASHBOARD_JUDGING_ROUND_2_PATH,
-  DASHBOARD_MENTORING_PATH,
-  VIRTUAL_ZOOM_JUDGING_PATH,
-  DEVPOST_PATH,
+  // DASHBOARD_JUDGING_ROUND_2_PATH,
+  // DASHBOARD_MENTORING_PATH,
+  // VIRTUAL_ZOOM_JUDGING_PATH,
+  // DEVPOST_PATH,
 } from "@/constants";
 
 import type { SidebarItem } from "./types";
@@ -37,14 +37,24 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     hasSubItems: false,
     url: DASHBOARD_PATH,
     icon: Home,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
   {
     title: "Schedule",
     hasSubItems: false,
     url: DASHBOARD_SCHEDULE_PATH,
     icon: Calendar,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
   {
     title: "Manage users",
@@ -58,15 +68,22 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     hasSubItems: false,
     url: GUIDE_PATH,
     icon: TableCellsMerge,
-    visibleTo: [ADMIN, PARTICIPANT, JUDGE, JUDGE_AND_MENTOR],
+    visibleTo: [
+      ADMIN,
+      PARTICIPANT,
+      JUDGE,
+      JUDGE_AND_MENTOR,
+    ],
   },
-  {
-    title: "Mentoring",
-    hasSubItems: false,
-    url: DASHBOARD_MENTORING_PATH,
-    icon: GraduationCap,
-    visibleTo: [JUDGE_AND_MENTOR],
-  },
+
+  // {
+  //   title: "Mentoring",
+  //   hasSubItems: false,
+  //   url: DASHBOARD_MENTORING_PATH,
+  //   icon: GraduationCap,
+  //   visibleTo: [JUDGE_AND_MENTOR],
+  // },
+
   {
     title: "Judging",
     hasSubItems: true,
@@ -77,26 +94,28 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         title: "Round 1",
         url: DASHBOARD_JUDGING_ROUND_1_PATH,
       },
-      {
-        title: "Round 2",
-        url: DASHBOARD_JUDGING_ROUND_2_PATH,
-      },
+      // {
+      //   title: "Round 2",
+      //   url: DASHBOARD_JUDGING_ROUND_2_PATH,
+      // },
     ],
   },
-  {
-    title: "Devpost",
-    hasSubItems: false,
-    url: DEVPOST_PATH,
-    icon: SquareCode,
-    visibleTo: [PARTICIPANT, ADMIN],
-  },
-  {
-    title: "Virtual Judging Zoom",
-    hasSubItems: false,
-    url: VIRTUAL_ZOOM_JUDGING_PATH,
-    icon: Headset,
-    visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
-  },
+  // {
+  //   title: "Devpost",
+  //   hasSubItems: false,
+  //   url: DEVPOST_PATH,
+  //   icon: SquareCode,
+  //   visibleTo: [PARTICIPANT, ADMIN],
+  // },
+
+  // {
+  //   title: "Virtual Judging Zoom",
+  //   hasSubItems: false,
+  //   url: VIRTUAL_ZOOM_JUDGING_PATH,
+  //   icon: Headset,
+  //   visibleTo: [JUDGE, JUDGE_AND_MENTOR, ADMIN],
+  // },
+
   {
     title: "Check-in",
     hasSubItems: false,

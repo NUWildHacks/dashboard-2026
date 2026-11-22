@@ -4,15 +4,31 @@ import { Clock, MapPin } from "lucide-react";
 import { memo } from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from "@/components/ui/item";
 import type { UseItemDialogReturn } from "@/hooks";
 import { cn, getEventTimeRange } from "@/lib";
 
 import { ROW_HEIGHT } from "../../constants";
 import type { Event } from "../../types";
 
-type CalendarItemProps = Pick<Event, "id" | "category" | "title" | "start_time" | "end_time" | "location"> &
-  Pick<UseItemDialogReturn<Event>, "handleSelectItem" | "handleKeyDown"> & {
+type CalendarItemProps = Pick<
+  Event,
+  | "id"
+  | "category"
+  | "title"
+  | "start_time"
+  | "end_time"
+  | "location"
+> &
+  Pick<
+    UseItemDialogReturn<Event>,
+    "handleSelectItem" | "handleKeyDown"
+  > & {
     left: number;
     top: number;
     width: number;
@@ -58,18 +74,28 @@ const CalendarItem = ({
         onClick={() => handleSelectItem(id)}
         onKeyDown={(event) => handleKeyDown(event, id)}
       >
-        <ItemContent className={`gap-2 min-w-0 ${isCompact ? "flex-row justify-start items-center" : "flex-col"}`}>
-          <ItemTitle className={`${isCompact ? "" : "w-full"}`}>
+        <ItemContent
+          className={`gap-2 min-w-0 ${isCompact ? "flex-row justify-start items-center" : "flex-col"}`}
+        >
+          <ItemTitle
+            className={`${isCompact ? "" : "w-full"}`}
+          >
             <span className="truncate">{title}</span>
           </ItemTitle>
           <ItemDescription className="flex flex-row items-center gap-2">
             <Badge variant="secondary">{category}</Badge>
             <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-              <Clock className="size-3 shrink-0" aria-hidden="true" />
+              <Clock
+                className="size-3 shrink-0"
+                aria-hidden="true"
+              />
               {getEventTimeRange(start_time, end_time)}
             </span>
             <span className="flex items-center gap-1 text-xs font-medium text-nowrap">
-              <MapPin className="size-3 shrink-0" aria-hidden="true" />
+              <MapPin
+                className="size-3 shrink-0"
+                aria-hidden="true"
+              />
               {location}
             </span>
           </ItemDescription>

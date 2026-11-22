@@ -13,36 +13,46 @@ export type UseEventWithdrawReturn = {
   withdraw: () => Promise<void>;
 };
 
-export const useEventWithdraw = (): UseEventWithdrawReturn => {
-  const router = useRouter();
+export const useEventWithdraw =
+  (): UseEventWithdrawReturn => {
+    const router = useRouter();
 
-  const [isWithdrawing, setIsWithdrawing] = useState(false);
+    const [isWithdrawing, setIsWithdrawing] =
+      useState(false);
 
-  const withdraw = async () => {
-    setIsWithdrawing(true);
+    const withdraw = async () => {
+      setIsWithdrawing(true);
 
-    try {
-      const result = await withdrawEvent();
-      const { success } = result;
+      try {
+        const result = await withdrawEvent();
+        const { success } = result;
 
-      if (!success) {
-        const { error } = result;
-        throw new Error(error);
+        if (!success) {
+          const { error } = result;
+          throw new Error(error);
+        }
+
+        router.replace(ROOT_PATH);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "An unknown error occurred";
+        console.error(
+          "Withdraw event error:",
+          errorMessage
+        );
+
+        toast.error("Failed to withdraw from event", {
+          description: errorMessage,
+        });
+      } finally {
+        setIsWithdrawing(false);
       }
+    };
 
-      router.replace(ROOT_PATH);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      console.error("Withdraw event error:", errorMessage);
-
-      toast.error("Failed to withdraw from event", { description: errorMessage });
-    } finally {
-      setIsWithdrawing(false);
-    }
+    return {
+      isWithdrawing,
+      withdraw,
+    };
   };
-
-  return {
-    isWithdrawing,
-    withdraw,
-  };
-};

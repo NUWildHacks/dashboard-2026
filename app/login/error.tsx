@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ROOT_PATH } from "@/constants";
 import type { ErrorPageProps } from "@/types";
 
@@ -19,7 +25,8 @@ const LoginError = ({ error, reset }: ErrorPageProps) => {
         <CardHeader>
           <CardTitle>Oops! 🫣</CardTitle>
           <CardDescription>
-            Something went wrong while processing your request. We&apos;re sorry about that!
+            Something went wrong while processing your
+            request. We&apos;re sorry about that!
           </CardDescription>
         </CardHeader>
         <CardFooter className="flex-row-reverse">

@@ -1,4 +1,6 @@
-export const formatDateWithWeekday = (dateLabel: string) => {
+export const formatDateWithWeekday = (
+  dateLabel: string
+) => {
   const parsed = new Date(`${dateLabel} 12:00:00`);
   if (Number.isNaN(parsed.getTime())) {
     return dateLabel;
@@ -12,5 +14,9 @@ export const formatDateWithWeekday = (dateLabel: string) => {
   }).format(parsed);
 };
 
-export const getScheduleRowClass = (highlight?: "deadline") =>
-  highlight === "deadline" ? "guide-schedule-row-deadline" : undefined;
+export const getScheduleRowClass = (
+  highlight?: "deadline"
+) =>
+  highlight === "deadline"
+    ? "guide-schedule-row-deadline"
+    : undefined;

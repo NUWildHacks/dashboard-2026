@@ -1,6 +1,15 @@
 "use client";
 
-import { ChevronDown, ChevronUp, Loader2, Pencil, Star, TriangleAlert, X, Check } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+  Pencil,
+  Star,
+  TriangleAlert,
+  X,
+  Check,
+} from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -8,7 +17,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib";
-import type { TeamMatchingMode, TeamMatchingRun } from "@/types";
+import type {
+  TeamMatchingMode,
+  TeamMatchingRun,
+} from "@/types";
 
 import { deleteRun } from "../_actions/delete-run.actions";
 import { renameRun } from "../_actions/rename-run.actions";
@@ -20,7 +32,10 @@ type RunHistoryItemProps = {
   isSelected?: boolean;
   onSelect?: () => void;
   onDeleted: (runId: string) => void;
-  onUpdated: (runId: string, patch: Partial<TeamMatchingRun>) => void;
+  onUpdated: (
+    runId: string,
+    patch: Partial<TeamMatchingRun>
+  ) => void;
   resultsReleased?: boolean;
   atTopLimit?: boolean;
   duplicateRunNames?: string[];
@@ -42,7 +57,9 @@ export const RunHistoryItem = ({
   const [showWarnings, setShowWarnings] = useState(false);
 
   const [editing, setEditing] = useState(false);
-  const [nameInput, setNameInput] = useState(run.name ?? "");
+  const [nameInput, setNameInput] = useState(
+    run.name ?? ""
+  );
   const [savingName, setSavingName] = useState(false);
 
   const handleDelete = async () => {
@@ -53,7 +70,9 @@ export const RunHistoryItem = ({
       toast.success("Run deleted");
       onDeleted(run.id);
     } else {
-      toast.error("Failed to delete", { description: result.error });
+      toast.error("Failed to delete", {
+        description: result.error,
+      });
     }
   };
 
@@ -64,9 +83,15 @@ export const RunHistoryItem = ({
     setTogglingTop(false);
     if (result.success) {
       onUpdated(run.id, { is_top: next });
-      toast.success(next ? "Marked as top choice" : "Removed from top choice");
+      toast.success(
+        next
+          ? "Marked as top choice"
+          : "Removed from top choice"
+      );
     } else {
-      toast.error("Failed to update", { description: result.error });
+      toast.error("Failed to update", {
+        description: result.error,
+      });
     }
   };
 
@@ -79,7 +104,9 @@ export const RunHistoryItem = ({
       setEditing(false);
       toast.success("Run renamed");
     } else {
-      toast.error("Failed to rename", { description: result.error });
+      toast.error("Failed to rename", {
+        description: result.error,
+      });
     }
   };
 
@@ -89,14 +116,18 @@ export const RunHistoryItem = ({
   };
 
   const warningCount = run.warnings?.length ?? 0;
-  const displayName = run.name || new Date(run.run_at).toLocaleString("en-US");
+  const displayName =
+    run.name ||
+    new Date(run.run_at).toLocaleString("en-US");
 
   return (
     <div
       className={cn(
         "flex flex-col rounded-lg border transition-colors",
         isSelected && "border-primary bg-accent/30",
-        onSelect && !isSelected && "cursor-pointer hover:bg-accent/20"
+        onSelect &&
+          !isSelected &&
+          "cursor-pointer hover:bg-accent/20"
       )}
     >
       <div
@@ -107,7 +138,8 @@ export const RunHistoryItem = ({
         onKeyDown={
           onSelect
             ? (e) => {
-                if (e.key === "Enter" || e.key === " ") onSelect();
+                if (e.key === "Enter" || e.key === " ")
+                  onSelect();
               }
             : undefined
         }
@@ -120,10 +152,13 @@ export const RunHistoryItem = ({
                 <Input
                   className="h-6 text-sm py-0 px-2 w-40"
                   value={nameInput}
-                  onChange={(e) => setNameInput(e.target.value)}
+                  onChange={(e) =>
+                    setNameInput(e.target.value)
+                  }
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleSaveName();
-                    if (e.key === "Escape") handleCancelEdit();
+                    if (e.key === "Escape")
+                      handleCancelEdit();
                   }}
                 />
                 <button
@@ -134,7 +169,11 @@ export const RunHistoryItem = ({
                   disabled={savingName}
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  {savingName ? <Loader2 className="size-3.5 animate-spin" /> : <Check className="size-3.5" />}
+                  {savingName ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <Check className="size-3.5" />
+                  )}
                 </button>
                 <button
                   onClick={(e) => {
@@ -148,7 +187,9 @@ export const RunHistoryItem = ({
               </>
             ) : (
               <>
-                <span className="text-sm font-medium truncate">{displayName}</span>
+                <span className="text-sm font-medium truncate">
+                  {displayName}
+                </span>
                 <button
                   className="text-muted-foreground hover:text-foreground"
                   onClick={(e) => {
@@ -165,11 +206,21 @@ export const RunHistoryItem = ({
 
           {/* Meta row */}
           <div className="flex items-center gap-2 flex-wrap">
-            <Badge variant={run.status === "published" ? "default" : "secondary"} className="capitalize">
+            <Badge
+              variant={
+                run.status === "published"
+                  ? "default"
+                  : "secondary"
+              }
+              className="capitalize"
+            >
               {run.status}
             </Badge>
             {run.is_top && (
-              <Badge variant="outline" className="text-amber-600 border-amber-400 gap-1">
+              <Badge
+                variant="outline"
+                className="text-amber-600 border-amber-400 gap-1"
+              >
                 <Star className="size-3 fill-amber-500 text-amber-500" />
                 Top
               </Badge>
@@ -192,18 +243,28 @@ export const RunHistoryItem = ({
                 }}
               >
                 <TriangleAlert className="size-3" />
-                {warningCount} warning{warningCount !== 1 ? "s" : ""}
-                {showWarnings ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
+                {warningCount} warning
+                {warningCount !== 1 ? "s" : ""}
+                {showWarnings ? (
+                  <ChevronUp className="size-3" />
+                ) : (
+                  <ChevronDown className="size-3" />
+                )}
               </button>
             )}
             {run.name && (
-              <span className="text-xs text-muted-foreground">{new Date(run.run_at).toLocaleString("en-US")}</span>
+              <span className="text-xs text-muted-foreground">
+                {new Date(run.run_at).toLocaleString(
+                  "en-US"
+                )}
+              </span>
             )}
           </div>
 
           <p className="text-sm text-muted-foreground">
-            {run.stats.total_teams} teams &middot; {run.stats.total_participants} participants &middot;{" "}
-            {run.stats.unmatched_count} unmatched
+            {run.stats.total_teams} teams &middot;{" "}
+            {run.stats.total_participants} participants
+            &middot; {run.stats.unmatched_count} unmatched
           </p>
         </div>
 
@@ -215,7 +276,12 @@ export const RunHistoryItem = ({
               e.stopPropagation();
               handleToggleTop();
             }}
-            disabled={togglingTop || deleting || resultsReleased || (atTopLimit && !run.is_top)}
+            disabled={
+              togglingTop ||
+              deleting ||
+              resultsReleased ||
+              (atTopLimit && !run.is_top)
+            }
             title={
               resultsReleased
                 ? "Unrelease results to change top choice"
@@ -229,7 +295,12 @@ export const RunHistoryItem = ({
             {togglingTop ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              <Star className={cn("size-4", run.is_top && "fill-current")} />
+              <Star
+                className={cn(
+                  "size-4",
+                  run.is_top && "fill-current"
+                )}
+              />
             )}
             {run.is_top ? "Top Choice" : "Mark Top Choice"}
           </Button>
@@ -240,10 +311,20 @@ export const RunHistoryItem = ({
               e.stopPropagation();
               handleDelete();
             }}
-            disabled={togglingTop || deleting || resultsReleased}
-            title={resultsReleased ? "Unrelease results to delete" : undefined}
+            disabled={
+              togglingTop || deleting || resultsReleased
+            }
+            title={
+              resultsReleased
+                ? "Unrelease results to delete"
+                : undefined
+            }
           >
-            {deleting ? <Loader2 className="size-4 animate-spin" /> : "Delete"}
+            {deleting ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              "Delete"
+            )}
           </Button>
         </div>
       </div>
@@ -251,7 +332,10 @@ export const RunHistoryItem = ({
       {showWarnings && warningCount > 0 && (
         <div className="border-t px-4 pb-3 pt-2 flex flex-col gap-1">
           {run.warnings.map((w, i) => (
-            <div key={i} className="flex items-start gap-2 text-sm text-yellow-700">
+            <div
+              key={i}
+              className="flex items-start gap-2 text-sm text-yellow-700"
+            >
               <TriangleAlert className="size-3.5 mt-0.5 shrink-0 text-yellow-500" />
               <span>{w.message}</span>
             </div>

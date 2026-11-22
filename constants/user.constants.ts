@@ -6,7 +6,13 @@ import levelsOfStudy from "@/data/levels-of-study.json";
 import races from "@/data/races.json";
 import schools from "@/data/schools.json";
 import tshirtSizes from "@/data/tshirt-sizes.json";
-import type { ParticipantUser, AdminUser, JudgeUser, User, JudgeAndMentorUser } from "@/types/user.types";
+import type {
+  ParticipantUser,
+  AdminUser,
+  JudgeUser,
+  User,
+  JudgeAndMentorUser,
+} from "@/types/user.types";
 
 export const COUNTRIES = countries;
 export const SCHOOLS = schools;
@@ -20,15 +26,27 @@ export const DIETARY_RESTRICTIONS = dietaryRestrictions;
 export const OTHER_MODALITY = "Other" as const;
 export const IN_PERSON_MODALITY = "In-Person" as const;
 export const REMOTE_MODALITY = "Remote" as const;
-export const MODALITIES = [IN_PERSON_MODALITY, REMOTE_MODALITY, OTHER_MODALITY] as const;
+export const MODALITIES = [
+  IN_PERSON_MODALITY,
+  REMOTE_MODALITY,
+  OTHER_MODALITY,
+] as const;
 
 export const PARTICIPANT = "Participant" as const;
 export const JUDGE = "Judge" as const;
 export const JUDGE_AND_MENTOR = "Judge/Mentor" as const;
 export const ADMIN = "Admin" as const;
-export const ROLES = [PARTICIPANT, JUDGE, JUDGE_AND_MENTOR, ADMIN] as const;
+export const ROLES = [
+  PARTICIPANT,
+  JUDGE,
+  JUDGE_AND_MENTOR,
+  ADMIN,
+] as const;
 
-export const MENTORING_TIMESLOTS = ["1-5pm", "5-9pm"] as const;
+export const MENTORING_TIMESLOTS = [
+  "1-5pm",
+  "5-9pm",
+] as const;
 
 export const USER_FIELDS = {
   email: "email",
@@ -56,11 +74,17 @@ export const PARTICIPANT_USER_FIELDS = {
   mlh_code_of_conduct: "mlh_code_of_conduct",
   mlh_privacy_policy: "mlh_privacy_policy",
   mlh_marketing: "mlh_marketing",
-} as const satisfies Record<keyof Omit<ParticipantUser, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<ParticipantUser, "id">,
+  string
+>;
 
 export const ADMIN_USER_FIELDS = {
   ...USER_FIELDS,
-} as const satisfies Record<keyof Omit<AdminUser, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<AdminUser, "id">,
+  string
+>;
 
 export const JUDGE_USER_FIELDS = {
   ...USER_FIELDS,
@@ -68,7 +92,10 @@ export const JUDGE_USER_FIELDS = {
   modality: "modality",
   other_modality: "other_modality",
   onboarded: "onboarded",
-} as const satisfies Record<keyof Omit<JudgeUser, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<JudgeUser, "id">,
+  string
+>;
 
 export const JUDGE_AND_MENTOR_USER_FIELDS = {
   ...USER_FIELDS,
@@ -77,4 +104,7 @@ export const JUDGE_AND_MENTOR_USER_FIELDS = {
   other_modality: "other_modality",
   mentoring_timeslot: "mentoring_timeslot",
   onboarded: "onboarded",
-} as const satisfies Record<keyof Omit<JudgeAndMentorUser, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<JudgeAndMentorUser, "id">,
+  string
+>;
