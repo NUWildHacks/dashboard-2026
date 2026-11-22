@@ -51,7 +51,7 @@ export const selectAllRows = async <T>(
 
   // Continue from the last row received and stop only on an empty page, so a server limit below
   // PAGE_SIZE never cuts the result short.
-  for (let from = 0; ; ) {
+  for (let from = 0; ;) {
     const { data } = await queryPage(
       from,
       from + PAGE_SIZE - 1

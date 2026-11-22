@@ -165,8 +165,8 @@ function greedyAssign(
 
   // 1. Fill locked clusters first (hard: required teammates already together)
   for (const cluster of lockedClusters) {
-    const clusterMembers = cluster.map(
-      (id) => intakeMap.get(id)!
+    const clusterMembers = cluster.map((id) =>
+      intakeMap.get(id)!
     );
     cluster.forEach((id) => assigned.add(id));
 
