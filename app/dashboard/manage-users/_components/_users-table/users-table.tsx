@@ -26,21 +26,36 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
+  WAITLISTED,
   ROLES,
 } from "@/constants";
 import { useConfirmDeleteDialog } from "@/hooks";
 import { User } from "@/types";
 
-import { ConfirmDeleteUsersDialog } from "..";
+import {
+  ConfirmDeleteUsersDialog,
+  ConfirmPromoteUsersDialog,
+} from "..";
 import { deleteUsers } from "../../_actions";
-import { useUsersTable } from "../../_hooks";
+import {
+  usePromoteUsersDialog,
+  useUsersTable,
+} from "../../_hooks";
 
 type UsersTableProps = {
   userId: User["id"];
   users: User[];
+  /** Participant rows now, for the promote dialog's limit warning. */
+  participantCount: number;
+  maxParticipants: number;
 };
 
-const UsersTable = ({ userId, users }: UsersTableProps) => {
+const UsersTable = ({
+  userId,
+  users,
+  participantCount,
+  maxParticipants,
+}: UsersTableProps) => {
   const useConfirmDeleteDialogReturn =
     useConfirmDeleteDialog<User>(deleteUsers, "users");
   const { handleOpenConfirmDeleteDialog } =
@@ -56,6 +71,12 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
     usersColumns,
     handleDownloadCSV,
   } = useUsersTable(users, handleOpenConfirmDeleteDialog);
+
+  const usePromoteUsersDialogReturn = usePromoteUsersDialog(
+    () => table.resetRowSelection()
+  );
+  const { handleOpenPromoteDialog } =
+    usePromoteUsersDialogReturn;
 
   return (
     <>
@@ -85,6 +106,7 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
                 </SelectContent>
               </Select>
               {(role === PARTICIPANT ||
+                role === WAITLISTED ||
                 role === JUDGE ||
                 role === JUDGE_AND_MENTOR) && (
                 <Button
@@ -95,6 +117,17 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
                 </Button>
               )}
             </div>
+            {role === WAITLISTED &&
+              selectedUserIds.length > 0 && (
+                <Button
+                  onClick={() =>
+                    handleOpenPromoteDialog(selectedUserIds)
+                  }
+                  className="w-full md:w-auto"
+                >
+                  Promote to participant
+                </Button>
+              )}
             {selectedUserIds.length > 0 && (
               <Button
                 variant="destructive"
@@ -183,6 +216,11 @@ const UsersTable = ({ userId, users }: UsersTableProps) => {
       <ConfirmDeleteUsersDialog
         userId={userId}
         {...useConfirmDeleteDialogReturn}
+      />
+      <ConfirmPromoteUsersDialog
+        participantCount={participantCount}
+        maxParticipants={maxParticipants}
+        {...usePromoteUsersDialogReturn}
       />
     </>
   );

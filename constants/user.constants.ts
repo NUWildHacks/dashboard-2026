@@ -33,11 +33,14 @@ export const MODALITIES = [
 ] as const;
 
 export const PARTICIPANT = "Participant" as const;
+// A participant who registered after the event was full (max_participants).
+export const WAITLISTED = "Waitlisted" as const;
 export const JUDGE = "Judge" as const;
 export const JUDGE_AND_MENTOR = "Judge/Mentor" as const;
 export const ADMIN = "Admin" as const;
 export const ROLES = [
   PARTICIPANT,
+  WAITLISTED,
   JUDGE,
   JUDGE_AND_MENTOR,
   ADMIN,

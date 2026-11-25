@@ -29,10 +29,13 @@ import {
   MultiSelectItem,
 } from "@/components/ui/multi-select";
 import { DIETARY_RESTRICTIONS } from "@/constants";
-import type { ParticipantUser } from "@/types";
+import type {
+  ParticipantUser,
+  WaitlistedUser,
+} from "@/types";
 
 type EditParticipantProfileFormProps = {
-  participantUser: ParticipantUser;
+  participantUser: ParticipantUser | WaitlistedUser;
 };
 
 const EditParticipantProfileForm = ({

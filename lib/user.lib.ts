@@ -11,6 +11,7 @@ import {
   REGISTRATION_PATH,
   CLOSED_REGISTRATION,
   JUDGE_AND_MENTOR,
+  WAITLISTED,
 } from "@/constants";
 import type {
   ActionResult,
@@ -119,6 +120,8 @@ const requireRole = (
     const defaultMessages: Record<User["role"], string> = {
       [PARTICIPANT]:
         "You must be a participant to perform this action",
+      [WAITLISTED]:
+        "You must be on the waitlist to perform this action",
       [ADMIN]:
         "You must be an administrator to perform this action",
       [JUDGE]: "You must be a judge to perform this action",

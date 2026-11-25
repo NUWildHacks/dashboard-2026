@@ -5,6 +5,7 @@ import {
   LOGIN_PATH,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
+  WAITLISTED,
 } from "@/constants";
 import { getSecrets } from "@/lib/secrets.lib";
 import {
@@ -16,6 +17,7 @@ import type {
   JudgeUser,
   JudgeAndMentorUser,
   ParticipantUser,
+  WaitlistedUser,
   WildHacksConfig,
   WildHacksSecrets,
 } from "@/types";
@@ -63,9 +65,12 @@ const SettingsPage = async () => {
       )}
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Profile</h2>
-        {user.role === PARTICIPANT && (
+        {(user.role === PARTICIPANT ||
+          user.role === WAITLISTED) && (
           <EditParticipantProfileForm
-            participantUser={user as ParticipantUser}
+            participantUser={
+              user as ParticipantUser | WaitlistedUser
+            }
           />
         )}
         {(user.role === JUDGE ||

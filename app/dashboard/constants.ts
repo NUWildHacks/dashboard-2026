@@ -16,6 +16,7 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
+  WAITLISTED,
   DASHBOARD_CHECK_IN_PATH,
   DASHBOARD_MANAGE_USERS_PATH,
   DASHBOARD_SCHEDULE_PATH,
@@ -40,6 +41,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [
       ADMIN,
       PARTICIPANT,
+      WAITLISTED,
       JUDGE,
       JUDGE_AND_MENTOR,
     ],
@@ -52,6 +54,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [
       ADMIN,
       PARTICIPANT,
+      WAITLISTED,
       JUDGE,
       JUDGE_AND_MENTOR,
     ],
@@ -71,6 +74,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     visibleTo: [
       ADMIN,
       PARTICIPANT,
+      WAITLISTED,
       JUDGE,
       JUDGE_AND_MENTOR,
     ],

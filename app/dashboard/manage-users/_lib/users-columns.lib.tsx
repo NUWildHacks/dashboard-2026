@@ -22,6 +22,7 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
   PARTICIPANT,
+  WAITLISTED,
 } from "@/constants";
 import { UseConfirmDeleteDialogReturn } from "@/hooks";
 import {
@@ -151,13 +152,16 @@ export const getUsersColumns = (
   const roleSpecificColumns: ColumnDef<User>[] = [];
   const roleSpecificMetadataColumns: ColumnDef<User>[] = [];
 
-  if (role === PARTICIPANT) {
+  if (role === PARTICIPANT || role === WAITLISTED) {
     roleSpecificColumns.push({
       accessorKey: "github_username",
       header: "GitHub Username",
       cell: ({ row }) => {
         const user = row.original;
-        if (user.role === PARTICIPANT) {
+        if (
+          user.role === PARTICIPANT ||
+          user.role === WAITLISTED
+        ) {
           return (
             <div className="text-left text-muted-foreground">
               {user.github_username || "None"}

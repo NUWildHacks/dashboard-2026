@@ -30,6 +30,7 @@ export type {
   TShirtSize,
   User,
   Modality,
+  WaitlistedUser,
 } from "./user.types";
 export type {
   WildHacksConfig,

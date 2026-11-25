@@ -33,6 +33,10 @@ const chartConfig = {
     label: "Participants",
     color: "var(--chart-1)",
   },
+  waitlisted: {
+    label: "Waitlisted",
+    color: "var(--chart-5)",
+  },
   judges: { label: "Judges", color: "var(--chart-2)" },
   mentors: { label: "Mentors", color: "var(--chart-3)" },
   admins: { label: "Admins", color: "var(--chart-4)" },
@@ -42,6 +46,7 @@ type StatisticsProps = WildHacksStatistics;
 
 const Statistics = ({
   participants,
+  waitlisted,
   judges,
   mentors,
   admins,
@@ -56,6 +61,11 @@ const Statistics = ({
         name: "participants",
         value: participants,
         fill: "var(--color-participants)",
+      },
+      {
+        name: "waitlisted",
+        value: waitlisted,
+        fill: "var(--color-waitlisted)",
       },
       {
         name: "judges",
@@ -73,7 +83,7 @@ const Statistics = ({
         fill: "var(--color-admins)",
       },
     ],
-    [participants, judges, mentors, admins]
+    [participants, waitlisted, judges, mentors, admins]
   );
 
   const [activeName, setActiveName] = React.useState(

@@ -6,6 +6,7 @@ import {
   JUDGE,
   LOGIN_PATH,
   JUDGE_AND_MENTOR,
+  WAITLISTED,
 } from "@/constants";
 import {
   getAuthenticatedUser,
@@ -15,6 +16,7 @@ import {
 import {
   DashboardSidebar,
   OnboardingDialog,
+  WaitlistBanner,
 } from "./_components";
 
 type DashboardLayoutProps = PropsWithChildren;
@@ -35,7 +37,14 @@ const DashboardLayout = async ({
 
   return (
     <>
-      <DashboardSidebar role={role}>
+      <DashboardSidebar
+        role={role}
+        banner={
+          role === WAITLISTED ? (
+            <WaitlistBanner />
+          ) : undefined
+        }
+      >
         {children}
       </DashboardSidebar>
       {(role === JUDGE || role === JUDGE_AND_MENTOR) && (

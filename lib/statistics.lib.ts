@@ -7,6 +7,7 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
   ADMIN,
+  WAITLISTED,
 } from "@/constants";
 import {
   PROJECTS_TABLE,
@@ -49,12 +50,14 @@ export const calculateStatistics = cache(
 
     const [
       participants,
+      waitlisted,
       judges,
       mentors,
       admins,
       projects,
     ] = await Promise.all([
       countUsers(PARTICIPANT),
+      countUsers(WAITLISTED),
       countUsers(JUDGE),
       countUsers(JUDGE_AND_MENTOR),
       countUsers(ADMIN),
@@ -66,6 +69,7 @@ export const calculateStatistics = cache(
 
     return {
       participants,
+      waitlisted,
       judges,
       mentors,
       admins,

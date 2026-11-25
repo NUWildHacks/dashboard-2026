@@ -23,8 +23,13 @@ import {
 } from "../_schemas/registration-form.schemas";
 import { checkUserCanLogin } from "../../login/_lib/check-user-can-login";
 
+/** On success, `waitlisted` is true when the event was full and the user joined the waitlist. */
 export type RegisterUserResult =
-  ActionResult<RegistrationFormSchema>;
+  | { success: true; waitlisted: boolean }
+  | Extract<
+      ActionResult<RegistrationFormSchema>,
+      { success: false }
+    >;
 
 export const registerUser = async (
   data: RegistrationFormSchema,
@@ -116,8 +121,8 @@ export const registerUser = async (
       throw new Error("The event has ended");
     }
 
-    // Checks the participant limit, writes the row, and removes the pre-created email row in one
-    // transaction.
+    // Checks the participant limit, writes the row (as Waitlisted when the event is full), and
+    // removes the pre-created email row in one transaction.
     const { data: outcome } = await supabaseAdmin
       .rpc("register_participant", {
         p_row: {
@@ -133,14 +138,14 @@ export const registerUser = async (
       })
       .throwOnError();
 
-    if (outcome === "full") {
-      return { success: false, error: "The event is full" };
-    }
     if (outcome === "role_conflict") {
       return {
         success: false,
         error: "This account is not a participant account.",
       };
+    }
+    if (outcome === "waitlisted") {
+      return { success: true, waitlisted: true };
     }
     if (outcome !== "registered") {
       throw new Error(
@@ -148,7 +153,7 @@ export const registerUser = async (
       );
     }
 
-    return { success: true };
+    return { success: true, waitlisted: false };
   } catch (error) {
     const detailedError =
       error instanceof Error

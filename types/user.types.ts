@@ -14,6 +14,7 @@ import {
   PARTICIPANT,
   JUDGE_AND_MENTOR,
   MENTORING_TIMESLOTS,
+  WAITLISTED,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -64,6 +65,14 @@ export type ParticipantUser = BaseUser & {
   mlh_marketing: boolean;
 };
 
+/** Has the same fields as a participant. Registered after the event was full. */
+export type WaitlistedUser = Omit<
+  ParticipantUser,
+  "role"
+> & {
+  role: typeof WAITLISTED;
+};
+
 export type AdminUser = BaseUser & {
   role: typeof ADMIN;
 };
@@ -92,6 +101,7 @@ export type JudgeAndMentorUser = BaseUser & {
 
 export type User =
   | ParticipantUser
+  | WaitlistedUser
   | AdminUser
   | JudgeUser
   | JudgeAndMentorUser;

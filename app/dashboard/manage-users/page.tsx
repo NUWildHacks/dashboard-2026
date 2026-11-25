@@ -8,7 +8,10 @@ import {
   JUDGE,
   JUDGE_AND_MENTOR,
 } from "@/constants";
-import { getAuthenticatedUser } from "@/lib/server";
+import {
+  getAuthenticatedUser,
+  getConfig,
+} from "@/lib/server";
 
 import {
   JudgingAssignmentsTable,
@@ -16,6 +19,7 @@ import {
 } from "./_components";
 import {
   getJudgingAssignmentsMap,
+  getParticipantCount,
   getProjectsMap,
   getUsers,
 } from "./_lib";
@@ -27,12 +31,19 @@ const ManageUsersPage = async () => {
     await getAuthenticatedUser(redirectPath);
   if (role !== ADMIN) redirect(DASHBOARD_PATH);
 
-  const [users, judgingAssignmentsMap, projectsMap] =
-    await Promise.all([
-      getUsers(),
-      getJudgingAssignmentsMap(),
-      getProjectsMap(),
-    ]);
+  const [
+    users,
+    judgingAssignmentsMap,
+    projectsMap,
+    participantCount,
+    { max_participants },
+  ] = await Promise.all([
+    getUsers(),
+    getJudgingAssignmentsMap(),
+    getProjectsMap(),
+    getParticipantCount(),
+    getConfig(),
+  ]);
 
   const judges = users.filter(
     (user) =>
@@ -43,7 +54,12 @@ const ManageUsersPage = async () => {
     <div className="flex-1 flex flex-col gap-6">
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">Users</h2>
-        <UsersTable userId={id} users={users} />
+        <UsersTable
+          userId={id}
+          users={users}
+          participantCount={participantCount}
+          maxParticipants={max_participants}
+        />
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-md font-semibold">

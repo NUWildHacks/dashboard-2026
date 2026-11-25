@@ -3,6 +3,7 @@ import "server-only";
 import supabaseAdmin from "@/config/supabase-admin";
 import {
   JUDGING_ASSIGNMENTS_TABLE,
+  PARTICIPANT,
   PROJECTS_TABLE,
   USERS_TABLE,
 } from "@/constants";
@@ -133,8 +134,23 @@ const getProjectsMap = async (): Promise<
   return projects;
 };
 
+/**
+ * Count the rows that take a place under max_participants: every Participant row, including
+ * pre-created rows that are not finished yet (getUsers hides those). register_participant counts
+ * the same rows.
+ */
+const getParticipantCount = async (): Promise<number> => {
+  const { count } = await supabaseAdmin
+    .from(USERS_TABLE)
+    .select("id", { count: "exact", head: true })
+    .eq("role", PARTICIPANT)
+    .throwOnError();
+  return count ?? 0;
+};
+
 export {
   getUsers,
   getJudgingAssignmentsMap,
+  getParticipantCount,
   getProjectsMap,
 };

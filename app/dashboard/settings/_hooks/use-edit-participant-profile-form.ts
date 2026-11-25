@@ -6,7 +6,10 @@ import {
 } from "react-hook-form";
 import { toast } from "sonner";
 
-import type { ParticipantUser } from "@/types";
+import type {
+  ParticipantUser,
+  WaitlistedUser,
+} from "@/types";
 
 import { editProfile } from "../_actions";
 import {
@@ -25,7 +28,7 @@ export type UseEditParticipantProfileFormReturn = {
 >;
 
 export const useEditParticipantProfileForm = (
-  user: ParticipantUser
+  user: ParticipantUser | WaitlistedUser
 ): UseEditParticipantProfileFormReturn => {
   const {
     control,

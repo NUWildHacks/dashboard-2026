@@ -1,4 +1,5 @@
 export { default as DashboardSidebar } from "./_sidebar/dashboard-sidebar";
+export { default as DashboardBannerSlot } from "./_sidebar/dashboard-banner-slot";
 // export { default as CrowdFavoriteAdminLink } from "./crowd-favorite-admin-link";
 // export { default as CrowdFavoriteParticipantLink } from "./crowd-favorite-participant-link";
 // export { default as CrowdFavoritePresentationTile } from "./crowd-favorite-presentation-tile";
@@ -13,3 +14,4 @@ export { default as EventsList } from "./_upcoming-events/events-list";
 export { default as EventItem } from "./_upcoming-events/event-item";
 export { default as OnboardingDialog } from "./onboarding-dialog";
 export { default as ResumeUpload } from "./resume-upload";
+export { default as WaitlistBanner } from "./waitlist-banner";

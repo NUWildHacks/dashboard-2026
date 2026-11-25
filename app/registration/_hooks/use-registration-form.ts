@@ -91,6 +91,13 @@ export const useRegistrationForm = (
         return;
       }
 
+      if (result.waitlisted) {
+        toast.info("You are on the waitlist", {
+          description:
+            "Registration is complete, but the event is currently full. Stay tuned for updates!",
+        });
+      }
+
       router.replace(DASHBOARD_PATH);
     } catch (error) {
       const errorMessage =
