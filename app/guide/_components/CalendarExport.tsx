@@ -1,7 +1,12 @@
 "use client";
 
+import { EVENT_NAME_YEAR } from "@/constants";
+
 import type { CalendarEvent } from "./calendar-utils";
-import { downloadICS, generateGoogleCalendarURLForEvents } from "./calendar-utils";
+import {
+  downloadICS,
+  generateGoogleCalendarURLForEvents,
+} from "./calendar-utils";
 
 type CalendarExportProps = {
   readonly events: CalendarEvent[];
@@ -14,11 +19,13 @@ const formatFilename = (calendarName: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")}.ics`;
 
-const CalendarExport = ({ events, calendarName = "WildHacks 2026" }: CalendarExportProps) => {
+const CalendarExport = ({
+  events,
+  calendarName = EVENT_NAME_YEAR,
+}: CalendarExportProps) => {
   if (events.length === 0) {
     return null;
   }
-
   const filename = formatFilename(calendarName);
 
   const handleDownloadICS = () => {
@@ -27,26 +34,45 @@ const CalendarExport = ({ events, calendarName = "WildHacks 2026" }: CalendarExp
 
   const handleOpenGoogleCalendar = () => {
     if (events.length === 1) {
-      window.open(generateGoogleCalendarURLForEvents(events), "_blank", "noopener");
+      window.open(
+        generateGoogleCalendarURLForEvents(events),
+        "_blank",
+        "noopener"
+      );
       return;
     }
 
     downloadICS(events, filename);
-    window.open("https://calendar.google.com/calendar/u/0/r/settings/import", "_blank", "noopener");
+    window.open(
+      "https://calendar.google.com/calendar/u/0/r/settings/import",
+      "_blank",
+      "noopener"
+    );
   };
 
   return (
     <section className="guide-calendar">
       <header className="guide-calendar-header">
         <h3>📅 Add to Calendar</h3>
-        <p>Add every WildHacks 2026 milestone to your personal calendar.</p>
+        <p>
+          Add every {EVENT_NAME_YEAR} milestone to your
+          personal calendar.
+        </p>
       </header>
       <div className="guide-calendar-actions">
-        <button type="button" className="guide-button guide-button-primary" onClick={handleDownloadICS}>
+        <button
+          type="button"
+          className="guide-button guide-button-primary"
+          onClick={handleDownloadICS}
+        >
           <span aria-hidden>📥</span>
           <span>Download .ics File</span>
         </button>
-        <button type="button" className="guide-button guide-button-secondary" onClick={handleOpenGoogleCalendar}>
+        <button
+          type="button"
+          className="guide-button guide-button-secondary"
+          onClick={handleOpenGoogleCalendar}
+        >
           <span aria-hidden>📆</span>
           <span>Import into Google Calendar</span>
         </button>

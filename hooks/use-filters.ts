@@ -34,29 +34,44 @@ type UseFiltersOptionsDefault<T extends string> = {
 };
 
 // Overload for includeAll: false (defaultCategory required)
-export function useFilters<T extends string>(options: UseFiltersOptionsWithoutAll<T>): UseFiltersReturnWithoutAll<T>;
+export function useFilters<T extends string>(
+  options: UseFiltersOptionsWithoutAll<T>
+): UseFiltersReturnWithoutAll<T>;
 
 // Overload for includeAll: true or omitted (defaultCategory optional)
 export function useFilters<T extends string>(
-  options?: UseFiltersOptionsWithAll<T> | UseFiltersOptionsDefault<T>
+  options?:
+    | UseFiltersOptionsWithAll<T>
+    | UseFiltersOptionsDefault<T>
 ): UseFiltersReturnWithAll<T>;
 
 // Implementation
 export function useFilters<T extends string>(
-  options?: UseFiltersOptionsWithAll<T> | UseFiltersOptionsWithoutAll<T> | UseFiltersOptionsDefault<T>
-): UseFiltersReturnWithAll<T> | UseFiltersReturnWithoutAll<T> {
+  options?:
+    | UseFiltersOptionsWithAll<T>
+    | UseFiltersOptionsWithoutAll<T>
+    | UseFiltersOptionsDefault<T>
+):
+  | UseFiltersReturnWithAll<T>
+  | UseFiltersReturnWithoutAll<T> {
   const includeAll = options?.includeAll ?? true;
   const defaultCategory = options?.defaultCategory;
 
-  const initialCategory = includeAll ? ("all" as CategoryWithAll<T>) : (defaultCategory as T);
+  const initialCategory = includeAll
+    ? ("all" as CategoryWithAll<T>)
+    : (defaultCategory as T);
 
-  const [category, setCategory] = useState<CategoryWithAll<T> | T>(initialCategory);
+  const [category, setCategory] = useState<
+    CategoryWithAll<T> | T
+  >(initialCategory);
   const [search, setSearch] = useState<string>("");
 
   if (includeAll) {
     return {
       category: category as CategoryWithAll<T>,
-      setCategory: setCategory as (category: CategoryWithAll<T>) => void,
+      setCategory: setCategory as (
+        category: CategoryWithAll<T>
+      ) => void,
       search,
       setSearch,
     } as UseFiltersReturnWithAll<T>;

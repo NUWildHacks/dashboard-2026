@@ -14,6 +14,7 @@ import {
   PARTICIPANT,
   JUDGE_AND_MENTOR,
   MENTORING_TIMESLOTS,
+  WAITLISTED,
 } from "@/constants";
 
 import type { BaseModel } from "./base-model.types";
@@ -25,10 +26,12 @@ export type FieldOfStudy = (typeof FIELDS_OF_STUDY)[number];
 export type TShirtSize = (typeof TSHIRT_SIZES)[number];
 export type Gender = (typeof GENDERS)[number];
 export type Race = (typeof RACES)[number];
-export type DietaryRestriction = (typeof DIETARY_RESTRICTIONS)[number];
+export type DietaryRestriction =
+  (typeof DIETARY_RESTRICTIONS)[number];
 export type Modality = (typeof MODALITIES)[number];
 
-export type MentoringTimeslot = (typeof MENTORING_TIMESLOTS)[number];
+export type MentoringTimeslot =
+  (typeof MENTORING_TIMESLOTS)[number];
 
 export type Role = (typeof ROLES)[number];
 
@@ -62,6 +65,14 @@ export type ParticipantUser = BaseUser & {
   mlh_marketing: boolean;
 };
 
+/** Has the same fields as a participant. Registered after the event was full. */
+export type WaitlistedUser = Omit<
+  ParticipantUser,
+  "role"
+> & {
+  role: typeof WAITLISTED;
+};
+
 export type AdminUser = BaseUser & {
   role: typeof ADMIN;
 };
@@ -88,4 +99,9 @@ export type JudgeAndMentorUser = BaseUser & {
   onboarded?: boolean;
 };
 
-export type User = ParticipantUser | AdminUser | JudgeUser | JudgeAndMentorUser;
+export type User =
+  | ParticipantUser
+  | WaitlistedUser
+  | AdminUser
+  | JudgeUser
+  | JudgeAndMentorUser;

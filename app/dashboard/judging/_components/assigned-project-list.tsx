@@ -1,6 +1,12 @@
 import { BookX } from "lucide-react";
 
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+} from "@/components/ui/empty";
 
 import { UseJudgingFormSheetReturn } from "../_hooks";
 import type { JudgingAssignmentWithProject } from "../types";
@@ -9,7 +15,10 @@ import { AssignedProjectItem } from ".";
 
 type AssignedProjectListProps = {
   judgingAssignmentsWithProjects: JudgingAssignmentWithProject[];
-} & Pick<UseJudgingFormSheetReturn, "handleOpenJudgingForm" | "handleKeyDown">;
+} & Pick<
+  UseJudgingFormSheetReturn,
+  "handleOpenJudgingForm" | "handleKeyDown"
+>;
 
 const AssignedProjectList = ({
   judgingAssignmentsWithProjects,
@@ -24,7 +33,10 @@ const AssignedProjectList = ({
             <BookX aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No assigned projects</EmptyTitle>
-          <EmptyDescription>Could not find projects assigned to you. Check back later!</EmptyDescription>
+          <EmptyDescription>
+            Could not find projects assigned to you. Check
+            back later!
+          </EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
@@ -32,14 +44,18 @@ const AssignedProjectList = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {judgingAssignmentsWithProjects.map((judgingAssignmentWithProject) => (
-        <AssignedProjectItem
-          key={judgingAssignmentWithProject.id}
-          handleOpenJudgingForm={handleOpenJudgingForm}
-          handleKeyDown={handleKeyDown}
-          judgingAssignmentWithProject={judgingAssignmentWithProject}
-        />
-      ))}
+      {judgingAssignmentsWithProjects.map(
+        (judgingAssignmentWithProject) => (
+          <AssignedProjectItem
+            key={judgingAssignmentWithProject.id}
+            handleOpenJudgingForm={handleOpenJudgingForm}
+            handleKeyDown={handleKeyDown}
+            judgingAssignmentWithProject={
+              judgingAssignmentWithProject
+            }
+          />
+        )
+      )}
     </div>
   );
 };

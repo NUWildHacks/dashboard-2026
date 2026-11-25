@@ -4,4 +4,8 @@
  */
 export type ActionResult<T = never> =
   | { success: true }
-  | { success: false; error: string; field?: T extends never ? never : keyof T };
+  | {
+      success: false;
+      error: string;
+      field?: T extends never ? never : keyof T;
+    };

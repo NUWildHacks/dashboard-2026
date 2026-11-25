@@ -26,6 +26,7 @@ export type WildHacksSecrets = {
 
 export type WildHacksStatistics = {
   participants: number;
+  waitlisted: number;
   judges: number;
   mentors: number;
   admins: number;

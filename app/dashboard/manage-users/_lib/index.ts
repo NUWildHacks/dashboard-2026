@@ -1,1 +1,6 @@
-export { getUsers, getJudgingAssignmentsMap, getProjectsMap } from "./lib";
+export {
+  getUsers,
+  getJudgingAssignmentsMap,
+  getParticipantCount,
+  getProjectsMap,
+} from "./lib";

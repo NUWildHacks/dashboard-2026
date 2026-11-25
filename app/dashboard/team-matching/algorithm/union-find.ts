@@ -34,7 +34,9 @@ export class UnionFind {
 
   getGroup(id: string): string[] {
     const root = this.find(id);
-    return [...this.parent.keys()].filter((k) => this.find(k) === root);
+    return [...this.parent.keys()].filter(
+      (k) => this.find(k) === root
+    );
   }
 
   getGroups(): Map<string, string[]> {

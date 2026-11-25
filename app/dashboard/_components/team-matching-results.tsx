@@ -1,13 +1,23 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
+import {
+  Avatar,
+  AvatarFallback,
+} from "@radix-ui/react-avatar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 import Discord from "@/components/icon/discord";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { DISCORD_TEAM_PATH } from "@/constants";
 import type { TeamSuggestion } from "@/types";
 
@@ -20,7 +30,11 @@ const AVATAR_COLORS = [
   { bg: "bg-rose-100", text: "text-rose-800" },
 ];
 
-const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] }) => {
+const TeamMatchingResults = ({
+  suggestions,
+}: {
+  suggestions: TeamSuggestion[];
+}) => {
   const [revealed, setRevealed] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -33,14 +47,23 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
     return (
       <Card className="shadow-xs h-full flex flex-col">
         <CardHeader>
-          <CardTitle className="text-base">Team Matching Results</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">Open to find your top 3 groups!</CardDescription>
+          <CardTitle className="text-base">
+            Team Matching Results
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Open to find your top 3 groups!
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex-1 flex items-center justify-center">
-          <Button onClick={() => setRevealed(true)}>See your results</Button>
+          <Button onClick={() => setRevealed(true)}>
+            See your results
+          </Button>
         </CardContent>
         <CardFooter className="flex items-center justify-between">
-          <p className="text-xs text-muted-foreground">Results available until Sunday 11AM (submission deadline)</p>
+          <p className="text-xs text-muted-foreground">
+            Results available until Saturday 7PM (submission
+            deadline)
+          </p>
         </CardFooter>
       </Card>
     );
@@ -50,8 +73,12 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
     <Card className="shadow-xs h-full flex flex-col">
       <CardHeader className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
-          <CardTitle className="text-base">Team Matching Results</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">Open to find your top 3 groups!</CardDescription>
+          <CardTitle className="text-base">
+            Team Matching Results
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Open to find your top 3 groups!
+          </CardDescription>
         </div>
         <CardDescription className="text-xs text-muted-foreground shrink-0">
           {index + 1} / {total}
@@ -63,12 +90,22 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
           <Card className="shadow-md flex flex-col gap-4 justify-center align-middle py-12">
             <CardHeader className="text-center">
               <CardTitle className="font-normal text-md">
-                If none of your matches worked out, feel free to check the team formation channel on the Discord!
+                If none of your matches worked out, feel
+                free to check the team formation channel on
+                the Discord!
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex items-center justify-center">
-              <Button variant="outline" className="w-fit gap-2" asChild>
-                <a href={DISCORD_TEAM_PATH} target="_blank" rel="noopener noreferrer">
+              <Button
+                variant="outline"
+                className="w-fit gap-2"
+                asChild
+              >
+                <a
+                  href={DISCORD_TEAM_PATH}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Discord className="size-4" />
                   #find-teammates
                 </a>
@@ -86,28 +123,43 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
                 className="inline-flex items-baseline gap-0.5 bg-green-50 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full"
               >
                 {current.score}
-                <span className="text-green-600 font-normal">/ 100</span>
+                <span className="text-green-600 font-normal">
+                  / 100
+                </span>
               </Badge>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4">
                 {current.members.map((member, i) => (
-                  <div key={member.user_id} className="flex gap-2 items-start min-w-0">
+                  <div
+                    key={member.user_id}
+                    className="flex gap-2 items-start min-w-0"
+                  >
                     <Avatar className="shrink-0 w-10 h-10">
                       <AvatarFallback
                         className={`text-sm font-medium w-10 h-10 rounded-full flex items-center justify-center ${AVATAR_COLORS[i % AVATAR_COLORS.length].bg} ${AVATAR_COLORS[i % AVATAR_COLORS.length].text}`}
                       >
-                        {member.name.slice(0, 2).toUpperCase()}
+                        {member.name
+                          .slice(0, 2)
+                          .toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col gap-1 min-w-0">
-                      <span className="text-sm font-medium leading-tight truncate">{member.name}</span>
+                      <span className="text-sm font-medium leading-tight truncate">
+                        {member.name}
+                      </span>
 
                       <div className="flex flex-wrap gap-1">
                         {member.roles.map((role) => (
-                          <Badge key={role} variant="secondary" className="md:text-xs font-normal px-1.5 py-0">
-                            {role.replace(" Engineer", "").replace(" Scientist", "")}
+                          <Badge
+                            key={role}
+                            variant="secondary"
+                            className="md:text-xs font-normal px-1.5 py-0"
+                          >
+                            {role
+                              .replace(" Engineer", "")
+                              .replace(" Scientist", "")}
                           </Badge>
                         ))}
                       </div>
@@ -124,15 +176,19 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
                     Why we matched you
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {current.match_reasons.map((reason, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-medium bg-muted text-muted-foreground"
-                      >
-                        <span className="text-[10px]">✓</span>
-                        {reason}
-                      </span>
-                    ))}
+                    {current.match_reasons.map(
+                      (reason, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-medium bg-muted text-muted-foreground"
+                        >
+                          <span className="text-[10px]">
+                            ✓
+                          </span>
+                          {reason}
+                        </span>
+                      )
+                    )}
                   </div>
                 </div>
               )}
@@ -142,8 +198,12 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
               {current.where_to_meet && (
                 <div className="flex items-center justify-between bg-muted/50 rounded-md px-3 py-2.5">
                   <div className="flex flex-col gap-0.5">
-                    <p className="text-xs text-muted-foreground">Meet your team at</p>
-                    <p className="text-sm font-medium">{current.where_to_meet}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Meet your team at
+                    </p>
+                    <p className="text-sm font-medium">
+                      {current.where_to_meet}
+                    </p>
                   </div>
                 </div>
               )}
@@ -153,7 +213,14 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
       </CardContent>
 
       <CardFooter className="flex items-center justify-between pt-2">
-        <Button variant="outline" size="sm" onClick={() => setIndex((i) => Math.max(0, i - 1))} disabled={index === 0}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            setIndex((i) => Math.max(0, i - 1))
+          }
+          disabled={index === 0}
+        >
           <ChevronLeft className="size-4" />
           Previous
         </Button>
@@ -164,7 +231,13 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
               key={i}
               onClick={() => setIndex(i)}
               className={`size-2 rounded-full transition-colors ${i === index ? "bg-primary" : "bg-muted-foreground/30"}`}
-              aria-label={i === suggestions.length ? "Discord fallback" : i === 0 ? "Your Team" : `Suggestion ${i}`}
+              aria-label={
+                i === suggestions.length
+                  ? "Discord fallback"
+                  : i === 0
+                    ? "Your Team"
+                    : `Suggestion ${i}`
+              }
             />
           ))}
         </div>
@@ -172,7 +245,9 @@ const TeamMatchingResults = ({ suggestions }: { suggestions: TeamSuggestion[] })
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setIndex((i) => Math.min(total - 1, i + 1))}
+          onClick={() =>
+            setIndex((i) => Math.min(total - 1, i + 1))
+          }
           disabled={index === total - 1}
         >
           Next

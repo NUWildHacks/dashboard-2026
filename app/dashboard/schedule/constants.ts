@@ -1,6 +1,12 @@
 import type { Event, CalendarRowConfig } from "./types";
 
-export const EVENT_CATEGORIES = ["Food", "Workshop", "Speaker", "Mentorship", "Social"] as const;
+export const EVENT_CATEGORIES = [
+  "Food",
+  "Workshop",
+  "Speaker",
+  "Mentorship",
+  "Social",
+] as const;
 
 export const EVENT_FIELDS = {
   category: "category",
@@ -11,7 +17,10 @@ export const EVENT_FIELDS = {
   location: "location",
   created_at: "created_at",
   updated_at: "updated_at",
-} as const satisfies Record<keyof Omit<Event, "id">, string>;
+} as const satisfies Record<
+  keyof Omit<Event, "id">,
+  string
+>;
 
 export const ROW_HEIGHT = 80 as const;
 export const ROW_WIDTH_PERCENTAGE = 100 as const;

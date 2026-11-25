@@ -1,15 +1,17 @@
-"use server";
-
 import Image from "next/image";
 
-import "@/config/firebase-admin";
-import { Completed, Footer, Navbar, Closed } from "@/app/_components";
-import { getConfigDocSnapshot } from "@/lib";
-import type { WildHacksConfig } from "@/types";
+import {
+  Completed,
+  Footer,
+  Navbar,
+  Closed,
+  Ongoing,
+} from "@/app/_components";
+import { getConfig } from "@/lib/server";
 
 const RootPage = async () => {
-  const configDocSnapshot = await getConfigDocSnapshot();
-  const { end_time } = configDocSnapshot.data() as WildHacksConfig;
+  const { end_time, registration_deadline } =
+    await getConfig();
 
   const now = new Date().getTime();
 
@@ -18,9 +20,16 @@ const RootPage = async () => {
       <Navbar />
       <main className="flex-1 px-6 sm:px-12 flex flex-col justify-center items-center">
         <div className="max-w-[700px] text-center space-y-5">
-          <Image src="/wildhacks-splash.svg" alt="Main Logo" width={700} height={260} loading="eager" />
-          {/* patch: close registration completely */}
-          {now < end_time && <Closed />}
+          <Image
+            src="/wildhacks-splash.svg"
+            alt="Main Logo"
+            width={700}
+            height={260}
+            loading="eager"
+          />
+          {now < registration_deadline && <Ongoing />}
+          {now >= registration_deadline &&
+            now < end_time && <Closed />}
           {now >= end_time && <Completed />}
         </div>
       </main>

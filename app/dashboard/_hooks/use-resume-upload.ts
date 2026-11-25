@@ -1,10 +1,15 @@
 "use client";
 
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
-import { ChangeEvent, RefObject, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  RefObject,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 
 import { deleteResume } from "../_actions/delete-resume";
+import { getResumeDownloadUrl } from "../_actions/get-resume-download-url";
 import { uploadResume } from "../_actions/upload-resume";
 
 export type UseResumeUploadReturn = {
@@ -12,12 +17,16 @@ export type UseResumeUploadReturn = {
   isUploading: boolean;
   isDeleting: boolean;
   handleOpenFileInput: () => void;
-  handleUploadResume: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
+  handleUploadResume: (
+    event: ChangeEvent<HTMLInputElement>
+  ) => Promise<void>;
   handleDeleteResume: () => Promise<void>;
   handleDownloadResume: () => Promise<void>;
 };
 
-export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
+export const useResumeUpload = (
+  fileName?: string
+): UseResumeUploadReturn => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isUploading, setIsUploading] = useState(false);
@@ -27,7 +36,9 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
     fileInputRef.current?.click();
   };
 
-  const handleUploadResume = async (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUploadResume = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -44,8 +55,13 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
 
       toast.success("Resume uploaded successfully");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      toast.error("Failed to upload resume", { description: errorMessage });
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
+      toast.error("Failed to upload resume", {
+        description: errorMessage,
+      });
     } finally {
       setIsUploading(false);
     }
@@ -67,8 +83,13 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
 
       toast.success("Resume deleted successfully");
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
-      toast.error("Failed to delete resume", { description: errorMessage });
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
+      toast.error("Failed to delete resume", {
+        description: errorMessage,
+      });
     } finally {
       setIsDeleting(false);
     }
@@ -77,12 +98,25 @@ export const useResumeUpload = (fileName?: string): UseResumeUploadReturn => {
   const handleDownloadResume = async () => {
     if (!fileName) return;
 
-    const storage = getStorage();
-    const fileRef = ref(storage, fileName);
+    try {
+      const result = await getResumeDownloadUrl();
+      const { success } = result;
 
-    const url = await getDownloadURL(fileRef);
+      if (!success) {
+        const { error } = result;
+        throw new Error(error);
+      }
 
-    window.open(url, "_blank");
+      window.open(result.url, "_blank");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred";
+      toast.error("Failed to download resume", {
+        description: errorMessage,
+      });
+    }
   };
 
   return {

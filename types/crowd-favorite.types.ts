@@ -1,7 +1,10 @@
 import type { BaseModel } from "./base-model.types";
 import type { ParticipantUser } from "./user.types";
 
-export type CrowdFavoriteTeamMember = Pick<ParticipantUser, "id" | "first_name" | "email">;
+export type CrowdFavoriteTeamMember = Pick<
+  ParticipantUser,
+  "id" | "first_name" | "email"
+>;
 
 export type CrowdFavoriteProject = BaseModel & {
   project_name: string;

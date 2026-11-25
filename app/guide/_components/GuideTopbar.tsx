@@ -15,11 +15,19 @@ type GuideTopbarProps = {
   onToggleNavigation: () => void;
 };
 
-const GuideTopbar = ({ entries, isNavigationOpen, onToggleNavigation }: GuideTopbarProps) => {
+const GuideTopbar = ({
+  entries,
+  isNavigationOpen,
+  onToggleNavigation,
+}: GuideTopbarProps) => {
   return (
     <header className="guide-topbar" role="banner">
       <div className="guide-topbar-inner">
-        <Link href="/guide" className="guide-topbar-brand" aria-label="WildHacks Guide home">
+        <Link
+          href="/guide"
+          className="guide-topbar-brand"
+          aria-label="WildHacks Guide home"
+        >
           <Image
             src="/web-app-manifest-192x192.png"
             alt=""
@@ -28,21 +36,33 @@ const GuideTopbar = ({ entries, isNavigationOpen, onToggleNavigation }: GuideTop
             className="guide-topbar-logo"
             aria-hidden
           />
-          <span className="guide-topbar-title">WildHacks Guide</span>
+          <span className="guide-topbar-title">
+            WildHacks Guide
+          </span>
         </Link>
         <div className="guide-topbar-actions">
           <button
             type="button"
             className="guide-topbar-menu-button"
-            aria-label={isNavigationOpen ? "Close guide menu" : "Open guide menu"}
+            aria-label={
+              isNavigationOpen
+                ? "Close guide menu"
+                : "Open guide menu"
+            }
             aria-controls="guide-navigation-panel"
             aria-expanded={isNavigationOpen}
             onClick={onToggleNavigation}
           >
             {isNavigationOpen ? (
-              <X className="guide-topbar-menu-icon" aria-hidden />
+              <X
+                className="guide-topbar-menu-icon"
+                aria-hidden
+              />
             ) : (
-              <Menu className="guide-topbar-menu-icon" aria-hidden />
+              <Menu
+                className="guide-topbar-menu-icon"
+                aria-hidden
+              />
             )}
           </button>
           <GuideThemeToggle />

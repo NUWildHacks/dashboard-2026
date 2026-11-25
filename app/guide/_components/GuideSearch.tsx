@@ -5,8 +5,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import type { GuideSearchEntry } from "../_data/guide-search-data";
 
@@ -20,7 +31,10 @@ const normalize = (s: string) =>
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "");
 
-const matchQuery = (entry: GuideSearchEntry, q: string): boolean => {
+const matchQuery = (
+  entry: GuideSearchEntry,
+  q: string
+): boolean => {
   if (!q.trim()) return true;
   const nq = normalize(q);
   const nTitle = normalize(entry.title);
@@ -33,7 +47,9 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
   const [query, setQuery] = useState("");
   const router = useRouter();
 
-  const filtered = query.trim() ? entries.filter((e) => matchQuery(e, query)) : entries;
+  const filtered = query.trim()
+    ? entries.filter((e) => matchQuery(e, query))
+    : entries;
 
   const handleSelect = useCallback(
     (href: string) => {
@@ -52,20 +68,37 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
       }
     };
     window.addEventListener("keydown", down);
-    return () => window.removeEventListener("keydown", down);
+    return () =>
+      window.removeEventListener("keydown", down);
   }, []);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button type="button" className="guide-search-trigger" aria-label="Search guide pages (⌘K)">
-          <SearchIcon className="guide-search-icon" aria-hidden />
-          <span className="guide-search-trigger-text">Search guide...</span>
+        <button
+          type="button"
+          className="guide-search-trigger"
+          aria-label="Search guide pages (⌘K)"
+        >
+          <SearchIcon
+            className="guide-search-icon"
+            aria-hidden
+          />
+          <span className="guide-search-trigger-text">
+            Search guide...
+          </span>
           <kbd className="guide-search-kbd">⌘K</kbd>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="guide-search-popover" align="end" sideOffset={8}>
-        <Command className="guide-search-command" shouldFilter={false}>
+      <PopoverContent
+        className="guide-search-popover"
+        align="end"
+        sideOffset={8}
+      >
+        <Command
+          className="guide-search-command"
+          shouldFilter={false}
+        >
           <CommandInput
             placeholder="Search pages..."
             value={query}
@@ -73,7 +106,9 @@ const GuideSearch = ({ entries }: GuideSearchProps) => {
             className="guide-search-input"
           />
           <CommandList className="guide-search-list">
-            <CommandEmpty className="guide-search-empty">No pages found.</CommandEmpty>
+            <CommandEmpty className="guide-search-empty">
+              No pages found.
+            </CommandEmpty>
             <CommandGroup className="guide-search-group">
               {filtered.map((entry) => (
                 <CommandItem

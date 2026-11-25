@@ -14,14 +14,37 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { MatchedTeam, TeamFormation, TeamMatchingMode, TeamMatchingRun, TeamMatchingSettings } from "@/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import type {
+  MatchedTeam,
+  TeamFormation,
+  TeamMatchingMode,
+  TeamMatchingRun,
+  TeamMatchingSettings,
+} from "@/types";
 
 import { setTeamMatchingMode } from "../_actions/set-mode.actions";
 import { setResultsReleased } from "../_actions/toggle-results-released.actions";
 import type { IntakeEntry } from "../_lib/lib";
-import { getRuns, getRunFormations, getRunTeams, getIntakeEntries, getResultsReleased } from "../_lib/lib";
+import {
+  getRuns,
+  getRunFormations,
+  getRunTeams,
+  getIntakeEntries,
+  getResultsReleased,
+} from "../_lib/lib";
 
 import { AlgorithmTab } from "./algorithm-tab";
 import { EntriesTab } from "./entries-tab";
@@ -42,21 +65,35 @@ export const TeamMatchingAdmin = ({
   resultsReleased: initialReleased,
   initialMode,
 }: TeamMatchingAdminProps) => {
-  const [currentEntries, setCurrentEntries] = useState(entries);
-  const [currentRuns, setCurrentRuns] = useState<TeamMatchingRun[]>(runs);
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
-  const [selectedRunTeams, setSelectedRunTeams] = useState<MatchedTeam[]>([]);
-  const [selectedRunFormations, setSelectedRunFormations] = useState<TeamFormation[]>([]);
+  const [currentEntries, setCurrentEntries] =
+    useState(entries);
+  const [currentRuns, setCurrentRuns] =
+    useState<TeamMatchingRun[]>(runs);
+  const [selectedRunId, setSelectedRunId] = useState<
+    string | null
+  >(null);
+  const [selectedRunTeams, setSelectedRunTeams] = useState<
+    MatchedTeam[]
+  >([]);
+  const [selectedRunFormations, setSelectedRunFormations] =
+    useState<TeamFormation[]>([]);
   const [loadingTeams, setLoadingTeams] = useState(false);
   const [released, setReleased] = useState(initialReleased);
-  const [togglingRelease, setTogglingRelease] = useState(false);
-  const [showReleaseConfirm, setShowReleaseConfirm] = useState(false);
-  const [mode, setMode] = useState<TeamMatchingMode>(initialMode);
+  const [togglingRelease, setTogglingRelease] =
+    useState(false);
+  const [showReleaseConfirm, setShowReleaseConfirm] =
+    useState(false);
+  const [mode, setMode] =
+    useState<TeamMatchingMode>(initialMode);
   const [changingMode, setChangingMode] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<"entries" | "algorithm" | "settings">("algorithm");
+  const [activeTab, setActiveTab] = useState<
+    "entries" | "algorithm" | "settings"
+  >("algorithm");
 
-  const topCount = currentRuns.filter((r) => r.is_top).length;
+  const topCount = currentRuns.filter(
+    (r) => r.is_top
+  ).length;
 
   const fingerprintDuplicates = new Map<string, string[]>();
   const fpToRuns = new Map<string, typeof currentRuns>();
@@ -71,13 +108,21 @@ export const TeamMatchingAdmin = ({
     for (const run of group) {
       fingerprintDuplicates.set(
         run.id,
-        group.filter((r) => r.id !== run.id).map((r) => r.name || new Date(r.run_at).toLocaleString("en-US"))
+        group
+          .filter((r) => r.id !== run.id)
+          .map(
+            (r) =>
+              r.name ||
+              new Date(r.run_at).toLocaleString("en-US")
+          )
       );
     }
   }
 
   const handleRunDeleted = (runId: string) => {
-    setCurrentRuns((prev) => prev.filter((r) => r.id !== runId));
+    setCurrentRuns((prev) =>
+      prev.filter((r) => r.id !== runId)
+    );
     if (selectedRunId === runId) {
       setSelectedRunId(null);
       setSelectedRunTeams([]);
@@ -85,8 +130,15 @@ export const TeamMatchingAdmin = ({
     }
   };
 
-  const handleRunUpdated = (runId: string, patch: Partial<TeamMatchingRun>) => {
-    setCurrentRuns((prev) => prev.map((r) => (r.id === runId ? { ...r, ...patch } : r)));
+  const handleRunUpdated = (
+    runId: string,
+    patch: Partial<TeamMatchingRun>
+  ) => {
+    setCurrentRuns((prev) =>
+      prev.map((r) =>
+        r.id === runId ? { ...r, ...patch } : r
+      )
+    );
   };
 
   const handleSelectRun = async (runId: string) => {
@@ -96,7 +148,10 @@ export const TeamMatchingAdmin = ({
     setSelectedRunFormations([]);
     setLoadingTeams(true);
     try {
-      const [teams, formations] = await Promise.all([getRunTeams(runId, mode), getRunFormations(runId, mode)]);
+      const [teams, formations] = await Promise.all([
+        getRunTeams(runId, mode),
+        getRunFormations(runId, mode),
+      ]);
       setSelectedRunTeams(teams);
       setSelectedRunFormations(formations);
     } finally {
@@ -104,14 +159,17 @@ export const TeamMatchingAdmin = ({
     }
   };
 
-  const handleModeChange = async (next: TeamMatchingMode) => {
+  const handleModeChange = async (
+    next: TeamMatchingMode
+  ) => {
     setChangingMode(true);
-    const [result, newRuns, newEntries, newReleased] = await Promise.all([
-      setTeamMatchingMode(next),
-      getRuns(next),
-      getIntakeEntries(next),
-      getResultsReleased(next),
-    ]);
+    const [result, newRuns, newEntries, newReleased] =
+      await Promise.all([
+        setTeamMatchingMode(next),
+        getRuns(next),
+        getIntakeEntries(next),
+        getResultsReleased(next),
+      ]);
     setChangingMode(false);
     if (result.success) {
       setMode(next);
@@ -122,10 +180,14 @@ export const TeamMatchingAdmin = ({
       setSelectedRunTeams([]);
       setSelectedRunFormations([]);
       toast.success(
-        next === "prod" ? "Switched to prod — using live intake data" : "Switched to dev — using test intake data"
+        next === "prod"
+          ? "Switched to prod — using live intake data"
+          : "Switched to dev — using test intake data"
       );
     } else {
-      toast.error("Failed to switch mode", { description: result.error });
+      toast.error("Failed to switch mode", {
+        description: result.error,
+      });
     }
   };
 
@@ -137,36 +199,77 @@ export const TeamMatchingAdmin = ({
     if (result.success) {
       setReleased(next);
       if (mode === "prod") {
-        toast.success(next ? "Results released to participants" : "Results hidden from participants");
+        toast.success(
+          next
+            ? "Results released to participants"
+            : "Results hidden from participants"
+        );
       } else {
-        toast.success(next ? "Results released (admin preview only)" : "Admin preview hidden");
+        toast.success(
+          next
+            ? "Results released (admin preview only)"
+            : "Admin preview hidden"
+        );
       }
     } else {
-      toast.error("Failed to update", { description: result.error });
+      toast.error("Failed to update", {
+        description: result.error,
+      });
     }
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(v) =>
+          setActiveTab(v as typeof activeTab)
+        }
+      >
         <TabsList className="mb-4">
-          <TabsTrigger value="entries">Entries ({currentEntries.length})</TabsTrigger>
-          <TabsTrigger value="algorithm">Algorithm</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="entries">
+            Entries ({currentEntries.length})
+          </TabsTrigger>
+          <TabsTrigger value="algorithm">
+            Algorithm
+          </TabsTrigger>
+          <TabsTrigger value="settings">
+            Settings
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="entries" forceMount hidden={activeTab !== "entries"}>
+        <TabsContent
+          value="entries"
+          forceMount
+          hidden={activeTab !== "entries"}
+        >
           <EntriesTab entries={currentEntries} />
         </TabsContent>
 
-        <TabsContent value="algorithm" forceMount hidden={activeTab !== "algorithm"}>
+        <TabsContent
+          value="algorithm"
+          forceMount
+          hidden={activeTab !== "algorithm"}
+        >
           {/* Mode + release banner */}
           <div className="flex items-center justify-between rounded-lg border p-4 gap-4 mb-6">
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">Participant results</p>
-                <Badge variant={released ? "default" : "secondary"}>{released ? "Released" : "Hidden"}</Badge>
-                {topCount > 0 && <span className="text-xs text-muted-foreground">top choice marked</span>}
+                <p className="text-sm font-medium">
+                  Participant results
+                </p>
+                <Badge
+                  variant={
+                    released ? "default" : "secondary"
+                  }
+                >
+                  {released ? "Released" : "Hidden"}
+                </Badge>
+                {topCount > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    top choice marked
+                  </span>
+                )}
               </div>
               <p className="text-xs text-muted-foreground">
                 {mode === "dev"
@@ -181,11 +284,17 @@ export const TeamMatchingAdmin = ({
             <div className="flex items-center gap-2 shrink-0">
               <Select
                 value={mode}
-                onValueChange={(v) => handleModeChange(v as TeamMatchingMode)}
+                onValueChange={(v) =>
+                  handleModeChange(v as TeamMatchingMode)
+                }
                 disabled={changingMode}
               >
                 <SelectTrigger className="w-24 h-9">
-                  {changingMode ? <Loader2 className="size-3.5 animate-spin" /> : <SelectValue />}
+                  {changingMode ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <SelectValue />
+                  )}
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="dev">Dev</SelectItem>
@@ -201,23 +310,44 @@ export const TeamMatchingAdmin = ({
                     handleToggleRelease();
                   }
                 }}
-                disabled={togglingRelease || (!released && topCount === 0)}
+                disabled={
+                  togglingRelease ||
+                  (!released && topCount === 0)
+                }
               >
-                {togglingRelease ? <Loader2 className="size-4 animate-spin" /> : <Radio className="size-4" />}
+                {togglingRelease ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Radio className="size-4" />
+                )}
                 {released ? "Unrelease" : "Release results"}
               </Button>
 
-              <Dialog open={showReleaseConfirm} onOpenChange={setShowReleaseConfirm}>
+              <Dialog
+                open={showReleaseConfirm}
+                onOpenChange={setShowReleaseConfirm}
+              >
                 <DialogContent showCloseButton={false}>
                   <DialogHeader>
-                    <DialogTitle>Release results to participants?</DialogTitle>
+                    <DialogTitle>
+                      Release results to participants?
+                    </DialogTitle>
                     <DialogDescription>
-                      This will make team suggestions visible to all participants using the top choice run. Make sure
-                      the top choice run is finalized before releasing.
+                      This will make team suggestions
+                      visible to all participants using the
+                      top choice run. Make sure the top
+                      choice run is finalized before
+                      releasing.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowReleaseConfirm(false)} disabled={togglingRelease}>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setShowReleaseConfirm(false)
+                      }
+                      disabled={togglingRelease}
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -238,7 +368,9 @@ export const TeamMatchingAdmin = ({
             runs={currentRuns}
             mode={mode}
             entryCount={currentEntries.length}
-            onRunAdded={(run) => setCurrentRuns((prev) => [run, ...prev])}
+            onRunAdded={(run) =>
+              setCurrentRuns((prev) => [run, ...prev])
+            }
             onRunDeleted={handleRunDeleted}
             onRunUpdated={handleRunUpdated}
             teams={selectedRunTeams}
@@ -252,7 +384,11 @@ export const TeamMatchingAdmin = ({
           />
         </TabsContent>
 
-        <TabsContent value="settings" forceMount hidden={activeTab !== "settings"}>
+        <TabsContent
+          value="settings"
+          forceMount
+          hidden={activeTab !== "settings"}
+        >
           <SettingsTab settings={settings} />
         </TabsContent>
       </Tabs>

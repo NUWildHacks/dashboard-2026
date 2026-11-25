@@ -32,8 +32,14 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
     cell: ({ row }) => (
       <div className="flex flex-wrap gap-1">
         {row.original.preferred_roles.map((r) => (
-          <Badge key={r} variant="secondary" className="text-xs">
-            {r.replace(" Engineer", "").replace(" Scientist", "")}
+          <Badge
+            key={r}
+            variant="secondary"
+            className="text-xs"
+          >
+            {r
+              .replace(" Engineer", "")
+              .replace(" Scientist", "")}
           </Badge>
         ))}
       </div>
@@ -43,24 +49,39 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
     accessorKey: "work_style",
     header: "Work style",
     cell: ({ row }) => (
-      <span className="capitalize text-sm text-muted-foreground">{row.original.work_style.replace("_", " ")}</span>
+      <span className="capitalize text-sm text-muted-foreground">
+        {row.original.work_style.replace("_", " ")}
+      </span>
     ),
   },
   {
     accessorKey: "preferred_team_size",
     header: "Size",
-    cell: ({ row }) => <span className="text-sm">{row.original.preferred_team_size}</span>,
+    cell: ({ row }) => (
+      <span className="text-sm">
+        {row.original.preferred_team_size}
+      </span>
+    ),
   },
   {
     accessorKey: "required_teammates",
     header: "Required",
     cell: ({ row }) => {
       const names = row.original.required_teammate_names;
-      if (!names || names.length === 0) return <span className="text-sm text-muted-foreground">—</span>;
+      if (!names || names.length === 0)
+        return (
+          <span className="text-sm text-muted-foreground">
+            —
+          </span>
+        );
       return (
         <div className="flex flex-wrap gap-1">
           {names.map((name) => (
-            <Badge key={name} variant="outline" className="text-xs">
+            <Badge
+              key={name}
+              variant="outline"
+              className="text-xs"
+            >
               {name}
             </Badge>
           ))}
@@ -75,7 +96,11 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
       const v = row.original.gender_preference;
       return (
         <span className="text-sm text-muted-foreground">
-          {v === "prefer_mixed" ? "Mixed" : v === "prefer_same" ? "Same" : "No pref"}
+          {v === "prefer_mixed"
+            ? "Mixed"
+            : v === "prefer_same"
+              ? "Same"
+              : "No pref"}
         </span>
       );
     },
@@ -87,7 +112,11 @@ const COLUMNS: ColumnDef<IntakeEntry>[] = [
       const v = row.original.where_staying;
       return (
         <span className="text-sm text-muted-foreground">
-          {v === "on_site" ? "On-site" : v === "off_campus" ? "Off Campus" : "On Campus"}
+          {v === "on_site"
+            ? "On-site"
+            : v === "off_campus"
+              ? "Off Campus"
+              : "On Campus"}
         </span>
       );
     },
@@ -101,15 +130,21 @@ export type UseEntriesTableReturn = {
   columns: ColumnDef<IntakeEntry>[];
 };
 
-export const useEntriesTable = (entries: IntakeEntry[]): UseEntriesTableReturn => {
+export const useEntriesTable = (
+  entries: IntakeEntry[]
+): UseEntriesTableReturn => {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(
     () =>
       entries.filter(
         (e) =>
-          e.name.toLowerCase().includes(search.toLowerCase()) ||
-          e.preferred_roles.some((r) => r.toLowerCase().includes(search.toLowerCase()))
+          e.name
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          e.preferred_roles.some((r) =>
+            r.toLowerCase().includes(search.toLowerCase())
+          )
       ),
     [entries, search]
   );

@@ -6,7 +6,11 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import type { TeamMatchingSettings } from "@/types";
@@ -52,7 +56,8 @@ const HARD_CONSTRAINTS: {
   {
     key: "enforce_mutual_requirement",
     label: "Enforce mutual teammate requirements",
-    description: "Participants who mutually listed each other are guaranteed to be on the same team.",
+    description:
+      "Participants who mutually listed each other are guaranteed to be on the same team.",
   },
   {
     key: "enforce_tech_member",
@@ -62,23 +67,40 @@ const HARD_CONSTRAINTS: {
   },
 ];
 
-export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) => {
+export const SettingsTab = ({
+  settings,
+}: {
+  settings: TeamMatchingSettings;
+}) => {
   const [hardConstraints, setHardConstraints] = useState({
-    enforce_mutual_requirement: settings.enforce_mutual_requirement,
-    enforce_tech_member: settings.enforce_tech_member ?? true,
+    enforce_mutual_requirement:
+      settings.enforce_mutual_requirement,
+    enforce_tech_member:
+      settings.enforce_tech_member ?? true,
   });
-  const [weights, setWeights] = useState<Record<WeightKey, number>>(
-    Object.fromEntries(WEIGHT_KEYS.map((k) => [k, settings[k]])) as Record<WeightKey, number>
+  const [weights, setWeights] = useState<
+    Record<WeightKey, number>
+  >(
+    Object.fromEntries(
+      WEIGHT_KEYS.map((k) => [k, settings[k]])
+    ) as Record<WeightKey, number>
   );
-  const [whereToMeet, setWhereToMeet] = useState(settings.where_to_meet);
+  const [whereToMeet, setWhereToMeet] = useState(
+    settings.where_to_meet
+  );
   const [saving, setSaving] = useState(false);
 
-  const total = Object.values(weights).reduce((a, b) => a + b, 0);
+  const total = Object.values(weights).reduce(
+    (a, b) => a + b,
+    0
+  );
   const totalOk = Math.abs(total - 1.0) <= 0.01;
 
   const handleSave = async () => {
     if (!totalOk) {
-      toast.error("Weights must sum to 1.0", { description: `Current sum: ${total.toFixed(3)}` });
+      toast.error("Weights must sum to 1.0", {
+        description: `Current sum: ${total.toFixed(3)}`,
+      });
       return;
     }
     setSaving(true);
@@ -90,14 +112,19 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
     });
     setSaving(false);
     if (result.success) toast.success("Settings saved");
-    else toast.error("Failed to save", { description: result.error });
+    else
+      toast.error("Failed to save", {
+        description: result.error,
+      });
   };
 
   return (
     <div className="flex flex-col gap-8 max-w-lg">
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor="where_to_meet">Where to meet</FieldLabel>
+          <FieldLabel htmlFor="where_to_meet">
+            Where to meet
+          </FieldLabel>
           <Input
             id="where_to_meet"
             placeholder="e.g. Ford Design Center, Room 1.330"
@@ -110,26 +137,44 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
       {/* Hard constraints */}
       <div className="flex flex-col gap-3">
         <div>
-          <p className="text-sm font-medium">Hard constraints</p>
+          <p className="text-sm font-medium">
+            Hard constraints
+          </p>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Strictly enforced during team formation. Violations are repaired or flagged as warnings.
+            Strictly enforced during team formation.
+            Violations are repaired or flagged as warnings.
           </p>
         </div>
         <div className="flex flex-col gap-3">
-          {HARD_CONSTRAINTS.map(({ key, label, description }) => (
-            <div key={key} className="flex items-start gap-3">
-              <Checkbox
-                id={key}
-                checked={hardConstraints[key]}
-                onCheckedChange={(checked) => setHardConstraints((prev) => ({ ...prev, [key]: !!checked }))}
-                className="mt-0.5"
-              />
-              <label htmlFor={key} className="flex flex-col gap-0.5 cursor-pointer">
-                <span className="text-sm">{label}</span>
-                <span className="text-xs text-muted-foreground">{description}</span>
-              </label>
-            </div>
-          ))}
+          {HARD_CONSTRAINTS.map(
+            ({ key, label, description }) => (
+              <div
+                key={key}
+                className="flex items-start gap-3"
+              >
+                <Checkbox
+                  id={key}
+                  checked={hardConstraints[key]}
+                  onCheckedChange={(checked) =>
+                    setHardConstraints((prev) => ({
+                      ...prev,
+                      [key]: !!checked,
+                    }))
+                  }
+                  className="mt-0.5"
+                />
+                <label
+                  htmlFor={key}
+                  className="flex flex-col gap-0.5 cursor-pointer"
+                >
+                  <span className="text-sm">{label}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {description}
+                  </span>
+                </label>
+              </div>
+            )
+          )}
         </div>
       </div>
 
@@ -137,33 +182,58 @@ export const SettingsTab = ({ settings }: { settings: TeamMatchingSettings }) =>
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium">Soft constraint weights</p>
+            <p className="text-sm font-medium">
+              Soft constraint weights
+            </p>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Must sum to 1.0. Higher weight = stronger influence on team scoring.
+              Must sum to 1.0. Higher weight = stronger
+              influence on team scoring.
             </p>
           </div>
-          <span className={`text-xs font-mono ${totalOk ? "text-muted-foreground" : "text-destructive"}`}>
+          <span
+            className={`text-xs font-mono ${totalOk ? "text-muted-foreground" : "text-destructive"}`}
+          >
             sum = {total.toFixed(3)}
           </span>
         </div>
 
         {WEIGHT_KEYS.map((key) => (
-          <div key={key} className="grid grid-cols-[1fr_2fr_auto] items-center gap-3">
-            <span className="text-sm text-muted-foreground">{WEIGHT_LABELS[key]}</span>
+          <div
+            key={key}
+            className="grid grid-cols-[1fr_2fr_auto] items-center gap-3"
+          >
+            <span className="text-sm text-muted-foreground">
+              {WEIGHT_LABELS[key]}
+            </span>
             <Slider
               min={0}
               max={1}
               step={0.025}
               value={[weights[key]]}
-              onValueChange={([v]) => setWeights((prev) => ({ ...prev, [key]: v }))}
+              onValueChange={([v]) =>
+                setWeights((prev) => ({
+                  ...prev,
+                  [key]: v,
+                }))
+              }
             />
-            <span className="text-sm font-mono w-10 text-right">{weights[key].toFixed(2)}</span>
+            <span className="text-sm font-mono w-10 text-right">
+              {weights[key].toFixed(2)}
+            </span>
           </div>
         ))}
       </div>
 
-      <Button onClick={handleSave} disabled={saving || !totalOk} className="w-fit">
-        {saving ? <Loader2 className="size-4 animate-spin" /> : "Save settings"}
+      <Button
+        onClick={handleSave}
+        disabled={saving || !totalOk}
+        className="w-fit"
+      >
+        {saving ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : (
+          "Save settings"
+        )}
       </Button>
     </div>
   );

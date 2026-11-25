@@ -23,7 +23,8 @@ const ScheduleLoading = async () => {
             key={`${label}-${index}`}
             className={cn(
               "w-full grid grid-cols-[50px_1fr] space-x-2",
-              index !== visibleCalendarRows.length - 1 && "h-[80px]"
+              index !== visibleCalendarRows.length - 1 &&
+                "h-[80px]"
             )}
           >
             <div className="relative text-sm h-full">
