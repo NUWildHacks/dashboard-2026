@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, TriangleAlert } from "lucide-react";
+import { useMemo } from "react";
 
 import {
   Alert,
@@ -16,10 +17,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { User } from "@/types";
 
+import { SelectedUsersList } from "..";
 import type { UsePromoteUsersDialogReturn } from "../../_hooks";
 
 type ConfirmPromoteUsersDialogProps = {
+  /** All users, to show the name of each user that will be promoted. */
+  users: User[];
   /** Participant rows now (the same rows the registration limit counts). */
   participantCount: number;
   maxParticipants: number;
@@ -33,6 +38,7 @@ type ConfirmPromoteUsersDialogProps = {
 >;
 
 const ConfirmPromoteUsersDialog = ({
+  users,
   participantCount,
   maxParticipants,
   isOpen,
@@ -41,9 +47,18 @@ const ConfirmPromoteUsersDialog = ({
   selectedUserIds,
   handlePromoteUsers,
 }: ConfirmPromoteUsersDialogProps) => {
+  const selectedUsers = useMemo(() => {
+    const ids = new Set(selectedUserIds);
+    return users.filter((user) => ids.has(user.id));
+  }, [users, selectedUserIds]);
   const count = selectedUserIds.length;
   const countAfter = participantCount + count;
   const overBy = countAfter - maxParticipants;
+
+  const descriptionText =
+    count > 1
+      ? `This will move ${count} users off the waitlist, providing them access to the full participant dashboard (check-in QR code, resume upload, team matching). They will not be notified.`
+      : "This user will be moved off the waitlist, providing them access to the full participant dashboard (check-in QR code, resume upload, team matching). They will not be notified.";
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -51,12 +66,10 @@ const ConfirmPromoteUsersDialog = ({
         <DialogHeader>
           <DialogTitle>Promote to participant?</DialogTitle>
           <DialogDescription>
-            This will move {count} user(s) off the waitlist,
-            providing them access to the full participant
-            dashboard (check-in QR code, reusme upload, team
-            matching). The app does not notify them.
+            {descriptionText}
           </DialogDescription>
         </DialogHeader>
+        <SelectedUsersList users={selectedUsers} />
         {overBy > 0 && (
           <Alert variant="destructive">
             <TriangleAlert />

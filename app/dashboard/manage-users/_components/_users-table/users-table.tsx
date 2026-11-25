@@ -67,16 +67,28 @@ const UsersTable = ({
     search,
     setSearch,
     table,
+    selectedUsers,
     selectedUserIds,
     usersColumns,
     handleDownloadCSV,
   } = useUsersTable(users, handleOpenConfirmDeleteDialog);
 
+  // Unselect only the promoted users, so other selected users stay selected.
   const usePromoteUsersDialogReturn = usePromoteUsersDialog(
-    () => table.resetRowSelection()
+    (promotedIds) =>
+      table.setRowSelection((selection) => {
+        const next = { ...selection };
+        promotedIds.forEach((id) => delete next[id]);
+        return next;
+      })
   );
   const { handleOpenPromoteDialog } =
     usePromoteUsersDialogReturn;
+
+  // Promote uses every selected waitlisted user, including users that the search hides.
+  const selectedWaitlistedIds = selectedUsers
+    .filter((user) => user.role === WAITLISTED)
+    .map((user) => user.id);
 
   return (
     <>
@@ -118,14 +130,17 @@ const UsersTable = ({
               )}
             </div>
             {role === WAITLISTED &&
-              selectedUserIds.length > 0 && (
+              selectedWaitlistedIds.length > 0 && (
                 <Button
                   onClick={() =>
-                    handleOpenPromoteDialog(selectedUserIds)
+                    handleOpenPromoteDialog(
+                      selectedWaitlistedIds
+                    )
                   }
                   className="w-full md:w-auto"
                 >
-                  Promote to participant
+                  Promote {selectedWaitlistedIds.length}{" "}
+                  user(s)
                 </Button>
               )}
             {selectedUserIds.length > 0 && (
@@ -138,7 +153,7 @@ const UsersTable = ({
                 }
                 className="w-full md:w-auto"
               >
-                Delete user(s)
+                Delete {selectedUserIds.length} user(s)
               </Button>
             )}
             <DropdownMenu>
@@ -186,12 +201,14 @@ const UsersTable = ({
         <DataTable columns={usersColumns} table={table} />
         <div className="flex justify-between items-center">
           <div className="text-muted-foreground text-sm">
+            {selectedUserIds.length} user(s) selected in
+            total (
             {
               table.getFilteredSelectedRowModel().rows
                 .length
             }{" "}
-            of {table.getFilteredRowModel().rows.length}{" "}
-            row(s) selected.
+            of {table.getFilteredRowModel().rows.length} in
+            this list).
           </div>
           <div className="flex items-center justify-end space-x-2">
             <Button
@@ -215,9 +232,11 @@ const UsersTable = ({
       </div>
       <ConfirmDeleteUsersDialog
         userId={userId}
+        users={users}
         {...useConfirmDeleteDialogReturn}
       />
       <ConfirmPromoteUsersDialog
+        users={users}
         participantCount={participantCount}
         maxParticipants={maxParticipants}
         {...usePromoteUsersDialogReturn}

@@ -31,6 +31,8 @@ export type UseUsersTableReturn = {
   search: string;
   setSearch: (search: string) => void;
   table: Table<User>;
+  /** Every selected user, including users that the role filter or the search hides. */
+  selectedUsers: User[];
   selectedUserIds: User["id"][];
   usersColumns: ColumnDef<User>[];
   handleDownloadCSV: () => void;
@@ -103,6 +105,9 @@ export const useUsersTable = (
   const table = useReactTable({
     data: filteredUsers,
     columns: usersColumns,
+    // Key the selection by user id, not by row position, so a selection always means the same
+    // users after the list changes (filter, search, or a refresh after a delete).
+    getRowId: (user) => user.id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -124,9 +129,16 @@ export const useUsersTable = (
     },
   });
 
-  const selectedUserIds = table
-    .getFilteredSelectedRowModel()
-    .rows.map((row) => (row.original as User).id);
+  // Read the selection from all users, not from the table rows: the table holds only the users
+  // that the role filter and the search show. Users that no longer exist (for example, after a
+  // delete) drop out because they are not in `data`.
+  const selectedUsers = useMemo(
+    () => data.filter((user) => rowSelection[user.id]),
+    [data, rowSelection]
+  );
+  const selectedUserIds = selectedUsers.map(
+    (user) => user.id
+  );
 
   return {
     role,
@@ -134,6 +146,7 @@ export const useUsersTable = (
     search,
     setSearch,
     table,
+    selectedUsers,
     selectedUserIds,
     usersColumns,
     handleDownloadCSV,

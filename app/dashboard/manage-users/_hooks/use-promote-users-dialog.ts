@@ -19,10 +19,11 @@ export type UsePromoteUsersDialogReturn = {
 /**
  * State for the "Promote to participant" confirm dialog.
  *
- * @param onPromoted - Called after a successful promotion (for example, to clear the row selection)
+ * @param onPromoted - Called with the promoted ids after a successful promotion (for example, to
+ * unselect those rows)
  */
 export const usePromoteUsersDialog = (
-  onPromoted?: () => void
+  onPromoted?: (userIds: User["id"][]) => void
 ): UsePromoteUsersDialogReturn => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPromoting, setIsPromoting] = useState(false);
@@ -57,7 +58,7 @@ export const usePromoteUsersDialog = (
 
       setIsOpen(false);
       setSelectedUserIds([]);
-      onPromoted?.();
+      onPromoted?.(selectedUserIds);
     } catch (error) {
       const errorMessage =
         error instanceof Error
